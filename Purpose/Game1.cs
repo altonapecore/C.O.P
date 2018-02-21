@@ -5,6 +5,8 @@ using Microsoft.Xna.Framework.Input;
 namespace Purpose
 {
     /// <summary>
+    /// Nicholas Requires a Medic
+    /// Overlord Trent has arrived.
     /// Alex Pecore requires healing
     /// </summary>
     public class Game1 : Game
