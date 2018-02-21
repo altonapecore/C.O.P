@@ -2,12 +2,10 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace Purpose
+namespace Purpose2
 {
     /// <summary>
     /// It's ya boy, Alex
-    /// Overlord Trent has arrived.
-    /// Vansh is here
     /// </summary>
     public class Game1 : Game
     {
