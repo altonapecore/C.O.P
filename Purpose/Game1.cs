@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Input;
 namespace Purpose
 {
     /// <summary>
-    /// This is the main type for your game.
+    /// Nicholas Requires a Medic
     /// </summary>
     public class Game1 : Game
     {
