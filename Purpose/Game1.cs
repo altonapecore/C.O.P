@@ -10,6 +10,15 @@ namespace Purpose
     /// Overlord Trent has arrived.
     /// Vansh is here
     /// </summary>
+
+    enum Level
+    {
+        One,
+        Two,
+        Three,
+        Four
+    }
+
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
