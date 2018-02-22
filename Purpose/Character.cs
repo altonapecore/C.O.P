@@ -11,7 +11,9 @@ namespace Purpose
     abstract class Character : GameObject
     {
         //fields
-        string name; 
+        protected string name;
+        protected int health;
+        protected int damage;
 
         //properties
 
@@ -22,6 +24,8 @@ namespace Purpose
         }
 
         //methods
-        public abstract void Move(int power);
+        public abstract int Attack();
+
+        public abstract void TakeDamage(int damage);
     }
 }

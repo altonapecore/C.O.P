@@ -16,8 +16,16 @@ namespace Purpose
 
         //properties
         public Rectangle Position { get { return position; } }
-        public int X { get { return position.X; } }
-        public int Y { get { return position.Y; } }
+        public int X
+        {
+            get { return position.X; }
+            set { position.X = value; }
+        }
+        public int Y
+        {
+            get { return position.Y; }
+            set { position.Y = value; }
+        }
         public Texture2D Texture { get { return texture; } }
 
         //constructor
