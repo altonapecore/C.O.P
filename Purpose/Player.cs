@@ -18,6 +18,11 @@ namespace Purpose
         private int passiveTier;
         private int stealthTier;
         private int damageTier;
+        private Texture2D rightCrouchSprite;
+        private Texture2D leftCrouchSprite;
+        private Texture2D rightStandingSprite;
+        private Texture2D leftStandingSprite;
+        private UpgradeManager ugManager;
 
         //properties
         public int Kills
@@ -27,7 +32,8 @@ namespace Purpose
         }
 
         //constructor
-        public Player(string name, Rectangle position, Texture2D texture) : base(name, position, texture)
+        public Player(string name, Texture2D leftCrouchSprite, Texture2D rightCrouchSprite, Texture2D leftStandingSprite, 
+            Texture2D rightStandingSprite, Rectangle position) : base(name, position, rightStandingSprite)
         {
             kills = 0;
             upgradePoints = 0;
@@ -36,6 +42,12 @@ namespace Purpose
             passiveTier = 1;
             stealthTier = 1;
             damageTier = 1;
+            texture = rightStandingSprite;
+            this.leftCrouchSprite = leftCrouchSprite;
+            this.rightCrouchSprite = rightCrouchSprite;
+            this.leftStandingSprite = leftStandingSprite;
+            this.rightStandingSprite = rightStandingSprite;
+            ugManager = new UpgradeManager();
         }
 
         //methods
@@ -53,11 +65,33 @@ namespace Purpose
             {
                 Jump();
             }
+            if (kbState.IsKeyDown(Keys.Q))
+            {
+                if (ugManager.DashActive)
+                {
+
+                }
+            }
+            if (kbState.IsKeyDown(Keys.E))
+            {
+                if (ugManager.GroundPoundActive)
+                {
+
+                }
+            }
+            if (kbState.IsKeyDown(Keys.S))
+            {
+                Crouch();
+            }
         }
 
-        public override int Attack()
+        public override int Attack(Rectangle rectangle)
         {
-            return damage;
+            if (position.Intersects(rectangle))
+            {
+                return damage;
+            }
+            return 0;
         }
 
         public override void TakeDamage(int damage)
@@ -68,6 +102,20 @@ namespace Purpose
         public void Jump()
         {
 
+        }
+
+        public void Crouch()
+        {
+            if (texture != leftCrouchSprite || texture != rightCrouchSprite)
+            {
+                position.Height /= 2;
+                texture = rightCrouchSprite;
+            }
+            else
+            {
+                texture = rightStandingSprite;
+                position.Height *= 2;
+            }
         }
     }
 }

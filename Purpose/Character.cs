@@ -24,7 +24,7 @@ namespace Purpose
         }
 
         //methods
-        public abstract int Attack();
+        public abstract int Attack(Rectangle rectangle);
 
         public abstract void TakeDamage(int damage);
     }
