@@ -40,7 +40,15 @@ namespace Purpose
             // Code for attack here
             // Temp variable for damage
             int damageDealt = 0;
-            return damageDealt;
+            if (ranged)
+            {
+                damageDealt = 1;
+                return damageDealt;
+            }
+            else
+            {
+                return damageDealt;
+            }
         }
 
         public override void TakeDamage(int damage)
