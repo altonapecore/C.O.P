@@ -35,18 +35,26 @@ namespace Purpose
         }
 
         // Methods
-        public override int Attack()
+        public override int Attack(Rectangle rectangle)
         {
-            // Code for attack here
-            // Temp variable for damage
-            int damageDealt = 0;
-            if (ranged)
+            int damageDealt = 1;
+            if (position.Intersects(rectangle))
             {
-                damageDealt = 1;
-                return damageDealt;
+                // Code for attack here
+                // Temp variable for damage                
+                if (ranged)
+                {
+                    damageDealt = 2;
+                    return damageDealt;
+                }
+                else
+                {
+                    return damageDealt;
+                }
             }
             else
             {
+                damageDealt = 0;
                 return damageDealt;
             }
         }
