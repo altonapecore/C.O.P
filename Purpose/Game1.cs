@@ -75,6 +75,8 @@ namespace Purpose
                 Exit();
 
             // TODO: Add your update logic here
+            float time = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
 
             base.Update(gameTime);
         }
