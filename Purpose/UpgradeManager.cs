@@ -38,6 +38,41 @@ namespace Purpose
             damageTier = 1;
         }
 
+        public void DashUpgrade()
+        {
+            dashActive = true;
+        }
+        public void GroundUpgrade()
+        {
+            groundPoundActive = true;
+        }
+        public void PassiveUpgrade(int passiveTier,int stamina, int staminaRegen, int health)
+        {
+            if(passiveTier==1)
+            {
+                staminaRegen += 1;
+            }
+            else if(passiveTier==2 || passiveTier==3 || passiveTier==4 || passiveTier==5 || passiveTier==6)
+            {
+                health += 10;
+            }
+            else if(passiveTier==7)
+            {
+                stamina += 100;
+            }
+            passiveTier++;
+        }
+        public void DamageUpgrade(int damageTier, int damage)
+        {
+            if (damageTier == 1 || damageTier == 2 || damageTier == 3 || damageTier == 4 || damageTier == 5)
+            {
+                damage += 10;
+            }
+            else if(damageTier==6)
+            {
+                GroundUpgrade();
+            }
+        }
         //methods
     }
 }

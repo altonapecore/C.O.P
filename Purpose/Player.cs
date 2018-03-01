@@ -46,12 +46,12 @@ namespace Purpose
 
 
         //constructor
-        public Player(String name, Texture2D texture) : base(name, texture)
+        public Player(String name, Texture2D texture) : base(texture)
         {
             
         }
         public Player(string name, Texture2D leftCrouchSprite, Texture2D rightCrouchSprite, Texture2D leftStandingSprite, 
-            Texture2D rightStandingSprite, Texture2D rightJumpSprite, Texture2D leftJumpSprite, GraphicsDevice graphicsDevice) : base(name, rightStandingSprite)
+            Texture2D rightStandingSprite, Texture2D rightJumpSprite, Texture2D leftJumpSprite, GraphicsDevice graphicsDevice) : base(rightStandingSprite)
         {
             kills = 0;
             upgradePoints = 0;
