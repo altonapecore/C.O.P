@@ -21,7 +21,7 @@ namespace Purpose
         }
 
         // Constructor
-        public Enemy(string name, Rectangle position, Texture2D texture, Level level) : base(name, texture)
+        public Enemy(Rectangle position, Texture2D texture, Level level) : base(texture)
         {
             if (level == Level.Three || level == Level.Four)
             {
