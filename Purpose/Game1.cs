@@ -36,7 +36,6 @@ namespace Purpose
         KeyboardState kbState;
         Player player;
         Texture2D tempTexture;
-        Rectangle tempRectangle = new Rectangle(225, 225, 445, 355);
         Texture2D background;
         GameManager gameManager;
         List<Enemy> enemies;
@@ -48,7 +47,6 @@ namespace Purpose
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            gameManager = new GameManager(player);
 
             // Set screen size
             graphics.IsFullScreen = false;
@@ -95,7 +93,11 @@ namespace Purpose
             background = Content.Load<Texture2D>("background");
             trent = Content.Load<Texture2D>("trent");
 
+            // TRY TO FIND A BETTER WAY TO DO THIS
             player = new Player("Dude", tempTexture);
+            player.X = 225;
+            player.Y = 225;
+            gameManager = new GameManager(player);
         }
 
         /// <summary>
@@ -187,7 +189,7 @@ namespace Purpose
                 case GameState.Menu:
                     spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
                     // Temp drawing stuffs
-                    spriteBatch.Draw(player.Texture, tempRectangle, Color.White);
+                    spriteBatch.Draw(player.Texture, new Rectangle(player.X, player.Y, 445, 355), Color.White);
                     break;
 
                 case GameState.Game:

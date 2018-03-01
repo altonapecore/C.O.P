@@ -46,9 +46,15 @@ namespace Purpose
 
 
         //constructor
+        // Temporary constructor
         public Player(String name, Texture2D texture) : base(texture)
         {
-            
+            rightCrouchSprite = texture;
+            leftCrouchSprite = texture;
+            rightJumpSprite = texture;
+            leftJumpSprite = texture;
+            rightStandingSprite = texture;
+            leftStandingSprite = texture;
         }
         public Player(string name, Texture2D leftCrouchSprite, Texture2D rightCrouchSprite, Texture2D leftStandingSprite, 
             Texture2D rightStandingSprite, Texture2D rightJumpSprite, Texture2D leftJumpSprite, GraphicsDevice graphicsDevice) : base(rightStandingSprite)
