@@ -61,7 +61,7 @@ namespace Purpose
                 int x = 50;
                 int y = 50;
                 Rectangle rectangle = new Rectangle(x, y, 147, 147);
-                Enemy enemy = new Enemy("Trent", rectangle, trent, Level.One);
+                Enemy enemy = new Enemy(rectangle, trent, Level.One);
                 x += 87;
                 y += 87;
             }
