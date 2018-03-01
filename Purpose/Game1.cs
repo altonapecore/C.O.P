@@ -39,6 +39,7 @@ namespace Purpose
         Texture2D background;
         GameManager gameManager;
         List<Enemy> enemies;
+        int count = 0;
 
         // Temp stuffs
         Texture2D trent;
@@ -121,15 +122,16 @@ namespace Purpose
 
             // TODO: Add your update logic here
             float time = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            KeyboardState previouskbState = kbState;
+            kbState = Keyboard.GetState();
 
             // GameState finite state machine
             switch (gameState)
             {
                 case GameState.Menu:
-                    kbState = Keyboard.GetState();
                     // Temp code stuffs
                     MouseState ms = Mouse.GetState();
-                    gameManager.Move(kbState, time, ms, enemies);
+                    gameManager.Move(kbState, previouskbState, time, ms, enemies);
                     if (kbState.IsKeyDown(Keys.Enter))
                     {
                         gameState = GameState.Game;
@@ -137,7 +139,6 @@ namespace Purpose
                     break;
 
                 case GameState.Game:
-                    kbState = Keyboard.GetState();
 
                     if (kbState.IsKeyDown(Keys.P))
                     {
@@ -151,7 +152,6 @@ namespace Purpose
                     break;
 
                 case GameState.Pause:
-                    kbState = Keyboard.GetState();
 
                     if (kbState.IsKeyDown(Keys.P))
                     {
@@ -160,7 +160,6 @@ namespace Purpose
                     break;
 
                 case GameState.GameOver:
-                    kbState = Keyboard.GetState();
 
                     if (kbState.IsKeyDown(Keys.Enter))
                     {
@@ -191,6 +190,13 @@ namespace Purpose
                     // Temp drawing stuffs
                     spriteBatch.Draw(player.Texture, new Rectangle(player.X, player.Y, 445, 355), Color.White);
                     break;
+
+                    while (count <= gameManager.jumpRectangles.Count)
+                    {
+                        spriteBatch.Draw(player.Texture, gameManager.jumpRectangles[count], Color.White);
+                        count++;
+                        InactiveSleepTime = new TimeSpan(0, 0, 1);
+                    }
 
                 case GameState.Game:
                     break;

@@ -46,7 +46,8 @@ namespace Purpose
 
 
         //constructor
-        // Temporary constructor
+
+        // Temporary constructor for debug purposes
         public Player(String name, Texture2D texture) : base(texture)
         {
             rightCrouchSprite = texture;
@@ -55,7 +56,10 @@ namespace Purpose
             leftJumpSprite = texture;
             rightStandingSprite = texture;
             leftStandingSprite = texture;
+            ugManager = new UpgradeManager();
+            ugManager.DashUpgrade();
         }
+
         public Player(string name, Texture2D leftCrouchSprite, Texture2D rightCrouchSprite, Texture2D leftStandingSprite, 
             Texture2D rightStandingSprite, Texture2D rightJumpSprite, Texture2D leftJumpSprite, GraphicsDevice graphicsDevice) : base(rightStandingSprite)
         {
@@ -93,13 +97,26 @@ namespace Purpose
             health -= damage;
         }
 
-        public void Jump(float time)
+        public List<Rectangle> Jump(Vector2 ogPlayerPos)
         {
-            Vector2 positionVector = new Vector2(position.X, position.Y);
-            velocity += gravity * time;
-            positionVector += velocity * time;
-            position.X = (int)positionVector.X;
-            position.Y = (int)positionVector.Y;
+            List<Vector2> jumpPositions = new List<Vector2>();
+
+            ogPlayerPos = new Vector2(position.X, position.Y);
+            for (int i = 1; i <= 10; i++)
+            {
+                Vector2 newPosition = new Vector2(0, 0);
+                newPosition += (1.5f * gravity * i * i);
+                newPosition += ogPlayerPos;
+                jumpPositions.Add(newPosition);
+            }
+
+            List<Rectangle> jumpRectangles = new List<Rectangle>();
+            for (int i = 0; i < jumpPositions.Count; i++)
+            {
+                jumpRectangles.Add(new Rectangle((int)jumpPositions[i].X, (int)jumpPositions[i].Y, position.Width, position.Height));
+            }
+
+            return jumpRectangles;
         }
 
         public void Crouch()
@@ -130,6 +147,12 @@ namespace Purpose
                     }
                 }
             }
+        }
+
+        //only for debug purposes right now
+        public void Upgrade()
+        {
+            ugManager.DashUpgrade();
         }
     }
 }

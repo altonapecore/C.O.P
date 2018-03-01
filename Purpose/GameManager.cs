@@ -14,7 +14,8 @@ namespace Purpose
         //fields
         private List<Enemy> enemies;
         private Player player;
-        bool isJumping; 
+        private Vector2 ogPlayerPos;
+        public List<Rectangle> jumpRectangles;
         
         //constructor
         public GameManager(Player player)
@@ -35,35 +36,38 @@ namespace Purpose
         /// </summary>
         /// <param name="kbState">The current state of the keyboard</param>
         /// <param name="time">A time parameter for physics</param>
-        public void Move(KeyboardState kbState, float time, MouseState ms, List<Enemy> enemies)
+        public void Move(KeyboardState kbState, KeyboardState previouskbState, float time, MouseState ms, List<Enemy> enemies)
         {
-            if (kbState.IsKeyDown(Keys.A) && !isJumping)
+            if (kbState.IsKeyDown(Keys.A) && !kbState.IsKeyDown(Keys.Space))
             {
-                player.X -= 5;
+                player.X -= 8;
             }
-            if (kbState.IsKeyDown(Keys.D) && !isJumping)
+            if (kbState.IsKeyDown(Keys.D) && !kbState.IsKeyDown(Keys.Space))
             {
-                player.X += 5;
+                player.X += 8;
             }
-            if (kbState.IsKeyDown(Keys.Space) && !isJumping)
+            if (kbState.IsKeyDown(Keys.Space) && !kbState.IsKeyDown(Keys.Space))
             {
-                player.Jump(time);
+                if (!previouskbState.IsKeyDown(Keys.Space))
+                {
+                    jumpRectangles = player.Jump(ogPlayerPos);
+                }
             }
-            if (kbState.IsKeyDown(Keys.Q) && !isJumping)
+            if (kbState.IsKeyDown(Keys.Q) && !previouskbState.IsKeyDown(Keys.Q) && !kbState.IsKeyDown(Keys.Space))
             {
                 if (player.UgManager.DashActive)
                 {
                     if (player.Texture == player.RightStandingSprite || player.Texture == player.RightCrouchSprite)
                     {
-                        player.X += 15;
+                        player.X += 100;
                     }
                     else if (player.Texture == player.LeftStandingSprite || player.Texture == player.LeftCrouchSprite)
                     {
-                        player.X -= 15;
+                        player.X -= 100;
                     }
                 }
             }
-            if (kbState.IsKeyDown(Keys.S) && !isJumping)
+            if (kbState.IsKeyDown(Keys.S) && !kbState.IsKeyDown(Keys.Space))
             {
                 player.Crouch();
             }
