@@ -16,6 +16,7 @@ namespace Purpose
         protected int damage;
 
         //properties
+        public int Health { get { return health; } }
 
         //constructor
         public Character(string name, Rectangle position, Texture2D texture) : base(position, texture)

@@ -19,15 +19,35 @@ namespace Purpose
         Four
     }
 
+    enum GameState
+    {
+        Menu,
+        Game,
+        Pause,
+        GameOver
+    }
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        GameState gameState;
+        KeyboardState kbState;
+        Player player;
+        Texture2D tempTexture;
+        Rectangle tempRectangle = new Rectangle(225, 225, 445, 355);
+        Texture2D background;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            player = new Player("Dude", tempTexture, tempTexture, tempTexture, tempTexture, tempRectangle);
+
+            // Set screen size
+            graphics.IsFullScreen = false;
+            graphics.PreferredBackBufferHeight = 845;
+            graphics.PreferredBackBufferWidth = 1350;
+
         }
 
         /// <summary>
@@ -38,8 +58,9 @@ namespace Purpose
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
 
+            // Initialize GameState
+            gameState = GameState.Menu;
             base.Initialize();
         }
 
@@ -52,7 +73,9 @@ namespace Purpose
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
+            // Load in textures
+            tempTexture = Content.Load<Texture2D>("pineapple");
+            background = Content.Load<Texture2D>("background");
         }
 
         /// <summary>
@@ -77,6 +100,50 @@ namespace Purpose
             // TODO: Add your update logic here
             float time = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
+            // GameState finite state machine
+            switch (gameState)
+            {
+                case GameState.Menu:
+                    kbState = Keyboard.GetState();
+                    if (kbState.IsKeyDown(Keys.Enter))
+                    {
+                        gameState = GameState.Game;
+                    }
+                    break;
+
+                case GameState.Game:
+                    kbState = Keyboard.GetState();
+
+                    if (kbState.IsKeyDown(Keys.P))
+                    {
+                        gameState = GameState.Pause;
+                    }
+
+                    if(player.Health <= 0)
+                    {
+                        gameState = GameState.GameOver;
+                    }
+                    break;
+
+                case GameState.Pause:
+                    kbState = Keyboard.GetState();
+
+                    if (kbState.IsKeyDown(Keys.P))
+                    {
+                        gameState = GameState.Game;
+                    }
+                    break;
+
+                case GameState.GameOver:
+                    kbState = Keyboard.GetState();
+
+                    if (kbState.IsKeyDown(Keys.Enter))
+                    {
+                        gameState = GameState.Menu;
+                    }
+                    break;
+            }
+
 
             base.Update(gameTime);
         }
@@ -89,9 +156,29 @@ namespace Purpose
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            spriteBatch.Begin();
 
+            // GameState drawing stuffs
+            switch (gameState)
+            {
+                case GameState.Menu:
+                    spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
+                    break;
+
+                case GameState.Game:
+                    break;
+
+                case GameState.Pause:
+                    break;
+
+                case GameState.GameOver:
+                    break;
+            }
+
+            spriteBatch.End();
             base.Draw(gameTime);
         }
+
+
     }
 }
