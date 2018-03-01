@@ -21,7 +21,7 @@ namespace Purpose
         //}
         
         //constructor
-        public Item(Rectangle position, Texture2D texture) : base(position, texture)
+        public Item(Rectangle position, Texture2D texture) : base(texture)
         {
 
         }

@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
+using System.Collections.Generic;
 
 namespace Purpose
 {
@@ -36,18 +38,33 @@ namespace Purpose
         Texture2D tempTexture;
         Rectangle tempRectangle = new Rectangle(225, 225, 445, 355);
         Texture2D background;
+        GameManager gameManager;
+        List<Enemy> enemies;
+
+        // Temp stuffs
+        Texture2D trent;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            player = new Player("Dude", tempTexture);
+            gameManager = new GameManager(player);
 
             // Set screen size
             graphics.IsFullScreen = false;
             graphics.PreferredBackBufferHeight = 845;
             graphics.PreferredBackBufferWidth = 1350;
 
+            // Temp coding stuffs
+            for(int i = 0; i < 3; i++)
+            {
+                int x = 50;
+                int y = 50;
+                Rectangle rectangle = new Rectangle(x, y, 147, 147);
+                Enemy enemy = new Enemy("Trent", rectangle, trent, Level.One);
+                x += 87;
+                y += 87;
+            }
         }
 
         /// <summary>
@@ -76,6 +93,9 @@ namespace Purpose
             // Load in textures
             tempTexture = Content.Load<Texture2D>("pineapple");
             background = Content.Load<Texture2D>("background");
+            trent = Content.Load<Texture2D>("trent");
+
+            player = new Player("Dude", tempTexture);
         }
 
         /// <summary>
@@ -105,6 +125,9 @@ namespace Purpose
             {
                 case GameState.Menu:
                     kbState = Keyboard.GetState();
+                    // Temp code stuffs
+                    MouseState ms = Mouse.GetState();
+                    gameManager.Move(kbState, time, ms, enemies);
                     if (kbState.IsKeyDown(Keys.Enter))
                     {
                         gameState = GameState.Game;
@@ -163,6 +186,8 @@ namespace Purpose
             {
                 case GameState.Menu:
                     spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
+                    // Temp drawing stuffs
+                    spriteBatch.Draw(player.Texture, tempRectangle, Color.White);
                     break;
 
                 case GameState.Game:

@@ -16,6 +16,10 @@ namespace Purpose
         bool isJumping; 
         
         //constructor
+        public GameManager(Player player)
+        {
+            this.player = player;
+        }
         public GameManager(string playerName, Texture2D leftCrouchSprite, Texture2D rightCrouchSprite, Texture2D leftStandingSprite, 
             Texture2D rightStandingSprite, Texture2D rightJumpSprite, Texture2D leftJumpSprite, GraphicsDevice graphicsDevice)
         {
