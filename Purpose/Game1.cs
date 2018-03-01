@@ -41,7 +41,7 @@ namespace Purpose
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            player = new Player("Dude", tempTexture, tempTexture, tempTexture, tempTexture, tempRectangle);
+            player = new Player("Dude", tempTexture);
 
             // Set screen size
             graphics.IsFullScreen = false;
