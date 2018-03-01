@@ -11,6 +11,9 @@ namespace Purpose
         //fields
         private bool dashActive;
         private bool groundPoundActive;
+        private int passiveTier;
+        private int stealthTier;
+        private int damageTier;
 
         //properties
         public bool DashActive
@@ -30,6 +33,9 @@ namespace Purpose
         {
             dashActive = false;
             groundPoundActive = false;
+            passiveTier = 1;
+            stealthTier = 1;
+            damageTier = 1;
         }
 
         //methods

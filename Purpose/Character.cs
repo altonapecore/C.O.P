@@ -19,7 +19,7 @@ namespace Purpose
         public int Health { get { return health; } }
 
         //constructor
-        public Character(string name, Rectangle position, Texture2D texture) : base(position, texture)
+        public Character(string name, Texture2D texture) : base(texture)
         {
             this.name = name;
         }

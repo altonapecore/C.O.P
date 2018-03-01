@@ -7,7 +7,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-
 namespace Purpose
 {
     class Player : Character
@@ -15,9 +14,7 @@ namespace Purpose
         //fields
         private int kills;
         private int upgradePoints;
-        private int passiveTier;
-        private int stealthTier;
-        private int damageTier;
+        bool isJumping;
         private Texture2D rightCrouchSprite;
         private Texture2D leftCrouchSprite;
         private Texture2D rightStandingSprite;
@@ -37,62 +34,41 @@ namespace Purpose
             set { kills = value; }
         }
 
+        public UpgradeManager UgManager { get { return ugManager; } }
+
+        public Texture2D RightCrouchSprite { get { return rightCrouchSprite; } }
+        public Texture2D LeftCrouchSprite { get { return leftCrouchSprite; } }
+        public Texture2D RightStandingSprite { get { return rightStandingSprite; } }
+        public Texture2D LeftStandingSprite { get { return leftStandingSprite; } }
+        public Texture2D RightJumpSprite { get { return rightJumpSprite; } }
+        public Texture2D LeftJumpSprite { get { return leftJumpSprite; } }
+
+
+
         //constructor
         public Player(string name, Texture2D leftCrouchSprite, Texture2D rightCrouchSprite, Texture2D leftStandingSprite, 
-            Texture2D rightStandingSprite, Rectangle position) : base(name, position, rightStandingSprite)
+            Texture2D rightStandingSprite, Texture2D rightJumpSprite, Texture2D leftJumpSprite, GraphicsDevice graphicsDevice) : base(name, rightStandingSprite)
         {
             kills = 0;
             upgradePoints = 0;
             damage = 10;
             health = 100;
-            passiveTier = 1;
-            stealthTier = 1;
-            damageTier = 1;
+            isJumping = false;
+            position = new Rectangle(0, graphicsDevice.Viewport.Height, 25, 10);
+
             texture = rightStandingSprite;
             this.leftCrouchSprite = leftCrouchSprite;
             this.rightCrouchSprite = rightCrouchSprite;
             this.leftStandingSprite = leftStandingSprite;
             this.rightStandingSprite = rightStandingSprite;
+            this.leftJumpSprite = leftJumpSprite;
+            this.rightJumpSprite = rightJumpSprite;
             ugManager = new UpgradeManager();
 
             velocity = new Vector2(0,0);
         }
 
         //methods
-        public void Move(KeyboardState kbState, float time)
-        {
-            if (kbState.IsKeyDown(Keys.A))
-            {
-                position.X -= 5;
-            }
-            if (kbState.IsKeyDown(Keys.D))
-            {
-                position.X += 5;
-            }
-            if (kbState.IsKeyDown(Keys.Space))
-            {
-                Jump(time);
-            }
-            if (kbState.IsKeyDown(Keys.Q))
-            {
-                if (ugManager.DashActive)
-                {
-                    if (texture == rightStandingSprite || texture == rightCrouchSprite)
-                    {
-                        position.X += 15;
-                    }
-                    else if (texture == leftStandingSprite || texture == leftCrouchSprite)
-                    {
-                        position.X -= 15;
-                    }
-                }
-            }
-            if (kbState.IsKeyDown(Keys.S))
-            {
-                Crouch();
-            }
-        }
-
         public override int Attack(Rectangle rectangle)
         {
             if (position.Intersects(rectangle))
