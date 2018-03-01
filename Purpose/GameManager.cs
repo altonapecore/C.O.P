@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework;
 
 namespace Purpose
 {
@@ -17,9 +18,10 @@ namespace Purpose
         
         //constructor
         public GameManager(string playerName, Texture2D leftCrouchSprite, Texture2D rightCrouchSprite, Texture2D leftStandingSprite, 
-            Texture2D rightStandingSprite, Texture2D rightJumpSprite, Texture2D leftJumpSprite, GraphicsDevice graphicsDevice)
+            Texture2D rightStandingSprite, Texture2D rightJumpSprite, Texture2D leftJumpSprite, GraphicsDevice graphicsDevice, Random rng, int numberOfEnemies, Texture2D enemyTexture)
         {
             enemies = new List<Enemy>();
+            FillEnemyList(rng, numberOfEnemies, graphicsDevice, enemyTexture);
             player = new Player(playerName, leftCrouchSprite, rightCrouchSprite, leftStandingSprite, rightStandingSprite, rightJumpSprite, leftJumpSprite, graphicsDevice);
         }
 
@@ -67,6 +69,14 @@ namespace Purpose
                 {
                     e.TakeDamage(player.Attack(e.Position));
                 }
+            }
+        }
+
+        public void FillEnemyList(Random rng, int numberOfEnemies, GraphicsDevice graphicsDevice, Texture2D enemyTexture)
+        {
+            for (int i = 0; i < numberOfEnemies; i++)
+            {
+                enemies.Add(new Enemy(new Rectangle(rng.Next(0, graphicsDevice.Viewport.Width), rng.Next(0, graphicsDevice.Viewport.Height), 5, 5), enemyTexture, Level.One));
             }
         }
 

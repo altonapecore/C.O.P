@@ -11,7 +11,6 @@ namespace Purpose
     abstract class Character : GameObject
     {
         //fields
-        protected string name;
         protected int health;
         protected int damage;
 
@@ -19,10 +18,7 @@ namespace Purpose
         public int Health { get { return health; } }
 
         //constructor
-        public Character(string name, Texture2D texture) : base(texture)
-        {
-            this.name = name;
-        }
+        public Character(Texture2D texture) : base(texture) { }
 
         //methods
         public abstract int Attack(Rectangle rectangle);
