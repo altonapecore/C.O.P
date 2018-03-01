@@ -29,9 +29,8 @@ namespace Purpose
         public Texture2D Texture { get { return texture; } }
 
         //constructor
-        public GameObject(Rectangle position, Texture2D texture)
+        public GameObject(Texture2D texture)
         {
-            this.position = position;
             this.texture = texture;
         }
 
