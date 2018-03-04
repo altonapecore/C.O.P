@@ -39,6 +39,7 @@ namespace Purpose
         Texture2D background;
         GameManager gameManager;
         List<Enemy> enemies;
+        ArenaWindow arenaWindow;
         int count = 0;
 
         // Temp stuffs
@@ -77,6 +78,8 @@ namespace Purpose
 
             // Initialize GameState
             gameState = GameState.Menu;
+            //Initialize the Window Form
+            arenaWindow = new ArenaWindow();
             base.Initialize();
         }
 
@@ -99,6 +102,8 @@ namespace Purpose
             player.X = 225;
             player.Y = 225;
             gameManager = new GameManager(player);
+
+            arenaWindow.ShowDialog();
         }
 
         /// <summary>
