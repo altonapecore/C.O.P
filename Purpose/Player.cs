@@ -14,7 +14,6 @@ namespace Purpose
         //fields
         private int kills;
         private int upgradePoints;
-        bool isJumping;
         private Texture2D rightCrouchSprite;
         private Texture2D leftCrouchSprite;
         private Texture2D rightStandingSprite;
@@ -22,10 +21,6 @@ namespace Purpose
         private Texture2D rightJumpSprite;
         private Texture2D leftJumpSprite;
         private UpgradeManager ugManager;
-
-        //physics fields
-        private Vector2 velocity;
-        private Vector2 gravity = new Vector2(0, -9.8f);
 
         //properties
         public int Kills
@@ -48,7 +43,7 @@ namespace Purpose
         //constructor
 
         // Temporary constructor for debug purposes
-        public Player(String name, Texture2D texture) : base(texture)
+        public Player(String name, Texture2D texture, Rectangle position) : base(texture)
         {
             rightCrouchSprite = texture;
             leftCrouchSprite = texture;
@@ -58,6 +53,7 @@ namespace Purpose
             leftStandingSprite = texture;
             ugManager = new UpgradeManager();
             ugManager.DashUpgrade();
+            this.position = position;
         }
 
         public Player(string name, Texture2D leftCrouchSprite, Texture2D rightCrouchSprite, Texture2D leftStandingSprite, 
@@ -67,7 +63,6 @@ namespace Purpose
             upgradePoints = 0;
             damage = 10;
             health = 100;
-            isJumping = false;
             position = new Rectangle(0, graphicsDevice.Viewport.Height, 25, 10);
 
             texture = rightStandingSprite;
@@ -78,8 +73,6 @@ namespace Purpose
             this.leftJumpSprite = leftJumpSprite;
             this.rightJumpSprite = rightJumpSprite;
             ugManager = new UpgradeManager();
-
-            velocity = new Vector2(0,0);
         }
 
         //methods
@@ -97,26 +90,9 @@ namespace Purpose
             health -= damage;
         }
 
-        public List<Rectangle> Jump(Vector2 ogPlayerPos)
+        public void Jump()
         {
-            List<Vector2> jumpPositions = new List<Vector2>();
-
-            ogPlayerPos = new Vector2(position.X, position.Y);
-            for (int i = 1; i <= 10; i++)
-            {
-                Vector2 newPosition = new Vector2(0, 0);
-                newPosition += (1.5f * gravity * i * i);
-                newPosition += ogPlayerPos;
-                jumpPositions.Add(newPosition);
-            }
-
-            List<Rectangle> jumpRectangles = new List<Rectangle>();
-            for (int i = 0; i < jumpPositions.Count; i++)
-            {
-                jumpRectangles.Add(new Rectangle((int)jumpPositions[i].X, (int)jumpPositions[i].Y, position.Width, position.Height));
-            }
-
-            return jumpRectangles;
+            position.Y -= 200;
         }
 
         public void Crouch()

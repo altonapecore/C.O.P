@@ -14,13 +14,13 @@ namespace Purpose
         //fields
         private List<Enemy> enemies;
         private Player player;
-        private Vector2 ogPlayerPos;
-        public List<Rectangle> jumpRectangles;
+        private List<Platform> platforms;
         
         //constructor
-        public GameManager(Player player)
+        public GameManager(Player player, List<Platform> platforms)
         {
             this.player = player;
+            this.platforms = platforms;
         }
         public GameManager(string playerName, Texture2D leftCrouchSprite, Texture2D rightCrouchSprite, Texture2D leftStandingSprite, 
             Texture2D rightStandingSprite, Texture2D rightJumpSprite, Texture2D leftJumpSprite, GraphicsDevice graphicsDevice, Random rng, int numberOfEnemies, Texture2D enemyTexture)
@@ -36,22 +36,33 @@ namespace Purpose
         /// </summary>
         /// <param name="kbState">The current state of the keyboard</param>
         /// <param name="time">A time parameter for physics</param>
-        public void Move(KeyboardState kbState, KeyboardState previouskbState, float time, MouseState ms, List<Enemy> enemies)
+        public void Move(KeyboardState kbState, KeyboardState previouskbState, MouseState ms, List<Enemy> enemies)
         {
-            if (kbState.IsKeyDown(Keys.A) && !kbState.IsKeyDown(Keys.Space))
+            bool onPlatform = false;
+            foreach (Platform p in platforms)
+            {
+                if (player.Position.Intersects(p.Position))
+                {
+                    onPlatform = true;
+                    break;
+                }
+            }
+            if (!onPlatform)
+            {
+                player.Y += 5;
+            }
+
+            if (kbState.IsKeyDown(Keys.A))
             {
                 player.X -= 8;
             }
-            if (kbState.IsKeyDown(Keys.D) && !kbState.IsKeyDown(Keys.Space))
+            if (kbState.IsKeyDown(Keys.D))
             {
                 player.X += 8;
             }
-            if (kbState.IsKeyDown(Keys.Space) && !kbState.IsKeyDown(Keys.Space))
+            if (kbState.IsKeyDown(Keys.Space) && !previouskbState.IsKeyDown(Keys.Space) && player.Y > 300)
             {
-                if (!previouskbState.IsKeyDown(Keys.Space))
-                {
-                    jumpRectangles = player.Jump(ogPlayerPos);
-                }
+                player.Jump();
             }
             if (kbState.IsKeyDown(Keys.Q) && !previouskbState.IsKeyDown(Keys.Q) && !kbState.IsKeyDown(Keys.Space))
             {
@@ -71,13 +82,13 @@ namespace Purpose
             {
                 player.Crouch();
             }
-            if (ms.LeftButton == ButtonState.Pressed)
-            {
-                foreach (Enemy e in enemies)
-                {
-                    e.TakeDamage(player.Attack(e.Position));
-                }
-            }
+            //if (ms.LeftButton == ButtonState.Pressed)
+            //{
+            //    foreach (Enemy e in enemies)
+            //    {
+            //        e.TakeDamage(player.Attack(e.Position));
+            //    }
+            //}
         }
 
         public void FillEnemyList(Random rng, int numberOfEnemies, GraphicsDevice graphicsDevice, Texture2D enemyTexture)
