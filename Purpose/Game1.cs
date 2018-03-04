@@ -39,6 +39,8 @@ namespace Purpose
         Texture2D background;
         GameManager gameManager;
         List<Enemy> enemies;
+        List<Platform> bottomPlatforms;
+        Texture2D platform;
         ArenaWindow arenaWindow;
         int count = 0;
 
@@ -81,6 +83,7 @@ namespace Purpose
             //Initialize the Window Form
             arenaWindow = new ArenaWindow();
             base.Initialize();
+            //bottomPlatforms = new List<Platform>();
         }
 
         /// <summary>
@@ -96,14 +99,18 @@ namespace Purpose
             tempTexture = Content.Load<Texture2D>("pineapple");
             background = Content.Load<Texture2D>("background");
             trent = Content.Load<Texture2D>("trent");
+            platform = Content.Load<Texture2D>("PlatformTest");
+            bottomPlatforms = new List<Platform>();
+            for (int i = 0; i < GraphicsDevice.Viewport.Width/100; i++)
+            {
+                bottomPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 100, 100, 100), platform));
+            }
 
             // TRY TO FIND A BETTER WAY TO DO THIS
-            player = new Player("Dude", tempTexture);
+            player = new Player("Dude", tempTexture, new Rectangle(225, 225, tempTexture.Width, tempTexture.Height));
             player.X = 225;
             player.Y = 225;
             gameManager = new GameManager(player);
-
-            arenaWindow.ShowDialog();
         }
 
         /// <summary>
@@ -126,7 +133,6 @@ namespace Purpose
                 Exit();
 
             // TODO: Add your update logic here
-            float time = (float)gameTime.ElapsedGameTime.TotalSeconds;
             KeyboardState previouskbState = kbState;
             kbState = Keyboard.GetState();
 
@@ -136,7 +142,7 @@ namespace Purpose
                 case GameState.Menu:
                     // Temp code stuffs
                     MouseState ms = Mouse.GetState();
-                    gameManager.Move(kbState, previouskbState, time, ms, enemies);
+                    gameManager.Move(kbState, previouskbState, ms, enemies);
                     if (kbState.IsKeyDown(Keys.Enter))
                     {
                         gameState = GameState.Game;
@@ -187,21 +193,23 @@ namespace Purpose
 
             spriteBatch.Begin();
 
+            spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
+
+            foreach (Platform p in bottomPlatforms)
+            {
+                spriteBatch.Draw(p.Texture, p.Position, Color.White);
+            }
+
             // GameState drawing stuffs
             switch (gameState)
             {
                 case GameState.Menu:
-                    spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
-                    // Temp drawing stuffs
-                    spriteBatch.Draw(player.Texture, new Rectangle(player.X, player.Y, 445, 355), Color.White);
-                    break;
 
-                    while (count <= gameManager.jumpRectangles.Count)
-                    {
-                        spriteBatch.Draw(player.Texture, gameManager.jumpRectangles[count], Color.White);
-                        count++;
-                        InactiveSleepTime = new TimeSpan(0, 0, 1);
-                    }
+                    // Temp drawing stuffs
+
+                    spriteBatch.Draw(player.Texture, new Rectangle(player.X, player.Y, 445, 355), Color.White);
+
+                    break;
 
                 case GameState.Game:
                     break;
