@@ -31,20 +31,21 @@ namespace Purpose
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
+
         SpriteBatch spriteBatch;
         GameState gameState;
         KeyboardState kbState;
         Player player;
-        Texture2D tempTexture;
         Texture2D background;
         GameManager gameManager;
         List<Enemy> enemies;
         List<Platform> bottomPlatforms;
         Texture2D platform;
         ArenaWindow arenaWindow;
-        int count = 0;
 
-        // Temp stuffs
+        //temporary stuff
+        Texture2D tempTexture;
+        Texture2D tempCrouchTexture;
         Texture2D trent;
 
         public Game1()
@@ -96,21 +97,21 @@ namespace Purpose
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // Load in textures
+            //temporary textures
             tempTexture = Content.Load<Texture2D>("pineapple");
-            background = Content.Load<Texture2D>("background");
+            tempCrouchTexture = Content.Load<Texture2D>("smallerPineapple");
             trent = Content.Load<Texture2D>("trent");
+
+            background = Content.Load<Texture2D>("background");
             platform = Content.Load<Texture2D>("PlatformTest");
+
             bottomPlatforms = new List<Platform>();
             for (int i = 0; i < GraphicsDevice.Viewport.Width/100; i++)
             {
                 bottomPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 100, 100, 100), platform));
             }
 
-            // TRY TO FIND A BETTER WAY TO DO THIS
-            player = new Player("Dude", tempTexture, new Rectangle(225, 225, tempTexture.Width, tempTexture.Height));
-            player.X = 225;
-            player.Y = 225;
-            gameManager = new GameManager(player);
+            gameManager = new GameManager(new Player("Dude", tempTexture, tempCrouchTexture, new Rectangle(225, 225, tempTexture.Width, tempTexture.Height)), bottomPlatforms);
         }
 
         /// <summary>
@@ -207,7 +208,7 @@ namespace Purpose
 
                     // Temp drawing stuffs
 
-                    spriteBatch.Draw(player.Texture, new Rectangle(player.X, player.Y, 445, 355), Color.White);
+                    spriteBatch.Draw(gameManager.Player.Texture, new Rectangle(gameManager.Player.X, gameManager.Player.Y, 445, 355), Color.White);
 
                     break;
 

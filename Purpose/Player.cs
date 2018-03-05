@@ -43,10 +43,10 @@ namespace Purpose
         //constructor
 
         // Temporary constructor for debug purposes
-        public Player(String name, Texture2D texture, Rectangle position) : base(texture)
+        public Player(String name, Texture2D texture, Texture2D tempCrouchTexture, Rectangle position) : base(texture)
         {
-            rightCrouchSprite = texture;
-            leftCrouchSprite = texture;
+            rightCrouchSprite = tempCrouchTexture;
+            leftCrouchSprite = tempCrouchTexture;
             rightJumpSprite = texture;
             leftJumpSprite = texture;
             rightStandingSprite = texture;
@@ -63,7 +63,7 @@ namespace Purpose
             upgradePoints = 0;
             damage = 10;
             health = 100;
-            position = new Rectangle(0, graphicsDevice.Viewport.Height, 25, 10);
+            position = new Rectangle(0, graphicsDevice.Viewport.Height-100, 25, 10);
 
             texture = rightStandingSprite;
             this.leftCrouchSprite = leftCrouchSprite;
@@ -95,17 +95,21 @@ namespace Purpose
             position.Y -= 200;
         }
 
-        public void Crouch()
+        public bool Crouch()
         {
             if (texture != leftCrouchSprite || texture != rightCrouchSprite)
             {
                 position.Height /= 2;
+                //position.Y -= position.Height;
                 texture = rightCrouchSprite;
+                return true;
             }
             else
             {
                 texture = rightStandingSprite;
                 position.Height *= 2;
+                //position.Y += position.Height;
+                return false;
             }
         }
 

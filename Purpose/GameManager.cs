@@ -15,12 +15,19 @@ namespace Purpose
         private List<Enemy> enemies;
         private Player player;
         private List<Platform> platforms;
+        bool isCrouching;
+
+        //properties
+        public List<Enemy> Enemies { get { return enemies; } }
+        public Player Player { get { return player; } }
+        public List<Platform> Platforms { get { return platforms; } }
         
         //constructor
         public GameManager(Player player, List<Platform> platforms)
         {
             this.player = player;
             this.platforms = platforms;
+            isCrouching = false;
         }
         public GameManager(string playerName, Texture2D leftCrouchSprite, Texture2D rightCrouchSprite, Texture2D leftStandingSprite, 
             Texture2D rightStandingSprite, Texture2D rightJumpSprite, Texture2D leftJumpSprite, GraphicsDevice graphicsDevice, Random rng, int numberOfEnemies, Texture2D enemyTexture)
@@ -31,14 +38,10 @@ namespace Purpose
         }
 
         //methods
-        /// <summary>
-        /// Moves the player depending on keyboard input
-        /// </summary>
-        /// <param name="kbState">The current state of the keyboard</param>
-        /// <param name="time">A time parameter for physics</param>
         public void Move(KeyboardState kbState, KeyboardState previouskbState, MouseState ms, List<Enemy> enemies)
         {
             bool onPlatform = false;
+
             foreach (Platform p in platforms)
             {
                 if (player.Position.Intersects(p.Position))
@@ -52,15 +55,15 @@ namespace Purpose
                 player.Y += 5;
             }
 
-            if (kbState.IsKeyDown(Keys.A))
+            if (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left))
             {
                 player.X -= 8;
             }
-            if (kbState.IsKeyDown(Keys.D))
+            if (kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right)) 
             {
                 player.X += 8;
             }
-            if (kbState.IsKeyDown(Keys.Space) && !previouskbState.IsKeyDown(Keys.Space) && player.Y > 300)
+            if (kbState.IsKeyDown(Keys.Space) && !previouskbState.IsKeyDown(Keys.Space) && player.Y > 300 && !isCrouching)
             {
                 player.Jump();
             }
@@ -78,9 +81,11 @@ namespace Purpose
                     }
                 }
             }
-            if (kbState.IsKeyDown(Keys.S) && !kbState.IsKeyDown(Keys.Space))
+            if (kbState.IsKeyDown(Keys.S) || kbState.IsKeyDown(Keys.Down) 
+                && previouskbState.IsKeyDown(Keys.Down) || previouskbState.IsKeyDown(Keys.S) 
+                && !kbState.IsKeyDown(Keys.Space) && onPlatform)
             {
-                player.Crouch();
+                isCrouching = player.Crouch();
             }
             //if (ms.LeftButton == ButtonState.Pressed)
             //{
