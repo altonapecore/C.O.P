@@ -24,12 +24,13 @@ namespace Purpose
         public List<Platform> Platforms { get { return platforms; } }
         
         //constructor
-        public GameManager(Player player, List<Platform> platforms)
+        public GameManager(Player player, List<Platform> platforms, GraphicsDevice graphicsDevice)
         {
             this.player = player;
             this.platforms = platforms;
             isCrouching = false;
             enemies = new List<Enemy>();
+            this.graphicsDevice = graphicsDevice;
         }
         public GameManager(string playerName, Texture2D leftCrouchSprite, Texture2D rightCrouchSprite, Texture2D leftStandingSprite, 
             Texture2D rightStandingSprite, Texture2D rightJumpSprite, Texture2D leftJumpSprite, GraphicsDevice graphicsDevice, Random rng, int numberOfEnemies, Texture2D enemyTexture)
@@ -90,7 +91,7 @@ namespace Purpose
             {
                 isCrouching = player.Crouch();
             }
-            //if (ms.LeftButton == ButtonState.Pressed)s
+            //if (ms.LeftButton == ButtonState.Pressed)
             //{
             //    foreach (Enemy e in enemies)
             //    {
@@ -98,18 +99,18 @@ namespace Purpose
             //    }
             //}
 
-            //if (player.X < 0)
-            //{
-            //    player.X = 0;
-            //}
-            //if (player.X > graphicsDevice.Viewport.Width)
-            //{
-            //    player.X = graphicsDevice.Viewport.Width;
-            //}
-            //if (player.Y > graphicsDevice.Viewport.Height)
-            //{
-            //    player.Y = graphicsDevice.Viewport.Height;
-            //}
+            if (player.X <= -150)
+            {
+                player.X = -150;
+            }
+            if (player.X >= graphicsDevice.Viewport.Width-265)
+            {
+                player.X = graphicsDevice.Viewport.Width-265;
+            }
+            if (player.Y >= graphicsDevice.Viewport.Height-260)
+            {
+                player.Y = graphicsDevice.Viewport.Height-360;
+            }
         }
 
         public void FillEnemyList(Random rng, int numberOfEnemies, GraphicsDevice graphicsDevice, Texture2D enemyTexture)

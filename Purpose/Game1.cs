@@ -118,7 +118,7 @@ namespace Purpose
             }
 
             player = new Player("Dude", tempTexture, tempCrouchTexture, new Rectangle(225, 225, 445, 355));
-            gameManager = new GameManager(player, bottomPlatforms);
+            gameManager = new GameManager(player, bottomPlatforms, GraphicsDevice);
             gameManager.FillEnemyList(rng, 3, GraphicsDevice, trent);
         }
 
