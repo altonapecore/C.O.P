@@ -117,7 +117,7 @@ namespace Purpose
                 bottomPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 100, 100, 100), platform));
             }
 
-            player = new Player("Dude", tempTexture, tempCrouchTexture, new Rectangle(225, 225, tempTexture.Width, tempTexture.Height));
+            player = new Player("Dude", tempTexture, tempCrouchTexture, new Rectangle(225, 225, 445, 355));
             gameManager = new GameManager(player, bottomPlatforms);
             gameManager.FillEnemyList(rng, 3, GraphicsDevice, trent);
         }
@@ -236,7 +236,7 @@ namespace Purpose
                         spriteBatch.Draw(p.Texture, p.Position, Color.White);
                     }
                     // Player
-                    spriteBatch.Draw(gameManager.Player.Texture, new Rectangle(gameManager.Player.X, gameManager.Player.Y, 445, 355), Color.White);
+                    spriteBatch.Draw(gameManager.Player.Texture, new Rectangle(gameManager.Player.X, gameManager.Player.Y, player.Position.Width, player.Position.Height), Color.White);
                     // Enemies
                     for(int i = 0; i < gameManager.Enemies.Count; i++)
                     {

@@ -100,24 +100,22 @@ namespace Purpose
 
         public bool Crouch()
         {
-            if (texture != leftCrouchSprite || texture != rightCrouchSprite)
+            if (texture != rightCrouchSprite)
             {
-                //position.Height /= 2;
+                Rectangle prevPosition = position;
+                position = new Rectangle(prevPosition.X, prevPosition.Y + prevPosition.Height/2, prevPosition.Width, prevPosition.Height/2);
                 texture = rightCrouchSprite;
-                int newHeight = rightCrouchSprite.Height;
-                position.Height = newHeight;
                 return true;
             }
             else
             {
+                Rectangle prevPosition = position;
+                position = new Rectangle(prevPosition.X, prevPosition.Y - prevPosition.Height, prevPosition.Width, prevPosition.Height*2);
                 texture = rightStandingSprite;
-                position.Height *= 2;
-                //position.Y += position.Height;
                 return false;
             }
         }
 
-        //use if kb.State == S
         public void GroundPound(List<Enemy> enemies)
         {
             Rectangle groundPoundArea = new Rectangle(position.X, (position.Y + position.Height), 100, 10);
