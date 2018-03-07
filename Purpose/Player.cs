@@ -100,16 +100,16 @@ namespace Purpose
         {
             if (texture != leftCrouchSprite || texture != rightCrouchSprite)
             {
-                position.Height /= 2;
-                //position.Y -= position.Height;
                 texture = rightCrouchSprite;
+                int newHeight = rightCrouchSprite.Height;
+                position.Height = newHeight;
                 return true;
             }
             else
             {
                 texture = rightStandingSprite;
-                position.Height *= 2;
-                //position.Y += position.Height;
+                int newHeight = RightStandingSprite.Height;
+                position.Height = newHeight;
                 return false;
             }
         }

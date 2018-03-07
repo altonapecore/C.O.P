@@ -101,7 +101,7 @@ namespace Purpose
             // Load in textures
             //temporary textures
             tempTexture = Content.Load<Texture2D>("pineapple");
-            tempCrouchTexture = Content.Load<Texture2D>("smallerPineapple");
+            tempCrouchTexture = Content.Load<Texture2D>("smallerPineapple(1)");
             trent = Content.Load<Texture2D>("trent");
             comicSans24 = Content.Load<SpriteFont>("ComicSans24");
 
