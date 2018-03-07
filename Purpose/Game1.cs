@@ -34,6 +34,7 @@ namespace Purpose
 
         SpriteBatch spriteBatch;
         GameState gameState;
+        Level currentLevel;
         KeyboardState kbState;
         Player player;
         Texture2D background;
@@ -42,12 +43,14 @@ namespace Purpose
         List<Platform> bottomPlatforms;
         Texture2D platform;
         ArenaWindow arenaWindow;
+        
 
         //temporary stuff
         Texture2D tempTexture;
         Texture2D tempCrouchTexture;
         Texture2D trent;
         SpriteFont comicSans24;
+        Random rng;
 
         public Game1()
         {
@@ -60,15 +63,7 @@ namespace Purpose
             graphics.PreferredBackBufferWidth = 1350;
 
             // Temp coding stuffs
-            for(int i = 0; i < 3; i++)
-            {
-                int x = 50;
-                int y = 50;
-                Rectangle rectangle = new Rectangle(x, y, 147, 147);
-                Enemy enemy = new Enemy(rectangle, trent, Level.One);
-                x += 87;
-                y += 87;
-            }
+            rng = new Random();
         }
 
         /// <summary>
@@ -81,8 +76,9 @@ namespace Purpose
         {
             // Make mouse visible
             this.IsMouseVisible = true;
-            // Initialize GameState
+            // Initialize GameState and level
             gameState = GameState.Menu;
+            currentLevel = Level.One;
             //Initialize the Window Form
             arenaWindow = new ArenaWindow();
             base.Initialize();
@@ -116,6 +112,7 @@ namespace Purpose
 
             player = new Player("Dude", tempTexture, tempCrouchTexture, new Rectangle(225, 225, tempTexture.Width, tempTexture.Height));
             gameManager = new GameManager(player, bottomPlatforms);
+            gameManager.FillEnemyList(rng, 3, GraphicsDevice, trent);
         }
 
         /// <summary>
@@ -154,6 +151,19 @@ namespace Purpose
                     break;
 
                 case GameState.Game:
+                    for(int i = 0; i < gameManager.Enemies.Count;i++)
+                    {
+                        if(gameManager.Enemies[i].X + 147 > GraphicsDevice.Viewport.Width)
+                        {
+                            gameManager.Enemies[i].X = 0;
+                        }
+                        if(gameManager.Enemies[i].Y + 147 > GraphicsDevice.Viewport.Width)
+                        {
+                            gameManager.Enemies[i].Y = 0;
+                        }
+                        gameManager.Enemies[i].X += 3;
+                        gameManager.Enemies[i].Y += 3;
+                    }
                     MouseState ms = Mouse.GetState();
                     gameManager.Move(kbState, previouskbState, ms, enemies);
                     if (kbState.IsKeyDown(Keys.P))
@@ -168,14 +178,14 @@ namespace Purpose
                     break;
 
                 case GameState.Pause:
-                    previouskbState = kbState;
+                    
                     PauseMenu pauseMenu = new PauseMenu();
                     pauseMenu.ShowDialog();
                     gameState = GameState.Game;
                     break;
 
                 case GameState.GameOver:
-
+                    
                     if (kbState.IsKeyDown(Keys.Enter))
                     {
                         gameState = GameState.Menu;
@@ -211,18 +221,27 @@ namespace Purpose
                     break;
 
                 case GameState.Game:
+                    // Background
                     spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
+                    // Platforms
                     foreach (Platform p in bottomPlatforms)
                     {
                         spriteBatch.Draw(p.Texture, p.Position, Color.White);
                     }
+                    // Player
                     spriteBatch.Draw(gameManager.Player.Texture, new Rectangle(gameManager.Player.X, gameManager.Player.Y, 445, 355), Color.White);
-                    break;
-
-                case GameState.Pause:
+                    // Enemies
+                    for(int i = 0; i < gameManager.Enemies.Count; i++)
+                    {
+                        spriteBatch.Draw(gameManager.Enemies[i].Texture, new Rectangle(gameManager.Enemies[i].X, gameManager.Enemies[i].Y, 147, 147), Color.White);
+                    }
                     break;
 
                 case GameState.GameOver:
+                    // Temp drawing stuffs
+                    spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
+                    spriteBatch.DrawString(comicSans24, "Press ENTER to go back to menu", new Vector2(GraphicsDevice.Viewport.X / 2, GraphicsDevice.Viewport.Y / 2),
+                        Color.Yellow);
                     break;
             }
 
