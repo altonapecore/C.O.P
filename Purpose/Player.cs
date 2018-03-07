@@ -54,6 +54,7 @@ namespace Purpose
             ugManager = new UpgradeManager();
             ugManager.DashUpgrade();
             this.position = position;
+            health = 10000;
         }
 
         public Player(string name, Texture2D leftCrouchSprite, Texture2D rightCrouchSprite, Texture2D leftStandingSprite, 

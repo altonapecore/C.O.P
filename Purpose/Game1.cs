@@ -47,6 +47,7 @@ namespace Purpose
         Texture2D tempTexture;
         Texture2D tempCrouchTexture;
         Texture2D trent;
+        SpriteFont comicSans24;
 
         public Game1()
         {
@@ -78,7 +79,8 @@ namespace Purpose
         /// </summary>
         protected override void Initialize()
         {
-
+            // Make mouse visible
+            this.IsMouseVisible = true;
             // Initialize GameState
             gameState = GameState.Menu;
             //Initialize the Window Form
@@ -101,6 +103,7 @@ namespace Purpose
             tempTexture = Content.Load<Texture2D>("pineapple");
             tempCrouchTexture = Content.Load<Texture2D>("smallerPineapple");
             trent = Content.Load<Texture2D>("trent");
+            comicSans24 = Content.Load<SpriteFont>("ComicSans24");
 
             background = Content.Load<Texture2D>("background");
             platform = Content.Load<Texture2D>("PlatformTest");
@@ -111,7 +114,8 @@ namespace Purpose
                 bottomPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 100, 100, 100), platform));
             }
 
-            gameManager = new GameManager(new Player("Dude", tempTexture, tempCrouchTexture, new Rectangle(225, 225, tempTexture.Width, tempTexture.Height)), bottomPlatforms);
+            player = new Player("Dude", tempTexture, tempCrouchTexture, new Rectangle(225, 225, tempTexture.Width, tempTexture.Height));
+            gameManager = new GameManager(player, bottomPlatforms);
         }
 
         /// <summary>
@@ -142,8 +146,7 @@ namespace Purpose
             {
                 case GameState.Menu:
                     // Temp code stuffs
-                    MouseState ms = Mouse.GetState();
-                    gameManager.Move(kbState, previouskbState, ms, enemies);
+                    
                     if (kbState.IsKeyDown(Keys.Enter))
                     {
                         gameState = GameState.Game;
@@ -151,7 +154,8 @@ namespace Purpose
                     break;
 
                 case GameState.Game:
-
+                    MouseState ms = Mouse.GetState();
+                    gameManager.Move(kbState, previouskbState, ms, enemies);
                     if (kbState.IsKeyDown(Keys.P))
                     {
                         gameState = GameState.Pause;
@@ -164,11 +168,10 @@ namespace Purpose
                     break;
 
                 case GameState.Pause:
-
-                    if (kbState.IsKeyDown(Keys.P))
-                    {
-                        gameState = GameState.Game;
-                    }
+                    previouskbState = kbState;
+                    PauseMenu pauseMenu = new PauseMenu();
+                    pauseMenu.ShowDialog();
+                    gameState = GameState.Game;
                     break;
 
                 case GameState.GameOver:
@@ -192,14 +195,9 @@ namespace Purpose
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            spriteBatch.Begin();
+            spriteBatch.Begin();           
 
-            spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
-
-            foreach (Platform p in bottomPlatforms)
-            {
-                spriteBatch.Draw(p.Texture, p.Position, Color.White);
-            }
+            
 
             // GameState drawing stuffs
             switch (gameState)
@@ -207,12 +205,18 @@ namespace Purpose
                 case GameState.Menu:
 
                     // Temp drawing stuffs
-
-                    spriteBatch.Draw(gameManager.Player.Texture, new Rectangle(gameManager.Player.X, gameManager.Player.Y, 445, 355), Color.White);
+                    spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
+                    spriteBatch.DrawString(comicSans24, "Press ENTER to play", new Vector2(GraphicsDevice.Viewport.X / 2, GraphicsDevice.Viewport.Y / 2), Color.Yellow);
 
                     break;
 
                 case GameState.Game:
+                    spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
+                    foreach (Platform p in bottomPlatforms)
+                    {
+                        spriteBatch.Draw(p.Texture, p.Position, Color.White);
+                    }
+                    spriteBatch.Draw(gameManager.Player.Texture, new Rectangle(gameManager.Player.X, gameManager.Player.Y, 445, 355), Color.White);
                     break;
 
                 case GameState.Pause:

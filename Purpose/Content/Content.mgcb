@@ -73,3 +73,10 @@
 /processorParam:TextureFormat=Color
 /build:pineapple.png
 
+#begin ComicSans24.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:ComicSans24.spritefont
+
