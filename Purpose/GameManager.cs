@@ -42,7 +42,7 @@ namespace Purpose
         }
 
         //methods
-        public void Move(KeyboardState kbState, KeyboardState previouskbState, MouseState ms, List<Enemy> enemies)
+        public void PlayerMove(KeyboardState kbState, KeyboardState previouskbState, MouseState ms, MouseState previousMs)
         {
             bool onPlatform = false;
 
@@ -91,6 +91,18 @@ namespace Purpose
             {
                 isCrouching = player.Crouch();
             }
+            // Player attack done here as well as enemy takeDamage
+            if (ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
+            {
+                for(int i = 0; i < enemies.Count; i++)
+                {
+                    enemies[i].TakeDamage(player.Attack(enemies[i].Position));
+                    if (enemies[i].IsDead)
+                    {
+                        enemies.RemoveAt(i);
+                    }
+                }
+            }
             //if (ms.LeftButton == ButtonState.Pressed)
             //{
             //    foreach (Enemy e in enemies)
@@ -117,9 +129,34 @@ namespace Purpose
         {
             for (int i = 0; i < numberOfEnemies; i++)
             {
-                enemies.Add(new Enemy(new Rectangle(rng.Next(0, graphicsDevice.Viewport.Width), rng.Next(0, graphicsDevice.Viewport.Height), 5, 5), enemyTexture, Level.One));
+                Enemy enemy = new Enemy(new Rectangle(rng.Next(0, graphicsDevice.Viewport.Width), graphicsDevice.Viewport.Height - 450, 147, 147), enemyTexture, Level.One);
+                enemies.Add(enemy);
+
+                
             }
+
         }
 
+        public void EnemyMove()
+        {
+            // On platform and gravity code
+            bool onPlatform = false;
+            foreach (Enemy e in enemies)
+
+            {
+                foreach (Platform p in platforms)
+                {
+                    if (e.Position.Intersects(p.Position))
+                    {
+                        onPlatform = true;
+                        break;
+                    }
+                }
+                if (!onPlatform)
+                {
+                    e.Y += 5;
+                }
+            }
+        }
     }
 }

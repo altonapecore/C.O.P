@@ -57,6 +57,7 @@ namespace Purpose
             ugManager.DashUpgrade();
             this.position = position;
             health = 10000;
+            damage = 10;
         }
 
         public Player(string name, Texture2D leftCrouchSprite, Texture2D rightCrouchSprite, Texture2D leftStandingSprite, 

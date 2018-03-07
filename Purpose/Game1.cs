@@ -36,6 +36,7 @@ namespace Purpose
         GameState gameState;
         Level currentLevel;
         KeyboardState kbState;
+        MouseState ms;
         Player player;
         Texture2D background;
         GameManager gameManager;
@@ -158,21 +159,10 @@ namespace Purpose
                     break;
 
                 case GameState.Game:
-                    for(int i = 0; i < gameManager.Enemies.Count;i++)
-                    {
-                        if(gameManager.Enemies[i].X + 147 > GraphicsDevice.Viewport.Width)
-                        {
-                            gameManager.Enemies[i].X = 0;
-                        }
-                        if(gameManager.Enemies[i].Y + 147 > GraphicsDevice.Viewport.Width)
-                        {
-                            gameManager.Enemies[i].Y = 0;
-                        }
-                        gameManager.Enemies[i].X += 3;
-                        gameManager.Enemies[i].Y += 3;
-                    }
-                    MouseState ms = Mouse.GetState();
-                    gameManager.Move(kbState, previouskbState, ms, enemies);
+                    MouseState previousMs = ms;
+                    ms = Mouse.GetState();
+                    gameManager.PlayerMove(kbState, previouskbState, ms, previousMs);
+                    gameManager.EnemyMove();
                     if (kbState.IsKeyDown(Keys.P))
                     {
                         gameState = GameState.Pause;
@@ -240,7 +230,10 @@ namespace Purpose
                     // Enemies
                     for(int i = 0; i < gameManager.Enemies.Count; i++)
                     {
-                        spriteBatch.Draw(gameManager.Enemies[i].Texture, new Rectangle(gameManager.Enemies[i].X, gameManager.Enemies[i].Y, 147, 147), Color.White);
+                        if (!gameManager.Enemies[i].IsDead)
+                        {
+                            spriteBatch.Draw(gameManager.Enemies[i].Texture, new Rectangle(gameManager.Enemies[i].X, gameManager.Enemies[i].Y, 147, 147), Color.White);
+                        }
                     }
                     break;
 
