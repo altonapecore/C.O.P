@@ -34,6 +34,7 @@ namespace Purpose
 
         SpriteBatch spriteBatch;
         GameState gameState;
+        Level currentLevel;
         KeyboardState kbState;
         Player player;
         Texture2D background;
@@ -42,6 +43,7 @@ namespace Purpose
         List<Platform> bottomPlatforms;
         Texture2D platform;
         ArenaWindow arenaWindow;
+        
 
         //Actual Player Textures
         Texture2D rightStandingSprite;
@@ -51,6 +53,8 @@ namespace Purpose
         Texture2D tempTexture;
         Texture2D tempCrouchTexture;
         Texture2D trent;
+        SpriteFont comicSans24;
+        Random rng;
 
         public Game1()
         {
@@ -63,15 +67,7 @@ namespace Purpose
             graphics.PreferredBackBufferWidth = 1350;
 
             // Temp coding stuffs
-            for(int i = 0; i < 3; i++)
-            {
-                int x = 50;
-                int y = 50;
-                Rectangle rectangle = new Rectangle(x, y, 147, 147);
-                Enemy enemy = new Enemy(rectangle, trent, Level.One);
-                x += 87;
-                y += 87;
-            }
+            rng = new Random();
         }
 
         /// <summary>
@@ -82,9 +78,11 @@ namespace Purpose
         /// </summary>
         protected override void Initialize()
         {
-
-            // Initialize GameState
+            // Make mouse visible
+            this.IsMouseVisible = true;
+            // Initialize GameState and level
             gameState = GameState.Menu;
+            currentLevel = Level.One;
             //Initialize the Window Form
             arenaWindow = new ArenaWindow();
             base.Initialize();
@@ -103,8 +101,9 @@ namespace Purpose
             // Load in textures
             //temporary textures
             tempTexture = Content.Load<Texture2D>("pineapple");
-            tempCrouchTexture = Content.Load<Texture2D>("smallerPineapple");
+            tempCrouchTexture = Content.Load<Texture2D>("smallerPineapple(1)");
             trent = Content.Load<Texture2D>("trent");
+            comicSans24 = Content.Load<SpriteFont>("ComicSans24");
 
             rightStandingSprite = Content.Load<Texture2D>("RightStandingSprite");
             rightRunningSprite = Content.Load<Texture2D>("RightRunningSprite");
@@ -118,7 +117,9 @@ namespace Purpose
                 bottomPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 100, 100, 100), platform));
             }
 
-            gameManager = new GameManager(new Player("Dude", tempTexture, tempCrouchTexture, new Rectangle(225, 225, tempTexture.Width, tempTexture.Height)), bottomPlatforms);
+            player = new Player("Dude", tempTexture, tempCrouchTexture, new Rectangle(225, 225, tempTexture.Width, tempTexture.Height));
+            gameManager = new GameManager(player, bottomPlatforms);
+            gameManager.FillEnemyList(rng, 3, GraphicsDevice, trent);
         }
 
         /// <summary>
@@ -149,8 +150,7 @@ namespace Purpose
             {
                 case GameState.Menu:
                     // Temp code stuffs
-                    MouseState ms = Mouse.GetState();
-                    gameManager.Move(kbState, previouskbState, ms, enemies);
+                    
                     if (kbState.IsKeyDown(Keys.Enter))
                     {
                         gameState = GameState.Game;
@@ -158,7 +158,21 @@ namespace Purpose
                     break;
 
                 case GameState.Game:
-
+                    for(int i = 0; i < gameManager.Enemies.Count;i++)
+                    {
+                        if(gameManager.Enemies[i].X + 147 > GraphicsDevice.Viewport.Width)
+                        {
+                            gameManager.Enemies[i].X = 0;
+                        }
+                        if(gameManager.Enemies[i].Y + 147 > GraphicsDevice.Viewport.Width)
+                        {
+                            gameManager.Enemies[i].Y = 0;
+                        }
+                        gameManager.Enemies[i].X += 3;
+                        gameManager.Enemies[i].Y += 3;
+                    }
+                    MouseState ms = Mouse.GetState();
+                    gameManager.Move(kbState, previouskbState, ms, enemies);
                     if (kbState.IsKeyDown(Keys.P))
                     {
                         gameState = GameState.Pause;
@@ -171,15 +185,14 @@ namespace Purpose
                     break;
 
                 case GameState.Pause:
-
-                    if (kbState.IsKeyDown(Keys.P))
-                    {
-                        gameState = GameState.Game;
-                    }
+                    
+                    PauseMenu pauseMenu = new PauseMenu();
+                    pauseMenu.ShowDialog();
+                    gameState = GameState.Game;
                     break;
 
                 case GameState.GameOver:
-
+                    
                     if (kbState.IsKeyDown(Keys.Enter))
                     {
                         gameState = GameState.Menu;
@@ -199,14 +212,9 @@ namespace Purpose
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            spriteBatch.Begin();
+            spriteBatch.Begin();           
 
-            spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
-
-            foreach (Platform p in bottomPlatforms)
-            {
-                spriteBatch.Draw(p.Texture, p.Position, Color.White);
-            }
+            
 
             // GameState drawing stuffs
             switch (gameState)
@@ -214,18 +222,33 @@ namespace Purpose
                 case GameState.Menu:
 
                     // Temp drawing stuffs
-
-                    spriteBatch.Draw(gameManager.Player.Texture, new Rectangle(gameManager.Player.X, gameManager.Player.Y, 445, 355), Color.White);
+                    spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
+                    spriteBatch.DrawString(comicSans24, "Press ENTER to play", new Vector2(GraphicsDevice.Viewport.X / 2, GraphicsDevice.Viewport.Y / 2), Color.Yellow);
 
                     break;
 
                 case GameState.Game:
-                    break;
-
-                case GameState.Pause:
+                    // Background
+                    spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
+                    // Platforms
+                    foreach (Platform p in bottomPlatforms)
+                    {
+                        spriteBatch.Draw(p.Texture, p.Position, Color.White);
+                    }
+                    // Player
+                    spriteBatch.Draw(gameManager.Player.Texture, new Rectangle(gameManager.Player.X, gameManager.Player.Y, 445, 355), Color.White);
+                    // Enemies
+                    for(int i = 0; i < gameManager.Enemies.Count; i++)
+                    {
+                        spriteBatch.Draw(gameManager.Enemies[i].Texture, new Rectangle(gameManager.Enemies[i].X, gameManager.Enemies[i].Y, 147, 147), Color.White);
+                    }
                     break;
 
                 case GameState.GameOver:
+                    // Temp drawing stuffs
+                    spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
+                    spriteBatch.DrawString(comicSans24, "Press ENTER to go back to menu", new Vector2(GraphicsDevice.Viewport.X / 2, GraphicsDevice.Viewport.Y / 2),
+                        Color.Yellow);
                     break;
             }
 

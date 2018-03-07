@@ -38,6 +38,7 @@ namespace Purpose
             damageTier = 1;
         }
 
+        // Methods
         public void DashUpgrade()
         {
             dashActive = true;
@@ -73,6 +74,5 @@ namespace Purpose
                 GroundUpgrade();
             }
         }
-        //methods
     }
 }

@@ -56,6 +56,7 @@ namespace Purpose
             ugManager = new UpgradeManager();
             ugManager.DashUpgrade();
             this.position = position;
+            health = 10000;
         }
 
         public Player(string name, Texture2D leftCrouchSprite, Texture2D rightCrouchSprite, Texture2D leftStandingSprite, 
@@ -103,12 +104,15 @@ namespace Purpose
             {
                 //position.Height /= 2;
                 texture = rightCrouchSprite;
+                int newHeight = rightCrouchSprite.Height;
+                position.Height = newHeight;
                 return true;
             }
             else
             {
                 texture = rightStandingSprite;
-                //position.Height *= 2;
+                position.Height *= 2;
+                //position.Y += position.Height;
                 return false;
             }
         }

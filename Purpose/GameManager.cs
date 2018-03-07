@@ -29,6 +29,7 @@ namespace Purpose
             this.player = player;
             this.platforms = platforms;
             isCrouching = false;
+            enemies = new List<Enemy>();
         }
         public GameManager(string playerName, Texture2D leftCrouchSprite, Texture2D rightCrouchSprite, Texture2D leftStandingSprite, 
             Texture2D rightStandingSprite, Texture2D rightJumpSprite, Texture2D leftJumpSprite, GraphicsDevice graphicsDevice, Random rng, int numberOfEnemies, Texture2D enemyTexture)

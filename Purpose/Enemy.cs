@@ -12,12 +12,18 @@ namespace Purpose
     {
         // Fields
         private bool ranged;
+        private bool isDead;
 
         // Properties
         public bool Ranged
         {
             get { return ranged; }
             set { ranged = value; }
+        }
+
+        public bool IsDead
+        {
+            get { return isDead; }
         }
 
         // Constructor
@@ -62,6 +68,11 @@ namespace Purpose
         public override void TakeDamage(int damage)
         {
             // Code for taking damage here
+            health -= damage;
+            if(health <= 0)
+            {
+                isDead = true;
+            }
         }
     }
 }
