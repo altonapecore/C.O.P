@@ -38,6 +38,9 @@ namespace Purpose
             {
                 ranged = false;
             }
+
+            this.position = position;
+            this.health = 50;
         }
 
         // Methods
@@ -74,5 +77,7 @@ namespace Purpose
                 isDead = true;
             }
         }
+
+        
     }
 }
