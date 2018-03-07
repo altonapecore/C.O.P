@@ -16,6 +16,7 @@ namespace Purpose
         private Player player;
         private List<Platform> platforms;
         bool isCrouching;
+        GraphicsDevice graphicsDevice;
 
         //properties
         public List<Enemy> Enemies { get { return enemies; } }
@@ -33,6 +34,7 @@ namespace Purpose
             Texture2D rightStandingSprite, Texture2D rightJumpSprite, Texture2D leftJumpSprite, GraphicsDevice graphicsDevice, Random rng, int numberOfEnemies, Texture2D enemyTexture)
         {
             enemies = new List<Enemy>();
+            this.graphicsDevice = graphicsDevice;
             FillEnemyList(rng, numberOfEnemies, graphicsDevice, enemyTexture);
             player = new Player(playerName, leftCrouchSprite, rightCrouchSprite, leftStandingSprite, rightStandingSprite, rightJumpSprite, leftJumpSprite, graphicsDevice);
         }
@@ -81,18 +83,31 @@ namespace Purpose
                     }
                 }
             }
-            if (kbState.IsKeyDown(Keys.S) || kbState.IsKeyDown(Keys.Down) 
-                && previouskbState.IsKeyDown(Keys.Down) || previouskbState.IsKeyDown(Keys.S) 
+            if (kbState.IsKeyDown(Keys.S) //|| kbState.IsKeyDown(Keys.Down) 
+                && previouskbState.IsKeyUp(Keys.S) //|| previouskbState.IsKeyUp(Keys.Down) 
                 && !kbState.IsKeyDown(Keys.Space) && onPlatform)
             {
                 isCrouching = player.Crouch();
             }
-            //if (ms.LeftButton == ButtonState.Pressed)
+            //if (ms.LeftButton == ButtonState.Pressed)s
             //{
             //    foreach (Enemy e in enemies)
             //    {
             //        e.TakeDamage(player.Attack(e.Position));
             //    }
+            //}
+
+            //if (player.X < 0)
+            //{
+            //    player.X = 0;
+            //}
+            //if (player.X > graphicsDevice.Viewport.Width)
+            //{
+            //    player.X = graphicsDevice.Viewport.Width;
+            //}
+            //if (player.Y > graphicsDevice.Viewport.Height)
+            //{
+            //    player.Y = graphicsDevice.Viewport.Height;
             //}
         }
 

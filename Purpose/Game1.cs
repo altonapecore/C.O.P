@@ -43,6 +43,10 @@ namespace Purpose
         Texture2D platform;
         ArenaWindow arenaWindow;
 
+        //Actual Player Textures
+        Texture2D rightStandingSprite;
+        Texture2D rightRunningSprite;
+
         //temporary stuff
         Texture2D tempTexture;
         Texture2D tempCrouchTexture;
@@ -101,6 +105,9 @@ namespace Purpose
             tempTexture = Content.Load<Texture2D>("pineapple");
             tempCrouchTexture = Content.Load<Texture2D>("smallerPineapple");
             trent = Content.Load<Texture2D>("trent");
+
+            rightStandingSprite = Content.Load<Texture2D>("RightStandingSprite");
+            rightRunningSprite = Content.Load<Texture2D>("RightRunningSprite");
 
             background = Content.Load<Texture2D>("background");
             platform = Content.Load<Texture2D>("PlatformTest");

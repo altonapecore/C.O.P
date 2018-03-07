@@ -20,6 +20,8 @@ namespace Purpose
         private Texture2D leftStandingSprite;
         private Texture2D rightJumpSprite;
         private Texture2D leftJumpSprite;
+        private Texture2D rightRunningSprite;
+        private Texture2D leftRunningSprite;
         private UpgradeManager ugManager;
 
         //properties
@@ -99,16 +101,14 @@ namespace Purpose
         {
             if (texture != leftCrouchSprite || texture != rightCrouchSprite)
             {
-                position.Height /= 2;
-                //position.Y -= position.Height;
+                //position.Height /= 2;
                 texture = rightCrouchSprite;
                 return true;
             }
             else
             {
                 texture = rightStandingSprite;
-                position.Height *= 2;
-                //position.Y += position.Height;
+                //position.Height *= 2;
                 return false;
             }
         }
