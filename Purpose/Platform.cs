@@ -8,9 +8,10 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Purpose
 {
-    class Platform : Item
+    class Platform : GameObject
     {
-        public Platform(Rectangle position, Texture2D texture) : base(position, texture)
+        // Constructor
+        public Platform(Rectangle position, Texture2D texture) : base(texture)
         {
             this.position = position;
             this.texture = texture;

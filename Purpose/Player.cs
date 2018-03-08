@@ -54,7 +54,7 @@ namespace Purpose
             rightStandingSprite = texture;
             leftStandingSprite = texture;
             ugManager = new UpgradeManager();
-            ugManager.DashUpgrade();
+
             this.position = position;
             health = 10000;
             damage = 10;
@@ -133,9 +133,9 @@ namespace Purpose
         }
 
         //only for debug purposes right now
-        public void Upgrade()
-        {
-            ugManager.DashUpgrade();
-        }
+        //public void Upgrade()
+        //{
+        //    
+        //}
     }
 }

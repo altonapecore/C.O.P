@@ -15,13 +15,26 @@ namespace Purpose
         private List<Enemy> enemies;
         private Player player;
         private List<Platform> platforms;
-        bool isCrouching;
-        GraphicsDevice graphicsDevice;
+        private bool isCrouching;
+        private GraphicsDevice graphicsDevice;
+        private int dashDistance;
 
         //properties
         public List<Enemy> Enemies { get { return enemies; } }
         public Player Player { get { return player; } }
         public List<Platform> Platforms { get { return platforms; } }
+        public bool IsCrouching
+        {
+            get { return isCrouching; }
+            set { isCrouching = value; }
+        }
+        public GraphicsDevice GraphicsDevice { get { return graphicsDevice; } }
+        public int DashDistance
+        {
+            get { return dashDistance; }
+            set { dashDistance = value; }
+        }
+
         
         //constructor
         public GameManager(Player player, List<Platform> platforms, GraphicsDevice graphicsDevice)
@@ -31,6 +44,7 @@ namespace Purpose
             isCrouching = false;
             enemies = new List<Enemy>();
             this.graphicsDevice = graphicsDevice;
+            dashDistance = 100;
         }
         public GameManager(string playerName, Texture2D leftCrouchSprite, Texture2D rightCrouchSprite, Texture2D leftStandingSprite, 
             Texture2D rightStandingSprite, Texture2D rightJumpSprite, Texture2D leftJumpSprite, GraphicsDevice graphicsDevice, Random rng, int numberOfEnemies, Texture2D enemyTexture)
@@ -38,7 +52,9 @@ namespace Purpose
             enemies = new List<Enemy>();
             this.graphicsDevice = graphicsDevice;
             FillEnemyList(rng, numberOfEnemies, graphicsDevice, enemyTexture);
-            player = new Player(playerName, leftCrouchSprite, rightCrouchSprite, leftStandingSprite, rightStandingSprite, rightJumpSprite, leftJumpSprite, graphicsDevice);
+            player = new Player(playerName, leftCrouchSprite, rightCrouchSprite, leftStandingSprite, rightStandingSprite, 
+                rightJumpSprite, leftJumpSprite, graphicsDevice);
+            dashDistance = 100;
         }
 
         //methods
@@ -77,11 +93,11 @@ namespace Purpose
                 {
                     if (player.Texture == player.RightStandingSprite || player.Texture == player.RightCrouchSprite)
                     {
-                        player.X += 100;
+                        player.X += dashDistance;
                     }
                     else if (player.Texture == player.LeftStandingSprite || player.Texture == player.LeftCrouchSprite)
                     {
-                        player.X -= 100;
+                        player.X -= dashDistance;
                     }
                 }
             }
@@ -103,13 +119,6 @@ namespace Purpose
                     }
                 }
             }
-            //if (ms.LeftButton == ButtonState.Pressed)
-            //{
-            //    foreach (Enemy e in enemies)
-            //    {
-            //        e.TakeDamage(player.Attack(e.Position));
-            //    }
-            //}
 
             if (player.X <= -150)
             {

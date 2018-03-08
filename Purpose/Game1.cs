@@ -230,10 +230,8 @@ namespace Purpose
                     // Enemies
                     for(int i = 0; i < gameManager.Enemies.Count; i++)
                     {
-                        if (!gameManager.Enemies[i].IsDead)
-                        {
-                            spriteBatch.Draw(gameManager.Enemies[i].Texture, new Rectangle(gameManager.Enemies[i].X, gameManager.Enemies[i].Y, 147, 147), Color.White);
-                        }
+
+                        spriteBatch.Draw(gameManager.Enemies[i].Texture, new Rectangle(gameManager.Enemies[i].X, gameManager.Enemies[i].Y, 147, 147), Color.White);
                     }
                     break;
 

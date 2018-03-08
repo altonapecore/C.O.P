@@ -39,15 +39,7 @@ namespace Purpose
         }
 
         // Methods
-        public void DashUpgrade()
-        {
-            dashActive = true;
-        }
-        public void GroundUpgrade()
-        {
-            groundPoundActive = true;
-        }
-        public void PassiveUpgrade(int passiveTier,int stamina, int staminaRegen, int health)
+        public void PassiveUpgrade(int stamina, int staminaRegen, int health)
         {
             if(passiveTier==1)
             {
@@ -63,7 +55,12 @@ namespace Purpose
             }
             passiveTier++;
         }
-        public void DamageUpgrade(int damageTier, int damage)
+        /// <summary>
+        /// Upgrades damage per tier. Once tier 6 is reached it unlocks groundPound
+        /// </summary>
+        /// <param name="damageTier">What level the tier is at</param>
+        /// <param name="damage">current player damage</param>
+        public void DamageUpgrade(int damage)
         {
             if (damageTier == 1 || damageTier == 2 || damageTier == 3 || damageTier == 4 || damageTier == 5)
             {
@@ -71,7 +68,18 @@ namespace Purpose
             }
             else if(damageTier==6)
             {
-                GroundUpgrade();
+                groundPoundActive = true;
+            }
+        }
+        public void StealthUpgrade(int dashDistance)
+        {
+            if(stealthTier == 1)
+            {
+                dashActive = true;
+            }
+            else if(stealthTier == 2 || stealthTier == 3 || stealthTier == 4 || stealthTier == 5)
+            {
+                dashDistance += 10;
             }
         }
     }
