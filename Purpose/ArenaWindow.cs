@@ -23,5 +23,10 @@ namespace Purpose
         {
             gameState = GameState.Game;
         }
+
+        private void StartButton_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
     }
 }
