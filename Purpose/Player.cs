@@ -154,11 +154,5 @@ namespace Purpose
                 }
             }
         }
-
-        //only for debug purposes right now
-        //public void Upgrade()
-        //{
-        //    
-        //}
     }
 }

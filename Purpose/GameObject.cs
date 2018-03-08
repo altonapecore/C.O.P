@@ -33,8 +33,6 @@ namespace Purpose
         {
             this.texture = texture;
         }
-
-        //methods
         
     }
 }

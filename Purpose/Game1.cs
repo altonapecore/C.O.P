@@ -105,19 +105,19 @@ namespace Purpose
             tempCrouchTexture = Content.Load<Texture2D>("smallerPineapple(1)");
             trent = Content.Load<Texture2D>("trent");
             comicSans24 = Content.Load<SpriteFont>("ComicSans24");
-
+            // Right facing sprite
             rightStandingSprite = Content.Load<Texture2D>("RightStandingSprite");
             rightRunningSprite = Content.Load<Texture2D>("RightRunningSprite");
 
             background = Content.Load<Texture2D>("background");
             platform = Content.Load<Texture2D>("PlatformTest");
-
+            // Makes platforms
             bottomPlatforms = new List<Platform>();
             for (int i = 0; i < GraphicsDevice.Viewport.Width/100; i++)
             {
                 bottomPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 100, 100, 100), platform));
             }
-
+            // Makes player, gameManager object and fills enemy list
             player = new Player("Dude", tempTexture, tempCrouchTexture, new Rectangle(225, 225, 445, 355));
             gameManager = new GameManager(player, bottomPlatforms, GraphicsDevice);
             gameManager.FillEnemyList(rng, 3, GraphicsDevice, trent);
@@ -159,6 +159,7 @@ namespace Purpose
                     break;
 
                 case GameState.Game:
+                    // Stuff for moving player and enemy, as well as player attack
                     MouseState previousMs = ms;
                     ms = Mouse.GetState();
                     gameManager.PlayerMove(kbState, previouskbState, ms, previousMs);
@@ -175,14 +176,14 @@ namespace Purpose
                     break;
 
                 case GameState.Pause:
-                    
+                    // Make a pauseMenu form and shows it
                     PauseMenu pauseMenu = new PauseMenu();
                     pauseMenu.ShowDialog();
                     gameState = GameState.Game;
                     break;
 
                 case GameState.GameOver:
-                    
+                    // Press enter to go back to menu
                     if (kbState.IsKeyDown(Keys.Enter))
                     {
                         gameState = GameState.Menu;
