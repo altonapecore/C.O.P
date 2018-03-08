@@ -37,6 +37,8 @@ namespace Purpose
 
         
         //constructor
+
+        //temporary constructor
         public GameManager(Player player, List<Platform> platforms, GraphicsDevice graphicsDevice)
         {
             this.player = player;
@@ -46,6 +48,8 @@ namespace Purpose
             this.graphicsDevice = graphicsDevice;
             dashDistance = 100;
         }
+
+        //final constructor for when sprites are finished
         public GameManager(string playerName, Texture2D leftCrouchSprite, Texture2D rightCrouchSprite, Texture2D leftStandingSprite, 
             Texture2D rightStandingSprite, Texture2D rightJumpSprite, Texture2D leftJumpSprite, GraphicsDevice graphicsDevice, Random rng, int numberOfEnemies, Texture2D enemyTexture)
         {
@@ -58,10 +62,19 @@ namespace Purpose
         }
 
         //methods
+        /// <summary>
+        /// Allows the player to move and activate abilities
+        /// </summary>
+        /// <param name="kbState">The current state of teh keyboard</param>
+        /// <param name="previouskbState">The previous state of the keyboard</param>
+        /// <param name="ms">The current mouse state</param>
+        /// <param name="previousMs">The previous mouse state</param>
         public void PlayerMove(KeyboardState kbState, KeyboardState previouskbState, MouseState ms, MouseState previousMs)
         {
+            //a boolean representing if the player is on the platform
             bool onPlatform = false;
 
+            //a loop to check if the player is on the platform
             foreach (Platform p in platforms)
             {
                 if (player.Position.Intersects(p.Position))
@@ -70,42 +83,43 @@ namespace Purpose
                     break;
                 }
             }
+            //if not, make them fall
             if (!onPlatform)
             {
                 player.Y += 5;
             }
 
-            if (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left))
+            //checking keyboard state to make the player move
+            if (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left)) //move to the left
             {
                 player.X -= 8;
             }
-            if (kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right)) 
+            if (kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right)) //move to the right
             {
                 player.X += 8;
             }
-            if (kbState.IsKeyDown(Keys.Space) && !previouskbState.IsKeyDown(Keys.Space) && player.Y > 300 && !isCrouching)
+            if (kbState.IsKeyDown(Keys.Space) && !previouskbState.IsKeyDown(Keys.Space) && player.Y > 300 && !isCrouching) //jump
             {
                 player.Jump();
             }
-            if (kbState.IsKeyDown(Keys.Q) && !previouskbState.IsKeyDown(Keys.Q) && !kbState.IsKeyDown(Keys.Space))
+            if (kbState.IsKeyDown(Keys.Q) && !previouskbState.IsKeyDown(Keys.Q) && !kbState.IsKeyDown(Keys.Space)) //dash
             {
                 if (player.UgManager.DashActive)
                 {
-                    if (player.Texture == player.RightStandingSprite || player.Texture == player.RightCrouchSprite)
+                    if (player.Texture == player.RightStandingSprite || player.Texture == player.RightCrouchSprite) //dash to the right
                     {
                         player.X += dashDistance;
                     }
-                    else if (player.Texture == player.LeftStandingSprite || player.Texture == player.LeftCrouchSprite)
+                    else if (player.Texture == player.LeftStandingSprite || player.Texture == player.LeftCrouchSprite) //dash to the left
                     {
                         player.X -= dashDistance;
                     }
                 }
             }
-            if (kbState.IsKeyDown(Keys.S) //|| kbState.IsKeyDown(Keys.Down) 
-                && previouskbState.IsKeyUp(Keys.S) //|| previouskbState.IsKeyUp(Keys.Down) 
+            if (kbState.IsKeyDown(Keys.S) && previouskbState.IsKeyUp(Keys.S) //crouch
                 && !kbState.IsKeyDown(Keys.Space) && onPlatform)
             {
-                isCrouching = player.Crouch();
+                isCrouching = player.Crouch(); //sets the isCrouching bool based on the Crouch() method
             }
             // Player attack done here as well as enemy takeDamage
             if (ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
@@ -120,6 +134,7 @@ namespace Purpose
                 }
             }
 
+            //limiting player movement in both x directions and lower y direction
             if (player.X <= -150)
             {
                 player.X = -150;
@@ -134,24 +149,30 @@ namespace Purpose
             }
         }
 
+        /// <summary>
+        /// Fills the List of enemies
+        /// </summary>
+        /// <param name="rng">A random variable to help set the enemies' positions</param>
+        /// <param name="numberOfEnemies">The number of enemies to spawn in</param>
+        /// <param name="graphicsDevice">The graphics device to help limit the enemies' spawn positions</param>
+        /// <param name="enemyTexture">The texture of the enemies</param>
         public void FillEnemyList(Random rng, int numberOfEnemies, GraphicsDevice graphicsDevice, Texture2D enemyTexture)
         {
             for (int i = 0; i < numberOfEnemies; i++)
             {
                 Enemy enemy = new Enemy(new Rectangle(rng.Next(0, graphicsDevice.Viewport.Width), graphicsDevice.Viewport.Height - 450, 147, 147), enemyTexture, Level.One);
                 enemies.Add(enemy);
-
-                
             }
-
         }
 
+        /// <summary>
+        /// Allows the enemy to move
+        /// </summary>
         public void EnemyMove()
         {
             // On platform and gravity code
             bool onPlatform = false;
             foreach (Enemy e in enemies)
-
             {
                 foreach (Platform p in platforms)
                 {
