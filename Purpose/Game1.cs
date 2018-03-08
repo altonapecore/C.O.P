@@ -57,6 +57,11 @@ namespace Purpose
         SpriteFont comicSans24;
         Random rng;
 
+        //Temporary BackGround
+        Texture2D whiteBack;
+        Texture2D rustyBack;
+        Texture2D metalBack;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -105,6 +110,9 @@ namespace Purpose
             tempCrouchTexture = Content.Load<Texture2D>("smallerPineapple(1)");
             trent = Content.Load<Texture2D>("trent");
             comicSans24 = Content.Load<SpriteFont>("ComicSans24");
+            
+            //temporary background
+
             // Right facing sprite
             rightStandingSprite = Content.Load<Texture2D>("RightStandingSprite");
             rightRunningSprite = Content.Load<Texture2D>("RightRunningSprite");
@@ -151,11 +159,13 @@ namespace Purpose
             {
                 case GameState.Menu:
                     // Temp code stuffs
-                    
-                    if (kbState.IsKeyDown(Keys.Enter))
-                    {
-                        gameState = GameState.Game;
-                    }
+
+                    //if (kbState.IsKeyDown(Keys.Enter))
+                    //{
+                    //    gameState = GameState.Game;
+                    //}
+
+                    arenaWindow.ShowDialog();
                     break;
 
                 case GameState.Game:
