@@ -21,8 +21,9 @@ namespace Purpose
         Four
     }
 
-    enum GameState
+    public enum GameState
     {
+        LevelCreation,
         Menu,
         Game,
         Pause,
@@ -44,7 +45,6 @@ namespace Purpose
         List<Platform> bottomPlatforms;
         Texture2D platform;
         ArenaWindow arenaWindow;
-        
 
         //Actual Player Textures
         Texture2D rightStandingSprite;
@@ -82,10 +82,10 @@ namespace Purpose
             // Make mouse visible
             this.IsMouseVisible = true;
             // Initialize GameState and level
-            gameState = GameState.Menu;
+            gameState = GameState.LevelCreation;
             currentLevel = Level.One;
             //Initialize the Window Form
-            arenaWindow = new ArenaWindow();
+            arenaWindow = new ArenaWindow(gameState);
             base.Initialize();
             //bottomPlatforms = new List<Platform>();
         }
@@ -149,6 +149,10 @@ namespace Purpose
             // GameState finite state machine
             switch (gameState)
             {
+                case GameState.LevelCreation:
+                    arenaWindow.Show();
+                    break;
+
                 case GameState.Menu:
                     // Temp code stuffs
                     

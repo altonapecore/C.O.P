@@ -12,9 +12,16 @@ namespace Purpose
 {
     public partial class ArenaWindow : Form
     {
-        public ArenaWindow()
+        private GameState gameState;
+        public ArenaWindow(GameState gameState)
         {
             InitializeComponent();
+            this.gameState = gameState;
+        }
+
+        private void StartButton_Click(object sender, EventArgs e)
+        {
+            gameState = GameState.Game;
         }
     }
 }
