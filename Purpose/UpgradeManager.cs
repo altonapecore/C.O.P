@@ -31,11 +31,11 @@ namespace Purpose
         //constructor
         public UpgradeManager()
         {
-            dashActive = false;
+            dashActive = true;
             groundPoundActive = false;
-            passiveTier = 1;
-            stealthTier = 1;
-            damageTier = 1;
+            passiveTier = 0;
+            stealthTier = 0;
+            damageTier = 0;
         }
 
         // Methods
@@ -54,7 +54,6 @@ namespace Purpose
             {
                 stamina += 100;
             }
-            passiveTier++;
         }
         public void DamageUpgrade(int damage)
         {
@@ -71,11 +70,7 @@ namespace Purpose
         public void StealthUpgrade(int dashDistance)
         {
             ++stealthTier;
-            if(stealthTier == 1)
-            {
-                dashActive = true;
-            }
-            else if(stealthTier == 2 || stealthTier == 3 || stealthTier == 4 || stealthTier == 5)
+            if(stealthTier == 1 || stealthTier == 2 || stealthTier == 3 || stealthTier == 4 || stealthTier == 5)
             {
                 dashDistance += 10;
             }
