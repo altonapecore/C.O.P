@@ -13,7 +13,7 @@ namespace Purpose
     /// Vansh is here
     /// </summary>
 
-    enum Level
+    public enum Level
     {
         One,
         Two,
@@ -21,7 +21,7 @@ namespace Purpose
         Four
     }
 
-    enum GameState
+    public enum GameState
     {
         Menu,
         Game,
@@ -30,37 +30,37 @@ namespace Purpose
     }
     public class Game1 : Game
     {
-        GraphicsDeviceManager graphics;
-
-        SpriteBatch spriteBatch;
-        GameState gameState;
-        Level currentLevel;
-        KeyboardState kbState;
-        MouseState ms;
-        Player player;
-        Texture2D background;
-        GameManager gameManager;
-        List<Enemy> enemies;
-        List<Platform> bottomPlatforms;
-        Texture2D platform;
-        ArenaWindow arenaWindow;
+        //Fields 
+        private GraphicsDeviceManager graphics;
+        private SpriteBatch spriteBatch;
+        public GameState gameState;
+        private Level currentLevel;
+        private KeyboardState kbState;
+        private MouseState ms;
+        private Player player;
+        private Texture2D background;
+        private GameManager gameManager;
+        private List<Enemy> enemies;
+        private List<Platform> bottomPlatforms;
+        private Texture2D platform;
+        private ArenaWindow arenaWindow;
         
 
         //Actual Player Textures
-        Texture2D rightStandingSprite;
-        Texture2D rightRunningSprite;
+        private Texture2D rightStandingSprite;
+        private Texture2D rightRunningSprite;
 
         //temporary stuff
-        Texture2D tempTexture;
-        Texture2D tempCrouchTexture;
-        Texture2D trent;
-        SpriteFont comicSans24;
-        Random rng;
+        private Texture2D tempTexture;
+        private Texture2D tempCrouchTexture;
+        private Texture2D trent;
+        private SpriteFont comicSans24;
+        private Random rng;
 
         //Temporary BackGround
-        Texture2D whiteBack;
-        Texture2D rustyBack;
-        Texture2D metalBack;
+        private Texture2D whiteBack;
+        private Texture2D rustyBack;
+        private Texture2D metalBack;
 
         public Game1()
         {
@@ -110,8 +110,11 @@ namespace Purpose
             tempCrouchTexture = Content.Load<Texture2D>("smallerPineapple(1)");
             trent = Content.Load<Texture2D>("trent");
             comicSans24 = Content.Load<SpriteFont>("ComicSans24");
-            
+
             //temporary background
+            whiteBack = Content.Load<Texture2D>("whiteback");
+            metalBack = Content.Load<Texture2D>("metalback");
+            rustyBack = Content.Load<Texture2D>("rustyback");
 
             // Right facing sprite
             rightStandingSprite = Content.Load<Texture2D>("RightStandingSprite");
@@ -119,6 +122,7 @@ namespace Purpose
 
             background = Content.Load<Texture2D>("background");
             platform = Content.Load<Texture2D>("PlatformTest");
+
             // Makes platforms
             bottomPlatforms = new List<Platform>();
             for (int i = 0; i < GraphicsDevice.Viewport.Width/100; i++)

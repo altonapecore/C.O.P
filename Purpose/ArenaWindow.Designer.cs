@@ -38,7 +38,7 @@
             this.WhiteBackground = new System.Windows.Forms.RadioButton();
             this.BackgroundLabel = new System.Windows.Forms.Label();
             this.MetalBackground = new System.Windows.Forms.RadioButton();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
+            this.RustyBackground = new System.Windows.Forms.RadioButton();
             this.EnemyLabel = new System.Windows.Forms.Label();
             this.StartButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.MeleeIncrement)).BeginInit();
@@ -57,6 +57,7 @@
             this.MeleeIncrement.Name = "MeleeIncrement";
             this.MeleeIncrement.Size = new System.Drawing.Size(43, 20);
             this.MeleeIncrement.TabIndex = 0;
+            this.MeleeIncrement.ValueChanged += new System.EventHandler(this.MeleeIncrement_ValueChanged);
             // 
             // EditorLabel
             // 
@@ -100,6 +101,7 @@
             this.RangedIncrement.Name = "RangedIncrement";
             this.RangedIncrement.Size = new System.Drawing.Size(43, 20);
             this.RangedIncrement.TabIndex = 4;
+            this.RangedIncrement.ValueChanged += new System.EventHandler(this.RangedIncrement_ValueChanged);
             // 
             // label1
             // 
@@ -132,6 +134,7 @@
             0,
             0,
             0});
+            this.DifficultyIncrement.ValueChanged += new System.EventHandler(this.DifficultyIncrement_ValueChanged);
             // 
             // WhiteBackground
             // 
@@ -144,6 +147,7 @@
             this.WhiteBackground.TabStop = true;
             this.WhiteBackground.Text = "White";
             this.WhiteBackground.UseVisualStyleBackColor = true;
+            this.WhiteBackground.CheckedChanged += new System.EventHandler(this.WhiteBackground_CheckedChanged);
             // 
             // BackgroundLabel
             // 
@@ -166,18 +170,20 @@
             this.MetalBackground.TabStop = true;
             this.MetalBackground.Text = "Metal";
             this.MetalBackground.UseVisualStyleBackColor = true;
+            this.MetalBackground.CheckedChanged += new System.EventHandler(this.MetalBackground_CheckedChanged);
             // 
-            // radioButton1
+            // RustyBackground
             // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F);
-            this.radioButton1.Location = new System.Drawing.Point(17, 317);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(75, 28);
-            this.radioButton1.TabIndex = 10;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "\"S***\"";
-            this.radioButton1.UseVisualStyleBackColor = true;
+            this.RustyBackground.AutoSize = true;
+            this.RustyBackground.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F);
+            this.RustyBackground.Location = new System.Drawing.Point(17, 317);
+            this.RustyBackground.Name = "RustyBackground";
+            this.RustyBackground.Size = new System.Drawing.Size(65, 28);
+            this.RustyBackground.TabIndex = 10;
+            this.RustyBackground.TabStop = true;
+            this.RustyBackground.Text = "Rust";
+            this.RustyBackground.UseVisualStyleBackColor = true;
+            this.RustyBackground.CheckedChanged += new System.EventHandler(this.RustyBackground_CheckedChanged);
             // 
             // EnemyLabel
             // 
@@ -207,7 +213,7 @@
             this.ClientSize = new System.Drawing.Size(984, 561);
             this.Controls.Add(this.StartButton);
             this.Controls.Add(this.EnemyLabel);
-            this.Controls.Add(this.radioButton1);
+            this.Controls.Add(this.RustyBackground);
             this.Controls.Add(this.MetalBackground);
             this.Controls.Add(this.BackgroundLabel);
             this.Controls.Add(this.WhiteBackground);
@@ -240,7 +246,7 @@
         private System.Windows.Forms.RadioButton WhiteBackground;
         private System.Windows.Forms.Label BackgroundLabel;
         private System.Windows.Forms.RadioButton MetalBackground;
-        private System.Windows.Forms.RadioButton radioButton1;
+        private System.Windows.Forms.RadioButton RustyBackground;
         private System.Windows.Forms.Label EnemyLabel;
         private System.Windows.Forms.Button StartButton;
     }
