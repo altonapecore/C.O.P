@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework;
 
 namespace Purpose
 {
-    class GameManager
+    public class GameManager
     {
         //fields
         private List<Enemy> enemies;
@@ -18,6 +18,7 @@ namespace Purpose
         private bool isCrouching;
         private GraphicsDevice graphicsDevice;
         private int dashDistance;
+        private GameState gameState;
 
         //properties
         public List<Enemy> Enemies { get { return enemies; } }
@@ -33,6 +34,11 @@ namespace Purpose
         {
             get { return dashDistance; }
             set { dashDistance = value; }
+        }
+        public GameState GameState
+        {
+            get { return gameState; }
+            set { gameState = value; }
         }
 
         

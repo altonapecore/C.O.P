@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Purpose
 {
-    class UpgradeManager
+    public class UpgradeManager
     {
         //fields
         private bool dashActive;

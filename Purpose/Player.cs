@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Purpose
 {
-    class Player : Character
+    public class Player : Character
     {
         //fields
         private int kills;

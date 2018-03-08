@@ -12,14 +12,18 @@ namespace Purpose
 {
     public partial class ArenaWindow : Form
     {
-        public ArenaWindow()
+        private GameManager gameManager;
+
+        public ArenaWindow(GameManager gameManager)
         {
             InitializeComponent();
+            this.gameManager = gameManager;
         }
 
         //When User presses Start the window closes and goes to the Game
         private void StartButton_Click(object sender, EventArgs e)
         {
+            gameManager.GameState = GameState.Game;
             Close();
         }
 
