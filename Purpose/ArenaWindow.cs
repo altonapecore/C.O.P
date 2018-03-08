@@ -12,20 +12,17 @@ namespace Purpose
 {
     public partial class ArenaWindow : Form
     {
-        private GameState gameState;
-        public ArenaWindow(GameState gameState)
+        private GameManager gameManager;
+
+        public ArenaWindow(GameManager gameManager)
         {
             InitializeComponent();
-            this.gameState = gameState;
+            this.gameManager = gameManager;
         }
 
         private void StartButton_Click(object sender, EventArgs e)
         {
-            gameState = GameState.Game;
-        }
-
-        private void StartButton_Click(object sender, EventArgs e)
-        {
+            gameManager.GameState = GameState.Game;
             Close();
         }
     }

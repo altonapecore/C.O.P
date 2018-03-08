@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Purpose
 {
-    class GameObject
+    public class GameObject
     {
         //fields
         protected Rectangle position;

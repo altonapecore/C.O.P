@@ -13,7 +13,7 @@ namespace Purpose
     /// Vansh is here
     /// </summary>
 
-    enum Level
+    public enum Level
     {
         One,
         Two,
@@ -34,7 +34,7 @@ namespace Purpose
         GraphicsDeviceManager graphics;
 
         SpriteBatch spriteBatch;
-        GameState gameState;
+        //public GameState gameState;
         Level currentLevel;
         KeyboardState kbState;
         MouseState ms;
@@ -87,10 +87,8 @@ namespace Purpose
             // Make mouse visible
             this.IsMouseVisible = true;
             // Initialize GameState and level
-            gameState = GameState.LevelCreation;
             currentLevel = Level.One;
             //Initialize the Window Form
-            arenaWindow = new ArenaWindow(gameState);
             base.Initialize();
             //bottomPlatforms = new List<Platform>();
         }
@@ -129,6 +127,8 @@ namespace Purpose
             player = new Player("Dude", tempTexture, tempCrouchTexture, new Rectangle(225, 225, 445, 355));
             gameManager = new GameManager(player, bottomPlatforms, GraphicsDevice);
             gameManager.FillEnemyList(rng, 3, GraphicsDevice, trent);
+            gameManager.GameState = GameState.LevelCreation;
+            arenaWindow = new ArenaWindow(gameManager);
         }
 
         /// <summary>
@@ -155,10 +155,10 @@ namespace Purpose
             kbState = Keyboard.GetState();
 
             // GameState finite state machine
-            switch (gameState)
+            switch (gameManager.GameState)
             {
                 case GameState.LevelCreation:
-                    arenaWindow.Show();
+                    arenaWindow.ShowDialog();
                     break;
 
                 case GameState.Menu:
@@ -169,7 +169,7 @@ namespace Purpose
                     //    gameState = GameState.Game;
                     //}
 
-                    arenaWindow.ShowDialog();
+                    //arenaWindow.ShowDialog();
                     break;
 
                 case GameState.Game:
@@ -180,12 +180,12 @@ namespace Purpose
                     gameManager.EnemyMove();
                     if (kbState.IsKeyDown(Keys.P))
                     {
-                        gameState = GameState.Pause;
+                        gameManager.GameState = GameState.Pause;
                     }
 
                     if(player.Health <= 0)
                     {
-                        gameState = GameState.GameOver;
+                        gameManager.GameState = GameState.GameOver;
                     }
                     break;
 
@@ -193,14 +193,14 @@ namespace Purpose
                     // Make a pauseMenu form and shows it
                     PauseMenu pauseMenu = new PauseMenu();
                     pauseMenu.ShowDialog();
-                    gameState = GameState.Game;
+                    gameManager.GameState = GameState.Game;
                     break;
 
                 case GameState.GameOver:
                     // Press enter to go back to menu
                     if (kbState.IsKeyDown(Keys.Enter))
                     {
-                        gameState = GameState.Menu;
+                        gameManager.GameState = GameState.Menu;
                     }
                     break;
             }
@@ -222,8 +222,11 @@ namespace Purpose
             
 
             // GameState drawing stuffs
-            switch (gameState)
+            switch (gameManager.GameState)
             {
+                case GameState.LevelCreation:
+                    break;
+
                 case GameState.Menu:
 
                     // Temp drawing stuffs

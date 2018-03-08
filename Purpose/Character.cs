@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Purpose
 {
-    abstract class Character : GameObject
+    public abstract class Character : GameObject
     {
         //fields
         protected int health;

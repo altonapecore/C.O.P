@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Purpose
 {
-    class Enemy : Character
+    public class Enemy : Character
     {
         // Fields
         private bool ranged;
