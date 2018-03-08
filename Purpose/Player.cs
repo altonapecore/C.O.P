@@ -33,6 +33,7 @@ namespace Purpose
 
         public UpgradeManager UgManager { get { return ugManager; } }
 
+        //sprite properties
         public Texture2D RightCrouchSprite { get { return rightCrouchSprite; } }
         public Texture2D LeftCrouchSprite { get { return leftCrouchSprite; } }
         public Texture2D RightStandingSprite { get { return rightStandingSprite; } }
@@ -42,7 +43,7 @@ namespace Purpose
 
 
 
-        //constructor
+        //constructors
 
         // Temporary constructor for debug purposes
         public Player(String name, Texture2D texture, Texture2D tempCrouchTexture, Rectangle position) : base(texture)
@@ -60,6 +61,7 @@ namespace Purpose
             damage = 10;
         }
 
+        //finished constructor for when the sprites are finished
         public Player(string name, Texture2D leftCrouchSprite, Texture2D rightCrouchSprite, Texture2D leftStandingSprite, 
             Texture2D rightStandingSprite, Texture2D rightJumpSprite, Texture2D leftJumpSprite, GraphicsDevice graphicsDevice) : base(rightStandingSprite)
         {
@@ -80,27 +82,44 @@ namespace Purpose
         }
 
         //methods
-        public override int Attack(Rectangle rectangle)
+        /// <summary>
+        /// Allows the player to attack by checking if the player is intersecting with another character's position
+        /// </summary>
+        /// <param name="enemyPosition">The position of the enemy</param>
+        /// <returns>Returns an integer value for the damage done</returns>
+        public override int Attack(Rectangle enemyPosition)
         {
-            if (position.Intersects(rectangle))
+            if (position.Intersects(enemyPosition))
             {
                 return damage;
             }
             return 0;
         }
 
+        /// <summary>
+        /// Allows the player to take damage
+        /// </summary>
+        /// <param name="damage">The damage done to the player</param>
         public override void TakeDamage(int damage)
         {
             health -= damage;
         }
 
+        /// <summary>
+        /// Allows the player to jump
+        /// </summary>
         public void Jump()
         {
             position.Y -= 200;
         }
 
+        /// <summary>
+        /// Allows the player to crouch
+        /// </summary>
+        /// <returns>Returns a boolean representing if the player is crouching or not</returns>
         public bool Crouch()
         {
+            //if the player's current texture isn't the crouch sprite, make the player crouch
             if (texture != rightCrouchSprite)
             {
                 Rectangle prevPosition = position;
@@ -117,6 +136,10 @@ namespace Purpose
             }
         }
 
+        /// <summary>
+        /// Allows the player to execute their ground pound attack
+        /// </summary>
+        /// <param name="enemies">The list of enemies in the game</param>
         public void GroundPound(List<Enemy> enemies)
         {
             Rectangle groundPoundArea = new Rectangle(position.X, (position.Y + position.Height), 100, 10);
