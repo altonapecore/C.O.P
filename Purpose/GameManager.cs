@@ -27,6 +27,8 @@ namespace Purpose
         private GameState gameState;
         private Texture2D background;
         private Background backgroundSelection;
+        private int numberOfEnemies;
+        private int numberOfRanged;
 
         private int frameCount;
 
@@ -63,6 +65,20 @@ namespace Purpose
             set { backgroundSelection = value; }
         }
         
+        //This is for the number of Melee Enemies
+        public int NumberOfEnemies
+        {
+            get { return numberOfEnemies; }
+            set { numberOfEnemies = value; }
+        }
+
+        //This is for number of Ranged Enemies
+        public int NumberOfRanged
+        {
+            get { return numberOfRanged; }
+            set { numberOfRanged = value; }
+        }
+
         //constructor
 
         //temporary constructor
@@ -81,7 +97,7 @@ namespace Purpose
 
         //final constructor for when sprites are finished
         public GameManager(string playerName, Texture2D leftCrouchSprite, Texture2D rightCrouchSprite, Texture2D leftStandingSprite, 
-            Texture2D rightStandingSprite, Texture2D rightJumpSprite, Texture2D leftJumpSprite, GraphicsDevice graphicsDevice, Random rng, int numberOfEnemies, Texture2D enemyTexture)
+            Texture2D rightStandingSprite, Texture2D rightJumpSprite, Texture2D leftJumpSprite, GraphicsDevice graphicsDevice, Random rng, int numberOfEnemies, int numberOfRanged, Texture2D enemyTexture)
         {
             enemies = new List<Enemy>();
             this.graphicsDevice = graphicsDevice;
@@ -206,12 +222,29 @@ namespace Purpose
         /// <param name="enemyTexture">The texture of the enemies</param>
         public void FillEnemyList(Random rng, int numberOfEnemies, GraphicsDevice graphicsDevice, Texture2D enemyTexture)
         {
-            for (int i = 0; i < numberOfEnemies; i++)
+            for (int i = 0; i < NumberOfEnemies; i++)
             {
-                Enemy enemy = new Enemy(new Rectangle(rng.Next(0, graphicsDevice.Viewport.Width), graphicsDevice.Viewport.Height - 450, 147, 147), enemyTexture, Level.One);
+                Enemy enemy = new Enemy(new Rectangle(rng.Next(0, graphicsDevice.Viewport.Width), graphicsDevice.Viewport.Height - 450, 147, 147), enemyTexture, Level.One, false);
                 enemies.Add(enemy);
             }
         }
+
+        /// <summary>
+        /// Fills enemy list with Ranged Enemies
+        /// </summary>
+        /// <param name="rng">Variable to set position</param>
+        /// <param name="numberOfRanged">The number to spawn</param>
+        /// <param name="graphicsDevice">Limits the enemies spawn point</param>
+        /// <param name="rangeTexture">The texture for the Ranged Enemies</param>
+        public void FillRangedList(Random rng, int numberOfRanged, GraphicsDevice graphicsDevice, Texture2D rangeTexture)
+        {
+            for (int i = 0; i < NumberOfRanged; i++)
+            {
+                Enemy enemy = new Enemy(new Rectangle(rng.Next(0, graphicsDevice.Viewport.Width), graphicsDevice.Viewport.Height - 450, 147, 147), rangeTexture, Level.One, true);
+                enemies.Add(enemy);
+            }
+        }
+
 
         /// <summary>
         /// Allows the enemy to move

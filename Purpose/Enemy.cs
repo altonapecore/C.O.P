@@ -27,18 +27,12 @@ namespace Purpose
         }
 
         // Constructor
-        public Enemy(Rectangle position, Texture2D texture, Level level) : base(texture)
+        public Enemy(Rectangle position, Texture2D texture, Level level, bool ranged) : base(texture)
         {
-            if (level == Level.Three || level == Level.Four)
-            {
-                ranged = true;
-            }
+            //Placeholder for Level. Thought as level increases so does damage or health
 
-            else
-            {
-                ranged = false;
-            }
 
+            this.Ranged = ranged; //Decides whether or not a ranged enemy is spawned
             this.position = position;
             this.health = 50;
         }
