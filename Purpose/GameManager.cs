@@ -28,8 +28,6 @@ namespace Purpose
         private Texture2D background;
         private Background backgroundSelection;
 
-        private int frameCount;
-
         //properties
         public List<Enemy> Enemies { get { return enemies; } }
         public Player Player { get { return player; } }
@@ -75,8 +73,6 @@ namespace Purpose
             this.graphicsDevice = graphicsDevice;
             dashDistance = 100;
             backgroundSelection = Purpose.Background.WhiteBackground;
-
-            frameCount = 0;
         }
 
         //final constructor for when sprites are finished
@@ -127,26 +123,33 @@ namespace Purpose
                 {
                     player.Texture = player.LeftRunningSprite;
                 }
+                else if (player.Texture == player.LeftCrouchSprite || player.Texture == player.RightCrouchSprite)
+                {
+                    player.Texture = player.LeftCrouchSprite;
+                }
                 else
                 {
                     player.Texture = player.LeftStandingSprite;
                 }
+
             }
             if (kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right)) //move to the right
             {
                 player.X += 8;
-                if (player.Texture == player.LeftStandingSprite || player.Texture == player.RightStandingSprite && frameCount == 10)
+                if (player.Texture == player.LeftStandingSprite || player.Texture == player.RightStandingSprite)
                 {
                     player.Texture = player.RightRunningSprite;
-                    frameCount = 0;
+                }
+                else if (player.Texture == player.LeftCrouchSprite || player.Texture == player.RightCrouchSprite)
+                {
+                    player.Texture = player.RightCrouchSprite;
                 }
                 else
                 {
                     player.Texture = player.RightStandingSprite;
                 }
-                frameCount++;
             }
-            if (kbState.IsKeyDown(Keys.Space) && !previouskbState.IsKeyDown(Keys.Space) && player.Y > 300 && !isCrouching) //jump
+            if (kbState.IsKeyDown(Keys.Space) && !previouskbState.IsKeyDown(Keys.Space) && onPlatform && !isCrouching) //jump
             {
                 player.Jump();
             }

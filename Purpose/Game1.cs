@@ -123,8 +123,8 @@ namespace Purpose
             rightRunningSprite = Content.Load<Texture2D>("RightRunningSprite");
             leftStandingSprite = Content.Load<Texture2D>("LeftStandingSprite");
             leftRunningSprite = Content.Load<Texture2D>("LeftRunningSprite");
-            rightCrouchSprite = Content.Load<Texture2D>("RightCrouchSprite");
-            leftCrouchSprite = Content.Load<Texture2D>("LeftCrouchSprite");
+            rightCrouchSprite = Content.Load<Texture2D>("RightCrouchingSprite");
+            leftCrouchSprite = Content.Load<Texture2D>("LeftCrouchingSprite");
 
             background = Content.Load<Texture2D>("background");
             platform = Content.Load<Texture2D>("PlatformTest");
@@ -282,6 +282,108 @@ namespace Purpose
             base.Draw(gameTime);
         }
 
+        //Basic animation stuff that is not done yet
+        //Example in the Finite State Machine Dropbox on MyCourses
+        public void UpdateAnimation()
+        {
+            //currentFrame = 1;
+            //fps = 100.0;
+            //secondsPerFrame = 1.0f / fps;
+            //timeCounter = 0;
+            //this.gameTime = gameTime;
 
+            /// <summary>
+            /// Updates the animation time
+            /// </summary>
+            /// <param name="gameTime">Game time information</param>
+            //private void UpdateAnimation(GameTime gameTime)
+            //{
+            //    // Add to the time counter (need TOTALSECONDS here)
+            //    timeCounter += gameTime.ElapsedGameTime.TotalSeconds;
+
+            //    // Has enough time gone by to actually flip frames?
+            //    if (timeCounter >= secondsPerFrame)
+            //    {
+            //        // Update the frame and wrap
+            //        currentFrame++;
+            //        if (currentFrame >= 4) currentFrame = 1;
+
+            //        // Remove one "frame" worth of time
+            //        timeCounter -= secondsPerFrame;
+            //    }
+            //}
+
+            //protected override void Draw(GameTime gameTime)
+            //{
+            //    GraphicsDevice.Clear(Color.Black);
+
+            //    spriteBatch.Begin();
+
+            //    // *** Put code to check FINITE STATE MACHINE
+            //    // *** and properly draw mario here
+            //    switch (marioState)
+            //    {
+            //        case (MarioState.FaceLeft):
+            //            DrawMarioStanding(SpriteEffects.FlipHorizontally);
+            //            break;
+            //        case (MarioState.WalkLeft):
+            //            DrawMarioWalking(SpriteEffects.FlipHorizontally);
+            //            break;
+            //        case (MarioState.FaceRight):
+            //            DrawMarioStanding(SpriteEffects.None);
+            //            break;
+            //        case (MarioState.WalkRight):
+            //            DrawMarioWalking(SpriteEffects.None);
+            //            break;
+            //        default:
+            //            break;
+            //    }
+
+            //    // Example call to draw mario walking (replace or adjust this line!)
+            //    //DrawMarioWalking(SpriteEffects.FlipHorizontally);
+
+
+
+            //    spriteBatch.End();
+
+            //    base.Draw(gameTime);
+            //}
+
+            ///// <summary>
+            ///// Draws mario with a walking animation
+            ///// </summary>
+            ///// <param name="flip">Should he be flipped horizontally?</param>
+            //private void DrawMarioWalking(SpriteEffects flip)
+            //{
+            //    spriteBatch.Draw(
+            //        marioTexture,
+            //        marioPosition,
+            //        new Rectangle(widthOfSingleSprite * currentFrame, 0, widthOfSingleSprite, marioTexture.Height),
+            //        Color.White,
+            //        0.0f,
+            //        Vector2.Zero,
+            //        1.0f,
+            //        flip,
+            //        0.0f);
+            //}
+
+            ///// <summary>
+            ///// Draws mario standing still
+            ///// </summary>
+            ///// <param name="flip">Should he be flipped horizontally?</param>
+            //private void DrawMarioStanding(SpriteEffects flip)
+            //{
+            //    spriteBatch.Draw(
+            //        marioTexture,
+            //        marioPosition,
+            //        new Rectangle(0, 0, widthOfSingleSprite, marioTexture.Height),
+            //        Color.White,
+            //        0.0f,
+            //        Vector2.Zero,
+            //        1.0f,
+            //        flip,
+            //        0.0f);
+            //}
+    }
     }
 }

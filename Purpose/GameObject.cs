@@ -15,7 +15,11 @@ namespace Purpose
         protected Texture2D texture;
 
         //properties
-        public Rectangle Position { get { return position; } }
+        public Rectangle Position
+        {
+            get { return position; }
+            set { position = value; }
+        }
         public int X
         {
             get { return position.X; }

@@ -142,20 +142,21 @@ namespace Purpose
         public bool Crouch()
         {
             //if the player's current texture isn't the crouch sprite, make the player crouch
-            if (texture != rightCrouchSprite)
+            if (texture == rightCrouchSprite || texture == leftCrouchSprite)
+            {
+                Rectangle prevPosition = position;
+                position = new Rectangle(prevPosition.X, prevPosition.Y - prevPosition.Height, prevPosition.Width, prevPosition.Height * 2);
+                texture = rightStandingSprite;
+                return false;
+            }
+            else
             {
                 Rectangle prevPosition = position;
                 position = new Rectangle(prevPosition.X, prevPosition.Y + prevPosition.Height/2, prevPosition.Width, prevPosition.Height/2);
                 texture = rightCrouchSprite;
                 return true;
             }
-            else
-            {
-                Rectangle prevPosition = position;
-                position = new Rectangle(prevPosition.X, prevPosition.Y - prevPosition.Height, prevPosition.Width, prevPosition.Height*2);
-                texture = rightStandingSprite;
-                return false;
-            }
+
         }
 
         /// <summary>
