@@ -13,6 +13,7 @@ namespace Purpose
     public partial class ArenaWindow : Form
     {
         private GameManager gameManager;
+        private RadioButton radioButton;
 
         public ArenaWindow(GameManager gameManager)
         {
@@ -21,28 +22,43 @@ namespace Purpose
         }
 
         //When User presses Start the window closes and goes to the Game
+        //Also checks the background selected by the user
         private void StartButton_Click(object sender, EventArgs e)
         {
             gameManager.GameState = GameState.Game;
+
+            //Goes through to check which radio button was checked and which background to use
+            if (radioButton == WhiteBackground)
+            {
+                gameManager.BackgroundSelection = Background.WhiteBackground;
+            }
+            else if (radioButton == MetalBackground)
+            {
+                gameManager.BackgroundSelection = Background.MetalBackground;
+            }
+            else if (radioButton == RustyBackground)
+            {
+                gameManager.BackgroundSelection = Background.RustBackground;
+            }
             Close();
         }
 
         //If radiobutton is clicked, changes the background to White
         private void WhiteBackground_CheckedChanged(object sender, EventArgs e)
         {
-            
+            radioButton = WhiteBackground;
         }
 
         //If radiobutton is clicked, changes the background to Metal
         private void MetalBackground_CheckedChanged(object sender, EventArgs e)
         {
-
+            radioButton = MetalBackground;
         }
 
         //If radiobuuton is clicked, background is changed to Rusty
         private void RustyBackground_CheckedChanged(object sender, EventArgs e)
         {
-
+            radioButton = RustyBackground;
         }
 
         //When number is changed, number of Melee Enemies are spawned
