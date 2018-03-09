@@ -9,6 +9,12 @@ using Microsoft.Xna.Framework;
 
 namespace Purpose
 {
+    public enum Background
+    {
+        WhiteBackground,
+        MetalBackground, 
+        RustBackground
+    }
     public class GameManager
     {
         //fields
@@ -19,6 +25,8 @@ namespace Purpose
         private GraphicsDevice graphicsDevice;
         private int dashDistance;
         private GameState gameState;
+        private Texture2D background;
+        private Background backgroundSelection;
 
         //properties
         public List<Enemy> Enemies { get { return enemies; } }
@@ -41,6 +49,17 @@ namespace Purpose
             set { gameState = value; }
         }
 
+        public Texture2D Background
+        {
+            get { return background; }
+            set { background = value; }
+        }
+
+        public Background BackgroundSelection
+        {
+            get { return backgroundSelection; }
+            set { backgroundSelection = value; }
+        }
         
         //constructor
 

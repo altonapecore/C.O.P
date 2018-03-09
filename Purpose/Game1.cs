@@ -23,7 +23,6 @@ namespace Purpose
 
     public enum GameState
     {
-        LevelCreation,
         Menu,
         Game,
         Pause,
@@ -136,7 +135,7 @@ namespace Purpose
             player = new Player("Dude", tempTexture, tempCrouchTexture, new Rectangle(225, 225, 445, 355));
             gameManager = new GameManager(player, bottomPlatforms, GraphicsDevice);
             gameManager.FillEnemyList(rng, 3, GraphicsDevice, trent);
-            gameManager.GameState = GameState.LevelCreation;
+            gameManager.GameState = GameState.Menu;
             arenaWindow = new ArenaWindow(gameManager);
         }
 
@@ -166,19 +165,25 @@ namespace Purpose
             // GameState finite state machine
             switch (gameManager.GameState)
             {
-                case GameState.LevelCreation:
-                    arenaWindow.ShowDialog();
-                    break;
 
                 case GameState.Menu:
-                    // Temp code stuffs
 
-                    //if (kbState.IsKeyDown(Keys.Enter))
-                    //{
-                    //    gameState = GameState.Game;
-                    //}
+                    //Loads up the Arena Window
+                    arenaWindow.ShowDialog();
 
-                    //arenaWindow.ShowDialog();
+                    //Using the selection from the ArenaWindow pciks the background to use in the Game
+                    if (gameManager.BackgroundSelection == Background.WhiteBackground)
+                    {
+                        background = whiteBack; //Changes the background to White
+                    }
+                    else if (gameManager.BackgroundSelection == Background.MetalBackground)
+                    {
+                        background = metalBack; // Background is Metal
+                    }
+                    else if (gameManager.BackgroundSelection == Background.RustBackground)
+                    {
+                        background = rustyBack; //Background is Rusty
+                    }
                     break;
 
                 case GameState.Game:
@@ -233,20 +238,17 @@ namespace Purpose
             // GameState drawing stuffs
             switch (gameManager.GameState)
             {
-                case GameState.LevelCreation:
-                    break;
-
                 case GameState.Menu:
-
+                   
                     // Temp drawing stuffs
-                    spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
-                    spriteBatch.DrawString(comicSans24, "Press ENTER to play", new Vector2(GraphicsDevice.Viewport.X / 2, GraphicsDevice.Viewport.Y / 2), Color.Yellow);
+                    //spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
+                    //spriteBatch.DrawString(comicSans24, "Press ENTER to play", new Vector2(GraphicsDevice.Viewport.X / 2, GraphicsDevice.Viewport.Y / 2), Color.Yellow);
 
                     break;
 
                 case GameState.Game:
                     // Background
-                    spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
+                    spriteBatch.Draw(background, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
                     // Platforms
                     foreach (Platform p in bottomPlatforms)
                     {

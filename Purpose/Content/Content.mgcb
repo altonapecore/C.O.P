@@ -116,7 +116,7 @@
 /processorParam:TextureFormat=Color
 /build:smallerPineapple(1).png
 
-#begin BackGround/rustyback.jfif
+#begin metalback.jfif
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -126,9 +126,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:BackGround/rustyback.jfif
+/build:metalback.jfif
 
-#begin BackGround/metalback.jfif
+#begin rustyback.jfif
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -138,9 +138,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:BackGround/metalback.jfif
+/build:rustyback.jfif
 
-#begin BackGround/whiteback.jfif
+#begin whiteback.jfif
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -150,7 +150,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:BackGround/whiteback.jfif
+/build:whiteback.jfif
 
 #begin LeftRunningSprite.png
 /importer:TextureImporter
