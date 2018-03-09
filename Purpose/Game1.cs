@@ -50,6 +50,8 @@ namespace Purpose
         //Actual Player Textures
         private Texture2D rightStandingSprite;
         private Texture2D rightRunningSprite;
+        private Texture2D leftStandingSprite;
+        private Texture2D leftRunningSprite;
 
         //temporary stuff
         private Texture2D tempTexture;
@@ -118,6 +120,8 @@ namespace Purpose
             // Right facing sprite
             rightStandingSprite = Content.Load<Texture2D>("RightStandingSprite");
             rightRunningSprite = Content.Load<Texture2D>("RightRunningSprite");
+            leftStandingSprite = Content.Load<Texture2D>("LeftStandingSprite");
+            leftRunningSprite = Content.Load<Texture2D>("LeftRunningSprite");
 
             background = Content.Load<Texture2D>("background");
             platform = Content.Load<Texture2D>("PlatformTest");
