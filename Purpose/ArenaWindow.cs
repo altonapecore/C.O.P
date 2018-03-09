@@ -64,13 +64,13 @@ namespace Purpose
         //When number is changed, number of Melee Enemies are spawned
         private void MeleeIncrement_ValueChanged(object sender, EventArgs e)
         {
-
+            gameManager.NumberOfEnemies = (int)MeleeIncrement.Value;
         }
 
         //When number is changed, number of Ranged Enemies are spawned
         private void RangedIncrement_ValueChanged(object sender, EventArgs e)
         {
-
+            gameManager.NumberOfRanged = (int)RangedIncrement.Value;
         }
 
         //When number is changed, chnages the difficulty or level of the Enemies

@@ -140,9 +140,14 @@ namespace Purpose
             //those dimensions may be needed for logic for collisions
             player = new Player("Dude", new Rectangle(225, 225, 139, 352), leftCrouchSprite, rightCrouchSprite, leftStandingSprite, rightStandingSprite, leftRunningSprite, rightRunningSprite);
             gameManager = new GameManager(player, bottomPlatforms, GraphicsDevice);
-            gameManager.FillEnemyList(rng, 3, GraphicsDevice, trent);
-            gameManager.GameState = GameState.Menu;
+            
             arenaWindow = new ArenaWindow(gameManager);
+            gameManager.GameState = GameState.Menu;
+            arenaWindow.ShowDialog(); //Loads arenaWindow here to allow User to change settings of level, enemies, and background
+
+            gameManager.FillEnemyList(rng, gameManager.NumberOfEnemies, GraphicsDevice, trent);
+            gameManager.FillRangedList(rng, gameManager.NumberOfRanged, GraphicsDevice, tempTexture);
+           
         }
 
         /// <summary>
@@ -173,9 +178,6 @@ namespace Purpose
             {
 
                 case GameState.Menu:
-
-                    //Loads up the Arena Window
-                    arenaWindow.ShowDialog();
 
                     //Using the selection from the ArenaWindow pciks the background to use in the Game
                     if (gameManager.BackgroundSelection == Background.WhiteBackground)
