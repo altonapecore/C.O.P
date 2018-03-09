@@ -28,6 +28,8 @@ namespace Purpose
         private Texture2D background;
         private Background backgroundSelection;
 
+        private int frameCount;
+
         //properties
         public List<Enemy> Enemies { get { return enemies; } }
         public Player Player { get { return player; } }
@@ -72,6 +74,9 @@ namespace Purpose
             enemies = new List<Enemy>();
             this.graphicsDevice = graphicsDevice;
             dashDistance = 100;
+            backgroundSelection = Purpose.Background.WhiteBackground;
+
+            frameCount = 0;
         }
 
         //final constructor for when sprites are finished
@@ -81,8 +86,8 @@ namespace Purpose
             enemies = new List<Enemy>();
             this.graphicsDevice = graphicsDevice;
             FillEnemyList(rng, numberOfEnemies, graphicsDevice, enemyTexture);
-            player = new Player(playerName, leftCrouchSprite, rightCrouchSprite, leftStandingSprite, rightStandingSprite, 
-                rightJumpSprite, leftJumpSprite, graphicsDevice);
+            //player = new Player(playerName, leftCrouchSprite, rightCrouchSprite, leftStandingSprite, rightStandingSprite, 
+            //    rightJumpSprite, leftJumpSprite, graphicsDevice);
             dashDistance = 100;
         }
 
@@ -118,10 +123,28 @@ namespace Purpose
             if (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left)) //move to the left
             {
                 player.X -= 8;
+                if (player.Texture == player.LeftStandingSprite || player.Texture == player.RightStandingSprite)
+                {
+                    player.Texture = player.LeftRunningSprite;
+                }
+                else
+                {
+                    player.Texture = player.LeftStandingSprite;
+                }
             }
             if (kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right)) //move to the right
             {
                 player.X += 8;
+                if (player.Texture == player.LeftStandingSprite || player.Texture == player.RightStandingSprite && frameCount == 10)
+                {
+                    player.Texture = player.RightRunningSprite;
+                    frameCount = 0;
+                }
+                else
+                {
+                    player.Texture = player.RightStandingSprite;
+                }
+                frameCount++;
             }
             if (kbState.IsKeyDown(Keys.Space) && !previouskbState.IsKeyDown(Keys.Space) && player.Y > 300 && !isCrouching) //jump
             {
@@ -160,17 +183,17 @@ namespace Purpose
             }
 
             //limiting player movement in both x directions and lower y direction
-            if (player.X <= -150)
+            if (player.X <= 0)
             {
-                player.X = -150;
+                player.X = 0;
             }
-            if (player.X >= graphicsDevice.Viewport.Width-265)
+            if (player.X >= graphicsDevice.Viewport.Width -200)
             {
-                player.X = graphicsDevice.Viewport.Width-265;
+                player.X = graphicsDevice.Viewport.Width-200;
             }
-            if (player.Y >= graphicsDevice.Viewport.Height-260)
+            if (player.Y >= graphicsDevice.Viewport.Height)
             {
-                player.Y = graphicsDevice.Viewport.Height-360;
+                player.Y = graphicsDevice.Viewport.Height-200;
             }
         }
 

@@ -26,7 +26,11 @@ namespace Purpose
             get { return position.Y; }
             set { position.Y = value; }
         }
-        public Texture2D Texture { get { return texture; } }
+        public virtual Texture2D Texture
+        {
+            get { return texture; }
+            set { texture = value; }
+        }
 
         //constructor
         public GameObject(Texture2D texture)

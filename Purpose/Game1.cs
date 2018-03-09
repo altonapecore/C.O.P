@@ -51,6 +51,8 @@ namespace Purpose
         private Texture2D rightRunningSprite;
         private Texture2D leftStandingSprite;
         private Texture2D leftRunningSprite;
+        private Texture2D rightCrouchSprite;
+        private Texture2D leftCrouchSprite;
 
         //temporary stuff
         private Texture2D tempTexture;
@@ -121,6 +123,8 @@ namespace Purpose
             rightRunningSprite = Content.Load<Texture2D>("RightRunningSprite");
             leftStandingSprite = Content.Load<Texture2D>("LeftStandingSprite");
             leftRunningSprite = Content.Load<Texture2D>("LeftRunningSprite");
+            rightCrouchSprite = Content.Load<Texture2D>("RightCrouchSprite");
+            leftCrouchSprite = Content.Load<Texture2D>("LeftCrouchSprite");
 
             background = Content.Load<Texture2D>("background");
             platform = Content.Load<Texture2D>("PlatformTest");
@@ -132,7 +136,9 @@ namespace Purpose
                 bottomPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 100, 100, 100), platform));
             }
             // Makes player, gameManager object and fills enemy list
-            player = new Player("Dude", tempTexture, tempCrouchTexture, new Rectangle(225, 225, 445, 355));
+            //the pineapple's dimensions were 445x355
+            //those dimensions may be needed for logic for collisions
+            player = new Player("Dude", new Rectangle(225, 225, 139, 352), leftCrouchSprite, rightCrouchSprite, leftStandingSprite, rightStandingSprite, leftRunningSprite, rightRunningSprite);
             gameManager = new GameManager(player, bottomPlatforms, GraphicsDevice);
             gameManager.FillEnemyList(rng, 3, GraphicsDevice, trent);
             gameManager.GameState = GameState.Menu;

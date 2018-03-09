@@ -40,8 +40,8 @@ namespace Purpose
         public Texture2D LeftStandingSprite { get { return leftStandingSprite; } }
         public Texture2D RightJumpSprite { get { return rightJumpSprite; } }
         public Texture2D LeftJumpSprite { get { return leftJumpSprite; } }
-
-
+        public Texture2D RightRunningSprite { get { return rightRunningSprite; } }
+        public Texture2D LeftRunningSprite { get { return leftRunningSprite; } }
 
         //constructors
 
@@ -61,9 +61,31 @@ namespace Purpose
             damage = 10;
         }
 
+        //secondary temporary constructor for debug purposes
+        public Player(String name, Rectangle position, Texture2D leftCrouchSprite, Texture2D rightCrouchSprite, Texture2D leftStandingSprite,
+            Texture2D rightStandingSprite, Texture2D leftRunningSprite, Texture2D rightRunningSprite) : base(rightStandingSprite)
+        {
+            this.rightCrouchSprite = rightCrouchSprite;
+            this.leftCrouchSprite = leftCrouchSprite;
+            this.rightStandingSprite = rightStandingSprite;
+            this.leftStandingSprite = leftStandingSprite;
+            this.rightRunningSprite = rightRunningSprite;
+            this.leftRunningSprite = leftRunningSprite;
+
+            rightJumpSprite = rightStandingSprite;
+            leftJumpSprite = leftStandingSprite;
+
+            ugManager = new UpgradeManager();
+
+            this.position = position;
+            health = 10000;
+            damage = 10;
+        }
+
         //finished constructor for when the sprites are finished
         public Player(string name, Texture2D leftCrouchSprite, Texture2D rightCrouchSprite, Texture2D leftStandingSprite, 
-            Texture2D rightStandingSprite, Texture2D rightJumpSprite, Texture2D leftJumpSprite, GraphicsDevice graphicsDevice) : base(rightStandingSprite)
+            Texture2D rightStandingSprite, Texture2D rightJumpSprite, Texture2D leftJumpSprite, Texture2D leftRunningSprite,
+            Texture2D rightRunningSprite, GraphicsDevice graphicsDevice) : base(rightStandingSprite)
         {
             kills = 0;
             upgradePoints = 0;
