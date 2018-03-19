@@ -30,6 +30,8 @@ namespace Purpose
         private int numberOfEnemies;
         private int numberOfRanged;
 
+        private TextureManager textureManager;
+
         //properties
         public List<Enemy> Enemies { get { return enemies; } }
         public Player Player { get { return player; } }
@@ -80,7 +82,7 @@ namespace Purpose
         //constructor
 
         //temporary constructor
-        public GameManager(Player player, List<Platform> platforms, GraphicsDevice graphicsDevice)
+        public GameManager(Player player, List<Platform> platforms, GraphicsDevice graphicsDevice, TextureManager textureManager)
         {
             this.player = player;
             this.platforms = platforms;
@@ -89,6 +91,7 @@ namespace Purpose
             this.graphicsDevice = graphicsDevice;
             dashDistance = 100;
             backgroundSelection = Purpose.Background.WhiteBackground;
+            this.textureManager = textureManager;
         }
 
         //final constructor for when sprites are finished
@@ -135,34 +138,35 @@ namespace Purpose
             if (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left)) //move to the left
             {
                 player.X -= 8;
-                if (player.Texture == player.LeftStandingSprite || player.Texture == player.RightStandingSprite)
+                if (player.CurrentPlayerState == PlayerState.FaceLeft || player.CurrentPlayerState == PlayerState.FaceRight)
                 {
-                    player.Texture = player.LeftRunningSprite;
+                    player.CurrentPlayerState = PlayerState.WalkLeft;
+                    //player.Texture = player.LeftRunningSprite;
                 }
-                else if (player.Texture == player.LeftCrouchSprite || player.Texture == player.RightCrouchSprite)
+                else if (player.CurrentPlayerState == PlayerState.CrouchFaceLeft || player.CurrentPlayerState == PlayerState.CrouchFaceRight)
                 {
-                    player.Texture = player.LeftCrouchSprite;
+                    player.CurrentPlayerState = PlayerState.CrouchFaceLeft;
                 }
                 else
                 {
-                    player.Texture = player.LeftStandingSprite;
+                    player.CurrentPlayerState = PlayerState.FaceRight;
                 }
-
             }
             if (kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right)) //move to the right
             {
                 player.X += 8;
-                if (player.Texture == player.LeftStandingSprite || player.Texture == player.RightStandingSprite)
+                if (player.CurrentPlayerState == PlayerState.FaceLeft || player.CurrentPlayerState == PlayerState.FaceRight)
                 {
-                    player.Texture = player.RightRunningSprite;
+                    player.CurrentPlayerState = PlayerState.WalkRight;
+                    //player.Texture = player.LeftRunningSprite;
                 }
-                else if (player.Texture == player.LeftCrouchSprite || player.Texture == player.RightCrouchSprite)
+                else if (player.CurrentPlayerState == PlayerState.CrouchFaceLeft || player.CurrentPlayerState == PlayerState.CrouchFaceRight)
                 {
-                    player.Texture = player.RightCrouchSprite;
+                    player.CurrentPlayerState = PlayerState.CrouchFaceRight;
                 }
                 else
                 {
-                    player.Texture = player.RightStandingSprite;
+                    player.CurrentPlayerState = PlayerState.FaceRight;
                 }
             }
             if (kbState.IsKeyDown(Keys.Space) && !previouskbState.IsKeyDown(Keys.Space) && onPlatform && !isCrouching) //jump
@@ -173,11 +177,11 @@ namespace Purpose
             {
                 if (player.UgManager.DashActive)
                 {
-                    if (player.Texture == player.RightStandingSprite || player.Texture == player.RightCrouchSprite) //dash to the right
+                    if (player.CurrentPlayerState == PlayerState.FaceRight || player.CurrentPlayerState == PlayerState.CrouchFaceRight) //dash to the right
                     {
                         player.X += dashDistance;
                     }
-                    else if (player.Texture == player.LeftStandingSprite || player.Texture == player.LeftCrouchSprite) //dash to the left
+                    else if (player.CurrentPlayerState == PlayerState.FaceLeft || player.CurrentPlayerState == PlayerState.CrouchFaceLeft) //dash to the left
                     {
                         player.X -= dashDistance;
                     }
@@ -271,6 +275,40 @@ namespace Purpose
                     e.Y += 5;
                 }
             }
+        }
+
+        /// <summary>
+        /// Draws player walking
+        /// </summary>
+        /// <param name="spriteBatch">The spriteBatch object from the draw method</param>
+        /// <param name="currentFrame">the current frame of the game</param>
+        /// <param name="flip">Should be flipped horizontally?</param>
+        public void DrawPlayerWalking(SpriteBatch spriteBatch, int currentFrame, SpriteEffects flip)
+        {
+            spriteBatch.Draw(textureManager.RightRunningSprite, player.Position, 
+                player.Position, Color.White, 0.0f, Vector2.Zero, flip, 1.0f);
+        }
+
+        /// <summary>
+        /// Draws player standing still
+        /// </summary>
+        /// <param name="flip">Should he be flipped horizontally?</param>
+        public void DrawPlayerStanding(SpriteBatch spriteBatch, SpriteEffects flip)
+        {
+            spriteBatch.Draw(textureManager.RightStandingSprite, player.Position, 
+                player.Position, Color.White, 0.0f, Vector2.Zero, flip, 0.0f);
+        }
+
+        public void DrawPlayerCrouching(SpriteBatch spriteBatch, SpriteEffects flip)
+        {
+            spriteBatch.Draw(textureManager.RightCrouchSprite, player.Position, 
+                player.Position, Color.White, 0.0f, Vector2.Zero, flip, 1.0f);
+        }
+
+        public void DrawPlayerMovingCrouching(SpriteBatch spriteBatch, int currentFrame, SpriteEffects flip)
+        {
+            spriteBatch.Draw(textureManager.RightCrouchSprite, player.Position,
+                player.Position, Color.White, 0.0f, Vector2.Zero, flip, 1.0f);
         }
     }
 }

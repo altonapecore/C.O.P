@@ -13,6 +13,20 @@ namespace Purpose
     /// Vansh is here
     /// </summary>
 
+    //Enums
+    public enum PlayerState
+    {
+        FaceLeft,
+        FaceRight, 
+        WalkLeft,
+        WalkRight,
+        CrouchFaceLeft,
+        CrouchFaceRight,
+        CrouchWalkLeft,
+        CrouchWalkRight, 
+        //JumpLeft,
+        //JumpRight
+    }
     public enum Level
     {
         One,
@@ -54,6 +68,9 @@ namespace Purpose
         private Texture2D rightCrouchSprite;
         private Texture2D leftCrouchSprite;
 
+        //textureManager object
+        private TextureManager textureManager;
+
         //temporary stuff
         private Texture2D tempTexture;
         private Texture2D tempCrouchTexture;
@@ -65,6 +82,12 @@ namespace Purpose
         private Texture2D whiteBack;
         private Texture2D rustyBack;
         private Texture2D metalBack;
+
+        //Animation stuff
+        int currentFrame;
+        double fps;
+        double secondsPerFrame;
+        double timeCounter;
 
         public Game1()
         {
@@ -103,6 +126,11 @@ namespace Purpose
         /// </summary>
         protected override void LoadContent()
         {
+            currentFrame = 1;
+            fps = 100.0;
+            secondsPerFrame = 1.0f / fps;
+            timeCounter = 0;
+
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
@@ -138,8 +166,9 @@ namespace Purpose
             // Makes player, gameManager object and fills enemy list
             //the pineapple's dimensions were 445x355
             //those dimensions may be needed for logic for collisions
-            player = new Player("Dude", new Rectangle(225, 225, 139, 352), leftCrouchSprite, rightCrouchSprite, leftStandingSprite, rightStandingSprite, leftRunningSprite, rightRunningSprite);
-            gameManager = new GameManager(player, bottomPlatforms, GraphicsDevice);
+            textureManager = new TextureManager(leftCrouchSprite, rightCrouchSprite, leftStandingSprite, rightStandingSprite, leftRunningSprite, rightRunningSprite);
+            player = new Player("Dude", new Rectangle(225, 225, 139, 352), textureManager);
+            gameManager = new GameManager(player, bottomPlatforms, GraphicsDevice, textureManager);
             
             arenaWindow = new ArenaWindow(gameManager);
             gameManager.GameState = GameState.Menu;
@@ -263,9 +292,36 @@ namespace Purpose
                         spriteBatch.Draw(p.Texture, p.Position, Color.White);
                     }
                     // Player
-                    spriteBatch.Draw(gameManager.Player.Texture, new Rectangle(gameManager.Player.X, gameManager.Player.Y, player.Position.Width, player.Position.Height), Color.White);
+                    //spriteBatch.Draw(gameManager.Player.Texture, new Rectangle(gameManager.Player.X, gameManager.Player.Y, player.Position.Width, player.Position.Height), Color.White);
+                    switch (gameManager.Player.CurrentPlayerState)
+                    {
+                        case (PlayerState.FaceLeft):
+                            gameManager.DrawPlayerStanding(spriteBatch, SpriteEffects.FlipHorizontally);
+                            break;
+                        case (PlayerState.WalkLeft):
+                            gameManager.DrawPlayerWalking(spriteBatch, currentFrame, SpriteEffects.FlipHorizontally);
+                            break;
+                        case (PlayerState.FaceRight):
+                            gameManager.DrawPlayerStanding(spriteBatch, SpriteEffects.None);
+                            break;
+                        case (PlayerState.WalkRight):
+                            gameManager.DrawPlayerWalking(spriteBatch, currentFrame, SpriteEffects.None);
+                            break;
+                        case (PlayerState.CrouchFaceLeft):
+                            gameManager.DrawPlayerCrouching(spriteBatch, SpriteEffects.FlipHorizontally);
+                            break;
+                        case (PlayerState.CrouchFaceRight):
+                            gameManager.DrawPlayerCrouching(spriteBatch, SpriteEffects.None);
+                            break;
+                        case (PlayerState.CrouchWalkLeft):
+                            break;
+                        case (PlayerState.CrouchWalkRight):
+                            break;
+                        default:
+                            break;
+                    }
                     // Enemies
-                    for(int i = 0; i < gameManager.Enemies.Count; i++)
+                    for (int i = 0; i < gameManager.Enemies.Count; i++)
                     {
 
                         spriteBatch.Draw(gameManager.Enemies[i].Texture, new Rectangle(gameManager.Enemies[i].X, gameManager.Enemies[i].Y, 147, 147), Color.White);
@@ -286,106 +342,21 @@ namespace Purpose
 
         //Basic animation stuff that is not done yet
         //Example in the Finite State Machine Dropbox on MyCourses
-        public void UpdateAnimation()
+        public void UpdateAnimation(GameTime gameTime)
         {
-            //currentFrame = 1;
-            //fps = 100.0;
-            //secondsPerFrame = 1.0f / fps;
-            //timeCounter = 0;
-            //this.gameTime = gameTime;
+            // Add to the time counter (need TOTALSECONDS here)
+            timeCounter += gameTime.ElapsedGameTime.TotalSeconds;
 
-            /// <summary>
-            /// Updates the animation time
-            /// </summary>
-            /// <param name="gameTime">Game time information</param>
-            //private void UpdateAnimation(GameTime gameTime)
-            //{
-            //    // Add to the time counter (need TOTALSECONDS here)
-            //    timeCounter += gameTime.ElapsedGameTime.TotalSeconds;
+            // Has enough time gone by to actually flip frames?
+            if (timeCounter >= secondsPerFrame)
+            {
+                // Update the frame and wrap
+                currentFrame++;
+                if (currentFrame >= 4) currentFrame = 1;
 
-            //    // Has enough time gone by to actually flip frames?
-            //    if (timeCounter >= secondsPerFrame)
-            //    {
-            //        // Update the frame and wrap
-            //        currentFrame++;
-            //        if (currentFrame >= 4) currentFrame = 1;
-
-            //        // Remove one "frame" worth of time
-            //        timeCounter -= secondsPerFrame;
-            //    }
-            //}
-
-            //protected override void Draw(GameTime gameTime)
-            //{
-            //    GraphicsDevice.Clear(Color.Black);
-
-            //    spriteBatch.Begin();
-
-            //    // *** Put code to check FINITE STATE MACHINE
-            //    // *** and properly draw mario here
-            //    switch (marioState)
-            //    {
-            //        case (MarioState.FaceLeft):
-            //            DrawMarioStanding(SpriteEffects.FlipHorizontally);
-            //            break;
-            //        case (MarioState.WalkLeft):
-            //            DrawMarioWalking(SpriteEffects.FlipHorizontally);
-            //            break;
-            //        case (MarioState.FaceRight):
-            //            DrawMarioStanding(SpriteEffects.None);
-            //            break;
-            //        case (MarioState.WalkRight):
-            //            DrawMarioWalking(SpriteEffects.None);
-            //            break;
-            //        default:
-            //            break;
-            //    }
-
-            //    // Example call to draw mario walking (replace or adjust this line!)
-            //    //DrawMarioWalking(SpriteEffects.FlipHorizontally);
-
-
-
-            //    spriteBatch.End();
-
-            //    base.Draw(gameTime);
-            //}
-
-            ///// <summary>
-            ///// Draws mario with a walking animation
-            ///// </summary>
-            ///// <param name="flip">Should he be flipped horizontally?</param>
-            //private void DrawMarioWalking(SpriteEffects flip)
-            //{
-            //    spriteBatch.Draw(
-            //        marioTexture,
-            //        marioPosition,
-            //        new Rectangle(widthOfSingleSprite * currentFrame, 0, widthOfSingleSprite, marioTexture.Height),
-            //        Color.White,
-            //        0.0f,
-            //        Vector2.Zero,
-            //        1.0f,
-            //        flip,
-            //        0.0f);
-            //}
-
-            ///// <summary>
-            ///// Draws mario standing still
-            ///// </summary>
-            ///// <param name="flip">Should he be flipped horizontally?</param>
-            //private void DrawMarioStanding(SpriteEffects flip)
-            //{
-            //    spriteBatch.Draw(
-            //        marioTexture,
-            //        marioPosition,
-            //        new Rectangle(0, 0, widthOfSingleSprite, marioTexture.Height),
-            //        Color.White,
-            //        0.0f,
-            //        Vector2.Zero,
-            //        1.0f,
-            //        flip,
-            //        0.0f);
-            //}
-    }
+                // Remove one "frame" worth of time
+                timeCounter -= secondsPerFrame;
+            }
+        }
     }
 }
