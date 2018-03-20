@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PauseMenu));
             this.ReturnToGame = new System.Windows.Forms.Button();
+            this.UpgradeMenu = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // ReturnToGame
@@ -38,7 +39,7 @@
             this.ReturnToGame.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ReturnToGame.BackgroundImage")));
             this.ReturnToGame.Font = new System.Drawing.Font("Comic Sans MS", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ReturnToGame.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.ReturnToGame.Location = new System.Drawing.Point(36, 49);
+            this.ReturnToGame.Location = new System.Drawing.Point(283, 63);
             this.ReturnToGame.Name = "ReturnToGame";
             this.ReturnToGame.Size = new System.Drawing.Size(273, 106);
             this.ReturnToGame.TabIndex = 0;
@@ -46,12 +47,27 @@
             this.ReturnToGame.UseVisualStyleBackColor = false;
             this.ReturnToGame.Click += new System.EventHandler(this.ReturnToGame_Click);
             // 
+            // UpgradeMenu
+            // 
+            this.UpgradeMenu.BackColor = System.Drawing.Color.Transparent;
+            this.UpgradeMenu.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("UpgradeMenu.BackgroundImage")));
+            this.UpgradeMenu.Font = new System.Drawing.Font("Comic Sans MS", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UpgradeMenu.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.UpgradeMenu.Location = new System.Drawing.Point(283, 216);
+            this.UpgradeMenu.Name = "UpgradeMenu";
+            this.UpgradeMenu.Size = new System.Drawing.Size(273, 106);
+            this.UpgradeMenu.TabIndex = 1;
+            this.UpgradeMenu.Text = "Upgrades";
+            this.UpgradeMenu.UseVisualStyleBackColor = false;
+            this.UpgradeMenu.Click += new System.EventHandler(this.UpgradeMenu_Click);
+            // 
             // PauseMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.ClientSize = new System.Drawing.Size(838, 538);
+            this.Controls.Add(this.UpgradeMenu);
             this.Controls.Add(this.ReturnToGame);
             this.Name = "PauseMenu";
             this.ShowInTaskbar = false;
@@ -63,5 +79,6 @@
         #endregion
 
         private System.Windows.Forms.Button ReturnToGame;
+        private System.Windows.Forms.Button UpgradeMenu;
     }
 }

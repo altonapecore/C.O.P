@@ -127,7 +127,8 @@ namespace Purpose
             //checking keyboard state to make the player move
             if (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left)) //move to the left
             {
-                if (player.Texture == textureManager.RightCrouchSprite || player.Texture == textureManager.LeftCrouchSprite)
+                //first check to see if the player is crouching
+                if (isCrouching)
                 {
                     player.Texture = textureManager.LeftCrouchSprite;
                     player.X -= 8;
@@ -144,6 +145,7 @@ namespace Purpose
                 {
                     keyCounter++;
                 }
+                //if keyCounter is 0, change to the appropriate texture
                 if (keyCounter == 0)
                 {
                     player.Texture = textureManager.LeftStandingSprite;
@@ -167,27 +169,31 @@ namespace Purpose
             }
             if (kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right)) //move to the right
             {
-                if (player.Texture == textureManager.RightCrouchSprite || player.Texture == textureManager.LeftCrouchSprite)
+                //first check to see if player is crouching
+                if (isCrouching)
                 {
                     player.Texture = textureManager.RightCrouchSprite;
                     player.X += 8;
                     return;
                 }
 
+                //neither key was down previously reset the counter
                 if (previouskbState.IsKeyUp(Keys.D) && previouskbState.IsKeyUp(Keys.Right))
                 {
                     keyCounter = 0;
                 }
+                //if either key was down continously add to the counter
                 if (previouskbState.IsKeyDown(Keys.D) || previouskbState.IsKeyDown(Keys.Right))
                 {
                     keyCounter++;
                 }
+                //if keyCounter is 0 change to the appropriate texture
                 if (keyCounter == 0)
                 {
                     player.Texture = textureManager.RightStandingSprite;
                 }
 
-                // Has enough time gone by to actually flip frames?
+                // Has the player been pressing the key for long enough
                 if (keyCounter >= 5)
                 {
                     keyCounter = 0;
@@ -246,7 +252,7 @@ namespace Purpose
             {
                 player.X = 0;
             }
-            if (player.X >= graphicsDevice.Viewport.Width -200)
+            if (player.X >= graphicsDevice.Viewport.Width-200)
             {
                 player.X = graphicsDevice.Viewport.Width-200;
             }
@@ -322,28 +328,6 @@ namespace Purpose
         public void DrawPlayerWalking(SpriteBatch spriteBatch, SpriteEffects flip)
         {
             spriteBatch.Draw(textureManager.RightRunningSprite, player.Position, 
-                null, Color.White, 0.0f, Vector2.Zero, flip, 1.0f);
-        }
-
-        /// <summary>
-        /// Draws player standing still
-        /// </summary>
-        /// <param name="flip">Should he be flipped horizontally?</param>
-        public void DrawPlayerStanding(SpriteBatch spriteBatch, SpriteEffects flip)
-        {
-            spriteBatch.Draw(textureManager.RightStandingSprite, player.Position, 
-                null, Color.White, 0.0f, Vector2.Zero, flip, 0.0f);
-        }
-
-        public void DrawPlayerCrouching(SpriteBatch spriteBatch, SpriteEffects flip)
-        {
-            spriteBatch.Draw(textureManager.RightCrouchSprite, player.Position, 
-                null, Color.White, 0.0f, Vector2.Zero, flip, 1.0f);
-        }
-
-        public void DrawPlayerMovingCrouching(SpriteBatch spriteBatch, SpriteEffects flip)
-        {
-            spriteBatch.Draw(textureManager.RightCrouchSprite, player.Position,
                 null, Color.White, 0.0f, Vector2.Zero, flip, 1.0f);
         }
     }

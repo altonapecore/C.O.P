@@ -16,7 +16,6 @@ namespace Purpose
         private int upgradePoints;
         private UpgradeManager ugManager;
         private TextureManager textureManager;
-        private PlayerState playerState;
 
         //properties
         public int Kills
@@ -30,7 +29,6 @@ namespace Purpose
         //secondary temporary constructor for debug purposes
         public Player(String name, Rectangle position, TextureManager textureManager) : base(textureManager.RightStandingSprite)
         {
-            playerState = PlayerState.FaceRight;
             this.textureManager = textureManager;
             ugManager = new UpgradeManager();
 
@@ -38,18 +36,8 @@ namespace Purpose
             health = 10000;
             damage = 10;
             texture = textureManager.RightStandingSprite;
-        }
-
-        //finished constructor for when the sprites are finished
-        public Player(string name, TextureManager textureManager, GraphicsDevice graphicsDevice) : base(textureManager.RightStandingSprite)
-        {
             kills = 0;
             upgradePoints = 0;
-            damage = 10;
-            health = 100;
-            position = new Rectangle(0, graphicsDevice.Viewport.Height-100, 25, 10);
-            this.textureManager = textureManager;
-            ugManager = new UpgradeManager();
         }
 
         //methods

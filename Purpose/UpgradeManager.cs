@@ -41,7 +41,7 @@ namespace Purpose
         // Methods
         public void PassiveUpgrade(int stamina, int staminaRegen, int health)
         {
-            ++passiveTier;
+            passiveTier++;
             if(passiveTier==1)
             {
                 staminaRegen += 1;
@@ -57,7 +57,7 @@ namespace Purpose
         }
         public void DamageUpgrade(int damage)
         {
-            ++damageTier;
+            damageTier++;
             if (damageTier == 1 || damageTier == 2 || damageTier == 3 || damageTier == 4 || damageTier == 5)
             {
                 damage += 10;
@@ -69,7 +69,7 @@ namespace Purpose
         }
         public void StealthUpgrade(int dashDistance)
         {
-            ++stealthTier;
+            stealthTier++;
             if(stealthTier == 1 || stealthTier == 2 || stealthTier == 3 || stealthTier == 4 || stealthTier == 5)
             {
                 dashDistance += 10;

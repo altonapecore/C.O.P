@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Purpose
 {
-    public class GameObject
+    public abstract class GameObject
     {
         //fields
         protected Rectangle position;
@@ -30,7 +30,7 @@ namespace Purpose
             get { return position.Y; }
             set { position.Y = value; }
         }
-        public virtual Texture2D Texture
+        public Texture2D Texture
         {
             get { return texture; }
             set { texture = value; }

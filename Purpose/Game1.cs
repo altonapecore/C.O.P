@@ -14,19 +14,6 @@ namespace Purpose
     /// </summary>
 
     //Enums
-    public enum PlayerState
-    {
-        FaceLeft,
-        FaceRight, 
-        WalkLeft,
-        WalkRight,
-        CrouchFaceLeft,
-        CrouchFaceRight,
-        CrouchWalkLeft,
-        CrouchWalkRight, 
-        //JumpLeft,
-        //JumpRight
-    }
     public enum Level
     {
         One,
@@ -40,6 +27,7 @@ namespace Purpose
         Menu,
         Game,
         Pause,
+        UpgradeMenu,
         GameOver
     }
     public class Game1 : Game
@@ -54,26 +42,16 @@ namespace Purpose
         private Player player;
         private Texture2D background;
         private GameManager gameManager;
-        private List<Enemy> enemies;
         private List<Platform> bottomPlatforms;
         private Texture2D platform;
         private ArenaWindow arenaWindow;
-        
-
-        //Actual Player Textures
-        private Texture2D rightStandingSprite;
-        private Texture2D rightRunningSprite;
-        private Texture2D leftStandingSprite;
-        private Texture2D leftRunningSprite;
-        private Texture2D rightCrouchSprite;
-        private Texture2D leftCrouchSprite;
 
         //textureManager object
         private TextureManager textureManager;
 
         //temporary stuff
         private Texture2D tempTexture;
-        private Texture2D tempCrouchTexture;
+        //private Texture2D tempCrouchTexture;
         private Texture2D trent;
         private SpriteFont comicSans24;
         private Random rng;
@@ -82,12 +60,6 @@ namespace Purpose
         private Texture2D whiteBack;
         private Texture2D rustyBack;
         private Texture2D metalBack;
-
-        //Animation stuff
-        int currentFrame;
-        double fps;
-        double secondsPerFrame;
-        double timeCounter;
 
         public Game1()
         {
@@ -126,18 +98,13 @@ namespace Purpose
         /// </summary>
         protected override void LoadContent()
         {
-            currentFrame = 1;
-            fps = 20;
-            secondsPerFrame = 1.0f / fps;
-            timeCounter = 0;
-
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // Load in textures
             //temporary textures
             tempTexture = Content.Load<Texture2D>("pineapple");
-            tempCrouchTexture = Content.Load<Texture2D>("smallerPineapple(1)");
+            //tempCrouchTexture = Content.Load<Texture2D>("smallerPineapple(1)");
             trent = Content.Load<Texture2D>("trent");
             comicSans24 = Content.Load<SpriteFont>("ComicSans24");
 
@@ -145,14 +112,6 @@ namespace Purpose
             whiteBack = Content.Load<Texture2D>("whiteback");
             metalBack = Content.Load<Texture2D>("metalback");
             rustyBack = Content.Load<Texture2D>("rustyback");
-
-            // Right facing sprite
-            rightStandingSprite = Content.Load<Texture2D>("RightStandingSprite");
-            rightRunningSprite = Content.Load<Texture2D>("RightRunningSprite");
-            leftStandingSprite = Content.Load<Texture2D>("LeftStandingSprite");
-            leftRunningSprite = Content.Load<Texture2D>("LeftRunningSprite");
-            rightCrouchSprite = Content.Load<Texture2D>("RightCrouchingSprite");
-            leftCrouchSprite = Content.Load<Texture2D>("LeftCrouchingSprite");
 
             background = Content.Load<Texture2D>("background");
             platform = Content.Load<Texture2D>("PlatformTest");
@@ -164,10 +123,12 @@ namespace Purpose
                 bottomPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 100, 100, 100), platform));
             }
             // Makes player, gameManager object and fills enemy list
-            //the pineapple's dimensions were 445x355
-            //those dimensions may be needed for logic for collisions
-            textureManager = new TextureManager(leftCrouchSprite, rightCrouchSprite, leftStandingSprite, rightStandingSprite, leftRunningSprite, rightRunningSprite);
+            textureManager = new TextureManager(Content.Load<Texture2D>("LeftCrouchingSprite"), Content.Load<Texture2D>("RightCrouchingSprite"), 
+                Content.Load<Texture2D>("LeftStandingSprite"), Content.Load<Texture2D>("RightStandingSprite"),
+                Content.Load<Texture2D>("LeftRunningSprite"), Content.Load<Texture2D>("RightRunningSprite"));
+
             player = new Player("Dude", new Rectangle(225, 225, 139, 352), textureManager);
+
             gameManager = new GameManager(player, bottomPlatforms, GraphicsDevice, textureManager);
             
             arenaWindow = new ArenaWindow(gameManager);
@@ -242,9 +203,13 @@ namespace Purpose
 
                 case GameState.Pause:
                     // Make a pauseMenu form and shows it
-                    PauseMenu pauseMenu = new PauseMenu();
+                    PauseMenu pauseMenu = new PauseMenu(gameState);
                     pauseMenu.ShowDialog();
                     gameManager.GameState = GameState.Game;
+                    break;
+
+                case GameState.UpgradeMenu:
+
                     break;
 
                 case GameState.GameOver:
@@ -298,6 +263,10 @@ namespace Purpose
 
                         spriteBatch.Draw(gameManager.Enemies[i].Texture, new Rectangle(gameManager.Enemies[i].X, gameManager.Enemies[i].Y, 147, 147), Color.White);
                     }
+                    break;
+
+                case GameState.UpgradeMenu:
+
                     break;
 
                 case GameState.GameOver:
