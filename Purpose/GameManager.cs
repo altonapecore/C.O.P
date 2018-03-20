@@ -32,6 +32,8 @@ namespace Purpose
 
         private TextureManager textureManager;
 
+        int keyCounter;
+
         //properties
         public List<Enemy> Enemies { get { return enemies; } }
         public Player Player { get { return player; } }
@@ -94,18 +96,6 @@ namespace Purpose
             this.textureManager = textureManager;
         }
 
-        //final constructor for when sprites are finished
-        public GameManager(string playerName, Texture2D leftCrouchSprite, Texture2D rightCrouchSprite, Texture2D leftStandingSprite, 
-            Texture2D rightStandingSprite, Texture2D rightJumpSprite, Texture2D leftJumpSprite, GraphicsDevice graphicsDevice, Random rng, int numberOfEnemies, int numberOfRanged, Texture2D enemyTexture)
-        {
-            enemies = new List<Enemy>();
-            this.graphicsDevice = graphicsDevice;
-            FillEnemyList(rng, numberOfEnemies, graphicsDevice, enemyTexture);
-            //player = new Player(playerName, leftCrouchSprite, rightCrouchSprite, leftStandingSprite, rightStandingSprite, 
-            //    rightJumpSprite, leftJumpSprite, graphicsDevice);
-            dashDistance = 100;
-        }
-
         //methods
         /// <summary>
         /// Allows the player to move and activate abilities
@@ -137,37 +127,81 @@ namespace Purpose
             //checking keyboard state to make the player move
             if (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left)) //move to the left
             {
+                if (player.Texture == textureManager.RightCrouchSprite || player.Texture == textureManager.LeftCrouchSprite)
+                {
+                    player.Texture = textureManager.LeftCrouchSprite;
+                    player.X -= 8;
+                    return;
+                }
+
+                //if neither key was down previously reset keyCounter
+                if (previouskbState.IsKeyUp(Keys.A) && previouskbState.IsKeyUp(Keys.Left))
+                {
+                    keyCounter = 0;
+                }
+                //add to the key counter if the key has continuously been down
+                if (previouskbState.IsKeyDown(Keys.A) || previouskbState.IsKeyDown(Keys.Left))
+                {
+                    keyCounter++;
+                }
+                if (keyCounter == 0)
+                {
+                    player.Texture = textureManager.LeftStandingSprite;
+                }
+
+                // Has the player been pressing the key for long enough?
+                if (keyCounter >= 5)
+                {
+                    keyCounter = 0;
+                    // Update the frame and wrap
+                    if (player.Texture == textureManager.LeftStandingSprite)
+                    {
+                        player.Texture = textureManager.LeftRunningSprite;
+                    }
+                    else if (player.Texture == textureManager.LeftRunningSprite)
+                    {
+                        player.Texture = textureManager.LeftStandingSprite;
+                    }
+                }
                 player.X -= 8;
-                if (player.CurrentPlayerState == PlayerState.FaceLeft || player.CurrentPlayerState == PlayerState.FaceRight)
-                {
-                    player.CurrentPlayerState = PlayerState.WalkLeft;
-                    //player.Texture = player.LeftRunningSprite;
-                }
-                else if (player.CurrentPlayerState == PlayerState.CrouchFaceLeft || player.CurrentPlayerState == PlayerState.CrouchFaceRight)
-                {
-                    player.CurrentPlayerState = PlayerState.CrouchFaceLeft;
-                }
-                else
-                {
-                    player.CurrentPlayerState = PlayerState.FaceRight;
-                }
             }
             if (kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right)) //move to the right
             {
+                if (player.Texture == textureManager.RightCrouchSprite || player.Texture == textureManager.LeftCrouchSprite)
+                {
+                    player.Texture = textureManager.RightCrouchSprite;
+                    player.X += 8;
+                    return;
+                }
+
+                if (previouskbState.IsKeyUp(Keys.D) && previouskbState.IsKeyUp(Keys.Right))
+                {
+                    keyCounter = 0;
+                }
+                if (previouskbState.IsKeyDown(Keys.D) || previouskbState.IsKeyDown(Keys.Right))
+                {
+                    keyCounter++;
+                }
+                if (keyCounter == 0)
+                {
+                    player.Texture = textureManager.RightStandingSprite;
+                }
+
+                // Has enough time gone by to actually flip frames?
+                if (keyCounter >= 5)
+                {
+                    keyCounter = 0;
+                    // Update the frame and wrap
+                    if (player.Texture == textureManager.RightStandingSprite)
+                    {
+                        player.Texture = textureManager.RightRunningSprite;
+                    }
+                    else if (player.Texture == textureManager.RightRunningSprite)
+                    {
+                        player.Texture = textureManager.RightStandingSprite;
+                    }
+                }
                 player.X += 8;
-                if (player.CurrentPlayerState == PlayerState.FaceLeft || player.CurrentPlayerState == PlayerState.FaceRight)
-                {
-                    player.CurrentPlayerState = PlayerState.WalkRight;
-                    //player.Texture = player.LeftRunningSprite;
-                }
-                else if (player.CurrentPlayerState == PlayerState.CrouchFaceLeft || player.CurrentPlayerState == PlayerState.CrouchFaceRight)
-                {
-                    player.CurrentPlayerState = PlayerState.CrouchFaceRight;
-                }
-                else
-                {
-                    player.CurrentPlayerState = PlayerState.FaceRight;
-                }
             }
             if (kbState.IsKeyDown(Keys.Space) && !previouskbState.IsKeyDown(Keys.Space) && onPlatform && !isCrouching) //jump
             {
@@ -177,11 +211,13 @@ namespace Purpose
             {
                 if (player.UgManager.DashActive)
                 {
-                    if (player.CurrentPlayerState == PlayerState.FaceRight || player.CurrentPlayerState == PlayerState.CrouchFaceRight) //dash to the right
+                    if (player.Texture == textureManager.RightStandingSprite || player.Texture == textureManager.RightRunningSprite 
+                        || player.Texture == textureManager.RightCrouchSprite) //dash to the right
                     {
                         player.X += dashDistance;
                     }
-                    else if (player.CurrentPlayerState == PlayerState.FaceLeft || player.CurrentPlayerState == PlayerState.CrouchFaceLeft) //dash to the left
+                    else if (player.Texture == textureManager.LeftStandingSprite || player.Texture == textureManager.LeftRunningSprite
+                        || player.Texture == textureManager.LeftCrouchSprite) //dash to the left
                     {
                         player.X -= dashDistance;
                     }
@@ -190,7 +226,7 @@ namespace Purpose
             if (kbState.IsKeyDown(Keys.S) && previouskbState.IsKeyUp(Keys.S) //crouch
                 && !kbState.IsKeyDown(Keys.Space) && onPlatform)
             {
-                isCrouching = player.Crouch(); //sets the isCrouching bool based on the Crouch() method
+                isCrouching = player.Crouch(kbState); //sets the isCrouching bool based on the Crouch() method
             }
             // Player attack done here as well as enemy takeDamage
             if (ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
@@ -283,10 +319,10 @@ namespace Purpose
         /// <param name="spriteBatch">The spriteBatch object from the draw method</param>
         /// <param name="currentFrame">the current frame of the game</param>
         /// <param name="flip">Should be flipped horizontally?</param>
-        public void DrawPlayerWalking(SpriteBatch spriteBatch, int currentFrame, SpriteEffects flip)
+        public void DrawPlayerWalking(SpriteBatch spriteBatch, SpriteEffects flip)
         {
             spriteBatch.Draw(textureManager.RightRunningSprite, player.Position, 
-                player.Position, Color.White, 0.0f, Vector2.Zero, flip, 1.0f);
+                null, Color.White, 0.0f, Vector2.Zero, flip, 1.0f);
         }
 
         /// <summary>
@@ -296,19 +332,19 @@ namespace Purpose
         public void DrawPlayerStanding(SpriteBatch spriteBatch, SpriteEffects flip)
         {
             spriteBatch.Draw(textureManager.RightStandingSprite, player.Position, 
-                player.Position, Color.White, 0.0f, Vector2.Zero, flip, 0.0f);
+                null, Color.White, 0.0f, Vector2.Zero, flip, 0.0f);
         }
 
         public void DrawPlayerCrouching(SpriteBatch spriteBatch, SpriteEffects flip)
         {
             spriteBatch.Draw(textureManager.RightCrouchSprite, player.Position, 
-                player.Position, Color.White, 0.0f, Vector2.Zero, flip, 1.0f);
+                null, Color.White, 0.0f, Vector2.Zero, flip, 1.0f);
         }
 
-        public void DrawPlayerMovingCrouching(SpriteBatch spriteBatch, int currentFrame, SpriteEffects flip)
+        public void DrawPlayerMovingCrouching(SpriteBatch spriteBatch, SpriteEffects flip)
         {
             spriteBatch.Draw(textureManager.RightCrouchSprite, player.Position,
-                player.Position, Color.White, 0.0f, Vector2.Zero, flip, 1.0f);
+                null, Color.White, 0.0f, Vector2.Zero, flip, 1.0f);
         }
     }
 }

@@ -127,7 +127,7 @@ namespace Purpose
         protected override void LoadContent()
         {
             currentFrame = 1;
-            fps = 100.0;
+            fps = 20;
             secondsPerFrame = 1.0f / fps;
             timeCounter = 0;
 
@@ -256,7 +256,6 @@ namespace Purpose
                     break;
             }
 
-
             base.Update(gameTime);
         }
 
@@ -278,7 +277,7 @@ namespace Purpose
                 case GameState.Menu:
                    
                     // Temp drawing stuffs
-                    //spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
+                    spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
                     //spriteBatch.DrawString(comicSans24, "Press ENTER to play", new Vector2(GraphicsDevice.Viewport.X / 2, GraphicsDevice.Viewport.Y / 2), Color.Yellow);
 
                     break;
@@ -292,34 +291,7 @@ namespace Purpose
                         spriteBatch.Draw(p.Texture, p.Position, Color.White);
                     }
                     // Player
-                    //spriteBatch.Draw(gameManager.Player.Texture, new Rectangle(gameManager.Player.X, gameManager.Player.Y, player.Position.Width, player.Position.Height), Color.White);
-                    switch (gameManager.Player.CurrentPlayerState)
-                    {
-                        case (PlayerState.FaceLeft):
-                            gameManager.DrawPlayerStanding(spriteBatch, SpriteEffects.FlipHorizontally);
-                            break;
-                        case (PlayerState.WalkLeft):
-                            gameManager.DrawPlayerWalking(spriteBatch, currentFrame, SpriteEffects.FlipHorizontally);
-                            break;
-                        case (PlayerState.FaceRight):
-                            gameManager.DrawPlayerStanding(spriteBatch, SpriteEffects.None);
-                            break;
-                        case (PlayerState.WalkRight):
-                            gameManager.DrawPlayerWalking(spriteBatch, currentFrame, SpriteEffects.None);
-                            break;
-                        case (PlayerState.CrouchFaceLeft):
-                            gameManager.DrawPlayerCrouching(spriteBatch, SpriteEffects.FlipHorizontally);
-                            break;
-                        case (PlayerState.CrouchFaceRight):
-                            gameManager.DrawPlayerCrouching(spriteBatch, SpriteEffects.None);
-                            break;
-                        case (PlayerState.CrouchWalkLeft):
-                            break;
-                        case (PlayerState.CrouchWalkRight):
-                            break;
-                        default:
-                            break;
-                    }
+                    spriteBatch.Draw(gameManager.Player.Texture, new Rectangle(gameManager.Player.X, gameManager.Player.Y, player.Position.Width, player.Position.Height), Color.White);
                     // Enemies
                     for (int i = 0; i < gameManager.Enemies.Count; i++)
                     {
@@ -338,25 +310,6 @@ namespace Purpose
 
             spriteBatch.End();
             base.Draw(gameTime);
-        }
-
-        //Basic animation stuff that is not done yet
-        //Example in the Finite State Machine Dropbox on MyCourses
-        public void UpdateAnimation(GameTime gameTime)
-        {
-            // Add to the time counter (need TOTALSECONDS here)
-            timeCounter += gameTime.ElapsedGameTime.TotalSeconds;
-
-            // Has enough time gone by to actually flip frames?
-            if (timeCounter >= secondsPerFrame)
-            {
-                // Update the frame and wrap
-                currentFrame++;
-                if (currentFrame >= 4) currentFrame = 1;
-
-                // Remove one "frame" worth of time
-                timeCounter -= secondsPerFrame;
-            }
         }
     }
 }

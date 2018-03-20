@@ -27,24 +27,6 @@ namespace Purpose
 
         public UpgradeManager UgManager { get { return ugManager; } }
 
-        public PlayerState CurrentPlayerState
-        {
-            get { return playerState; }
-            set { playerState = value; }
-        }
-
-        //constructors
-
-        // Temporary constructor for debug purposes
-        //public Player(String name, Texture2D texture, Texture2D tempCrouchTexture, Rectangle position) : base(texture)
-        //{
-        //    ugManager = new UpgradeManager();
-
-        //    this.position = position;
-        //    health = 10000;
-        //    damage = 10;
-        //}
-
         //secondary temporary constructor for debug purposes
         public Player(String name, Rectangle position, TextureManager textureManager) : base(textureManager.RightStandingSprite)
         {
@@ -55,6 +37,7 @@ namespace Purpose
             this.position = position;
             health = 10000;
             damage = 10;
+            texture = textureManager.RightStandingSprite;
         }
 
         //finished constructor for when the sprites are finished
@@ -105,21 +88,35 @@ namespace Purpose
         /// Allows the player to crouch
         /// </summary>
         /// <returns>Returns a boolean representing if the player is crouching or not</returns>
-        public bool Crouch()
+        public bool Crouch(KeyboardState kbState)
         {
             //if the player's current texture isn't the crouch sprite, make the player crouch
-            if (playerState == PlayerState.CrouchFaceLeft || playerState == PlayerState.CrouchFaceRight)
+            if (texture == textureManager.LeftCrouchSprite || texture == textureManager.RightCrouchSprite)
             {
                 Rectangle prevPosition = position;
                 position = new Rectangle(prevPosition.X, prevPosition.Y - prevPosition.Height, prevPosition.Width, prevPosition.Height * 2);
-                playerState = PlayerState.FaceRight;
+                if (texture == textureManager.RightCrouchSprite)
+                {
+                    texture = textureManager.RightStandingSprite;
+                }
+                else if (texture == textureManager.LeftCrouchSprite)
+                {
+                    texture = textureManager.LeftStandingSprite;
+                }
                 return false;
             }
             else
             {
                 Rectangle prevPosition = position;
                 position = new Rectangle(prevPosition.X, prevPosition.Y + prevPosition.Height/2, prevPosition.Width, prevPosition.Height/2);
-                playerState = PlayerState.CrouchFaceRight;
+                if (texture == textureManager.RightStandingSprite || texture == textureManager.RightRunningSprite)
+                {
+                    texture = textureManager.RightCrouchSprite;
+                }
+                else if (texture == textureManager.LeftStandingSprite || texture == textureManager.LeftRunningSprite)
+                {
+                    texture = textureManager.LeftCrouchSprite;
+                }
                 return true;
             }
 
