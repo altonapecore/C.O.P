@@ -67,6 +67,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="TextureManager.cs" />
     <Compile Include="UpgradeManager.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -14,15 +14,9 @@ namespace Purpose
         //fields
         private int kills;
         private int upgradePoints;
-        private Texture2D rightCrouchSprite;
-        private Texture2D leftCrouchSprite;
-        private Texture2D rightStandingSprite;
-        private Texture2D leftStandingSprite;
-        private Texture2D rightJumpSprite;
-        private Texture2D leftJumpSprite;
-        private Texture2D rightRunningSprite;
-        private Texture2D leftRunningSprite;
         private UpgradeManager ugManager;
+        private TextureManager textureManager;
+        private PlayerState playerState;
 
         //properties
         public int Kills
@@ -33,73 +27,28 @@ namespace Purpose
 
         public UpgradeManager UgManager { get { return ugManager; } }
 
-        //sprite properties
-        public Texture2D RightCrouchSprite { get { return rightCrouchSprite; } }
-        public Texture2D LeftCrouchSprite { get { return leftCrouchSprite; } }
-        public Texture2D RightStandingSprite { get { return rightStandingSprite; } }
-        public Texture2D LeftStandingSprite { get { return leftStandingSprite; } }
-        public Texture2D RightJumpSprite { get { return rightJumpSprite; } }
-        public Texture2D LeftJumpSprite { get { return leftJumpSprite; } }
-        public Texture2D RightRunningSprite { get { return rightRunningSprite; } }
-        public Texture2D LeftRunningSprite { get { return leftRunningSprite; } }
-
-        //constructors
-
-        // Temporary constructor for debug purposes
-        public Player(String name, Texture2D texture, Texture2D tempCrouchTexture, Rectangle position) : base(texture)
-        {
-            rightCrouchSprite = tempCrouchTexture;
-            leftCrouchSprite = tempCrouchTexture;
-            rightJumpSprite = texture;
-            leftJumpSprite = texture;
-            rightStandingSprite = texture;
-            leftStandingSprite = texture;
-            ugManager = new UpgradeManager();
-
-            this.position = position;
-            health = 10000;
-            damage = 10;
-        }
-
         //secondary temporary constructor for debug purposes
-        public Player(String name, Rectangle position, Texture2D leftCrouchSprite, Texture2D rightCrouchSprite, Texture2D leftStandingSprite,
-            Texture2D rightStandingSprite, Texture2D leftRunningSprite, Texture2D rightRunningSprite) : base(rightStandingSprite)
+        public Player(String name, Rectangle position, TextureManager textureManager) : base(textureManager.RightStandingSprite)
         {
-            this.rightCrouchSprite = rightCrouchSprite;
-            this.leftCrouchSprite = leftCrouchSprite;
-            this.rightStandingSprite = rightStandingSprite;
-            this.leftStandingSprite = leftStandingSprite;
-            this.rightRunningSprite = rightRunningSprite;
-            this.leftRunningSprite = leftRunningSprite;
-
-            rightJumpSprite = rightStandingSprite;
-            leftJumpSprite = leftStandingSprite;
-
+            playerState = PlayerState.FaceRight;
+            this.textureManager = textureManager;
             ugManager = new UpgradeManager();
 
             this.position = position;
             health = 10000;
             damage = 10;
+            texture = textureManager.RightStandingSprite;
         }
 
         //finished constructor for when the sprites are finished
-        public Player(string name, Texture2D leftCrouchSprite, Texture2D rightCrouchSprite, Texture2D leftStandingSprite, 
-            Texture2D rightStandingSprite, Texture2D rightJumpSprite, Texture2D leftJumpSprite, Texture2D leftRunningSprite,
-            Texture2D rightRunningSprite, GraphicsDevice graphicsDevice) : base(rightStandingSprite)
+        public Player(string name, TextureManager textureManager, GraphicsDevice graphicsDevice) : base(textureManager.RightStandingSprite)
         {
             kills = 0;
             upgradePoints = 0;
             damage = 10;
             health = 100;
             position = new Rectangle(0, graphicsDevice.Viewport.Height-100, 25, 10);
-
-            texture = rightStandingSprite;
-            this.leftCrouchSprite = leftCrouchSprite;
-            this.rightCrouchSprite = rightCrouchSprite;
-            this.leftStandingSprite = leftStandingSprite;
-            this.rightStandingSprite = rightStandingSprite;
-            this.leftJumpSprite = leftJumpSprite;
-            this.rightJumpSprite = rightJumpSprite;
+            this.textureManager = textureManager;
             ugManager = new UpgradeManager();
         }
 
@@ -139,21 +88,35 @@ namespace Purpose
         /// Allows the player to crouch
         /// </summary>
         /// <returns>Returns a boolean representing if the player is crouching or not</returns>
-        public bool Crouch()
+        public bool Crouch(KeyboardState kbState)
         {
             //if the player's current texture isn't the crouch sprite, make the player crouch
-            if (texture == rightCrouchSprite || texture == leftCrouchSprite)
+            if (texture == textureManager.LeftCrouchSprite || texture == textureManager.RightCrouchSprite)
             {
                 Rectangle prevPosition = position;
                 position = new Rectangle(prevPosition.X, prevPosition.Y - prevPosition.Height, prevPosition.Width, prevPosition.Height * 2);
-                texture = rightStandingSprite;
+                if (texture == textureManager.RightCrouchSprite)
+                {
+                    texture = textureManager.RightStandingSprite;
+                }
+                else if (texture == textureManager.LeftCrouchSprite)
+                {
+                    texture = textureManager.LeftStandingSprite;
+                }
                 return false;
             }
             else
             {
                 Rectangle prevPosition = position;
                 position = new Rectangle(prevPosition.X, prevPosition.Y + prevPosition.Height/2, prevPosition.Width, prevPosition.Height/2);
-                texture = rightCrouchSprite;
+                if (texture == textureManager.RightStandingSprite || texture == textureManager.RightRunningSprite)
+                {
+                    texture = textureManager.RightCrouchSprite;
+                }
+                else if (texture == textureManager.LeftStandingSprite || texture == textureManager.LeftRunningSprite)
+                {
+                    texture = textureManager.LeftCrouchSprite;
+                }
                 return true;
             }
 
