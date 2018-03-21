@@ -3,6 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using MonoGame.Extended;
+using MonoGame.Extended.ViewportAdapters;
 
 namespace Purpose
 {
@@ -52,6 +54,11 @@ namespace Purpose
         private List<Platform> bottomPlatforms;
         private Texture2D platform;
         private ArenaWindow arenaWindow;
+        private Camera2D camera;
+        private int worldLeftEndWidth;
+        private int worldRightEndWidth;
+        private int worldTopHeight;
+        private int worldBottomHeight;
 
         private Texture2D startScreen;
         private GameObject startButton;
@@ -84,6 +91,12 @@ namespace Purpose
 
             // Temp coding stuffs
             rng = new Random();
+
+            // Set size of world width and height
+            worldLeftEndWidth = -5000;
+            worldRightEndWidth = 5000;
+            worldTopHeight = -2000;
+            worldBottomHeight = 2000;
         }
 
         /// <summary>
@@ -101,6 +114,8 @@ namespace Purpose
             //Initialize the Window Form
             base.Initialize();
             //bottomPlatforms = new List<Platform>();
+            var viewportAdapter = new BoxingViewportAdapter(Window, GraphicsDevice, 800, 480);
+            camera = new Camera2D(viewportAdapter);
         }
 
         /// <summary>
@@ -133,26 +148,30 @@ namespace Purpose
 
             // Makes platforms
             bottomPlatforms = new List<Platform>();
-            for (int i = 0; i < GraphicsDevice.Viewport.Width/100; i++)
+            for (int i = 0; i > worldLeftEndWidth / 100; i--)
+            {
+                bottomPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 100, 100, 100), platform));
+            }
+            for (int i = 0; i < worldRightEndWidth / 100; i++)
             {
                 bottomPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 100, 100, 100), platform));
             }
             // Makes player, gameManager object and fills enemy list
-            textureManager = new TextureManager(Content.Load<Texture2D>("LeftCrouchingSprite"), Content.Load<Texture2D>("RightCrouchingSprite"), 
+            textureManager = new TextureManager(Content.Load<Texture2D>("LeftCrouchingSprite"), Content.Load<Texture2D>("RightCrouchingSprite"),
                 Content.Load<Texture2D>("LeftStandingSprite"), Content.Load<Texture2D>("RightStandingSprite"),
                 Content.Load<Texture2D>("LeftRunningSprite"), Content.Load<Texture2D>("RightRunningSprite"));
 
             player = new Player("Dude", new Rectangle(225, 225, 139, 352), textureManager);
 
             gameManager = new GameManager(player, bottomPlatforms, GraphicsDevice, textureManager);
-            
+
             arenaWindow = new ArenaWindow(gameManager);
             gameManager.GameState = GameState.Menu;
             arenaWindow.ShowDialog(); //Loads arenaWindow here to allow User to change settings of level, enemies, and background
 
-            gameManager.FillEnemyList(rng, gameManager.NumberOfEnemies, GraphicsDevice, trent);
-            gameManager.FillRangedList(rng, gameManager.NumberOfRanged, GraphicsDevice, tempTexture);
-           
+            gameManager.FillEnemyList(rng, gameManager.NumberOfEnemies, worldLeftEndWidth, worldRightEndWidth, trent);
+            gameManager.FillRangedList(rng, gameManager.NumberOfRanged, worldLeftEndWidth, worldRightEndWidth, tempTexture);
+
         }
 
         /// <summary>
@@ -208,18 +227,9 @@ namespace Purpose
                     break;
 
                 case GameState.Game:
-                    // Stuff for auto scrolling screen
-                    // Not fully working yet so I commented it out
-                    //if(player.X != GraphicsDevice.Viewport.Width / 2 || player.Y != GraphicsDevice.Viewport.Height / 2)
-                    //{
-                    //    int x = background.Bounds.X;
-                    //    int y = background.Bounds.Y;
-                    //
-                    //    x -= player.X - GraphicsDevice.Viewport.Width;
-                    //    y -= player.Y - GraphicsDevice.Viewport.Height;
-                    //
-                    //    GraphicsDevice.Viewport = new Viewport(x, y, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
-                    //}
+                    camera.MinimumZoom = 0.5f;
+                    camera.MaximumZoom = 1.0f;
+                    camera.Zoom = 0.5f;
 
                     // Stuff for moving player and enemy, as well as player attack
                     gameManager.PlayerMove(kbState, previouskbState, ms, previousMs);
@@ -229,7 +239,7 @@ namespace Purpose
                         gameManager.GameState = GameState.Pause;
                     }
 
-                    if(player.Health <= 0)
+                    if (player.Health <= 0)
                     {
                         gameManager.GameState = GameState.GameOver;
                     }
@@ -266,25 +276,16 @@ namespace Purpose
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            spriteBatch.Begin();           
+            var transformMatrix = camera.GetViewMatrix();
+            spriteBatch.Begin(transformMatrix: transformMatrix);
 
-            
+
 
             // GameState drawing stuffs
             switch (gameManager.GameState)
             {
                 case GameState.Menu:
-
-                    spriteBatch.Draw(startScreen, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
-                    if (startButton.Intersects(ms.Position))
-                    {
-                        spriteBatch.Draw(startButton.Texture, startButton.Position, Color.Black);
-                    }
-                    else
-                    {
-                        spriteBatch.Draw(startButton.Texture, startButton.Position, Color.White);
-                    }
-
+                   
                     // Temp drawing stuffs
                     //spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
                     //spriteBatch.DrawString(comicSans24, "Press ENTER to play", new Vector2(GraphicsDevice.Viewport.X / 2, GraphicsDevice.Viewport.Y / 2), Color.Yellow);
@@ -293,14 +294,21 @@ namespace Purpose
 
                 case GameState.Game:
                     // Background
-                    spriteBatch.Draw(background, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
+                    for (int x = worldLeftEndWidth; x < worldRightEndWidth; x += background.Width)
+                    {
+                        for (int y = worldTopHeight; y < worldBottomHeight; y += background.Height)
+                        {
+                            spriteBatch.Draw(background, new Rectangle(x, y, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
+                        }
+                    }
+
                     // Platforms
                     foreach (Platform p in bottomPlatforms)
                     {
                         spriteBatch.Draw(p.Texture, p.Position, Color.White);
                     }
                     // Player
-                    spriteBatch.Draw(gameManager.Player.Texture, new Rectangle(gameManager.Player.X, gameManager.Player.Y, player.Position.Width, player.Position.Height), 
+                    spriteBatch.Draw(gameManager.Player.Texture, new Rectangle(gameManager.Player.X, gameManager.Player.Y, player.Position.Width, player.Position.Height),
                         Color.White);
                     // Enemies
                     for (int i = 0; i < gameManager.Enemies.Count; i++)
