@@ -30,6 +30,7 @@ namespace Purpose
         private Background backgroundSelection;
         private int numberOfEnemies;
         private int numberOfRanged;
+        private int jumpNum;
 
         private TextureManager textureManager;
 
@@ -80,6 +81,13 @@ namespace Purpose
         {
             get { return numberOfRanged; }
             set { numberOfRanged = value; }
+        }
+
+        // This is for jump logic
+        public int JumpNum
+        {
+            get { return jumpNum; }
+            set { jumpNum = value; }
         }
 
         //constructor
@@ -218,7 +226,7 @@ namespace Purpose
             }
             if (kbState.IsKeyDown(Keys.Space) && !previouskbState.IsKeyDown(Keys.Space) && onPlatform && !isCrouching) //jump
             {
-                player.Jump();
+                jumpNum = 1;
             }
             if (kbState.IsKeyDown(Keys.Q) && !previouskbState.IsKeyDown(Keys.Q) && !kbState.IsKeyDown(Keys.Space)) //dash
             {

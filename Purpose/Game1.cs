@@ -232,7 +232,19 @@ namespace Purpose
                     camera.Zoom = 0.5f;
 
                     // Stuff for moving player and enemy, as well as player attack
+                    previousMs = ms;
+                    ms = Mouse.GetState();
                     gameManager.PlayerMove(kbState, previouskbState, ms, previousMs, camera);
+                    // Jump logic
+                    if(gameManager.JumpNum >= 1 && gameManager.JumpNum <= 10)
+                    {
+                        player.Jump();
+                        gameManager.JumpNum++;
+                    }
+                    if(gameManager.JumpNum == 10)
+                    {
+                        gameManager.JumpNum = 0;
+                    }
                     gameManager.EnemyMove();
                     if (kbState.IsKeyDown(Keys.P))
                     {
