@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
+using MonoGame.Extended;
 
 namespace Purpose
 {
     public enum Background
     {
         WhiteBackground,
-        MetalBackground, 
+        MetalBackground,
         RustBackground
     }
     public class GameManager
@@ -66,7 +67,7 @@ namespace Purpose
             get { return backgroundSelection; }
             set { backgroundSelection = value; }
         }
-        
+
         //This is for the number of Melee Enemies
         public int NumberOfEnemies
         {
@@ -104,7 +105,7 @@ namespace Purpose
         /// <param name="previouskbState">The previous state of the keyboard</param>
         /// <param name="ms">The current mouse state</param>
         /// <param name="previousMs">The previous mouse state</param>
-        public void PlayerMove(KeyboardState kbState, KeyboardState previouskbState, MouseState ms, MouseState previousMs)
+        public void PlayerMove(KeyboardState kbState, KeyboardState previouskbState, MouseState ms, MouseState previousMs, Camera2D camera)
         {
             //a boolean representing if the player is on the platform
             bool onPlatform = false;
@@ -122,6 +123,8 @@ namespace Purpose
             if (!onPlatform)
             {
                 player.Y += 5;
+                // moving camera with player
+                camera.Position = new Vector2(player.X, player.Y);
             }
 
             //checking keyboard state to make the player move
@@ -166,6 +169,8 @@ namespace Purpose
                     }
                 }
                 player.X -= 8;
+                // moving camera with player
+                camera.Position = new Vector2(player.X, player.Y);
             }
             if (kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right)) //move to the right
             {
@@ -208,6 +213,8 @@ namespace Purpose
                     }
                 }
                 player.X += 8;
+                // moving camera with player
+                camera.Position = new Vector2(player.X, player.Y);
             }
             if (kbState.IsKeyDown(Keys.Space) && !previouskbState.IsKeyDown(Keys.Space) && onPlatform && !isCrouching) //jump
             {
@@ -217,7 +224,7 @@ namespace Purpose
             {
                 if (player.UgManager.DashActive)
                 {
-                    if (player.Texture == textureManager.RightStandingSprite || player.Texture == textureManager.RightRunningSprite 
+                    if (player.Texture == textureManager.RightStandingSprite || player.Texture == textureManager.RightRunningSprite
                         || player.Texture == textureManager.RightCrouchSprite) //dash to the right
                     {
                         player.X += dashDistance;
@@ -228,6 +235,8 @@ namespace Purpose
                         player.X -= dashDistance;
                     }
                 }
+                // moving camera with player
+                camera.Position = new Vector2(player.X, player.Y);
             }
             if (kbState.IsKeyDown(Keys.S) && previouskbState.IsKeyUp(Keys.S) //crouch
                 && !kbState.IsKeyDown(Keys.Space) && onPlatform)
@@ -237,7 +246,7 @@ namespace Purpose
             // Player attack done here as well as enemy takeDamage
             if (ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
             {
-                for(int i = 0; i < enemies.Count; i++)
+                for (int i = 0; i < enemies.Count; i++)
                 {
                     enemies[i].TakeDamage(player.Attack(enemies[i].Position));
                     if (enemies[i].IsDead)
@@ -248,18 +257,20 @@ namespace Purpose
             }
 
             //limiting player movement in both x directions and lower y direction
-            if (player.X <= 0)
-            {
-                player.X = 0;
-            }
-            if (player.X >= graphicsDevice.Viewport.Width-200)
-            {
-                player.X = graphicsDevice.Viewport.Width-200;
-            }
+            //if (player.X <= 0)
+            //{
+            //    player.X = 0;
+            //}
+            //if (player.X >= graphicsDevice.Viewport.Width-200)
+            //{
+            //    player.X = graphicsDevice.Viewport.Width-200;
+            //}
             if (player.Y >= graphicsDevice.Viewport.Height)
             {
-                player.Y = graphicsDevice.Viewport.Height-200;
+                player.Y = graphicsDevice.Viewport.Height - 200;
             }
+
+
         }
 
         /// <summary>
@@ -269,12 +280,24 @@ namespace Purpose
         /// <param name="numberOfEnemies">The number of enemies to spawn in</param>
         /// <param name="graphicsDevice">The graphics device to help limit the enemies' spawn positions</param>
         /// <param name="enemyTexture">The texture of the enemies</param>
-        public void FillEnemyList(Random rng, int numberOfEnemies, GraphicsDevice graphicsDevice, Texture2D enemyTexture)
+        public void FillEnemyList(Random rng, int numberOfEnemies, int worldLeftEndWidth, int worldRightEndWidth, Texture2D enemyTexture)
         {
             for (int i = 0; i < NumberOfEnemies; i++)
             {
-                Enemy enemy = new Enemy(new Rectangle(rng.Next(0, graphicsDevice.Viewport.Width), graphicsDevice.Viewport.Height - 450, 147, 147), enemyTexture, Level.One, false);
-                enemies.Add(enemy);
+                int choice = rng.Next(1, 3);
+                if (choice == 1)
+                {
+                    Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, 0), graphicsDevice.Viewport.Height - 450, 147, 147),
+                        enemyTexture, Level.One, false);
+                    enemies.Add(enemy);
+                }
+
+                else if (choice == 2)
+                {
+                    Enemy enemy = new Enemy(new Rectangle(rng.Next(0, worldRightEndWidth), graphicsDevice.Viewport.Height - 450, 147, 147),
+                        enemyTexture, Level.One, false);
+
+                }
             }
         }
 
@@ -285,12 +308,24 @@ namespace Purpose
         /// <param name="numberOfRanged">The number to spawn</param>
         /// <param name="graphicsDevice">Limits the enemies spawn point</param>
         /// <param name="rangeTexture">The texture for the Ranged Enemies</param>
-        public void FillRangedList(Random rng, int numberOfRanged, GraphicsDevice graphicsDevice, Texture2D rangeTexture)
+        public void FillRangedList(Random rng, int numberOfRanged, int worldLeftEndWidth, int worldRightEndWidth, Texture2D rangeTexture)
         {
             for (int i = 0; i < NumberOfRanged; i++)
             {
-                Enemy enemy = new Enemy(new Rectangle(rng.Next(0, graphicsDevice.Viewport.Width), graphicsDevice.Viewport.Height - 450, 147, 147), rangeTexture, Level.One, true);
-                enemies.Add(enemy);
+                int choice = rng.Next(1, 3);
+                if (choice == 1)
+                {
+                    Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, 0), graphicsDevice.Viewport.Height - 450, 147, 147),
+                        rangeTexture, Level.One, false);
+                    enemies.Add(enemy);
+                }
+
+                else if (choice == 2)
+                {
+                    Enemy enemy = new Enemy(new Rectangle(rng.Next(0, worldRightEndWidth), graphicsDevice.Viewport.Height - 450, 147, 147),
+                        rangeTexture, Level.One, false);
+
+                }
             }
         }
 
@@ -327,7 +362,7 @@ namespace Purpose
         /// <param name="flip">Should be flipped horizontally?</param>
         public void DrawPlayerWalking(SpriteBatch spriteBatch, SpriteEffects flip)
         {
-            spriteBatch.Draw(textureManager.RightRunningSprite, player.Position, 
+            spriteBatch.Draw(textureManager.RightRunningSprite, player.Position,
                 null, Color.White, 0.0f, Vector2.Zero, flip, 1.0f);
         }
     }
