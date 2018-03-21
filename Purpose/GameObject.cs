@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Purpose
 {
-    public abstract class GameObject
+    public class GameObject
     {
         //fields
         protected Rectangle position;
@@ -41,6 +41,22 @@ namespace Purpose
         {
             this.texture = texture;
         }
+
+        public GameObject(Texture2D texture, Rectangle position)
+        {
+            this.texture = texture;
+            this.position = position;
+        }
         
+        public bool Intersects(Point mousePosition)
+        {
+            Rectangle mouseRectangle = new Rectangle(mousePosition.X, mousePosition.Y, 5, 5);
+
+            if (position.Intersects(mouseRectangle))
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

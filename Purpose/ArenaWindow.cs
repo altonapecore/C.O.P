@@ -25,7 +25,7 @@ namespace Purpose
         //Also checks the background selected by the user
         private void StartButton_Click(object sender, EventArgs e)
         {
-            gameManager.GameState = GameState.Game;
+            gameManager.GameState = GameState.Menu;
 
             //Goes through to check which radio button was checked and which background to use
             if (radioButton == WhiteBackground)
