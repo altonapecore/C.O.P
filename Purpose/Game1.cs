@@ -19,7 +19,15 @@ namespace Purpose
         One,
         Two,
         Three,
-        Four
+    }
+
+    public enum Wave
+    {
+        One,
+        Two, 
+        Three, 
+        Four, 
+        Five
     }
 
     public enum GameState
@@ -35,7 +43,6 @@ namespace Purpose
         //Fields 
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
-        public GameState gameState;
         private Level currentLevel;
         private KeyboardState kbState;
         private MouseState ms;
@@ -45,6 +52,10 @@ namespace Purpose
         private List<Platform> bottomPlatforms;
         private Texture2D platform;
         private ArenaWindow arenaWindow;
+
+        private Texture2D startScreen;
+        private GameObject startButton;
+        private Texture2D buttonFrame;
 
         //textureManager object
         private TextureManager textureManager;
@@ -107,6 +118,8 @@ namespace Purpose
             //tempCrouchTexture = Content.Load<Texture2D>("smallerPineapple(1)");
             trent = Content.Load<Texture2D>("trent");
             comicSans24 = Content.Load<SpriteFont>("ComicSans24");
+            startScreen = Content.Load<Texture2D>("metalBackground2");
+            buttonFrame = Content.Load<Texture2D>("buttonFrame2");
 
             //temporary background
             whiteBack = Content.Load<Texture2D>("whiteback");
@@ -115,6 +128,8 @@ namespace Purpose
 
             background = Content.Load<Texture2D>("background");
             platform = Content.Load<Texture2D>("PlatformTest");
+
+            startButton = new GameObject(buttonFrame, new Rectangle(500, 365, 300, 100));
 
             // Makes platforms
             bottomPlatforms = new List<Platform>();
@@ -163,12 +178,14 @@ namespace Purpose
             KeyboardState previouskbState = kbState;
             kbState = Keyboard.GetState();
 
+            MouseState previousMs = ms;
+            ms = Mouse.GetState();
+
             // GameState finite state machine
             switch (gameManager.GameState)
             {
 
                 case GameState.Menu:
-
                     //Using the selection from the ArenaWindow pciks the background to use in the Game
                     if (gameManager.BackgroundSelection == Background.WhiteBackground)
                     {
@@ -182,6 +199,12 @@ namespace Purpose
                     {
                         background = rustyBack; //Background is Rusty
                     }
+
+                    if (startButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed)
+                    {
+                        gameManager.GameState = GameState.Game;
+                    }
+
                     break;
 
                 case GameState.Game:
@@ -199,8 +222,6 @@ namespace Purpose
                     //}
 
                     // Stuff for moving player and enemy, as well as player attack
-                    MouseState previousMs = ms;
-                    ms = Mouse.GetState();
                     gameManager.PlayerMove(kbState, previouskbState, ms, previousMs);
                     gameManager.EnemyMove();
                     if (kbState.IsKeyDown(Keys.P))
@@ -216,7 +237,7 @@ namespace Purpose
 
                 case GameState.Pause:
                     // Make a pauseMenu form and shows it
-                    PauseMenu pauseMenu = new PauseMenu(gameState);
+                    PauseMenu pauseMenu = new PauseMenu(gameManager.GameState);
                     pauseMenu.ShowDialog();
                     gameManager.GameState = GameState.Game;
                     break;
@@ -253,9 +274,19 @@ namespace Purpose
             switch (gameManager.GameState)
             {
                 case GameState.Menu:
-                   
+
+                    spriteBatch.Draw(startScreen, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
+                    if (startButton.Intersects(ms.Position))
+                    {
+                        spriteBatch.Draw(startButton.Texture, startButton.Position, Color.Black);
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(startButton.Texture, startButton.Position, Color.White);
+                    }
+
                     // Temp drawing stuffs
-                    spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
+                    //spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
                     //spriteBatch.DrawString(comicSans24, "Press ENTER to play", new Vector2(GraphicsDevice.Viewport.X / 2, GraphicsDevice.Viewport.Y / 2), Color.Yellow);
 
                     break;
