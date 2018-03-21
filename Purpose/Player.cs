@@ -69,7 +69,7 @@ namespace Purpose
         /// </summary>
         public void Jump()
         {
-            position.Y -= 200;
+            position.Y -= 20;
         }
 
         /// <summary>
