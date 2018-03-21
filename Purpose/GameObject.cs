@@ -30,7 +30,7 @@ namespace Purpose
             get { return position.Y; }
             set { position.Y = value; }
         }
-        public virtual Texture2D Texture
+        public Texture2D Texture
         {
             get { return texture; }
             set { texture = value; }
@@ -41,6 +41,22 @@ namespace Purpose
         {
             this.texture = texture;
         }
+
+        public GameObject(Texture2D texture, Rectangle position)
+        {
+            this.texture = texture;
+            this.position = position;
+        }
         
+        public bool Intersects(Point mousePosition)
+        {
+            Rectangle mouseRectangle = new Rectangle(mousePosition.X, mousePosition.Y, 5, 5);
+
+            if (position.Intersects(mouseRectangle))
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

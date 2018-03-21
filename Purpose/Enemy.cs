@@ -32,33 +32,30 @@ namespace Purpose
             //Placeholder for Level. Thought as level increases so does damage or health
 
 
-            this.Ranged = ranged; //Decides whether or not a ranged enemy is spawned
+            this.ranged = ranged; //Decides whether or not a ranged enemy is spawned
             this.position = position;
-            this.health = 50;
+            health = 50;
         }
 
         // Methods
         public override int Attack(Rectangle rectangle)
         {
-            int damageDealt = 1;
             if (position.Intersects(rectangle))
             {
                 // Code for attack here
                 // Temp variable for damage                
                 if (ranged)
                 {
-                    damageDealt = 2;
-                    return damageDealt;
+                    return 2;
                 }
                 else
                 {
-                    return damageDealt;
+                    return 1;
                 }
             }
             else
             {
-                damageDealt = 0;
-                return damageDealt;
+                return 0;
             }
         }
 

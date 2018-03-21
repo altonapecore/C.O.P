@@ -12,14 +12,23 @@ namespace Purpose
 {
     public partial class PauseMenu : Form
     {
-        public PauseMenu()
+        GameState gameState;
+
+        public PauseMenu(GameState gameState)
         {
             InitializeComponent();
+            this.gameState = gameState;
         }
 
         private void ReturnToGame_Click(object sender, EventArgs e)
         {
-            this.Hide();
+            Close();
+        }
+
+        private void UpgradeMenu_Click(object sender, EventArgs e)
+        {
+            gameState = GameState.UpgradeMenu;
+            Close();
         }
     }
 }

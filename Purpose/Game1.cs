@@ -3,6 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using MonoGame.Extended;
+using MonoGame.Extended.ViewportAdapters;
 
 namespace Purpose
 {
@@ -14,25 +16,20 @@ namespace Purpose
     /// </summary>
 
     //Enums
-    public enum PlayerState
-    {
-        FaceLeft,
-        FaceRight, 
-        WalkLeft,
-        WalkRight,
-        CrouchFaceLeft,
-        CrouchFaceRight,
-        CrouchWalkLeft,
-        CrouchWalkRight, 
-        //JumpLeft,
-        //JumpRight
-    }
     public enum Level
     {
         One,
         Two,
         Three,
-        Four
+    }
+
+    public enum Wave
+    {
+        One,
+        Two, 
+        Three, 
+        Four, 
+        Five
     }
 
     public enum GameState
@@ -40,6 +37,7 @@ namespace Purpose
         Menu,
         Game,
         Pause,
+        UpgradeMenu,
         GameOver
     }
     public class Game1 : Game
@@ -47,33 +45,31 @@ namespace Purpose
         //Fields 
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
-        public GameState gameState;
         private Level currentLevel;
         private KeyboardState kbState;
         private MouseState ms;
         private Player player;
         private Texture2D background;
         private GameManager gameManager;
-        private List<Enemy> enemies;
         private List<Platform> bottomPlatforms;
         private Texture2D platform;
         private ArenaWindow arenaWindow;
-        
+        private Camera2D camera;
+        private int worldLeftEndWidth;
+        private int worldRightEndWidth;
+        private int worldTopHeight;
+        private int worldBottomHeight;
 
-        //Actual Player Textures
-        private Texture2D rightStandingSprite;
-        private Texture2D rightRunningSprite;
-        private Texture2D leftStandingSprite;
-        private Texture2D leftRunningSprite;
-        private Texture2D rightCrouchSprite;
-        private Texture2D leftCrouchSprite;
+        private Texture2D startScreen;
+        private GameObject startButton;
+        private Texture2D buttonFrame;
 
         //textureManager object
         private TextureManager textureManager;
 
         //temporary stuff
         private Texture2D tempTexture;
-        private Texture2D tempCrouchTexture;
+        //private Texture2D tempCrouchTexture;
         private Texture2D trent;
         private SpriteFont comicSans24;
         private Random rng;
@@ -82,12 +78,6 @@ namespace Purpose
         private Texture2D whiteBack;
         private Texture2D rustyBack;
         private Texture2D metalBack;
-
-        //Animation stuff
-        int currentFrame;
-        double fps;
-        double secondsPerFrame;
-        double timeCounter;
 
         public Game1()
         {
@@ -101,6 +91,12 @@ namespace Purpose
 
             // Temp coding stuffs
             rng = new Random();
+
+            // Set size of world width and height
+            worldLeftEndWidth = -5000;
+            worldRightEndWidth = 5000;
+            worldTopHeight = -2000;
+            worldBottomHeight = 2000;
         }
 
         /// <summary>
@@ -118,6 +114,8 @@ namespace Purpose
             //Initialize the Window Form
             base.Initialize();
             //bottomPlatforms = new List<Platform>();
+            var viewportAdapter = new BoxingViewportAdapter(Window, GraphicsDevice, 800, 480);
+            camera = new Camera2D(viewportAdapter);
         }
 
         /// <summary>
@@ -126,57 +124,54 @@ namespace Purpose
         /// </summary>
         protected override void LoadContent()
         {
-            currentFrame = 1;
-            fps = 20;
-            secondsPerFrame = 1.0f / fps;
-            timeCounter = 0;
-
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // Load in textures
             //temporary textures
             tempTexture = Content.Load<Texture2D>("pineapple");
-            tempCrouchTexture = Content.Load<Texture2D>("smallerPineapple(1)");
+            //tempCrouchTexture = Content.Load<Texture2D>("smallerPineapple(1)");
             trent = Content.Load<Texture2D>("trent");
             comicSans24 = Content.Load<SpriteFont>("ComicSans24");
+            startScreen = Content.Load<Texture2D>("metalBackground2");
+            buttonFrame = Content.Load<Texture2D>("buttonFrame2");
 
             //temporary background
             whiteBack = Content.Load<Texture2D>("whiteback");
             metalBack = Content.Load<Texture2D>("metalback");
             rustyBack = Content.Load<Texture2D>("rustyback");
 
-            // Right facing sprite
-            rightStandingSprite = Content.Load<Texture2D>("RightStandingSprite");
-            rightRunningSprite = Content.Load<Texture2D>("RightRunningSprite");
-            leftStandingSprite = Content.Load<Texture2D>("LeftStandingSprite");
-            leftRunningSprite = Content.Load<Texture2D>("LeftRunningSprite");
-            rightCrouchSprite = Content.Load<Texture2D>("RightCrouchingSprite");
-            leftCrouchSprite = Content.Load<Texture2D>("LeftCrouchingSprite");
-
             background = Content.Load<Texture2D>("background");
             platform = Content.Load<Texture2D>("PlatformTest");
 
+            startButton = new GameObject(buttonFrame, new Rectangle(500, 365, 300, 100));
+
             // Makes platforms
             bottomPlatforms = new List<Platform>();
-            for (int i = 0; i < GraphicsDevice.Viewport.Width/100; i++)
+            for (int i = 0; i > worldLeftEndWidth / 100; i--)
+            {
+                bottomPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 100, 100, 100), platform));
+            }
+            for (int i = 0; i < worldRightEndWidth / 100; i++)
             {
                 bottomPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 100, 100, 100), platform));
             }
             // Makes player, gameManager object and fills enemy list
-            //the pineapple's dimensions were 445x355
-            //those dimensions may be needed for logic for collisions
-            textureManager = new TextureManager(leftCrouchSprite, rightCrouchSprite, leftStandingSprite, rightStandingSprite, leftRunningSprite, rightRunningSprite);
+            textureManager = new TextureManager(Content.Load<Texture2D>("LeftCrouchingSprite"), Content.Load<Texture2D>("RightCrouchingSprite"),
+                Content.Load<Texture2D>("LeftStandingSprite"), Content.Load<Texture2D>("RightStandingSprite"),
+                Content.Load<Texture2D>("LeftRunningSprite"), Content.Load<Texture2D>("RightRunningSprite"));
+
             player = new Player("Dude", new Rectangle(225, 225, 139, 352), textureManager);
+
             gameManager = new GameManager(player, bottomPlatforms, GraphicsDevice, textureManager);
-            
+
             arenaWindow = new ArenaWindow(gameManager);
             gameManager.GameState = GameState.Menu;
             arenaWindow.ShowDialog(); //Loads arenaWindow here to allow User to change settings of level, enemies, and background
 
-            gameManager.FillEnemyList(rng, gameManager.NumberOfEnemies, GraphicsDevice, trent);
-            gameManager.FillRangedList(rng, gameManager.NumberOfRanged, GraphicsDevice, tempTexture);
-           
+            gameManager.FillEnemyList(rng, gameManager.NumberOfEnemies, worldLeftEndWidth, worldRightEndWidth, trent);
+            gameManager.FillRangedList(rng, gameManager.NumberOfRanged, worldLeftEndWidth, worldRightEndWidth, tempTexture);
+
         }
 
         /// <summary>
@@ -202,12 +197,14 @@ namespace Purpose
             KeyboardState previouskbState = kbState;
             kbState = Keyboard.GetState();
 
+            MouseState previousMs = ms;
+            ms = Mouse.GetState();
+
             // GameState finite state machine
             switch (gameManager.GameState)
             {
 
                 case GameState.Menu:
-
                     //Using the selection from the ArenaWindow pciks the background to use in the Game
                     if (gameManager.BackgroundSelection == Background.WhiteBackground)
                     {
@@ -221,10 +218,18 @@ namespace Purpose
                     {
                         background = rustyBack; //Background is Rusty
                     }
+
+                    if (startButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed)
+                    {
+                        gameManager.GameState = GameState.Game;
+                    }
+
                     break;
 
                 case GameState.Game:
-
+                    camera.MinimumZoom = 0.5f;
+                    camera.MaximumZoom = 1.0f;
+                    camera.Zoom = 0.5f;
 
                     // Stuff for moving player and enemy, as well as player attack
                     MouseState previousMs = ms;
@@ -236,7 +241,7 @@ namespace Purpose
                         gameManager.GameState = GameState.Pause;
                     }
 
-                    if(player.Health <= 0)
+                    if (player.Health <= 0)
                     {
                         gameManager.GameState = GameState.GameOver;
                     }
@@ -244,9 +249,13 @@ namespace Purpose
 
                 case GameState.Pause:
                     // Make a pauseMenu form and shows it
-                    PauseMenu pauseMenu = new PauseMenu();
+                    PauseMenu pauseMenu = new PauseMenu(gameManager.GameState);
                     pauseMenu.ShowDialog();
                     gameManager.GameState = GameState.Game;
+                    break;
+
+                case GameState.UpgradeMenu:
+
                     break;
 
                 case GameState.GameOver:
@@ -269,7 +278,8 @@ namespace Purpose
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            spriteBatch.Begin();           
+            var transformMatrix = camera.GetViewMatrix();
+            spriteBatch.Begin(transformMatrix: transformMatrix);
 
             
 
@@ -279,24 +289,28 @@ namespace Purpose
                 case GameState.Menu:
                    
                     // Temp drawing stuffs
-                    spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
+                    //spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
                     //spriteBatch.DrawString(comicSans24, "Press ENTER to play", new Vector2(GraphicsDevice.Viewport.X / 2, GraphicsDevice.Viewport.Y / 2), Color.Yellow);
 
                     break;
 
                 case GameState.Game:
                     // Background
-                    spriteBatch.Draw(background, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
-                    
-                    
-                    
+                    for (int x = worldLeftEndWidth; x < worldRightEndWidth; x += background.Width)
+                    {
+                        for (int y = worldTopHeight; y < worldBottomHeight; y += background.Height)
+                        {
+                            spriteBatch.Draw(background, new Rectangle(x, y, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
+                        }
+                    }
+
                     // Platforms
                     foreach (Platform p in bottomPlatforms)
                     {
                         spriteBatch.Draw(p.Texture, p.Position, Color.White);
                     }
                     // Player
-                    spriteBatch.Draw(gameManager.Player.Texture, new Rectangle(gameManager.Player.X, gameManager.Player.Y, player.Position.Width, player.Position.Height), 
+                    spriteBatch.Draw(gameManager.Player.Texture, new Rectangle(gameManager.Player.X, gameManager.Player.Y, player.Position.Width, player.Position.Height),
                         Color.White);
                     // Enemies
                     for (int i = 0; i < gameManager.Enemies.Count; i++)
@@ -304,6 +318,10 @@ namespace Purpose
 
                         spriteBatch.Draw(gameManager.Enemies[i].Texture, new Rectangle(gameManager.Enemies[i].X, gameManager.Enemies[i].Y, 147, 147), Color.White);
                     }
+                    break;
+
+                case GameState.UpgradeMenu:
+
                     break;
 
                 case GameState.GameOver:
