@@ -234,7 +234,7 @@ namespace Purpose
                     // Stuff for moving player and enemy, as well as player attack
                     previousMs = ms;
                     ms = Mouse.GetState();
-                    gameManager.PlayerMove(kbState, previouskbState, ms, previousMs, camera);
+                    gameManager.PlayerMove(kbState, previouskbState, ms, previousMs);
                     gameManager.EnemyMove();
                     if (kbState.IsKeyDown(Keys.P))
                     {
