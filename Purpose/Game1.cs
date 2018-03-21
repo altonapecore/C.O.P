@@ -232,9 +232,7 @@ namespace Purpose
                     camera.Zoom = 0.5f;
 
                     // Stuff for moving player and enemy, as well as player attack
-                    MouseState previousMs = ms;
-                    ms = Mouse.GetState();
-                    gameManager.PlayerMove(kbState, previouskbState, ms, previousMs);
+                    gameManager.PlayerMove(kbState, previouskbState, ms, previousMs, camera);
                     gameManager.EnemyMove();
                     if (kbState.IsKeyDown(Keys.P))
                     {
@@ -287,10 +285,20 @@ namespace Purpose
             switch (gameManager.GameState)
             {
                 case GameState.Menu:
-                   
+
                     // Temp drawing stuffs
                     //spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
                     //spriteBatch.DrawString(comicSans24, "Press ENTER to play", new Vector2(GraphicsDevice.Viewport.X / 2, GraphicsDevice.Viewport.Y / 2), Color.Yellow);
+                    spriteBatch.Draw(startScreen, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
+                    if (startButton.Intersects(ms.Position))
+                    {
+                        spriteBatch.Draw(startButton.Texture, startButton.Position, Color.Black);
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(startButton.Texture, startButton.Position, Color.White);
+                    }
+
 
                     break;
 
