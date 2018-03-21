@@ -114,7 +114,7 @@ namespace Purpose
             //Initialize the Window Form
             base.Initialize();
             //bottomPlatforms = new List<Platform>();
-            var viewportAdapter = new BoxingViewportAdapter(Window, GraphicsDevice, 800, 480);
+            ViewportAdapter viewportAdapter = new BoxingViewportAdapter(Window, GraphicsDevice, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
             camera = new Camera2D(viewportAdapter);
         }
 
@@ -245,6 +245,7 @@ namespace Purpose
                     {
                         gameManager.JumpNum = 0;
                     }
+
                     gameManager.EnemyMove();
                     if (kbState.IsKeyDown(Keys.P))
                     {
