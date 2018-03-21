@@ -224,18 +224,7 @@ namespace Purpose
                     break;
 
                 case GameState.Game:
-                    // Stuff for auto scrolling screen
-                    // Not fully working yet so I commented it out
-                    //if(player.X != GraphicsDevice.Viewport.Width / 2 || player.Y != GraphicsDevice.Viewport.Height / 2)
-                    //{
-                    //    int x = background.Bounds.X;
-                    //    int y = background.Bounds.Y;
-                    //
-                    //    x -= player.X - GraphicsDevice.Viewport.Width;
-                    //    y -= player.Y - GraphicsDevice.Viewport.Height;
-                    //
-                    //    GraphicsDevice.Viewport = new Viewport(x, y, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
-                    //}
+
 
                     // Stuff for moving player and enemy, as well as player attack
                     MouseState previousMs = ms;
@@ -298,6 +287,9 @@ namespace Purpose
                 case GameState.Game:
                     // Background
                     spriteBatch.Draw(background, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
+                    
+                    
+                    
                     // Platforms
                     foreach (Platform p in bottomPlatforms)
                     {
