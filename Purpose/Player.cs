@@ -13,15 +13,28 @@ namespace Purpose
     {
         //fields
         private int kills;
-        private int upgradePoints;
         private UpgradeManager ugManager;
         private TextureManager textureManager;
+        private int stamina;
+        private int dashDistance;
 
         //properties
         public int Kills
         {
             get { return kills; }
             set { kills = value; }
+        }
+
+        public int Stamina
+        {
+            get { return stamina; }
+            set { stamina = value; }
+        }
+
+        public int DashDistance
+        {
+            get { return dashDistance; }
+            set { dashDistance = value; }
         }
 
         public UpgradeManager UgManager { get { return ugManager; } }
@@ -33,11 +46,12 @@ namespace Purpose
             ugManager = new UpgradeManager();
 
             this.position = position;
-            health = 10000;
+            health = 100;
+            stamina = 100;
+            dashDistance = 100;
             damage = 10;
             texture = textureManager.RightStandingSprite;
             kills = 0;
-            upgradePoints = 0;
         }
 
         //methods
