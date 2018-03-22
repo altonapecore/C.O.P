@@ -113,7 +113,7 @@ namespace Purpose
         /// <param name="previouskbState">The previous state of the keyboard</param>
         /// <param name="ms">The current mouse state</param>
         /// <param name="previousMs">The previous mouse state</param>
-        public void PlayerMove(KeyboardState kbState, KeyboardState previouskbState, MouseState ms, MouseState previousMs, Camera2D camera)
+        public void PlayerMove(KeyboardState kbState, KeyboardState previouskbState, MouseState ms, MouseState previousMs, Camera2D camera, List<Platform> platforms)
         {
             //a boolean representing if the player is on the platform
             bool onPlatform = false;
@@ -292,7 +292,7 @@ namespace Purpose
         {
             for (int i = 0; i < NumberOfEnemies; i++)
             {
-                int choice = rng.Next(1, 3);
+                int choice = rng.Next(1, 5);
                 if (choice == 1)
                 {
                     Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, 0), graphicsDevice.Viewport.Height - 450, 147, 147),
@@ -304,7 +304,21 @@ namespace Purpose
                 {
                     Enemy enemy = new Enemy(new Rectangle(rng.Next(0, worldRightEndWidth), graphicsDevice.Viewport.Height - 450, 147, 147),
                         enemyTexture, Level.One, false);
+                    enemies.Add(enemy);
+                }
 
+                else if (choice == 3)
+                {
+                    Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, 0), graphicsDevice.Viewport.Height - 750, 147, 147),
+                        enemyTexture, Level.One, false);
+                    enemies.Add(enemy);
+                }
+
+                else if (choice == 4)
+                {
+                    Enemy enemy = new Enemy(new Rectangle(rng.Next(0, worldRightEndWidth), graphicsDevice.Viewport.Height - 750, 147, 147),
+                        enemyTexture, Level.One, false);
+                    enemies.Add(enemy);
                 }
             }
         }
@@ -320,7 +334,7 @@ namespace Purpose
         {
             for (int i = 0; i < NumberOfRanged; i++)
             {
-                int choice = rng.Next(1, 3);
+                int choice = rng.Next(1, 5);
                 if (choice == 1)
                 {
                     Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, 0), graphicsDevice.Viewport.Height - 450, 147, 147),
@@ -332,7 +346,21 @@ namespace Purpose
                 {
                     Enemy enemy = new Enemy(new Rectangle(rng.Next(0, worldRightEndWidth), graphicsDevice.Viewport.Height - 450, 147, 147),
                         rangeTexture, Level.One, false);
+                    enemies.Add(enemy);
+                }
 
+                else if (choice == 3)
+                {
+                    Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, 0), graphicsDevice.Viewport.Height - 750, 147, 147),
+                        rangeTexture, Level.One, false);
+                    enemies.Add(enemy);
+                }
+
+                else if (choice == 4)
+                {
+                    Enemy enemy = new Enemy(new Rectangle(rng.Next(0, worldRightEndWidth), graphicsDevice.Viewport.Height - 750, 147, 147),
+                        rangeTexture, Level.One, false);
+                    enemies.Add(enemy);
                 }
             }
         }
@@ -343,7 +371,7 @@ namespace Purpose
         /// </summary>
         public void EnemyMove()
         {
-            // On platform and gravity code
+            // On platform and gravity stuff
             bool onPlatform = false;
             foreach (Enemy e in enemies)
             {
@@ -358,6 +386,38 @@ namespace Purpose
                 if (!onPlatform)
                 {
                     e.Y += 5;
+                }
+            }
+
+            foreach(Enemy e in enemies)
+            {
+                if(e.X < player.X)
+                {
+                    e.X += 5;
+                }
+
+                else if(e.X > player.X)
+                {
+                    e.X -= 5;
+                }
+
+                //if (e.Y - 205 > player.Y)
+                //{
+                //    
+                //}
+                //
+                //if (e.Y - 205 < player.Y)
+                //{
+                //
+                //}
+            }
+
+            // If enemies fall through the floor, kill em
+            for(int i = 0; i < enemies.Count; i++)
+            {
+                if(enemies[i].Y >= 745)
+                {
+                    enemies.Remove(enemies[i]);
                 }
             }
         }
