@@ -11,9 +11,11 @@ namespace Purpose
         //fields
         private bool dashActive;
         private bool groundPoundActive;
-        private int passiveTier;
+        private int staminaTier;
+        private int healthTier;
         private int stealthTier;
         private int damageTier;
+        private int upgradePoints;
 
         //properties
         public bool DashActive
@@ -27,52 +29,123 @@ namespace Purpose
             get { return groundPoundActive; }
             set { groundPoundActive = value; }
         }
+
+        public int UpgradePoints
+        {
+            get { return upgradePoints; }
+            set { upgradePoints = value; }
+        }
         
         //constructor
         public UpgradeManager()
         {
-            dashActive = true;
+            upgradePoints = 10;
+            dashActive = false;
             groundPoundActive = false;
-            passiveTier = 0;
+            staminaTier = 0;
+            healthTier = 0;
             stealthTier = 0;
             damageTier = 0;
         }
 
         // Methods
-        public void PassiveUpgrade(int stamina, int staminaRegen, int health)
+        public int StaminaUpgrade(int stamina)
         {
-            passiveTier++;
-            if(passiveTier==1)
+            if (upgradePoints > 0)
             {
-                staminaRegen += 1;
+                staminaTier++;
+                if (staminaTier < 3)
+                {
+                    stamina += 5;
+                }
+                else if (staminaTier > 3)
+                {
+                    stamina += 10;
+                }
+                upgradePoints--;
+                return stamina;
             }
-            else if(passiveTier==2 || passiveTier==3 || passiveTier==4 || passiveTier==5 || passiveTier==6)
+            return 0;
+        }
+
+        public int HealthUpgrade(int health)
+        {
+            if (upgradePoints > 0)
             {
-                health += 10;
+                healthTier++;
+                if (healthTier < 3)
+                {
+                    health += 5;
+                }
+                else if (healthTier > 3)
+                {
+                    health += 10;
+                }
+                upgradePoints--;
+                return health;
             }
-            else if(passiveTier==7)
+            return 0;
+        }
+
+        public int AttackUpgrade(int damage)
+        {
+            if (upgradePoints > 0)
             {
-                stamina += 100;
+                damageTier++;
+                if (damageTier < 3)
+                {
+                    damage += 5;
+                }
+                else if (damageTier > 3)
+                {
+                    damage += 10;
+                }
+                upgradePoints--;
+                return damage;
+            }
+            return 0;
+        }
+
+        public int DashDistanceUpgrade(int dashDistance)
+        {
+            if (upgradePoints > 0)
+            {
+                stealthTier++;
+                if (stealthTier < 3)
+                {
+                    dashDistance += 5;
+                }
+                else if (stealthTier > 3)
+                {
+                    dashDistance += 10;
+                }
+                upgradePoints--;
+                return dashDistance;
+            }
+            return 0;
+        }
+
+        public void ActivateDash()
+        {
+            if (upgradePoints > 0)
+            {
+                if (!dashActive)
+                {
+                    dashActive = true;
+                    upgradePoints--;
+                }
             }
         }
-        public void DamageUpgrade(int damage)
+
+        public void ActivateGroundPound()
         {
-            damageTier++;
-            if (damageTier == 1 || damageTier == 2 || damageTier == 3 || damageTier == 4 || damageTier == 5)
+            if (upgradePoints > 0)
             {
-                damage += 10;
-            }
-            else if(damageTier==6)
-            {
-                groundPoundActive = true;
-            }
-        }
-        public void StealthUpgrade(int dashDistance)
-        {
-            stealthTier++;
-            if(stealthTier == 1 || stealthTier == 2 || stealthTier == 3 || stealthTier == 4 || stealthTier == 5)
-            {
-                dashDistance += 10;
+                if (!groundPoundActive)
+                {
+                    groundPoundActive = true;
+                    upgradePoints--;
+                }
             }
         }
     }

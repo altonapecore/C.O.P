@@ -64,7 +64,23 @@ namespace Purpose
 
         private Texture2D startScreen;
         private GameObject startButton;
+
         private Texture2D buttonFrame;
+        private Texture2D roundedFrame;
+
+        private Texture2D upgradeScreen;
+        private GameObject returnToPauseButton;
+        private GameObject groundPoundButton;
+        private GameObject attackUpButton;
+        private GameObject staminaUpButton;
+        private GameObject healthUpButton;
+        private GameObject dashButton;
+        private GameObject dashDistanceUpButton;
+
+        private Texture2D pauseScreen;
+        private GameObject returnToGameButton;
+        private GameObject upgradesButton;
+
 
         //textureManager object
         private TextureManager textureManager;
@@ -116,7 +132,7 @@ namespace Purpose
             //Initialize the Window Form
             base.Initialize();
             //bottomPlatforms = new List<Platform>();
-            var viewportAdapter = new BoxingViewportAdapter(Window, GraphicsDevice, 800, 480);
+            ViewportAdapter viewportAdapter = new BoxingViewportAdapter(Window, GraphicsDevice, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
             camera = new Camera2D(viewportAdapter);
         }
 
@@ -137,6 +153,9 @@ namespace Purpose
             comicSans24 = Content.Load<SpriteFont>("ComicSans24");
             startScreen = Content.Load<Texture2D>("metalBackground2");
             buttonFrame = Content.Load<Texture2D>("buttonFrame2");
+            roundedFrame = Content.Load<Texture2D>("roundedFrame");
+            upgradeScreen = Content.Load<Texture2D>("UpgradeUI");
+            pauseScreen = Content.Load<Texture2D>("pauseMenu");
 
             //temporary background
             whiteBack = Content.Load<Texture2D>("whiteback");
@@ -147,6 +166,16 @@ namespace Purpose
             platform = Content.Load<Texture2D>("PlatformTest");
 
             startButton = new GameObject(buttonFrame, new Rectangle(500, 365, 300, 100));
+            returnToPauseButton = new GameObject(buttonFrame, new Rectangle(25,340,170,110));
+            returnToGameButton = new GameObject(buttonFrame, new Rectangle(530, 280, 280, 160));
+            upgradesButton = new GameObject(buttonFrame, new Rectangle(530, 495, 280, 100));
+
+            groundPoundButton = new GameObject(roundedFrame, new Rectangle(337,200,118,118));
+            attackUpButton = new GameObject(roundedFrame, new Rectangle(510, 292, 118, 118));
+            staminaUpButton = new GameObject(roundedFrame, new Rectangle(725, 292, 118, 118));
+            healthUpButton = new GameObject(roundedFrame, new Rectangle(889, 200, 118, 118));
+            dashButton = new GameObject(roundedFrame, new Rectangle(620, 490, 118, 118));
+            dashDistanceUpButton = new GameObject(roundedFrame, new Rectangle(620, 680, 118, 118));
 
             // Makes platforms
             bottomPlatforms = new List<Platform>();
@@ -193,9 +222,9 @@ namespace Purpose
 
             gameManager = new GameManager(player, bottomPlatforms, GraphicsDevice, textureManager);
 
-            arenaWindow = new ArenaWindow(gameManager);
+            //arenaWindow = new ArenaWindow(gameManager);
             gameManager.GameState = GameState.Menu;
-            arenaWindow.ShowDialog(); //Loads arenaWindow here to allow User to change settings of level, enemies, and background
+            //arenaWindow.ShowDialog(); //Loads arenaWindow here to allow User to change settings of level, enemies, and background
 
             gameManager.FillEnemyList(rng, gameManager.NumberOfEnemies, worldLeftEndWidth, worldRightEndWidth, trent);
             gameManager.FillRangedList(rng, gameManager.NumberOfRanged, worldLeftEndWidth, worldRightEndWidth, tempTexture);
@@ -286,12 +315,53 @@ namespace Purpose
 
                 case GameState.Pause:
                     // Make a pauseMenu form and shows it
-                    PauseMenu pauseMenu = new PauseMenu(gameManager.GameState);
-                    pauseMenu.ShowDialog();
-                    gameManager.GameState = GameState.Game;
+                    //PauseMenu pauseMenu = new PauseMenu(gameManager);
+                    //pauseMenu.ShowDialog();
+                    //gameManager.GameState = GameState.Game;
+                    camera.Zoom = 1.0f;
+                    camera.Position = new Vector2(0, 0);
+
+                    if (returnToGameButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed)
+                    {
+                        gameManager.GameState = GameState.Game;
+                    }
+                    else if (upgradesButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed)
+                    {
+                        gameManager.GameState = GameState.UpgradeMenu;
+                    }
+
                     break;
 
                 case GameState.UpgradeMenu:
+                    if (returnToPauseButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed)
+                    {
+                        gameManager.GameState = GameState.Pause;
+                    }
+
+                    if (groundPoundButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
+                    {
+                        gameManager.Player.UgManager.ActivateGroundPound();
+                    }
+                    else if (attackUpButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
+                    {
+                        gameManager.Player.Damage = gameManager.Player.UgManager.AttackUpgrade(gameManager.Player.Damage);
+                    }
+                    else if (staminaUpButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
+                    {
+                        gameManager.Player.Stamina = gameManager.Player.UgManager.StaminaUpgrade(gameManager.Player.Stamina);
+                    }
+                    else if (healthUpButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
+                    {
+                        gameManager.Player.Health = gameManager.Player.UgManager.HealthUpgrade(gameManager.Player.Health);
+                    }
+                    else if (dashButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
+                    {
+                        gameManager.Player.UgManager.ActivateDash();
+                    }
+                    else if (dashDistanceUpButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
+                    {
+                        gameManager.Player.DashDistance = gameManager.Player.UgManager.DashDistanceUpgrade(gameManager.Player.DashDistance);
+                    }
 
                     break;
 
@@ -324,10 +394,20 @@ namespace Purpose
             switch (gameManager.GameState)
             {
                 case GameState.Menu:
-                   
+
                     // Temp drawing stuffs
                     //spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
                     //spriteBatch.DrawString(comicSans24, "Press ENTER to play", new Vector2(GraphicsDevice.Viewport.X / 2, GraphicsDevice.Viewport.Y / 2), Color.Yellow);
+                    spriteBatch.Draw(startScreen, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
+                    if (startButton.Intersects(ms.Position))
+                    {
+                        spriteBatch.Draw(startButton.Texture, startButton.Position, Color.Black);
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(startButton.Texture, startButton.Position, Color.White);
+                    }
+
 
                     break;
 
@@ -357,8 +437,95 @@ namespace Purpose
                     }
                     break;
 
-                case GameState.UpgradeMenu:
+                case GameState.Pause:
+                    spriteBatch.Draw(pauseScreen, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
 
+                    if (returnToGameButton.Intersects(ms.Position))
+                    {
+                        spriteBatch.Draw(returnToGameButton.Texture, returnToGameButton.Position, Color.Black);
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(returnToGameButton.Texture, returnToGameButton.Position, Color.White);
+                    }
+
+                    if (upgradesButton.Intersects(ms.Position))
+                    {
+                        spriteBatch.Draw(upgradesButton.Texture, upgradesButton.Position, Color.Black);
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(upgradesButton.Texture, upgradesButton.Position, Color.White);
+                    }
+                    break;
+
+                case GameState.UpgradeMenu:
+                    spriteBatch.Draw(upgradeScreen, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
+                    spriteBatch.DrawString(comicSans24, gameManager.Player.UgManager.UpgradePoints.ToString(), new Vector2(1200,730), Color.White);
+                    spriteBatch.Draw(buttonFrame, new Rectangle(1192, 722, 54, 60), Color.Black);
+
+                    if (returnToPauseButton.Intersects(ms.Position))
+                    {
+                        spriteBatch.Draw(returnToPauseButton.Texture, returnToPauseButton.Position, Color.Black);
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(returnToPauseButton.Texture, returnToPauseButton.Position, Color.White);
+                    }
+
+                    if (groundPoundButton.Intersects(ms.Position))
+                    {
+                        spriteBatch.Draw(groundPoundButton.Texture, groundPoundButton.Position, Color.Black);
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(groundPoundButton.Texture, groundPoundButton.Position, Color.White);
+                    }
+
+                    if (attackUpButton.Intersects(ms.Position))
+                    {
+                        spriteBatch.Draw(attackUpButton.Texture, attackUpButton.Position, Color.Black);
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(attackUpButton.Texture, attackUpButton.Position, Color.White);
+                    }
+
+                    if (staminaUpButton.Intersects(ms.Position))
+                    {
+                        spriteBatch.Draw(staminaUpButton.Texture, staminaUpButton.Position, Color.Black);
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(staminaUpButton.Texture, staminaUpButton.Position, Color.White);
+                    }
+
+                    if (healthUpButton.Intersects(ms.Position))
+                    {
+                        spriteBatch.Draw(healthUpButton.Texture, healthUpButton.Position, Color.Black);
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(healthUpButton.Texture, healthUpButton.Position, Color.White);
+                    }
+
+                    if (dashButton.Intersects(ms.Position))
+                    {
+                        spriteBatch.Draw(dashButton.Texture, dashButton.Position, Color.Black);
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(dashButton.Texture, dashButton.Position, Color.White);
+                    }
+
+                    if (dashDistanceUpButton.Intersects(ms.Position))
+                    {
+                        spriteBatch.Draw(dashDistanceUpButton.Texture, dashDistanceUpButton.Position, Color.Black);
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(dashDistanceUpButton.Texture, dashDistanceUpButton.Position, Color.White);
+                    }
                     break;
 
                 case GameState.GameOver:

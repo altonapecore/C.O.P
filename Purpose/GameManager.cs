@@ -24,7 +24,6 @@ namespace Purpose
         private List<Platform> platforms;
         private bool isCrouching;
         private GraphicsDevice graphicsDevice;
-        private int dashDistance;
         private GameState gameState;
         private Texture2D background;
         private Background backgroundSelection;
@@ -46,11 +45,7 @@ namespace Purpose
             set { isCrouching = value; }
         }
         public GraphicsDevice GraphicsDevice { get { return graphicsDevice; } }
-        public int DashDistance
-        {
-            get { return dashDistance; }
-            set { dashDistance = value; }
-        }
+
         public GameState GameState
         {
             get { return gameState; }
@@ -100,7 +95,6 @@ namespace Purpose
             isCrouching = false;
             enemies = new List<Enemy>();
             this.graphicsDevice = graphicsDevice;
-            dashDistance = 100;
             backgroundSelection = Purpose.Background.WhiteBackground;
             this.textureManager = textureManager;
         }
@@ -235,12 +229,12 @@ namespace Purpose
                     if (player.Texture == textureManager.RightStandingSprite || player.Texture == textureManager.RightRunningSprite
                         || player.Texture == textureManager.RightCrouchSprite) //dash to the right
                     {
-                        player.X += dashDistance;
+                        player.X += player.DashDistance;
                     }
                     else if (player.Texture == textureManager.LeftStandingSprite || player.Texture == textureManager.LeftRunningSprite
                         || player.Texture == textureManager.LeftCrouchSprite) //dash to the left
                     {
-                        player.X -= dashDistance;
+                        player.X -= player.DashDistance;
                     }
                 }
                 // moving camera with player
