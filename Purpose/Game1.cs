@@ -88,6 +88,7 @@ namespace Purpose
         //private Texture2D tempCrouchTexture;
         private Texture2D trent;
         private SpriteFont comicSans24;
+        private SpriteFont agency30;
         private Random rng;
 
         //Temporary BackGround
@@ -149,6 +150,7 @@ namespace Purpose
             //tempCrouchTexture = Content.Load<Texture2D>("smallerPineapple(1)");
             trent = Content.Load<Texture2D>("trent");
             comicSans24 = Content.Load<SpriteFont>("ComicSans24");
+            agency30 = Content.Load<SpriteFont>("Agency30");
             startScreen = Content.Load<Texture2D>("metalBackground2");
             buttonFrame = Content.Load<Texture2D>("buttonFrame2");
             roundedFrame = Content.Load<Texture2D>("roundedFrame");
@@ -435,8 +437,8 @@ namespace Purpose
 
                 case GameState.UpgradeMenu:
                     spriteBatch.Draw(upgradeScreen, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
-                    spriteBatch.DrawString(comicSans24, gameManager.Player.UgManager.UpgradePoints.ToString(), new Vector2(1200,730), Color.White);
-                    spriteBatch.Draw(buttonFrame, new Rectangle(1192, 722, 54, 60), Color.Black);
+                    spriteBatch.DrawString(agency30, "Upgrade Points: " + gameManager.Player.UgManager.UpgradePoints.ToString(), new Vector2(1090,730), Color.White);
+                    //spriteBatch.Draw(buttonFrame, new Rectangle(1192, 722, 54, 60), Color.Black);
 
                     if (returnToPauseButton.Intersects(ms.Position))
                     {
