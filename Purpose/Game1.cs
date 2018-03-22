@@ -52,6 +52,8 @@ namespace Purpose
         private Texture2D background;
         private GameManager gameManager;
         private List<Platform> bottomPlatforms;
+        private List<Platform> firstLevelPlatforms;
+        private List<Platform> totalPlatforms;
         private Texture2D platform;
         private ArenaWindow arenaWindow;
         private Camera2D camera;
@@ -179,13 +181,39 @@ namespace Purpose
 
             // Makes platforms
             bottomPlatforms = new List<Platform>();
+            totalPlatforms = new List<Platform>();
+            firstLevelPlatforms = new List<Platform>();
+            // Base platforms
             for (int i = 0; i > worldLeftEndWidth / 100; i--)
             {
                 bottomPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 100, 100, 100), platform));
+                totalPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 100, 100, 100), platform));
             }
             for (int i = 0; i < worldRightEndWidth / 100; i++)
             {
                 bottomPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 100, 100, 100), platform));
+                totalPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 100, 100, 100), platform));
+            }
+            // First level platforms
+            for (int i = 0; i > worldLeftEndWidth / 100; i -= 4)
+            {
+                firstLevelPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 300, 100, 100), platform));
+                totalPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 300, 100, 100), platform));
+            }
+            for (int i = 0; i < worldRightEndWidth / 100; i += 4)
+            {
+                firstLevelPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 300, 100, 100), platform));
+                totalPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 300, 100, 100), platform));
+            }
+            for (int i = 1; i > worldLeftEndWidth / 100; i -= 4)
+            {
+                firstLevelPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 300, 100, 100), platform));
+                totalPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 300, 100, 100), platform));
+            }
+            for (int i = 1; i < worldRightEndWidth / 100; i += 4)
+            {
+                firstLevelPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 300, 100, 100), platform));
+                totalPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 300, 100, 100), platform));
             }
             // Makes player, gameManager object and fills enemy list
             textureManager = new TextureManager(Content.Load<Texture2D>("LeftCrouchingSprite"), Content.Load<Texture2D>("RightCrouchingSprite"),
@@ -202,7 +230,6 @@ namespace Purpose
 
             gameManager.FillEnemyList(rng, gameManager.NumberOfEnemies, worldLeftEndWidth, worldRightEndWidth, trent);
             gameManager.FillRangedList(rng, gameManager.NumberOfRanged, worldLeftEndWidth, worldRightEndWidth, tempTexture);
-
         }
 
         /// <summary>
@@ -263,9 +290,8 @@ namespace Purpose
                     camera.Zoom = 0.5f;
 
                     // Stuff for moving player and enemy, as well as player attack
-                    previousMs = ms;
                     ms = Mouse.GetState();
-                    gameManager.PlayerMove(kbState, previouskbState, ms, previousMs, camera);
+                    gameManager.PlayerMove(kbState, previouskbState, ms, previousMs, camera, totalPlatforms);
                     // Jump logic
                     if(gameManager.JumpNum >= 1 && gameManager.JumpNum <= 10)
                     {
@@ -398,7 +424,7 @@ namespace Purpose
                     }
 
                     // Platforms
-                    foreach (Platform p in bottomPlatforms)
+                    foreach (Platform p in totalPlatforms)
                     {
                         spriteBatch.Draw(p.Texture, p.Position, Color.White);
                     }
