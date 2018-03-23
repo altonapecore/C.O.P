@@ -402,9 +402,6 @@ namespace Purpose
             {
                 case GameState.Menu:
 
-                    // Temp drawing stuffs
-                    //spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
-                    //spriteBatch.DrawString(comicSans24, "Press ENTER to play", new Vector2(GraphicsDevice.Viewport.X / 2, GraphicsDevice.Viewport.Y / 2), Color.Yellow);
                     spriteBatch.Draw(startScreen, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
                     if (startButton.Intersects(ms.Position))
                     {
