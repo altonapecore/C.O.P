@@ -476,10 +476,12 @@ namespace Purpose
         /// <summary>
         /// Resets game to beginning
         /// </summary>
-        public void ResetGame(Camera2D camera)
+        public void ResetGame(Camera2D camera, Random rng, int worldLeftEndWidth, int worldRightEndWidth, GameTime gameTime, Texture2D tempTexture)
         {
             player.Health = 100;
             enemies.Clear();
+            FillEnemyList(rng, numberOfEnemies, worldLeftEndWidth, worldRightEndWidth, gameTime);
+            FillRangedList(rng, numberOfRanged, worldLeftEndWidth, worldRightEndWidth, tempTexture, gameTime);
             camera.Zoom = 1.0f;
         }
     }

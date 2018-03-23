@@ -17,7 +17,6 @@ namespace Purpose
         private TextureManager textureManager;
         private int stamina;
         private int dashDistance;
-        private int gameTime;
 
         //properties
         public int Kills
@@ -40,8 +39,6 @@ namespace Purpose
 
         public UpgradeManager UgManager { get { return ugManager; } }
 
-        public int GameTime { get { return gameTime; } }
-
         //secondary temporary constructor for debug purposes
         public Player(String name, Rectangle position, TextureManager textureManager, GameTime gameTime) : base(textureManager.RightStandingSprite)
         {
@@ -49,7 +46,6 @@ namespace Purpose
             ugManager = new UpgradeManager();
 
             this.position = position;
-            this.gameTime = gameTime.TotalGameTime.Seconds;
             health = 100;
             stamina = 100;
             dashDistance = 100;
@@ -66,19 +62,9 @@ namespace Purpose
         /// <returns>Returns an integer value for the damage done</returns>
         public override int Attack(Rectangle enemyPosition, GameTime gameTime)
         {
-            if (this.GameTime + 1 == gameTime.TotalGameTime.Seconds)
-            { 
-                if (position.Intersects(enemyPosition))
-                {
-                    this.gameTime = gameTime.TotalGameTime.Seconds;
-                    return damage;
-                }
-
-                else
-                {
-                    this.gameTime = gameTime.TotalGameTime.Seconds;
-                    return 0;
-                }
+            if (position.Intersects(enemyPosition))
+            {
+                return damage;
             }
             return 0;
         }

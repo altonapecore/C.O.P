@@ -62,7 +62,6 @@ namespace Purpose
         private int worldTopHeight;
         private int worldBottomHeight;
         private GameTime gameTime;
-        private int arenaManagerCounter;
 
         private Texture2D startScreen;
         private GameObject startButton;
@@ -121,8 +120,6 @@ namespace Purpose
 
             // Initialize gameTime
             gameTime = new GameTime();
-
-            arenaManagerCounter = 0;
         }
 
         /// <summary>
@@ -238,8 +235,8 @@ namespace Purpose
             gameManager.GameState = GameState.Menu;
             arenaWindow.ShowDialog(); //Loads arenaWindow here to allow User to change settings of level, enemies, and background
             
-            gameManager.FillEnemyList(rng, gameManager.NumberOfEnemies, worldLeftEndWidth, worldRightEndWidth, gameTime);
-            gameManager.FillRangedList(rng, gameManager.NumberOfRanged, worldLeftEndWidth, worldRightEndWidth, tempTexture, gameTime);
+            //gameManager.FillEnemyList(rng, gameManager.NumberOfEnemies, worldLeftEndWidth, worldRightEndWidth, gameTime);
+            //gameManager.FillRangedList(rng, gameManager.NumberOfRanged, worldLeftEndWidth, worldRightEndWidth, tempTexture, gameTime);
         }
 
         /// <summary>
@@ -274,16 +271,7 @@ namespace Purpose
 
                 case GameState.Menu:
                     // Reset game
-                    //gameManager.ResetGame(camera);
-                    //
-                    //if (arenaManagerCounter == 0)
-                    //{
-                    //    arenaWindow = new ArenaWindow(gameManager);
-                    //    arenaWindow.ShowDialog(); //Loads arenaWindow here to allow User to change settings of level, enemies, and background
-                    //    gameManager.FillEnemyList(rng, gameManager.NumberOfEnemies, worldLeftEndWidth, worldRightEndWidth, gameTime);
-                    //    gameManager.FillRangedList(rng, gameManager.NumberOfRanged, worldLeftEndWidth, worldRightEndWidth, tempTexture, gameTime);
-                    //    arenaManagerCounter++;
-                    //}
+                    gameManager.ResetGame(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture);
 
                     //Using the selection from the ArenaWindow pciks the background to use in the Game
                     if (gameManager.BackgroundSelection == Background.WhiteBackground)
@@ -307,7 +295,7 @@ namespace Purpose
                     break;
 
                 case GameState.Game:
-                    arenaManagerCounter = 0;
+                    //arenaManagerCounter = 0;
                     camera.MinimumZoom = 0.5f;
                     camera.MaximumZoom = 1.0f;
                     camera.Zoom = 0.5f;
