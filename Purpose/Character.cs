@@ -30,7 +30,7 @@ namespace Purpose
         public Character(Texture2D texture) : base(texture) { }
 
         //methods
-        public abstract int Attack(Rectangle rectangle);
+        public abstract int Attack(Rectangle rectangle, GameTime gameTime);
 
         public abstract void TakeDamage(int damage);
     }

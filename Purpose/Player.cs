@@ -40,7 +40,7 @@ namespace Purpose
         public UpgradeManager UgManager { get { return ugManager; } }
 
         //secondary temporary constructor for debug purposes
-        public Player(String name, Rectangle position, TextureManager textureManager) : base(textureManager.RightStandingSprite)
+        public Player(String name, Rectangle position, TextureManager textureManager, GameTime gameTime) : base(textureManager.RightStandingSprite)
         {
             this.textureManager = textureManager;
             ugManager = new UpgradeManager();
@@ -60,7 +60,7 @@ namespace Purpose
         /// </summary>
         /// <param name="enemyPosition">The position of the enemy</param>
         /// <returns>Returns an integer value for the damage done</returns>
-        public override int Attack(Rectangle enemyPosition)
+        public override int Attack(Rectangle enemyPosition, GameTime gameTime)
         {
             if (position.Intersects(enemyPosition))
             {

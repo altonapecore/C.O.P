@@ -61,6 +61,7 @@ namespace Purpose
         private int worldRightEndWidth;
         private int worldTopHeight;
         private int worldBottomHeight;
+        private GameTime gameTime;
 
         private Texture2D startScreen;
         private GameObject startButton;
@@ -115,7 +116,10 @@ namespace Purpose
             worldLeftEndWidth = -5000;
             worldRightEndWidth = 5000;
             worldTopHeight = -2000;
-            worldBottomHeight = 2000;
+            worldBottomHeight = 1000;
+
+            // Initialize gameTime
+            gameTime = new GameTime();
         }
 
         /// <summary>
@@ -135,6 +139,7 @@ namespace Purpose
             //bottomPlatforms = new List<Platform>();
             ViewportAdapter viewportAdapter = new BoxingViewportAdapter(Window, GraphicsDevice, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
             camera = new Camera2D(viewportAdapter);
+
         }
 
         /// <summary>
@@ -218,18 +223,20 @@ namespace Purpose
             // Makes player, gameManager object and fills enemy list
             textureManager = new TextureManager(Content.Load<Texture2D>("LeftCrouchingSprite"), Content.Load<Texture2D>("RightCrouchingSprite"),
                 Content.Load<Texture2D>("LeftStandingSprite"), Content.Load<Texture2D>("RightStandingSprite"),
-                Content.Load<Texture2D>("LeftRunningSprite"), Content.Load<Texture2D>("RightRunningSprite"));
+                Content.Load<Texture2D>("LeftRunningSprite"), Content.Load<Texture2D>("RightRunningSprite"), 
+                Content.Load<Texture2D>("RightEnemyWalk1"), Content.Load<Texture2D>("RightEnemyWalk2"), Content.Load<Texture2D>("RightEnemyWalk3"),
+                Content.Load<Texture2D>("LeftEnemyWalk1"), Content.Load<Texture2D>("LeftEnemyWalk2"), Content.Load<Texture2D>("LeftEnemyWalk3"));
 
-            player = new Player("Dude", new Rectangle(225, 225, 139, 352), textureManager);
+            player = new Player("Dude", new Rectangle(225, 225, 139, 352), textureManager, gameTime);
 
             gameManager = new GameManager(player, bottomPlatforms, GraphicsDevice, textureManager);
 
-            //arenaWindow = new ArenaWindow(gameManager);
+            arenaWindow = new ArenaWindow(gameManager);
             gameManager.GameState = GameState.Menu;
-            //arenaWindow.ShowDialog(); //Loads arenaWindow here to allow User to change settings of level, enemies, and background
-
-            gameManager.FillEnemyList(rng, gameManager.NumberOfEnemies, worldLeftEndWidth, worldRightEndWidth, trent);
-            gameManager.FillRangedList(rng, gameManager.NumberOfRanged, worldLeftEndWidth, worldRightEndWidth, tempTexture);
+            arenaWindow.ShowDialog(); //Loads arenaWindow here to allow User to change settings of level, enemies, and background
+            
+            //gameManager.FillEnemyList(rng, gameManager.NumberOfEnemies, worldLeftEndWidth, worldRightEndWidth, gameTime);
+            //gameManager.FillRangedList(rng, gameManager.NumberOfRanged, worldLeftEndWidth, worldRightEndWidth, tempTexture, gameTime);
         }
 
         /// <summary>
@@ -263,6 +270,9 @@ namespace Purpose
             {
 
                 case GameState.Menu:
+                    // Reset game
+                    gameManager.ResetGame(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture);
+
                     //Using the selection from the ArenaWindow pciks the background to use in the Game
                     if (gameManager.BackgroundSelection == Background.WhiteBackground)
                     {
@@ -285,13 +295,14 @@ namespace Purpose
                     break;
 
                 case GameState.Game:
+                    //arenaManagerCounter = 0;
                     camera.MinimumZoom = 0.5f;
                     camera.MaximumZoom = 1.0f;
                     camera.Zoom = 0.5f;
 
                     // Stuff for moving player and enemy, as well as player attack
                     ms = Mouse.GetState();
-                    gameManager.PlayerMove(kbState, previouskbState, ms, previousMs, camera, totalPlatforms);
+                    gameManager.PlayerMove(kbState, previouskbState, ms, previousMs, camera, totalPlatforms, gameTime);
                     // Jump logic
                     if(gameManager.JumpNum >= 1 && gameManager.JumpNum <= 10)
                     {
@@ -303,7 +314,7 @@ namespace Purpose
                         gameManager.JumpNum = 0;
                     }
 
-                    gameManager.EnemyMove();
+                    gameManager.EnemyMove(gameTime);
                     if (kbState.IsKeyDown(Keys.P))
                     {
                         gameManager.GameState = GameState.Pause;
@@ -316,10 +327,6 @@ namespace Purpose
                     break;
 
                 case GameState.Pause:
-                    // Make a pauseMenu form and shows it
-                    //PauseMenu pauseMenu = new PauseMenu(gameManager);
-                    //pauseMenu.ShowDialog();
-                    //gameManager.GameState = GameState.Game;
                     camera.Zoom = 1.0f;
                     camera.Position = new Vector2(0, 0);
 
@@ -432,10 +439,24 @@ namespace Purpose
                     spriteBatch.Draw(gameManager.Player.Texture, new Rectangle(gameManager.Player.X, gameManager.Player.Y, player.Position.Width, player.Position.Height),
                         Color.White);
                     // Enemies
-                    for (int i = 0; i < gameManager.Enemies.Count; i++)
-                    {
+                    //for (int i = 0; i < gameManager.Enemies.Count; i++)
+                    //{
 
-                        spriteBatch.Draw(gameManager.Enemies[i].Texture, new Rectangle(gameManager.Enemies[i].X, gameManager.Enemies[i].Y, 147, 147), Color.White);
+                    //    spriteBatch.Draw(gameManager.Enemies[i].Texture, new Rectangle(gameManager.Enemies[i].X, gameManager.Enemies[i].Y, 147, 147), Color.White);
+                    //}
+
+                    foreach (Enemy e in gameManager.Enemies)
+                    {
+                        if (e.IsAttacking)
+                        {
+                            spriteBatch.Draw(e.Texture, e.Position, Color.Red);
+                        }
+                        
+                        else
+                        {
+                            spriteBatch.Draw(e.Texture, e.Position, Color.White);
+                        }
+                        //spriteBatch.Draw(e.Texture, e.Position, Color.White);
                     }
                     break;
 
