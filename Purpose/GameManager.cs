@@ -34,13 +34,15 @@ namespace Purpose
         private int numberOfEnemies;
         private int numberOfRanged;
         private int difficulty;
-        //private List<Wave> waves;
 
+        //private List<Wave> waves;
+        private List<Wave> waves;
        // private List<>
 
         private TextureManager textureManager;
 
         int keyCounter;
+        //int frameCounter;
 
         //properties
         public List<Enemy> Enemies { get { return enemies; } }
@@ -91,6 +93,12 @@ namespace Purpose
             set { difficulty = value; }
         }
 
+        public List<Wave> Waves
+        {
+            get { return waves; }
+            set { waves = value; }
+        }
+
         // This is for jump logic
         public int JumpNum
         {
@@ -110,6 +118,7 @@ namespace Purpose
             this.graphicsDevice = graphicsDevice;
             backgroundSelection = Purpose.Background.WhiteBackground;
             this.textureManager = textureManager;
+            waves = new List<Wave>();
         }
 
         //methods
@@ -412,6 +421,10 @@ namespace Purpose
 
             for (int i = 0; i < enemies.Count; i++)
             {
+                //if (Math.Abs(enemies[i].X -player.X) < 100)
+                //{
+                //    return;
+                //}
                 if(enemies[i].X < player.X)
                 {
                     if (enemies[i].Texture == textureManager.LeftEnemyWalk1 || enemies[i].Texture == textureManager.LeftEnemyWalk2 || enemies[i].Texture == textureManager.LeftEnemyWalk3)
@@ -421,7 +434,7 @@ namespace Purpose
                     }
                     enemies[i].FrameCounter++;
                     enemies[i].X += 5;
-                    if (enemies[i].FrameCounter >= 15 )
+                    if (enemies[i].FrameCounter >= 5 )
                     {
                         if (enemies[i].Texture == textureManager.RightEnemyWalk1)
                         {
@@ -448,7 +461,7 @@ namespace Purpose
                     }
                     enemies[i].FrameCounter++;
                     enemies[i].X -= 5;
-                    if (enemies[i].FrameCounter >= 15)
+                    if (enemies[i].FrameCounter >= 5)
                     {
                         if (enemies[i].Texture == textureManager.LeftEnemyWalk1)
                         {
@@ -484,26 +497,14 @@ namespace Purpose
         }
 
         /// <summary>
-        /// Draws player walking
-        /// </summary>
-        /// <param name="spriteBatch">The spriteBatch object from the draw method</param>
-        /// <param name="currentFrame">the current frame of the game</param>
-        /// <param name="flip">Should be flipped horizontally?</param>
-        public void DrawPlayerWalking(SpriteBatch spriteBatch, SpriteEffects flip)
-        {
-            spriteBatch.Draw(textureManager.RightRunningSprite, player.Position,
-                null, Color.White, 0.0f, Vector2.Zero, flip, 1.0f);
-        }
-
-        /// <summary>
         /// Resets game to beginning
         /// </summary>
         public void ResetGame(Camera2D camera, Random rng, int worldLeftEndWidth, int worldRightEndWidth, GameTime gameTime, Texture2D tempTexture)
         {
             player.Health = 100;
             enemies.Clear();
-            FillEnemyList(rng, numberOfEnemies, worldLeftEndWidth, worldRightEndWidth, gameTime);
-            FillRangedList(rng, numberOfRanged, worldLeftEndWidth, worldRightEndWidth, tempTexture, gameTime);
+            FillEnemyList(rng, NumberOfEnemies, worldLeftEndWidth, worldRightEndWidth, gameTime);
+            FillRangedList(rng, NumberOfRanged, worldLeftEndWidth, worldRightEndWidth, tempTexture, gameTime);
             camera.Zoom = 1.0f;
             player.UgManager.UpgradePoints = 0;
         }
