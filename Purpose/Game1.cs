@@ -45,7 +45,6 @@ namespace Purpose
         //Fields 
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
-        private Level currentLevel;
         private KeyboardState kbState;
         private MouseState ms;
         private Player player;
@@ -82,6 +81,7 @@ namespace Purpose
         private GameObject returnToGameButton;
         private GameObject upgradesButton;
 
+        public Texture2D gameOver;
         //Field for the Reader
         private Reader reader;
 
@@ -137,8 +137,6 @@ namespace Purpose
         {
             // Make mouse visible
             this.IsMouseVisible = true;
-            // Initialize GameState and level
-            currentLevel = Level.One;
             //Initialize the Window Form
             base.Initialize();
             //bottomPlatforms = new List<Platform>();
@@ -168,6 +166,7 @@ namespace Purpose
             roundedFrame = Content.Load<Texture2D>("roundedFrame");
             upgradeScreen = Content.Load<Texture2D>("UpgradeUI");
             pauseScreen = Content.Load<Texture2D>("pauseMenu");
+            gameOver = Content.Load<Texture2D>("gameOver");
 
             //temporary background
             whiteBack = Content.Load<Texture2D>("whiteback");
@@ -383,6 +382,8 @@ namespace Purpose
                     break;
 
                 case GameState.GameOver:
+                    camera.Zoom = 1.0f;
+                    camera.Position = new Vector2(0, 0);
                     // Press enter to go back to menu
                     if (kbState.IsKeyDown(Keys.Enter))
                     {
@@ -400,7 +401,7 @@ namespace Purpose
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.White);
 
             var transformMatrix = camera.GetViewMatrix();
             spriteBatch.Begin(transformMatrix: transformMatrix);
@@ -558,9 +559,12 @@ namespace Purpose
 
                 case GameState.GameOver:
                     // Temp drawing stuffs
-                    spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
-                    spriteBatch.DrawString(comicSans24, "Press ENTER to go back to menu", new Vector2(GraphicsDevice.Viewport.X / 2, GraphicsDevice.Viewport.Y / 2),
-                        Color.Yellow);
+                    //spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
+                    //spriteBatch.DrawString(comicSans24, "Press ENTER to go back to menu", new Vector2(GraphicsDevice.Viewport.X / 2, GraphicsDevice.Viewport.Y / 2),
+                    //    Color.Yellow);
+
+                    spriteBatch.Draw(gameOver, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
+
                     break;
             }
 
