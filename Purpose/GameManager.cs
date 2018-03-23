@@ -107,7 +107,7 @@ namespace Purpose
         /// <param name="previouskbState">The previous state of the keyboard</param>
         /// <param name="ms">The current mouse state</param>
         /// <param name="previousMs">The previous mouse state</param>
-        public void PlayerMove(KeyboardState kbState, KeyboardState previouskbState, MouseState ms, MouseState previousMs, Camera2D camera, List<Platform> platforms)
+        public void PlayerMove(KeyboardState kbState, KeyboardState previouskbState, MouseState ms, MouseState previousMs, Camera2D camera, List<Platform> platforms, GameTime gameTime)
         {
             //a boolean representing if the player is on the platform
             bool onPlatform = false;
@@ -126,7 +126,7 @@ namespace Purpose
             {
                 player.Y += 5;
                 // moving camera with player
-                camera.Position = new Vector2(player.X, player.Y);
+                camera.LookAt(new Vector2(player.X, player.Y));
             }
 
             //checking keyboard state to make the player move
@@ -137,6 +137,8 @@ namespace Purpose
                 {
                     player.Texture = textureManager.LeftCrouchSprite;
                     player.X -= 8;
+                    // moving camera with player
+                    camera.LookAt(new Vector2(player.X, player.Y));
                     return;
                 }
 
@@ -172,7 +174,7 @@ namespace Purpose
                 }
                 player.X -= 8;
                 // moving camera with player
-                camera.Position = new Vector2(player.X, player.Y);
+                camera.LookAt(new Vector2(player.X, player.Y));
             }
             if (kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right)) //move to the right
             {
@@ -181,6 +183,8 @@ namespace Purpose
                 {
                     player.Texture = textureManager.RightCrouchSprite;
                     player.X += 8;
+                    // moving camera with player
+                    camera.LookAt(new Vector2(player.X, player.Y));
                     return;
                 }
 
@@ -216,7 +220,7 @@ namespace Purpose
                 }
                 player.X += 8;
                 // moving camera with player
-                camera.Position = new Vector2(player.X, player.Y);
+                camera.LookAt(new Vector2(player.X, player.Y));
             }
             if (kbState.IsKeyDown(Keys.Space) && !previouskbState.IsKeyDown(Keys.Space) && onPlatform && !isCrouching) //jump
             {
@@ -236,9 +240,9 @@ namespace Purpose
                     {
                         player.X -= player.DashDistance;
                     }
-                }
-                // moving camera with player
-                camera.Position = new Vector2(player.X, player.Y);
+                    // moving camera with player
+                    camera.LookAt(new Vector2(player.X, player.Y));
+                }              
             }
             if (kbState.IsKeyDown(Keys.S) && previouskbState.IsKeyUp(Keys.S) //crouch
                 && !kbState.IsKeyDown(Keys.Space) && onPlatform)
@@ -250,7 +254,7 @@ namespace Purpose
             {
                 for (int i = 0; i < enemies.Count; i++)
                 {
-                    enemies[i].TakeDamage(player.Attack(enemies[i].Position));
+                    enemies[i].TakeDamage(player.Attack(enemies[i].Position, gameTime));
                     if (enemies[i].IsDead)
                     {
                         enemies.RemoveAt(i);
@@ -282,7 +286,7 @@ namespace Purpose
         /// <param name="numberOfEnemies">The number of enemies to spawn in</param>
         /// <param name="graphicsDevice">The graphics device to help limit the enemies' spawn positions</param>
         /// <param name="enemyTexture">The texture of the enemies</param>
-        public void FillEnemyList(Random rng, int numberOfEnemies, int worldLeftEndWidth, int worldRightEndWidth, Texture2D enemyTexture)
+        public void FillEnemyList(Random rng, int numberOfEnemies, int worldLeftEndWidth, int worldRightEndWidth, Texture2D enemyTexture, GameTime gameTime)
         {
             for (int i = 0; i < NumberOfEnemies; i++)
             {
@@ -290,28 +294,28 @@ namespace Purpose
                 if (choice == 1)
                 {
                     Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, 0), graphicsDevice.Viewport.Height - 450, 147, 147),
-                        enemyTexture, Level.One, false);
+                        enemyTexture, Level.One, false, gameTime);
                     enemies.Add(enemy);
                 }
 
                 else if (choice == 2)
                 {
                     Enemy enemy = new Enemy(new Rectangle(rng.Next(0, worldRightEndWidth), graphicsDevice.Viewport.Height - 450, 147, 147),
-                        enemyTexture, Level.One, false);
+                        enemyTexture, Level.One, false, gameTime);
                     enemies.Add(enemy);
                 }
 
                 else if (choice == 3)
                 {
                     Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, 0), graphicsDevice.Viewport.Height - 750, 147, 147),
-                        enemyTexture, Level.One, false);
+                        enemyTexture, Level.One, false, gameTime);
                     enemies.Add(enemy);
                 }
 
                 else if (choice == 4)
                 {
                     Enemy enemy = new Enemy(new Rectangle(rng.Next(0, worldRightEndWidth), graphicsDevice.Viewport.Height - 750, 147, 147),
-                        enemyTexture, Level.One, false);
+                        enemyTexture, Level.One, false, gameTime);
                     enemies.Add(enemy);
                 }
             }
@@ -324,7 +328,7 @@ namespace Purpose
         /// <param name="numberOfRanged">The number to spawn</param>
         /// <param name="graphicsDevice">Limits the enemies spawn point</param>
         /// <param name="rangeTexture">The texture for the Ranged Enemies</param>
-        public void FillRangedList(Random rng, int numberOfRanged, int worldLeftEndWidth, int worldRightEndWidth, Texture2D rangeTexture)
+        public void FillRangedList(Random rng, int numberOfRanged, int worldLeftEndWidth, int worldRightEndWidth, Texture2D rangeTexture, GameTime gameTime)
         {
             for (int i = 0; i < NumberOfRanged; i++)
             {
@@ -332,28 +336,28 @@ namespace Purpose
                 if (choice == 1)
                 {
                     Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, 0), graphicsDevice.Viewport.Height - 450, 147, 147),
-                        rangeTexture, Level.One, false);
+                        rangeTexture, Level.One, false, gameTime);
                     enemies.Add(enemy);
                 }
 
                 else if (choice == 2)
                 {
                     Enemy enemy = new Enemy(new Rectangle(rng.Next(0, worldRightEndWidth), graphicsDevice.Viewport.Height - 450, 147, 147),
-                        rangeTexture, Level.One, false);
+                        rangeTexture, Level.One, false, gameTime);
                     enemies.Add(enemy);
                 }
 
                 else if (choice == 3)
                 {
                     Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, 0), graphicsDevice.Viewport.Height - 750, 147, 147),
-                        rangeTexture, Level.One, false);
+                        rangeTexture, Level.One, false, gameTime);
                     enemies.Add(enemy);
                 }
 
                 else if (choice == 4)
                 {
                     Enemy enemy = new Enemy(new Rectangle(rng.Next(0, worldRightEndWidth), graphicsDevice.Viewport.Height - 750, 147, 147),
-                        rangeTexture, Level.One, false);
+                        rangeTexture, Level.One, false, gameTime);
                     enemies.Add(enemy);
                 }
             }
@@ -363,7 +367,7 @@ namespace Purpose
         /// <summary>
         /// Allows the enemy to move
         /// </summary>
-        public void EnemyMove()
+        public void EnemyMove(GameTime gameTime)
         {
             // On platform and gravity stuff
             bool onPlatform = false;
@@ -414,6 +418,12 @@ namespace Purpose
                     enemies.Remove(enemies[i]);
                 }
             }
+
+            foreach(Enemy e in enemies)
+            {
+                int damage = e.Attack(player.Position, gameTime);
+                player.TakeDamage(damage);
+            }
         }
 
         /// <summary>
@@ -426,6 +436,16 @@ namespace Purpose
         {
             spriteBatch.Draw(textureManager.RightRunningSprite, player.Position,
                 null, Color.White, 0.0f, Vector2.Zero, flip, 1.0f);
+        }
+
+        /// <summary>
+        /// Resets game to beginning
+        /// </summary>
+        public void ResetGame(Camera2D camera)
+        {
+            player.Health = 100;
+            enemies.Clear();
+            camera.Zoom = 1.0f;
         }
     }
 }
