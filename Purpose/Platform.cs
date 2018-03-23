@@ -10,11 +10,21 @@ namespace Purpose
 {
     public class Platform : GameObject
     {
+        // Fields
+        private bool canFall;
+
+        // Properties
+        public bool CanFall
+        {
+            get { return canFall; }
+            set { canFall = value; }
+        }
         // Constructor
         public Platform(Rectangle position, Texture2D texture) : base(texture)
         {
             this.position = position;
             this.texture = texture;
+            canFall = false;
         }
 
         /// <summary>

@@ -28,6 +28,7 @@ namespace Purpose
         private Texture2D background;
         private Background backgroundSelection;
         private int jumpNum;
+        private bool abovePlatform;
 
         //Deals with the enemies
         private int numberOfEnemies;
@@ -40,7 +41,6 @@ namespace Purpose
         private TextureManager textureManager;
 
         int keyCounter;
-        int frameCounter;
 
         //properties
         public List<Enemy> Enemies { get { return enemies; } }
@@ -128,6 +128,7 @@ namespace Purpose
             //a loop to check if the player is on the platform
             foreach (Platform p in platforms)
             {
+                abovePlatform = p.AbovePlatform(platforms);
                 if (player.Position.Intersects(p.Position))
                 {
                     onPlatform = true;
@@ -139,7 +140,7 @@ namespace Purpose
             {
                 player.Y += 5;
                 // moving camera with player
-                camera.LookAt(new Vector2(player.X, player.Y));
+                camera.LookAt(new Vector2(player.X, player.Y - 250));
             }
 
             //checking keyboard state to make the player move
@@ -151,7 +152,7 @@ namespace Purpose
                     player.Texture = textureManager.LeftCrouchSprite;
                     player.X -= 8;
                     // moving camera with player
-                    camera.LookAt(new Vector2(player.X, player.Y));
+                    camera.LookAt(new Vector2(player.X, player.Y - 250));
                     return;
                 }
 
@@ -187,7 +188,7 @@ namespace Purpose
                 }
                 player.X -= 8;
                 // moving camera with player
-                camera.LookAt(new Vector2(player.X, player.Y));
+                camera.LookAt(new Vector2(player.X, player.Y - 250));
             }
             if (kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right)) //move to the right
             {
@@ -197,7 +198,7 @@ namespace Purpose
                     player.Texture = textureManager.RightCrouchSprite;
                     player.X += 8;
                     // moving camera with player
-                    camera.LookAt(new Vector2(player.X, player.Y));
+                    camera.LookAt(new Vector2(player.X, player.Y - 250));
                     return;
                 }
 
@@ -233,7 +234,7 @@ namespace Purpose
                 }
                 player.X += 8;
                 // moving camera with player
-                camera.LookAt(new Vector2(player.X, player.Y));
+                camera.LookAt(new Vector2(player.X, player.Y - 250));
             }
             if (kbState.IsKeyDown(Keys.Space) && !previouskbState.IsKeyDown(Keys.Space) && onPlatform && !isCrouching) //jump
             {
@@ -247,14 +248,17 @@ namespace Purpose
                         || player.Texture == textureManager.RightCrouchSprite) //dash to the right
                     {
                         player.X += player.DashDistance;
+                        // moving camera with player
+                        camera.LookAt(new Vector2(player.X, player.Y - 250));
                     }
                     else if (player.Texture == textureManager.LeftStandingSprite || player.Texture == textureManager.LeftRunningSprite
                         || player.Texture == textureManager.LeftCrouchSprite) //dash to the left
                     {
                         player.X -= player.DashDistance;
+                        // moving camera with player
+                        camera.LookAt(new Vector2(player.X, player.Y - 250));
                     }
-                    // moving camera with player
-                    camera.LookAt(new Vector2(player.X, player.Y));
+                    
                 }              
             }
             if (kbState.IsKeyDown(Keys.S) && previouskbState.IsKeyUp(Keys.S) //crouch
@@ -271,9 +275,15 @@ namespace Purpose
                     if (enemies[i].IsDead)
                     {
                         enemies.RemoveAt(i);
+                        player.Kills++;
+                        if(player.Kills != 0 && player.Kills % 5 == 0)
+                        {
+                            player.UgManager.UpgradePoints++;
+                        }
                     }
                 }
             }
+
 
             //limiting player movement in both x directions and lower y direction
             //if (player.X <= 0)
@@ -284,10 +294,10 @@ namespace Purpose
             //{
             //    player.X = graphicsDevice.Viewport.Width-200;
             //}
-            if (player.Y >= graphicsDevice.Viewport.Height)
-            {
-                player.Y = graphicsDevice.Viewport.Height - 200;
-            }
+            //if (player.Y >= graphicsDevice.Viewport.Height)
+            //{
+            //    player.Y = graphicsDevice.Viewport.Height - 200;
+            //}
 
 
         }
@@ -407,11 +417,11 @@ namespace Purpose
                     if (enemies[i].Texture == textureManager.LeftEnemyWalk1 || enemies[i].Texture == textureManager.LeftEnemyWalk2 || enemies[i].Texture == textureManager.LeftEnemyWalk3)
                     {
                         enemies[i].Texture = textureManager.RightEnemyWalk1;
-                        frameCounter = 0;
+                        enemies[i].FrameCounter = 0;
                     }
-                    frameCounter++;
+                    enemies[i].FrameCounter++;
                     enemies[i].X += 5;
-                    if (frameCounter >= 15 )
+                    if (enemies[i].FrameCounter >= 15 )
                     {
                         if (enemies[i].Texture == textureManager.RightEnemyWalk1)
                         {
@@ -425,7 +435,7 @@ namespace Purpose
                         {
                             enemies[i].Texture = textureManager.RightEnemyWalk1;
                         }
-                        frameCounter = 0;
+                        enemies[i].FrameCounter = 0;
                     }
                 }
 
@@ -434,11 +444,11 @@ namespace Purpose
                     if (enemies[i].Texture == textureManager.RightEnemyWalk1 || enemies[i].Texture == textureManager.RightEnemyWalk2 || enemies[i].Texture == textureManager.RightEnemyWalk3)
                     {
                         enemies[i].Texture = textureManager.LeftEnemyWalk1;
-                        frameCounter = 0;
+                        enemies[i].FrameCounter = 0;
                     }
-                    frameCounter++;
+                    enemies[i].FrameCounter++;
                     enemies[i].X -= 5;
-                    if (frameCounter >= 15)
+                    if (enemies[i].FrameCounter >= 15)
                     {
                         if (enemies[i].Texture == textureManager.LeftEnemyWalk1)
                         {
@@ -452,7 +462,7 @@ namespace Purpose
                         {
                             enemies[i].Texture = textureManager.LeftEnemyWalk1;
                         }
-                        frameCounter = 0;
+                        enemies[i].FrameCounter = 0;
                     }
                 }
             }
@@ -495,6 +505,7 @@ namespace Purpose
             FillEnemyList(rng, numberOfEnemies, worldLeftEndWidth, worldRightEndWidth, gameTime);
             FillRangedList(rng, numberOfRanged, worldLeftEndWidth, worldRightEndWidth, tempTexture, gameTime);
             camera.Zoom = 1.0f;
+            player.UgManager.UpgradePoints = 0;
         }
     }
 }

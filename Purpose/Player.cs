@@ -76,6 +76,10 @@ namespace Purpose
         public override void TakeDamage(int damage)
         {
             health -= damage;
+            if(health <= 0)
+            {
+                isDead = true;
+            }
         }
 
         /// <summary>

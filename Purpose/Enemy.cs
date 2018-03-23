@@ -12,10 +12,11 @@ namespace Purpose
     {
         // Fields
         private bool ranged;
-        private bool isDead;
         private int gameTime;
+        private int frameCounter;
         // Temp field for attacking
         private bool isAttacking;
+        
 
         // Properties
         public bool Ranged
@@ -24,12 +25,16 @@ namespace Purpose
             set { ranged = value; }
         }
 
+        public int FrameCounter
+        {
+            get { return frameCounter; }
+            set { frameCounter = value; }
+        }
+
         // Temp property for attacking
         public bool IsAttacking { get { return isAttacking; } }
 
         // Normal stuff below
-        public bool IsDead{ get { return isDead; }}
-
         public int GameTime { get { return gameTime; } }
 
         // Constructor
@@ -43,6 +48,7 @@ namespace Purpose
             this.gameTime = gameTime.TotalGameTime.Seconds;
             health = 50;
             damage = 10;
+            frameCounter = 0;
         }
 
         // Methods
