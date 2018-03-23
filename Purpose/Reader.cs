@@ -8,26 +8,28 @@ using System.IO;
 namespace Purpose
 {
     //Class takes in txt file created from the editor to make prepare the waves
-    class Streamreader
+    class Reader
     {
         //Fields for the Streamreader
-        private Streamreader input;
-        private String file;
+        private StreamReader input;
         private string line;
 
-        //Field for the wave
+        //Field for the wave and manager to create it
         private Wave wave;
+        private GameManager gameManager;
 
         //Constructor for the Reader
-        public Streamreader(String file)
+        public Reader(GameManager gameManager)
         {
-            input = new Streamreader("waveEditor.txt");
+            input = new StreamReader("waveEditor.txt");
             line = null;
+            wave = new Wave(gameManager);
+            this.gameManager = gameManager;
         }
 
         //Method that runs through the text file to read it
         //As well as creates the new waves and stores them in their proper list.
-        public void ReadEditor(StreamReader input)
+        public void ReadEditor()
         {
             //Put into try/catch to prevent crashes, etc.
             try
@@ -48,9 +50,9 @@ namespace Purpose
 
                         //Using info gathered above creates a new Wave
                         wave = new Wave(wave.NumberOfMelee, wave.NumberOfRanged, wave.Difficulty);
-                        wave.Waves.Add(wave); //Adds that new wave to the list.
+                        gameManager.Waves.Add(wave); //Adds that new wave to the list.
 
-                        i += 3; //Raises i by 3 to continue to the next group of numbers
+                        i += 3;//Raises i by 3 to continue to the next group of numbers
                     }
                 }
             }

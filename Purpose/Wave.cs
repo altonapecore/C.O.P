@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Purpose
 {
     //Using the StreamReader gets infor needed to run the waves
-    class Wave
+    public class Wave
     {
         //Fields for the number of enemies to spawn
         private int numberOfMelee;
@@ -16,8 +16,8 @@ namespace Purpose
         //Holds level of difficulty for enemies
         private int difficulty;
 
-        //List for Waves and info for wave is stored
-        private List<Wave> waves;
+        //Making Game Manager to have variables to save the info from text file
+        private GameManager gameManager;
 
         //Properties for enemies
         public int NumberOfMelee
@@ -39,27 +39,22 @@ namespace Purpose
             set { difficulty = value; }
         }
 
-        public List<Wave> Waves
-        {
-            get { return waves; }
-            set { waves = value; }
-        }
-
         //Default Constructor
-        public Wave()
+        public Wave(GameManager gameManager)
         {
             numberOfMelee = 0;
             numberOfRanged = 0;
             difficulty = 1;
-            waves = new List<Wave>();
+            this.gameManager = gameManager;
         }
 
         //Parameterized Constructor
         public Wave(int numberOfMelee, int numberOfRanged, int difficulty)
         {
-            this.numberOfMelee = numberOfMelee;
-            this.numberOfRanged = numberOfRanged;
-            this.difficulty = difficulty;
+            //Numbers for enemies and difficulty saved into gamemanager
+            gameManager.NumberOfEnemies = numberOfMelee;
+            gameManager.NumberOfRanged = numberOfRanged;
+            gameManager.Difficulty = difficulty;
         }
     }
 }

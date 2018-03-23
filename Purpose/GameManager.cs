@@ -33,8 +33,9 @@ namespace Purpose
         private int numberOfEnemies;
         private int numberOfRanged;
         private int difficulty;
-        //private List<Wave> waves;
 
+        //private List<Wave> waves;
+        private List<Wave> waves;
        // private List<>
 
         private TextureManager textureManager;
@@ -91,6 +92,12 @@ namespace Purpose
             set { difficulty = value; }
         }
 
+        public List<Wave> Waves
+        {
+            get { return waves; }
+            set { waves = value; }
+        }
+
         // This is for jump logic
         public int JumpNum
         {
@@ -110,6 +117,7 @@ namespace Purpose
             this.graphicsDevice = graphicsDevice;
             backgroundSelection = Purpose.Background.WhiteBackground;
             this.textureManager = textureManager;
+            waves = new List<Wave>();
         }
 
         //methods

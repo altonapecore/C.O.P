@@ -82,6 +82,8 @@ namespace Purpose
         private GameObject returnToGameButton;
         private GameObject upgradesButton;
 
+        //Field for the Reader
+        private Reader reader;
 
         //textureManager object
         private TextureManager textureManager;
@@ -120,6 +122,9 @@ namespace Purpose
 
             // Initialize gameTime
             gameTime = new GameTime();
+
+            //Initializing Reader
+            reader = new Reader(gameManager);
         }
 
         /// <summary>
@@ -233,10 +238,13 @@ namespace Purpose
 
             arenaWindow = new ArenaWindow(gameManager);
             gameManager.GameState = GameState.Menu;
-            arenaWindow.ShowDialog(); //Loads arenaWindow here to allow User to change settings of level, enemies, and background
-            
-            //gameManager.FillEnemyList(rng, gameManager.NumberOfEnemies, worldLeftEndWidth, worldRightEndWidth, gameTime);
-            //gameManager.FillRangedList(rng, gameManager.NumberOfRanged, worldLeftEndWidth, worldRightEndWidth, tempTexture, gameTime);
+            //arenaWindow.ShowDialog(); //Loads arenaWindow here to allow User to change settings of level, enemies, and background
+
+            //Runs the Reader method to vcreate enemies needed
+            reader.ReadEditor();
+
+            gameManager.FillEnemyList(rng, gameManager.NumberOfEnemies, worldLeftEndWidth, worldRightEndWidth, gameTime);
+            gameManager.FillRangedList(rng, gameManager.NumberOfRanged, worldLeftEndWidth, worldRightEndWidth, tempTexture, gameTime);
         }
 
         /// <summary>

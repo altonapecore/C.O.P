@@ -67,7 +67,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Streamreader.cs" />
+    <Compile Include="Reader.cs" />
     <Compile Include="TextureManager.cs" />
     <Compile Include="UpgradeManager.cs" />
     <Compile Include="Wave.cs" />
