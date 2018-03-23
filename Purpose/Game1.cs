@@ -23,7 +23,7 @@ namespace Purpose
         Three,
     }
 
-    public enum Wave
+    public enum WaveNumber
     {
         One,
         Two, 

@@ -27,9 +27,15 @@ namespace Purpose
         private GameState gameState;
         private Texture2D background;
         private Background backgroundSelection;
+        private int jumpNum;
+
+        //Deals with the enemies
         private int numberOfEnemies;
         private int numberOfRanged;
-        private int jumpNum;
+        private int difficulty;
+        //private List<Wave> waves;
+
+       // private List<>
 
         private TextureManager textureManager;
 
@@ -76,6 +82,12 @@ namespace Purpose
         {
             get { return numberOfRanged; }
             set { numberOfRanged = value; }
+        }
+
+        public int Difficulty
+        {
+            get { return difficulty; }
+            set { difficulty = value; }
         }
 
         // This is for jump logic
