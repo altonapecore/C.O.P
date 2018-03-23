@@ -237,9 +237,9 @@ namespace Purpose
             arenaWindow = new ArenaWindow(gameManager);
             gameManager.GameState = GameState.Menu;
             arenaWindow.ShowDialog(); //Loads arenaWindow here to allow User to change settings of level, enemies, and background
-
-            gameManager.FillEnemyList(rng, gameManager.NumberOfEnemies, worldLeftEndWidth, worldRightEndWidth);
-            gameManager.FillRangedList(rng, gameManager.NumberOfRanged, worldLeftEndWidth, worldRightEndWidth, tempTexture);
+            
+            gameManager.FillEnemyList(rng, gameManager.NumberOfEnemies, worldLeftEndWidth, worldRightEndWidth, gameTime);
+            gameManager.FillRangedList(rng, gameManager.NumberOfRanged, worldLeftEndWidth, worldRightEndWidth, tempTexture, gameTime);
         }
 
         /// <summary>
@@ -274,16 +274,16 @@ namespace Purpose
 
                 case GameState.Menu:
                     // Reset game
-                    gameManager.ResetGame(camera);
-                    
-                    if (arenaManagerCounter == 0)
-                    {
-                        arenaWindow = new ArenaWindow(gameManager);
-                        arenaWindow.ShowDialog(); //Loads arenaWindow here to allow User to change settings of level, enemies, and background
-                        gameManager.FillEnemyList(rng, gameManager.NumberOfEnemies, worldLeftEndWidth, worldRightEndWidth, trent, gameTime);
-                        gameManager.FillRangedList(rng, gameManager.NumberOfRanged, worldLeftEndWidth, worldRightEndWidth, tempTexture, gameTime);
-                        arenaManagerCounter++;
-                    }
+                    //gameManager.ResetGame(camera);
+                    //
+                    //if (arenaManagerCounter == 0)
+                    //{
+                    //    arenaWindow = new ArenaWindow(gameManager);
+                    //    arenaWindow.ShowDialog(); //Loads arenaWindow here to allow User to change settings of level, enemies, and background
+                    //    gameManager.FillEnemyList(rng, gameManager.NumberOfEnemies, worldLeftEndWidth, worldRightEndWidth, gameTime);
+                    //    gameManager.FillRangedList(rng, gameManager.NumberOfRanged, worldLeftEndWidth, worldRightEndWidth, tempTexture, gameTime);
+                    //    arenaManagerCounter++;
+                    //}
 
                     //Using the selection from the ArenaWindow pciks the background to use in the Game
                     if (gameManager.BackgroundSelection == Background.WhiteBackground)
@@ -459,17 +459,16 @@ namespace Purpose
 
                     foreach (Enemy e in gameManager.Enemies)
                     {
-                        if (gameManager.Enemies[i].IsAttacking)
+                        if (e.IsAttacking)
                         {
-                            spriteBatch.Draw(gameManager.Enemies[i].Texture, new Rectangle(gameManager.Enemies[i].X, gameManager.Enemies[i].Y, 147, 147), Color.Red);
+                            spriteBatch.Draw(e.Texture, e.Position, Color.Red);
                         }
-
+                        
                         else
                         {
-                            spriteBatch.Draw(gameManager.Enemies[i].Texture, new Rectangle(gameManager.Enemies[i].X, gameManager.Enemies[i].Y, 147, 147), Color.White);
+                            spriteBatch.Draw(e.Texture, e.Position, Color.White);
                         }
-                    }
-                        spriteBatch.Draw(e.Texture, e.Position, Color.White);
+                        //spriteBatch.Draw(e.Texture, e.Position, Color.White);
                     }
                     break;
 

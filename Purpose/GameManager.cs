@@ -287,7 +287,7 @@ namespace Purpose
         /// <param name="numberOfEnemies">The number of enemies to spawn in</param>
         /// <param name="graphicsDevice">The graphics device to help limit the enemies' spawn positions</param>
         /// <param name="enemyTexture">The texture of the enemies</param>
-        public void FillEnemyList(Random rng, int numberOfEnemies, int worldLeftEndWidth, int worldRightEndWidth, Texture2D enemyTexture, GameTime gameTime)
+        public void FillEnemyList(Random rng, int numberOfEnemies, int worldLeftEndWidth, int worldRightEndWidth, GameTime gameTime)
         {
             for (int i = 0; i < NumberOfEnemies; i++)
             {
@@ -295,28 +295,28 @@ namespace Purpose
                 if (choice == 1)
                 {
                     Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, 0), graphicsDevice.Viewport.Height - 450, 122, 250),
-                        textureManager.RightEnemyWalk1, Level.One, false);
+                        textureManager.RightEnemyWalk1, Level.One, false, gameTime);
                     enemies.Add(enemy);
                 }
 
                 else if (choice == 2)
                 {
                     Enemy enemy = new Enemy(new Rectangle(rng.Next(0, worldRightEndWidth), graphicsDevice.Viewport.Height - 450, 122, 250),
-                        textureManager.LeftEnemyWalk1, Level.One, false);
+                        textureManager.LeftEnemyWalk1, Level.One, false, gameTime);
                     enemies.Add(enemy);
                 }
 
                 else if (choice == 3)
                 {
                     Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, 0), graphicsDevice.Viewport.Height - 750, 122, 250),
-                        textureManager.RightEnemyWalk1, Level.One, false);
+                        textureManager.RightEnemyWalk1, Level.One, false, gameTime);
                     enemies.Add(enemy);
                 }
 
                 else if (choice == 4)
                 {
                     Enemy enemy = new Enemy(new Rectangle(rng.Next(0, worldRightEndWidth), graphicsDevice.Viewport.Height - 750, 122, 250),
-                        textureManager.LeftEnemyWalk1, Level.One, false);
+                        textureManager.LeftEnemyWalk1, Level.One, false, gameTime);
                     enemies.Add(enemy);
                 }
             }

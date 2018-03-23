@@ -14,7 +14,6 @@ namespace Purpose
         private bool ranged;
         private bool isDead;
         private int gameTime;
-        private int damage;
         // Temp field for attacking
         private bool isAttacking;
 
@@ -25,11 +24,6 @@ namespace Purpose
             set { ranged = value; }
         }
 
-        public int Damage
-        {
-            get { return damage; }
-            set { damage = value; }
-        }
         // Temp property for attacking
         public bool IsAttacking { get { return isAttacking; } }
 
