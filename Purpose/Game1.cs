@@ -23,7 +23,7 @@ namespace Purpose
         Three,
     }
 
-    public enum Wave
+    public enum WaveNumber
     {
         One,
         Two, 
@@ -61,6 +61,7 @@ namespace Purpose
         private int worldRightEndWidth;
         private int worldTopHeight;
         private int worldBottomHeight;
+        private GameTime gameTime;
 
         private Texture2D startScreen;
         private GameObject startButton;
@@ -90,6 +91,7 @@ namespace Purpose
         //private Texture2D tempCrouchTexture;
         private Texture2D trent;
         private SpriteFont comicSans24;
+        private SpriteFont agency30;
         private Random rng;
 
         //Temporary BackGround
@@ -114,7 +116,10 @@ namespace Purpose
             worldLeftEndWidth = -5000;
             worldRightEndWidth = 5000;
             worldTopHeight = -2000;
-            worldBottomHeight = 2000;
+            worldBottomHeight = 1000;
+
+            // Initialize gameTime
+            gameTime = new GameTime();
         }
 
         /// <summary>
@@ -134,6 +139,7 @@ namespace Purpose
             //bottomPlatforms = new List<Platform>();
             ViewportAdapter viewportAdapter = new BoxingViewportAdapter(Window, GraphicsDevice, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
             camera = new Camera2D(viewportAdapter);
+
         }
 
         /// <summary>
@@ -151,6 +157,7 @@ namespace Purpose
             //tempCrouchTexture = Content.Load<Texture2D>("smallerPineapple(1)");
             trent = Content.Load<Texture2D>("trent");
             comicSans24 = Content.Load<SpriteFont>("ComicSans24");
+            agency30 = Content.Load<SpriteFont>("Agency30");
             startScreen = Content.Load<Texture2D>("metalBackground2");
             buttonFrame = Content.Load<Texture2D>("buttonFrame2");
             roundedFrame = Content.Load<Texture2D>("roundedFrame");
@@ -216,18 +223,20 @@ namespace Purpose
             // Makes player, gameManager object and fills enemy list
             textureManager = new TextureManager(Content.Load<Texture2D>("LeftCrouchingSprite"), Content.Load<Texture2D>("RightCrouchingSprite"),
                 Content.Load<Texture2D>("LeftStandingSprite"), Content.Load<Texture2D>("RightStandingSprite"),
-                Content.Load<Texture2D>("LeftRunningSprite"), Content.Load<Texture2D>("RightRunningSprite"));
+                Content.Load<Texture2D>("LeftRunningSprite"), Content.Load<Texture2D>("RightRunningSprite"), 
+                Content.Load<Texture2D>("RightEnemyWalk1"), Content.Load<Texture2D>("RightEnemyWalk2"), Content.Load<Texture2D>("RightEnemyWalk3"),
+                Content.Load<Texture2D>("LeftEnemyWalk1"), Content.Load<Texture2D>("LeftEnemyWalk2"), Content.Load<Texture2D>("LeftEnemyWalk3"));
 
-            player = new Player("Dude", new Rectangle(225, 225, 139, 352), textureManager);
+            player = new Player("Dude", new Rectangle(225, 225, 139, 352), textureManager, gameTime);
 
             gameManager = new GameManager(player, bottomPlatforms, GraphicsDevice, textureManager);
 
-            //arenaWindow = new ArenaWindow(gameManager);
+            arenaWindow = new ArenaWindow(gameManager);
             gameManager.GameState = GameState.Menu;
-            //arenaWindow.ShowDialog(); //Loads arenaWindow here to allow User to change settings of level, enemies, and background
-
-            gameManager.FillEnemyList(rng, gameManager.NumberOfEnemies, worldLeftEndWidth, worldRightEndWidth, trent);
-            gameManager.FillRangedList(rng, gameManager.NumberOfRanged, worldLeftEndWidth, worldRightEndWidth, tempTexture);
+            arenaWindow.ShowDialog(); //Loads arenaWindow here to allow User to change settings of level, enemies, and background
+            
+            //gameManager.FillEnemyList(rng, gameManager.NumberOfEnemies, worldLeftEndWidth, worldRightEndWidth, gameTime);
+            //gameManager.FillRangedList(rng, gameManager.NumberOfRanged, worldLeftEndWidth, worldRightEndWidth, tempTexture, gameTime);
         }
 
         /// <summary>
@@ -261,6 +270,9 @@ namespace Purpose
             {
 
                 case GameState.Menu:
+                    // Reset game
+                    gameManager.ResetGame(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture);
+
                     //Using the selection from the ArenaWindow pciks the background to use in the Game
                     if (gameManager.BackgroundSelection == Background.WhiteBackground)
                     {
@@ -283,13 +295,14 @@ namespace Purpose
                     break;
 
                 case GameState.Game:
+                    //arenaManagerCounter = 0;
                     camera.MinimumZoom = 0.5f;
                     camera.MaximumZoom = 1.0f;
                     camera.Zoom = 0.5f;
 
                     // Stuff for moving player and enemy, as well as player attack
                     ms = Mouse.GetState();
-                    gameManager.PlayerMove(kbState, previouskbState, ms, previousMs, camera, totalPlatforms);
+                    gameManager.PlayerMove(kbState, previouskbState, ms, previousMs, camera, totalPlatforms, gameTime);
                     // Jump logic
                     if(gameManager.JumpNum >= 1 && gameManager.JumpNum <= 10)
                     {
@@ -301,7 +314,7 @@ namespace Purpose
                         gameManager.JumpNum = 0;
                     }
 
-                    gameManager.EnemyMove();
+                    gameManager.EnemyMove(gameTime);
                     if (kbState.IsKeyDown(Keys.P))
                     {
                         gameManager.GameState = GameState.Pause;
@@ -423,10 +436,24 @@ namespace Purpose
                     spriteBatch.Draw(gameManager.Player.Texture, new Rectangle(gameManager.Player.X, gameManager.Player.Y, player.Position.Width, player.Position.Height),
                         Color.White);
                     // Enemies
-                    for (int i = 0; i < gameManager.Enemies.Count; i++)
-                    {
+                    //for (int i = 0; i < gameManager.Enemies.Count; i++)
+                    //{
 
-                        spriteBatch.Draw(gameManager.Enemies[i].Texture, new Rectangle(gameManager.Enemies[i].X, gameManager.Enemies[i].Y, 147, 147), Color.White);
+                    //    spriteBatch.Draw(gameManager.Enemies[i].Texture, new Rectangle(gameManager.Enemies[i].X, gameManager.Enemies[i].Y, 147, 147), Color.White);
+                    //}
+
+                    foreach (Enemy e in gameManager.Enemies)
+                    {
+                        if (e.IsAttacking)
+                        {
+                            spriteBatch.Draw(e.Texture, e.Position, Color.Red);
+                        }
+                        
+                        else
+                        {
+                            spriteBatch.Draw(e.Texture, e.Position, Color.White);
+                        }
+                        //spriteBatch.Draw(e.Texture, e.Position, Color.White);
                     }
                     break;
 
@@ -454,8 +481,8 @@ namespace Purpose
 
                 case GameState.UpgradeMenu:
                     spriteBatch.Draw(upgradeScreen, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
-                    spriteBatch.DrawString(comicSans24, gameManager.Player.UgManager.UpgradePoints.ToString(), new Vector2(1200,730), Color.White);
-                    spriteBatch.Draw(buttonFrame, new Rectangle(1192, 722, 54, 60), Color.Black);
+                    spriteBatch.DrawString(agency30, "Upgrade Points: " + gameManager.Player.UgManager.UpgradePoints.ToString(), new Vector2(1090,730), Color.White);
+                    //spriteBatch.Draw(buttonFrame, new Rectangle(1192, 722, 54, 60), Color.Black);
 
                     if (returnToPauseButton.Intersects(ms.Position))
                     {

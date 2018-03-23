@@ -13,6 +13,9 @@ namespace Purpose
         // Fields
         private bool ranged;
         private bool isDead;
+        private int gameTime;
+        // Temp field for attacking
+        private bool isAttacking;
 
         // Properties
         public bool Ranged
@@ -21,42 +24,51 @@ namespace Purpose
             set { ranged = value; }
         }
 
-        public bool IsDead
-        {
-            get { return isDead; }
-        }
+        // Temp property for attacking
+        public bool IsAttacking { get { return isAttacking; } }
+
+        // Normal stuff below
+        public bool IsDead{ get { return isDead; }}
+
+        public int GameTime { get { return gameTime; } }
 
         // Constructor
-        public Enemy(Rectangle position, Texture2D texture, Level level, bool ranged) : base(texture)
+        public Enemy(Rectangle position, Texture2D texture, Level level, bool ranged, GameTime gameTime) : base(texture)
         {
             //Placeholder for Level. Thought as level increases so does damage or health
 
 
             this.ranged = ranged; //Decides whether or not a ranged enemy is spawned
             this.position = position;
+            this.gameTime = gameTime.TotalGameTime.Seconds;
             health = 50;
+            damage = 10;
         }
 
         // Methods
-        public override int Attack(Rectangle rectangle)
+        public override int Attack(Rectangle rectangle, GameTime gameTime)
         {
-            if (position.Intersects(rectangle))
+            if (this.gameTime + 2 == gameTime.TotalGameTime.Seconds)
             {
-                // Code for attack here
-                // Temp variable for damage                
-                if (ranged)
+                if (position.Intersects(rectangle))
                 {
-                    return 2;
+                    isAttacking = true;
+                    // Normal code below, keep this
+                    this.gameTime = gameTime.TotalGameTime.Seconds;
+                    return damage;
                 }
                 else
                 {
-                    return 1;
+                    isAttacking = false;
+                    // Normal code below, keep this
+                    this.gameTime = gameTime.TotalGameTime.Seconds;
+                    return 0;
                 }
             }
-            else
-            {
+
+                // Normal code below, keep this
+                isAttacking = false;
                 return 0;
-            }
         }
 
         public override void TakeDamage(int damage)
