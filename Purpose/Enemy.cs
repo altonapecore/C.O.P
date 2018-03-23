@@ -14,6 +14,7 @@ namespace Purpose
         private bool ranged;
         private bool isDead;
         private int gameTime;
+        private int frameCounter;
         // Temp field for attacking
         private bool isAttacking;
 
@@ -31,6 +32,7 @@ namespace Purpose
         public bool IsDead{ get { return isDead; }}
 
         public int GameTime { get { return gameTime; } }
+        public int FrameCounter { get { return frameCounter; } set { frameCounter = value; } }
 
         // Constructor
         public Enemy(Rectangle position, Texture2D texture, Level level, bool ranged, GameTime gameTime) : base(texture)
@@ -43,6 +45,7 @@ namespace Purpose
             this.gameTime = gameTime.TotalGameTime.Seconds;
             health = 50;
             damage = 10;
+            frameCounter = 0;
         }
 
         // Methods
