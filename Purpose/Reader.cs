@@ -49,7 +49,9 @@ namespace Purpose
                         wave.Difficulty = int.Parse(data[i + 2]);
 
                         //Using info gathered above creates a new Wave
-                        wave = new Wave(wave.NumberOfMelee, wave.NumberOfRanged, wave.Difficulty);
+                        //Wave newWave = new Wave(wave.NumberOfMelee, wave.NumberOfRanged, wave.Difficulty);
+
+                        int test = 6;
                         gameManager.Waves.Add(wave); //Adds that new wave to the list.
 
                         i += 3;//Raises i by 3 to continue to the next group of numbers
