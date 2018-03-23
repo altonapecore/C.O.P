@@ -234,8 +234,7 @@ namespace Purpose
 
             gameManager.GameState = GameState.Menu;
 
-            gameManager.FillEnemyList(rng, gameManager.NumberOfEnemies, worldLeftEndWidth, worldRightEndWidth, trent, gameTime);
-            gameManager.FillRangedList(rng, gameManager.NumberOfRanged, worldLeftEndWidth, worldRightEndWidth, tempTexture, gameTime);
+      
         }
 
         /// <summary>
