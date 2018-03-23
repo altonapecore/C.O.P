@@ -34,6 +34,7 @@ namespace Purpose
         private TextureManager textureManager;
 
         int keyCounter;
+        int frameCounter;
 
         //properties
         public List<Enemy> Enemies { get { return enemies; } }
@@ -293,29 +294,29 @@ namespace Purpose
                 int choice = rng.Next(1, 5);
                 if (choice == 1)
                 {
-                    Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, 0), graphicsDevice.Viewport.Height - 450, 147, 147),
-                        enemyTexture, Level.One, false, gameTime);
+                    Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, 0), graphicsDevice.Viewport.Height - 450, 122, 250),
+                        textureManager.RightEnemyWalk1, Level.One, false);
                     enemies.Add(enemy);
                 }
 
                 else if (choice == 2)
                 {
-                    Enemy enemy = new Enemy(new Rectangle(rng.Next(0, worldRightEndWidth), graphicsDevice.Viewport.Height - 450, 147, 147),
-                        enemyTexture, Level.One, false, gameTime);
+                    Enemy enemy = new Enemy(new Rectangle(rng.Next(0, worldRightEndWidth), graphicsDevice.Viewport.Height - 450, 122, 250),
+                        textureManager.LeftEnemyWalk1, Level.One, false);
                     enemies.Add(enemy);
                 }
 
                 else if (choice == 3)
                 {
-                    Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, 0), graphicsDevice.Viewport.Height - 750, 147, 147),
-                        enemyTexture, Level.One, false, gameTime);
+                    Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, 0), graphicsDevice.Viewport.Height - 750, 122, 250),
+                        textureManager.RightEnemyWalk1, Level.One, false);
                     enemies.Add(enemy);
                 }
 
                 else if (choice == 4)
                 {
-                    Enemy enemy = new Enemy(new Rectangle(rng.Next(0, worldRightEndWidth), graphicsDevice.Viewport.Height - 750, 147, 147),
-                        enemyTexture, Level.One, false, gameTime);
+                    Enemy enemy = new Enemy(new Rectangle(rng.Next(0, worldRightEndWidth), graphicsDevice.Viewport.Height - 750, 122, 250),
+                        textureManager.LeftEnemyWalk1, Level.One, false);
                     enemies.Add(enemy);
                 }
             }
@@ -387,27 +388,61 @@ namespace Purpose
                 }
             }
 
-            foreach(Enemy e in enemies)
+            for (int i = 0; i < enemies.Count; i++)
             {
-                if(e.X < player.X)
+                if(enemies[i].X < player.X)
                 {
-                    e.X += 5;
+                    if (enemies[i].Texture == textureManager.LeftEnemyWalk1 || enemies[i].Texture == textureManager.LeftEnemyWalk2 || enemies[i].Texture == textureManager.LeftEnemyWalk3)
+                    {
+                        enemies[i].Texture = textureManager.RightEnemyWalk1;
+                        frameCounter = 0;
+                    }
+                    frameCounter++;
+                    enemies[i].X += 5;
+                    if (frameCounter >= 15 )
+                    {
+                        if (enemies[i].Texture == textureManager.RightEnemyWalk1)
+                        {
+                            enemies[i].Texture = textureManager.RightEnemyWalk2;
+                        }
+                        else if (enemies[i].Texture == textureManager.RightEnemyWalk2)
+                        {
+                            enemies[i].Texture = textureManager.RightEnemyWalk3;
+                        }
+                        else if (enemies[i].Texture == textureManager.RightEnemyWalk3)
+                        {
+                            enemies[i].Texture = textureManager.RightEnemyWalk1;
+                        }
+                        frameCounter = 0;
+                    }
                 }
 
-                else if(e.X > player.X)
+                else if(enemies[i].X > player.X)
                 {
-                    e.X -= 5;
+                    if (enemies[i].Texture == textureManager.RightEnemyWalk1 || enemies[i].Texture == textureManager.RightEnemyWalk2 || enemies[i].Texture == textureManager.RightEnemyWalk3)
+                    {
+                        enemies[i].Texture = textureManager.LeftEnemyWalk1;
+                        frameCounter = 0;
+                    }
+                    frameCounter++;
+                    enemies[i].X -= 5;
+                    if (frameCounter >= 15)
+                    {
+                        if (enemies[i].Texture == textureManager.LeftEnemyWalk1)
+                        {
+                            enemies[i].Texture = textureManager.LeftEnemyWalk2;
+                        }
+                        else if (enemies[i].Texture == textureManager.LeftEnemyWalk2)
+                        {
+                            enemies[i].Texture = textureManager.LeftEnemyWalk3;
+                        }
+                        else if (enemies[i].Texture == textureManager.LeftEnemyWalk3)
+                        {
+                            enemies[i].Texture = textureManager.LeftEnemyWalk1;
+                        }
+                        frameCounter = 0;
+                    }
                 }
-
-                //if (e.Y - 205 > player.Y)
-                //{
-                //    
-                //}
-                //
-                //if (e.Y - 205 < player.Y)
-                //{
-                //
-                //}
             }
 
             // If enemies fall through the floor, kill em

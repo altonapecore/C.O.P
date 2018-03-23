@@ -226,15 +226,20 @@ namespace Purpose
             // Makes player, gameManager object and fills enemy list
             textureManager = new TextureManager(Content.Load<Texture2D>("LeftCrouchingSprite"), Content.Load<Texture2D>("RightCrouchingSprite"),
                 Content.Load<Texture2D>("LeftStandingSprite"), Content.Load<Texture2D>("RightStandingSprite"),
-                Content.Load<Texture2D>("LeftRunningSprite"), Content.Load<Texture2D>("RightRunningSprite"));
+                Content.Load<Texture2D>("LeftRunningSprite"), Content.Load<Texture2D>("RightRunningSprite"), 
+                Content.Load<Texture2D>("RightEnemyWalk1"), Content.Load<Texture2D>("RightEnemyWalk2"), Content.Load<Texture2D>("RightEnemyWalk3"),
+                Content.Load<Texture2D>("LeftEnemyWalk1"), Content.Load<Texture2D>("LeftEnemyWalk2"), Content.Load<Texture2D>("LeftEnemyWalk3"));
 
             player = new Player("Dude", new Rectangle(225, 225, 139, 352), textureManager, gameTime);
 
             gameManager = new GameManager(player, bottomPlatforms, GraphicsDevice, textureManager);
 
+            arenaWindow = new ArenaWindow(gameManager);
             gameManager.GameState = GameState.Menu;
+            arenaWindow.ShowDialog(); //Loads arenaWindow here to allow User to change settings of level, enemies, and background
 
-      
+            gameManager.FillEnemyList(rng, gameManager.NumberOfEnemies, worldLeftEndWidth, worldRightEndWidth);
+            gameManager.FillRangedList(rng, gameManager.NumberOfRanged, worldLeftEndWidth, worldRightEndWidth, tempTexture);
         }
 
         /// <summary>
@@ -446,7 +451,13 @@ namespace Purpose
                     spriteBatch.Draw(gameManager.Player.Texture, new Rectangle(gameManager.Player.X, gameManager.Player.Y, player.Position.Width, player.Position.Height),
                         Color.White);
                     // Enemies
-                    for (int i = 0; i < gameManager.Enemies.Count; i++)
+                    //for (int i = 0; i < gameManager.Enemies.Count; i++)
+                    //{
+
+                    //    spriteBatch.Draw(gameManager.Enemies[i].Texture, new Rectangle(gameManager.Enemies[i].X, gameManager.Enemies[i].Y, 147, 147), Color.White);
+                    //}
+
+                    foreach (Enemy e in gameManager.Enemies)
                     {
                         if (gameManager.Enemies[i].IsAttacking)
                         {
@@ -457,6 +468,8 @@ namespace Purpose
                         {
                             spriteBatch.Draw(gameManager.Enemies[i].Texture, new Rectangle(gameManager.Enemies[i].X, gameManager.Enemies[i].Y, 147, 147), Color.White);
                         }
+                    }
+                        spriteBatch.Draw(e.Texture, e.Position, Color.White);
                     }
                     break;
 

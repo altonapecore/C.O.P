@@ -113,11 +113,11 @@ namespace Purpose
                 stealthTier++;
                 if (stealthTier < 3)
                 {
-                    dashDistance += 5;
+                    dashDistance += 10;
                 }
                 else if (stealthTier > 3)
                 {
-                    dashDistance += 10;
+                    dashDistance += 15;
                 }
                 upgradePoints--;
                 return dashDistance;
