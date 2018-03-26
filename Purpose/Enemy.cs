@@ -36,7 +36,6 @@ namespace Purpose
 
         // Normal stuff below
         public int GameTime { get { return gameTime; } }
-        public int FrameCounter { get { return frameCounter; } set { frameCounter = value; } }
 
         // Constructor
         public Enemy(Rectangle position, Texture2D texture, Level level, bool ranged, GameTime gameTime) : base(texture)
