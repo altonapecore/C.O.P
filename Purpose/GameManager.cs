@@ -318,9 +318,9 @@ namespace Purpose
         /// <param name="numberOfEnemies">The number of enemies to spawn in</param>
         /// <param name="graphicsDevice">The graphics device to help limit the enemies' spawn positions</param>
         /// <param name="enemyTexture">The texture of the enemies</param>
-        public void FillEnemyList(Random rng, int numberOfEnemies, int worldLeftEndWidth, int worldRightEndWidth, GameTime gameTime)
+        public void FillEnemyList(Random rng, int numberOfEnemies, int difficulty, int worldLeftEndWidth, int worldRightEndWidth, GameTime gameTime)
         {
-            for (int i = 0; i < NumberOfEnemies; i++)
+            for (int i = 0; i < numberOfEnemies; i++)
             {
                 int choice = rng.Next(1, 5);
                 if (choice == 1)
@@ -360,9 +360,9 @@ namespace Purpose
         /// <param name="numberOfRanged">The number to spawn</param>
         /// <param name="graphicsDevice">Limits the enemies spawn point</param>
         /// <param name="rangeTexture">The texture for the Ranged Enemies</param>
-        public void FillRangedList(Random rng, int numberOfRanged, int worldLeftEndWidth, int worldRightEndWidth, Texture2D rangeTexture, GameTime gameTime)
+        public void FillRangedList(Random rng, int numberOfRanged, int difficulty, int worldLeftEndWidth, int worldRightEndWidth, Texture2D rangeTexture, GameTime gameTime)
         {
-            for (int i = 0; i < NumberOfRanged; i++)
+            for (int i = 0; i < numberOfRanged; i++)
             {
                 int choice = rng.Next(1, 5);
                 if (choice == 1)
@@ -499,12 +499,12 @@ namespace Purpose
         /// <summary>
         /// Resets game to beginning
         /// </summary>
-        public void ResetGame(Camera2D camera, Random rng, int worldLeftEndWidth, int worldRightEndWidth, GameTime gameTime, Texture2D tempTexture)
+        public void ResetGame(Camera2D camera, Random rng, int worldLeftEndWidth, int worldRightEndWidth, GameTime gameTime, Texture2D tempTexture, int i)
         {
             player.Health = 100;
             enemies.Clear();
-            FillEnemyList(rng, NumberOfEnemies, worldLeftEndWidth, worldRightEndWidth, gameTime);
-            FillRangedList(rng, NumberOfRanged, worldLeftEndWidth, worldRightEndWidth, tempTexture, gameTime);
+            FillEnemyList(rng, waves[i].NumberOfMelee, waves[i].Difficulty, worldLeftEndWidth, worldRightEndWidth, gameTime);
+            FillRangedList(rng, waves[i].NumberOfRanged, waves[i].Difficulty, worldLeftEndWidth, worldRightEndWidth, tempTexture, gameTime);
             camera.Zoom = 1.0f;
             player.UgManager.UpgradePoints = 0;
         }

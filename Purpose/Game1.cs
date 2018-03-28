@@ -123,9 +123,6 @@ namespace Purpose
 
             // Initialize gameTime
             gameTime = new GameTime();
-
-            //Initializing Reader
-            reader = new Reader(gameManager);
         }
 
         /// <summary>
@@ -241,11 +238,11 @@ namespace Purpose
             gameManager.GameState = GameState.Menu;
             //arenaWindow.ShowDialog(); //Loads arenaWindow here to allow User to change settings of level, enemies, and background
 
+
+            //Initializing Reader
+            reader = new Reader(gameManager);
             //Runs the Reader method to vcreate enemies needed
             reader.ReadEditor();
-
-            gameManager.FillEnemyList(rng, gameManager.NumberOfEnemies, worldLeftEndWidth, worldRightEndWidth, gameTime);
-            gameManager.FillRangedList(rng, gameManager.NumberOfRanged, worldLeftEndWidth, worldRightEndWidth, tempTexture, gameTime);
         }
 
         /// <summary>
@@ -280,7 +277,7 @@ namespace Purpose
 
                 case GameState.Menu:
                     // Reset game
-                    gameManager.ResetGame(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture);
+                    gameManager.ResetGame(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture, 0);
 
                     //Using the selection from the ArenaWindow pciks the background to use in the Game
                     if (gameManager.BackgroundSelection == Background.WhiteBackground)
