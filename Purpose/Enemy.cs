@@ -14,6 +14,9 @@ namespace Purpose
         private bool ranged;
         private int gameTime;
         private int frameCounter;
+        private bool isFacingLeft;
+        private Rectangle bullet;
+        private bool hasBullet;
         // Temp field for attacking
         private bool isAttacking;
         
@@ -29,6 +32,32 @@ namespace Purpose
         {
             get { return frameCounter; }
             set { frameCounter = value; }
+        }
+
+        public bool IsFacingLeft
+        {
+            get { return isFacingLeft; }
+            set { isFacingLeft = value; }
+        }
+
+        public Rectangle Bullet { get { return bullet; } }
+
+        public int BulletX
+        {
+            get { return bullet.X; }
+            set { bullet.X = value; }
+        }
+
+        public int BulletY
+        {
+            get { return bullet.Y; }
+            set { bullet.Y = value; }
+        }
+
+        public bool HasBullet
+        {
+            get { return hasBullet; }
+            set { hasBullet = value; }
         }
 
         // Temp property for attacking
@@ -49,6 +78,8 @@ namespace Purpose
             health = 50;
             damage = 10;
             frameCounter = 0;
+            bullet = new Rectangle(0, 0, 0, 0);
+            hasBullet = false;
         }
 
         // Methods
@@ -56,24 +87,37 @@ namespace Purpose
         {
             if (this.gameTime + 2 == gameTime.TotalGameTime.Seconds)
             {
-                if (position.Intersects(rectangle))
+                if (ranged && hasBullet == false && isFacingLeft)
                 {
-                    isAttacking = true;
-                    // Normal code below, keep this
+                    bullet = new Rectangle(position.X, position.Y + 55, 33, 33);
+                    hasBullet = true;
+                }
+                else if (ranged && hasBullet == false && isFacingLeft == false)
+                {
+                    bullet = new Rectangle(position.X + 147, position.Y + 55, 33, 33);
+                    hasBullet = true;
+                }
+
+                if (ranged && hasBullet && bullet.Intersects(rectangle))
+                {
+                    this.gameTime = gameTime.TotalGameTime.Seconds;
+                    bullet.X = 0;
+                    bullet.Y = 0;
+                    hasBullet = false;
+                    return damage;
+                }
+
+                else if (ranged == false && position.Intersects(rectangle))
+                {
                     this.gameTime = gameTime.TotalGameTime.Seconds;
                     return damage;
                 }
                 else
                 {
-                    isAttacking = false;
-                    // Normal code below, keep this
                     this.gameTime = gameTime.TotalGameTime.Seconds;
                     return 0;
                 }
             }
-
-                // Normal code below, keep this
-                isAttacking = false;
                 return 0;
         }
 

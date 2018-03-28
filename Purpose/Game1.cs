@@ -461,6 +461,11 @@ namespace Purpose
                         {
                             spriteBatch.Draw(e.Texture, e.Position, Color.White);
                         }
+
+                        if(e.HasBullet)
+                        {
+                            spriteBatch.Draw(e.Texture, e.Bullet, Color.White);
+                        }
                         //spriteBatch.Draw(e.Texture, e.Position, Color.White);
                     }
                     break;

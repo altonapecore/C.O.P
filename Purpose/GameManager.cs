@@ -360,7 +360,8 @@ namespace Purpose
         /// <param name="numberOfRanged">The number to spawn</param>
         /// <param name="graphicsDevice">Limits the enemies spawn point</param>
         /// <param name="rangeTexture">The texture for the Ranged Enemies</param>
-        public void FillRangedList(Random rng, int numberOfRanged, int difficulty, int worldLeftEndWidth, int worldRightEndWidth, Texture2D rangeTexture, GameTime gameTime)
+        public void FillRangedList(Random rng, int numberOfRanged, int difficulty, int worldLeftEndWidth, int worldRightEndWidth, Texture2D rangeTexture, 
+            GameTime gameTime)
         {
             for (int i = 0; i < numberOfRanged; i++)
             {
@@ -368,28 +369,28 @@ namespace Purpose
                 if (choice == 1)
                 {
                     Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, 0), graphicsDevice.Viewport.Height - 450, 147, 147),
-                        rangeTexture, Level.One, false, gameTime);
+                        rangeTexture, Level.One, true, gameTime);
                     enemies.Add(enemy);
                 }
 
                 else if (choice == 2)
                 {
                     Enemy enemy = new Enemy(new Rectangle(rng.Next(0, worldRightEndWidth), graphicsDevice.Viewport.Height - 450, 147, 147),
-                        rangeTexture, Level.One, false, gameTime);
+                        rangeTexture, Level.One, true, gameTime);
                     enemies.Add(enemy);
                 }
 
                 else if (choice == 3)
                 {
                     Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, 0), graphicsDevice.Viewport.Height - 750, 147, 147),
-                        rangeTexture, Level.One, false, gameTime);
+                        rangeTexture, Level.One, true, gameTime);
                     enemies.Add(enemy);
                 }
 
                 else if (choice == 4)
                 {
                     Enemy enemy = new Enemy(new Rectangle(rng.Next(0, worldRightEndWidth), graphicsDevice.Viewport.Height - 750, 147, 147),
-                        rangeTexture, Level.One, false, gameTime);
+                        rangeTexture, Level.One, true, gameTime);
                     enemies.Add(enemy);
                 }
             }
@@ -425,8 +426,19 @@ namespace Purpose
                 //{
                 //    return;
                 //}
-                if(enemies[i].X < player.X)
+                if(enemies[i].X == player.X - 15 && enemies[i].Ranged == false)
                 {
+                    enemies[i].X = enemies[i].X;
+                }
+
+                if (enemies[i].X == player.X + 15 && enemies[i].Ranged == false)
+                {
+                    enemies[i].X = enemies[i].X;
+                }
+
+                if (enemies[i].X < player.X - 15 && enemies[i].Ranged == false)
+                {
+                    enemies[i].IsFacingLeft = false;
                     if (enemies[i].Texture == textureManager.LeftEnemyWalk1 || enemies[i].Texture == textureManager.LeftEnemyWalk2 || enemies[i].Texture == textureManager.LeftEnemyWalk3)
                     {
                         enemies[i].Texture = textureManager.RightEnemyWalk1;
@@ -452,8 +464,75 @@ namespace Purpose
                     }
                 }
 
-                else if(enemies[i].X > player.X)
+                else if(enemies[i].X > player.X + 15 && enemies[i].Ranged == false)
                 {
+                    enemies[i].IsFacingLeft = true;
+                    if (enemies[i].Texture == textureManager.RightEnemyWalk1 || enemies[i].Texture == textureManager.RightEnemyWalk2 || enemies[i].Texture == textureManager.RightEnemyWalk3)
+                    {
+                        enemies[i].Texture = textureManager.LeftEnemyWalk1;
+                        enemies[i].FrameCounter = 0;
+                    }
+                    enemies[i].FrameCounter++;
+                    enemies[i].X -= 5;
+                    if (enemies[i].FrameCounter >= 5)
+                    {
+                        if (enemies[i].Texture == textureManager.LeftEnemyWalk1)
+                        {
+                            enemies[i].Texture = textureManager.LeftEnemyWalk2;
+                        }
+                        else if (enemies[i].Texture == textureManager.LeftEnemyWalk2)
+                        {
+                            enemies[i].Texture = textureManager.LeftEnemyWalk3;
+                        }
+                        else if (enemies[i].Texture == textureManager.LeftEnemyWalk3)
+                        {
+                            enemies[i].Texture = textureManager.LeftEnemyWalk1;
+                        }
+                        enemies[i].FrameCounter = 0;
+                    }
+                }
+
+                if (enemies[i].X == player.X - 555 && enemies[i].Ranged)
+                {
+                    enemies[i].X = enemies[i].X;
+                }
+
+                if (enemies[i].X == player.X + 555 && enemies[i].Ranged)
+                {
+                    enemies[i].X = enemies[i].X;
+                }
+
+                if (enemies[i].X < player.X - 555 && enemies[i].Ranged)
+                {
+                    enemies[i].IsFacingLeft = false;
+                    if (enemies[i].Texture == textureManager.LeftEnemyWalk1 || enemies[i].Texture == textureManager.LeftEnemyWalk2 || enemies[i].Texture == textureManager.LeftEnemyWalk3)
+                    {
+                        enemies[i].Texture = textureManager.RightEnemyWalk1;
+                        enemies[i].FrameCounter = 0;
+                    }
+                    enemies[i].FrameCounter++;
+                    enemies[i].X += 5;
+                    if (enemies[i].FrameCounter >= 5)
+                    {
+                        if (enemies[i].Texture == textureManager.RightEnemyWalk1)
+                        {
+                            enemies[i].Texture = textureManager.RightEnemyWalk2;
+                        }
+                        else if (enemies[i].Texture == textureManager.RightEnemyWalk2)
+                        {
+                            enemies[i].Texture = textureManager.RightEnemyWalk3;
+                        }
+                        else if (enemies[i].Texture == textureManager.RightEnemyWalk3)
+                        {
+                            enemies[i].Texture = textureManager.RightEnemyWalk1;
+                        }
+                        enemies[i].FrameCounter = 0;
+                    }
+                }
+
+                else if (enemies[i].X > player.X + 555 && enemies[i].Ranged)
+                {
+                    enemies[i].IsFacingLeft = true;
                     if (enemies[i].Texture == textureManager.RightEnemyWalk1 || enemies[i].Texture == textureManager.RightEnemyWalk2 || enemies[i].Texture == textureManager.RightEnemyWalk3)
                     {
                         enemies[i].Texture = textureManager.LeftEnemyWalk1;
@@ -491,8 +570,37 @@ namespace Purpose
 
             foreach(Enemy e in enemies)
             {
-                int damage = e.Attack(player.Position, gameTime);
+                int damage = 0;
+                if (e.Ranged && e.IsFacingLeft)
+                {
+                    damage = e.Attack(new Rectangle(player.Position.X - 555, player.Position.Y, player.Position.Width, player.Position.Height), gameTime);
+                }
+
+                else if(e.Ranged && e.IsFacingLeft == false)
+                {
+                    damage = e.Attack(new Rectangle(player.Position.X + 555, player.Position.Y, player.Position.Width, player.Position.Height), gameTime);
+                }
+
+                else if(e.Ranged == false && e.IsFacingLeft)
+                {
+                    damage = e.Attack(new Rectangle(player.Position.X - 15, player.Position.Y, player.Position.Width, player.Position.Height), gameTime);
+                }
+
+                else if (e.Ranged == false && e.IsFacingLeft == false)
+                {
+                    damage = e.Attack(new Rectangle(player.Position.X + 15, player.Position.Y, player.Position.Width, player.Position.Height), gameTime);
+                }
                 player.TakeDamage(damage);
+
+                if(e.HasBullet && e.IsFacingLeft)
+                {
+                    e.BulletX -= 25;
+                }
+
+                if (e.HasBullet && e.IsFacingLeft == false)
+                {
+                    e.BulletX += 25;
+                }
             }
         }
 
