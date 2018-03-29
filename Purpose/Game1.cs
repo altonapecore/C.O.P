@@ -268,7 +268,7 @@ namespace Purpose
 
 
             //Initializing Reader
-            reader = new Reader(gameManager, game1);
+            reader = new Reader(gameManager);
             //Runs the Reader method to vcreate enemies needed
             reader.ReadEditor();
         }
@@ -547,6 +547,7 @@ namespace Purpose
                     camera.MaximumZoom = 1.0f;
                     camera.Zoom = 0.5f;
 
+                    healthBar = new Vector2(player.Position.X, player.Position.Y + 30);
                     // Stuff for moving player and enemy, as well as player attack
                     ms = Mouse.GetState();
                     gameManager.PlayerMove(kbState, previouskbState, ms, previousMs, camera, totalPlatforms, gameTime);
