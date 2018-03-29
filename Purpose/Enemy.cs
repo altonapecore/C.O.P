@@ -83,10 +83,17 @@ namespace Purpose
         }
 
         // Methods
+        /// <summary>
+        /// Attack method for enemy. Checks for collision & returns damge if it does collide
+        /// </summary>
+        /// <param name="rectangle">Player rectangle to check against</param>
+        /// <param name="gameTime">Used for checking to see if the player can attack</param>
+        /// <returns></returns>
         public override int Attack(Rectangle rectangle, GameTime gameTime)
         {
             if (this.gameTime + 2 == gameTime.TotalGameTime.Seconds)
             {
+                // If the enemy is ranged and doesn't have a bullet, spawn a bullet
                 if (ranged && hasBullet == false && isFacingLeft)
                 {
                     bullet = new Rectangle(position.X, position.Y + 55, 33, 33);
@@ -98,6 +105,7 @@ namespace Purpose
                     hasBullet = true;
                 }
 
+                //  If they have a bullet, attack and take bullet away
                 if (ranged && hasBullet && bullet.Intersects(rectangle))
                 {
                     this.gameTime = gameTime.TotalGameTime.Seconds;
@@ -107,6 +115,7 @@ namespace Purpose
                     return damage;
                 }
 
+                // Melee attack stuff
                 else if (ranged == false && position.Intersects(rectangle))
                 {
                     this.gameTime = gameTime.TotalGameTime.Seconds;

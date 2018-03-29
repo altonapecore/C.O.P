@@ -487,6 +487,8 @@ namespace Purpose
                 //{
                 //    return;
                 //}
+
+                // Limiting stuff for melee enemies
                 if(enemies[i].X == player.X - 15 && enemies[i].Ranged == false)
                 {
                     enemies[i].X = enemies[i].X;
@@ -497,6 +499,7 @@ namespace Purpose
                     enemies[i].X = enemies[i].X;
                 }
 
+                // If right of player, move left and update frame and texture
                 if (enemies[i].X < player.X - 15 && enemies[i].Ranged == false)
                 {
                     enemies[i].IsFacingLeft = false;
@@ -525,6 +528,7 @@ namespace Purpose
                     }
                 }
 
+                // If right of player, move left and update frame and texture
                 else if(enemies[i].X > player.X + 15 && enemies[i].Ranged == false)
                 {
                     enemies[i].IsFacingLeft = true;
@@ -553,6 +557,7 @@ namespace Purpose
                     }
                 }
 
+                // Limiting movement for ranged enemies
                 if (enemies[i].X == player.X - 555 && enemies[i].Ranged)
                 {
                     enemies[i].X = enemies[i].X;
@@ -563,6 +568,7 @@ namespace Purpose
                     enemies[i].X = enemies[i].X;
                 }
 
+                // If on right of player, move left and update frames and texture
                 if (enemies[i].X < player.X - 555 && enemies[i].Ranged)
                 {
                     enemies[i].IsFacingLeft = false;
@@ -591,6 +597,7 @@ namespace Purpose
                     }
                 }
 
+                // If left of player, move right and update frame and texture
                 else if (enemies[i].X > player.X + 555 && enemies[i].Ranged)
                 {
                     enemies[i].IsFacingLeft = true;
@@ -631,6 +638,7 @@ namespace Purpose
 
             foreach(Enemy e in enemies)
             {
+                // Call attack methods based on type of enemy and position
                 int damage = 0;
                 if (e.Ranged && e.IsFacingLeft)
                 {
@@ -653,6 +661,7 @@ namespace Purpose
                 }
                 player.TakeDamage(damage);
 
+                // Moving the bullets along
                 if(e.HasBullet && e.IsFacingLeft)
                 {
                     e.BulletX -= 25;

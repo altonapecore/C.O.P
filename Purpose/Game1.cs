@@ -453,16 +453,19 @@ namespace Purpose
 
                     foreach (Enemy e in gameManager.Enemies)
                     {
+                        // If attacking, draw this
                         if (e.IsAttacking)
                         {
                             spriteBatch.Draw(e.Texture, e.Position, Color.Red);
                         }
                         
+                        // If not, draw this
                         else
                         {
                             spriteBatch.Draw(e.Texture, e.Position, Color.White);
                         }
 
+                        // Drawing bullet bois
                         if(e.HasBullet)
                         {
                             spriteBatch.Draw(e.Texture, e.Bullet, Color.White);
