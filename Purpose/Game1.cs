@@ -91,6 +91,7 @@ namespace Purpose
 
         //temporary stuff
         private Texture2D tempTexture;
+        private Vector2 healthBar = new Vector2(10, 10);
         //private Texture2D tempCrouchTexture;
         private Texture2D trent;
         private SpriteFont comicSans24;
@@ -278,7 +279,6 @@ namespace Purpose
                 case GameState.Menu:
                     // Reset game
                     gameManager.ResetGame(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture, 0);
-
                     //Using the selection from the ArenaWindow pciks the background to use in the Game
                     if (gameManager.BackgroundSelection == Background.WhiteBackground)
                     {
@@ -305,6 +305,8 @@ namespace Purpose
                     camera.MinimumZoom = 0.5f;
                     camera.MaximumZoom = 1.0f;
                     camera.Zoom = 0.5f;
+                    healthBar.X = gameManager.Player.X;
+                    healthBar.Y = gameManager.Player.Y + 20;
 
                     // Stuff for moving player and enemy, as well as player attack
                     ms = Mouse.GetState();
@@ -443,6 +445,7 @@ namespace Purpose
                     // Player
                     spriteBatch.Draw(gameManager.Player.Texture, new Rectangle(gameManager.Player.X, gameManager.Player.Y, player.Position.Width, player.Position.Height),
                         Color.White);
+                    spriteBatch.DrawString(agency30,gameManager.Player.Health.ToString(),healthBar,Color.Red);
                     // Enemies
                     //for (int i = 0; i < gameManager.Enemies.Count; i++)
                     //{

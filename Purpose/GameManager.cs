@@ -502,10 +502,13 @@ namespace Purpose
         public void ResetGame(Camera2D camera, Random rng, int worldLeftEndWidth, int worldRightEndWidth, GameTime gameTime, Texture2D tempTexture, int i)
         {
             player.Health = 100;
+            camera.Zoom = 1.0f;
+            player.IsDead = false;
+            player.X = 225;
+            player.Y = 225;
             enemies.Clear();
             FillEnemyList(rng, waves[i].NumberOfMelee, waves[i].Difficulty, worldLeftEndWidth, worldRightEndWidth, gameTime);
             FillRangedList(rng, waves[i].NumberOfRanged, waves[i].Difficulty, worldLeftEndWidth, worldRightEndWidth, tempTexture, gameTime);
-            camera.Zoom = 1.0f;
             player.UgManager.UpgradePoints = 0;
         }
     }
