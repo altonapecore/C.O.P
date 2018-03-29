@@ -90,7 +90,7 @@ namespace Purpose
 
         //Field for the Wave
         private Wave wave;
-        private Game1 game1;
+        //private Game1 game1;
 
         //temporary stuff
         private Texture2D tempTexture;
@@ -267,7 +267,7 @@ namespace Purpose
 
 
             //Initializing Reader
-            reader = new Reader(gameManager, game1);
+            reader = new Reader(gameManager);
             //Runs the Reader method to vcreate enemies needed
             reader.ReadEditor();
         }

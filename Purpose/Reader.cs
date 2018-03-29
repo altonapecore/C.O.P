@@ -17,16 +17,16 @@ namespace Purpose
         //Field for the wave and manager to create it
         //private Wave wave;
         private GameManager gameManager;
-        private Game1 game1;
+        //private Game1 game1;
 
         //Constructor for the Reader
-        public Reader(GameManager gameManager, Game1 game1)
+        public Reader(GameManager gameManager)
         {
             input = new StreamReader("waveEditor.txt");
             line = null;
             //wave = new Wave(gameManager, game1);
             this.gameManager = gameManager;
-            this.game1 = game1;
+            //this.game1 = game1;
         }
 
         //Method that runs through the text file to read it
@@ -49,7 +49,6 @@ namespace Purpose
                     Wave newWave = new Wave(numberOfMelee, numberOfRanged, difficulty);
                     //Using info gathered above creates a new Wave
                     //Wave wave = new Wave(wave.NumberOfMelee, wave.NumberOfRanged, wave.Difficulty);
-                    int test = 6;
                     gameManager.Waves.Add(newWave); //Adds that new wave to the list.
                 }
             }
