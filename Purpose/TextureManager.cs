@@ -14,10 +14,16 @@ namespace Purpose
         private Texture2D leftCrouchSprite;
         private Texture2D rightStandingSprite;
         private Texture2D leftStandingSprite;
-        private Texture2D rightJumpSprite;
-        private Texture2D leftJumpSprite;
+        private Texture2D rightMiddleRunningSprite;
+        private Texture2D leftMiddleRunningSprite;
         private Texture2D rightRunningSprite;
         private Texture2D leftRunningSprite;
+        private Texture2D rightJumpSprite;
+        private Texture2D leftJumpSprite;
+        private Texture2D rightPlayerAttack1;
+        private Texture2D leftPlayerAttack1;
+        private Texture2D rightPlayerAttack2;
+        private Texture2D leftPlayerAttack2;
         private Texture2D rightEnemyWalk1;
         private Texture2D rightEnemyWalk2;
         private Texture2D rightEnemyWalk3;
@@ -26,15 +32,22 @@ namespace Purpose
         private Texture2D leftEnemyWalk3;
         private Texture2D rangedEnemyTexture;
 
+
         //sprite properties
         public Texture2D RightCrouchSprite { get { return rightCrouchSprite; } }
         public Texture2D LeftCrouchSprite { get { return leftCrouchSprite; } }
         public Texture2D RightStandingSprite { get { return rightStandingSprite; } }
         public Texture2D LeftStandingSprite { get { return leftStandingSprite; } }
-        public Texture2D RightJumpSprite { get { return rightJumpSprite; } }
-        public Texture2D LeftJumpSprite { get { return leftJumpSprite; } }
+        public Texture2D RightMiddleRunningSprite { get { return rightMiddleRunningSprite; } }
+        public Texture2D LeftMiddleRunningSprite { get { return leftMiddleRunningSprite; } }
         public Texture2D RightRunningSprite { get { return rightRunningSprite; } }
         public Texture2D LeftRunningSprite { get { return leftRunningSprite; } }
+        public Texture2D RightJumpSprite { get { return rightJumpSprite; } }
+        public Texture2D LeftJumpSprite { get { return leftJumpSprite; } }
+        public Texture2D RightPlayerAttack1 { get { return rightPlayerAttack1; } }
+        public Texture2D LeftPlayerAttack1 { get { return leftPlayerAttack1; } }
+        public Texture2D RightPlayerAttack2 { get { return rightPlayerAttack2; } }
+        public Texture2D LeftPlayerAttack2 { get { return leftPlayerAttack2; } }
         public Texture2D RightEnemyWalk1 { get { return rightEnemyWalk1; } }
         public Texture2D RightEnemyWalk2 { get { return rightEnemyWalk2; } }
         public Texture2D RightEnemyWalk3 { get { return rightEnemyWalk3; } }
@@ -45,15 +58,22 @@ namespace Purpose
 
         //constructor
         public TextureManager(Texture2D leftCrouchSprite, Texture2D rightCrouchSprite, Texture2D leftStandingSprite,
-            Texture2D rightStandingSprite, Texture2D leftRunningSprite, Texture2D rightRunningSprite, 
-            Texture2D rightEnemyWalk1, Texture2D rightEnemyWalk2, Texture2D rightEnemyWalk3, Texture2D leftEnemyWalk1, Texture2D leftEnemyWalk2, Texture2D leftEnemyWalk3, Texture2D rangedEnemyTexture)
+            Texture2D rightStandingSprite, Texture2D leftMiddleRunningSprite, Texture2D rightMiddleRunningSprite,
+            Texture2D leftRunningSprite, Texture2D rightRunningSprite, Texture2D rightPlayerAttack1, Texture2D leftPlayerAttack1, Texture2D rightPlayerAttack2, Texture2D leftPlayerAttack2,
+            Texture2D rightEnemyWalk1, Texture2D rightEnemyWalk2, Texture2D rightEnemyWalk3, Texture2D leftEnemyWalk1, Texture2D leftEnemyWalk2, Texture2D leftEnemyWalk3)
         {
             this.rightCrouchSprite = rightCrouchSprite;
             this.leftCrouchSprite = leftCrouchSprite;
             this.rightStandingSprite = rightStandingSprite;
             this.leftStandingSprite = leftStandingSprite;
+            this.rightMiddleRunningSprite = rightMiddleRunningSprite;
+            this.leftMiddleRunningSprite = leftMiddleRunningSprite;
             this.rightRunningSprite = rightRunningSprite;
             this.leftRunningSprite = leftRunningSprite;
+            this.rightPlayerAttack1 = rightPlayerAttack1;
+            this.leftPlayerAttack1 = leftPlayerAttack1;
+            this.rightPlayerAttack2 = rightPlayerAttack2;
+            this.leftPlayerAttack2 = leftPlayerAttack2;
             this.rightEnemyWalk1 = rightEnemyWalk1;
             this.rightEnemyWalk2 = rightEnemyWalk2;
             this.rightEnemyWalk3 = rightEnemyWalk3;

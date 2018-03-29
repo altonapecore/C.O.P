@@ -251,8 +251,9 @@ namespace Purpose
             }
             // Makes player, gameManager object and fills enemy list
             textureManager = new TextureManager(Content.Load<Texture2D>("LeftCrouchingSprite"), Content.Load<Texture2D>("RightCrouchingSprite"),
-                Content.Load<Texture2D>("LeftStandingSprite"), Content.Load<Texture2D>("RightStandingSprite"),
-                Content.Load<Texture2D>("LeftRunningSprite"), Content.Load<Texture2D>("RightRunningSprite"), 
+                Content.Load<Texture2D>("LeftStandingSprite"), Content.Load<Texture2D>("RightStandingSprite"), Content.Load<Texture2D>("LeftMiddleRunningSprite"),
+                Content.Load<Texture2D>("RightMiddleRunningSprite"), Content.Load<Texture2D>("LeftRunningSprite"), Content.Load<Texture2D>("RightRunningSprite"),
+                Content.Load<Texture2D>("RightPlayerAttackSprite1"), Content.Load<Texture2D>("LeftPlayerAttackSprite1"), Content.Load<Texture2D>("RightPlayerAttackSprite2"), Content.Load<Texture2D>("LeftPlayerAttackSprite2"),
                 Content.Load<Texture2D>("RightEnemyWalk1"), Content.Load<Texture2D>("RightEnemyWalk2"), Content.Load<Texture2D>("RightEnemyWalk3"),
                 Content.Load<Texture2D>("LeftEnemyWalk1"), Content.Load<Texture2D>("LeftEnemyWalk2"), Content.Load<Texture2D>("LeftEnemyWalk3"), tempTexture);
 
@@ -380,14 +381,22 @@ namespace Purpose
 
                     foreach (Enemy e in gameManager.Enemies)
                     {
+                        // If attacking, draw this
                         if (e.IsAttacking)
                         {
                             spriteBatch.Draw(e.Texture, e.Position, Color.Red);
                         }
                         
+                        // If not, draw this
                         else
                         {
                             spriteBatch.Draw(e.Texture, e.Position, Color.White);
+                        }
+
+                        // Drawing bullet bois
+                        if(e.HasBullet)
+                        {
+                            spriteBatch.Draw(e.Texture, e.Bullet, Color.White);
                         }
                         //spriteBatch.Draw(e.Texture, e.Position, Color.White);
                     }
