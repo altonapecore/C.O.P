@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 using MonoGame.Extended;
+using System.Threading;
 
 namespace Purpose
 {
@@ -29,20 +30,21 @@ namespace Purpose
         private Background backgroundSelection;
         private int jumpNum;
         private bool abovePlatform;
+        private WaveNumber waveNumber;
 
-        //Deals with the enemies
-        private int numberOfEnemies;
-        private int numberOfRanged;
-        private int difficulty;
+        ////Deals with the enemies
+        //private int numberOfEnemies;
+        //private int numberOfRanged;
+        //private int difficulty;
 
         //private List<Wave> waves;
         private List<Wave> waves;
-       // private List<>
 
         private TextureManager textureManager;
+        private Texture2D rangeTexture;
 
         int keyCounter;
-        //int frameCounter;
+        int frameCounter;
 
         //properties
         public List<Enemy> Enemies { get { return enemies; } }
@@ -73,26 +75,6 @@ namespace Purpose
             set { backgroundSelection = value; }
         }
 
-        //This is for the number of Melee Enemies
-        public int NumberOfEnemies
-        {
-            get { return numberOfEnemies; }
-            set { numberOfEnemies = value; }
-        }
-
-        //This is for number of Ranged Enemies
-        public int NumberOfRanged
-        {
-            get { return numberOfRanged; }
-            set { numberOfRanged = value; }
-        }
-
-        public int Difficulty
-        {
-            get { return difficulty; }
-            set { difficulty = value; }
-        }
-
         public List<Wave> Waves
         {
             get { return waves; }
@@ -105,6 +87,14 @@ namespace Purpose
             get { return jumpNum; }
             set { jumpNum = value; }
         }
+
+        public Texture2D RangeTexture
+        {
+            get { return rangeTexture; }
+            set { rangeTexture = value; }
+        }
+
+        public WaveNumber WaveNumber { get { return waveNumber; } set { waveNumber = value; } }
 
         //constructor
 
@@ -119,6 +109,8 @@ namespace Purpose
             backgroundSelection = Purpose.Background.WhiteBackground;
             this.textureManager = textureManager;
             waves = new List<Wave>();
+            rangeTexture = textureManager.RangedEnemyTexture;
+            waveNumber = WaveNumber.One;
         }
 
         //methods
@@ -152,6 +144,46 @@ namespace Purpose
                 camera.LookAt(new Vector2(player.X, player.Y - 250));
             }
 
+            if (player.Texture == textureManager.LeftPlayerAttack1)
+            {
+                frameCounter++;
+                if (frameCounter == 5)
+                {
+                    player.Texture = textureManager.LeftPlayerAttack2;
+                    frameCounter = 0;
+                }
+                return;
+            }
+            else if (player.Texture == textureManager.RightPlayerAttack1)
+            {
+                frameCounter++;
+                if (frameCounter == 5)
+                {
+                    player.Texture = textureManager.RightPlayerAttack2;
+                    frameCounter = 0;
+                }
+                return;
+            }
+            else if (player.Texture == textureManager.LeftPlayerAttack2)
+            {
+                frameCounter++;
+                if (frameCounter == 5)
+                {
+                    player.Texture = textureManager.LeftStandingSprite;
+                    frameCounter = 0;
+                }
+                else { return; }
+            }
+            else if (player.Texture == textureManager.RightPlayerAttack2)
+            {
+                frameCounter++;
+                if (frameCounter == 5)
+                {
+                    player.Texture = textureManager.RightStandingSprite;
+                    frameCounter = 0;
+                }
+                else { return; }
+            }
             //checking keyboard state to make the player move
             if (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left)) //move to the left
             {
@@ -187,6 +219,10 @@ namespace Purpose
                     keyCounter = 0;
                     // Update the frame and wrap
                     if (player.Texture == textureManager.LeftStandingSprite)
+                    {
+                        player.Texture = textureManager.LeftMiddleRunningSprite;
+                    }
+                    else if (player.Texture == textureManager.LeftMiddleRunningSprite)
                     {
                         player.Texture = textureManager.LeftRunningSprite;
                     }
@@ -234,6 +270,10 @@ namespace Purpose
                     // Update the frame and wrap
                     if (player.Texture == textureManager.RightStandingSprite)
                     {
+                        player.Texture = textureManager.RightMiddleRunningSprite;
+                    }
+                    else if (player.Texture == textureManager.RightMiddleRunningSprite)
+                    {
                         player.Texture = textureManager.RightRunningSprite;
                     }
                     else if (player.Texture == textureManager.RightRunningSprite)
@@ -278,6 +318,18 @@ namespace Purpose
             // Player attack done here as well as enemy takeDamage
             if (ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
             {
+                if (player.Texture == textureManager.LeftCrouchSprite || player.Texture == textureManager.LeftJumpSprite ||
+                        player.Texture == textureManager.LeftRunningSprite || player.Texture == textureManager.LeftStandingSprite ||
+                        player.Texture == textureManager.LeftMiddleRunningSprite)
+                {
+                    player.Texture = textureManager.LeftPlayerAttack1;
+                }
+                else if (player.Texture == textureManager.RightCrouchSprite || player.Texture == textureManager.RightJumpSprite ||
+                        player.Texture == textureManager.RightRunningSprite || player.Texture == textureManager.RightStandingSprite ||
+                        player.Texture == textureManager.RightMiddleRunningSprite)
+                {
+                    player.Texture = textureManager.RightPlayerAttack1;
+                }
                 for (int i = 0; i < enemies.Count; i++)
                 {
                     enemies[i].TakeDamage(player.Attack(enemies[i].Position, gameTime));
@@ -360,7 +412,8 @@ namespace Purpose
         /// <param name="numberOfRanged">The number to spawn</param>
         /// <param name="graphicsDevice">Limits the enemies spawn point</param>
         /// <param name="rangeTexture">The texture for the Ranged Enemies</param>
-        public void FillRangedList(Random rng, int numberOfRanged, int difficulty, int worldLeftEndWidth, int worldRightEndWidth, Texture2D rangeTexture, GameTime gameTime)
+        public void FillRangedList(Random rng, int numberOfRanged, int difficulty, int worldLeftEndWidth, int worldRightEndWidth, Texture2D rangeTexture, 
+            GameTime gameTime)
         {
             for (int i = 0; i < numberOfRanged; i++)
             {
@@ -368,28 +421,28 @@ namespace Purpose
                 if (choice == 1)
                 {
                     Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, 0), graphicsDevice.Viewport.Height - 450, 147, 147),
-                        rangeTexture, Level.One, false, gameTime);
+                        rangeTexture, Level.One, true, gameTime);
                     enemies.Add(enemy);
                 }
 
                 else if (choice == 2)
                 {
                     Enemy enemy = new Enemy(new Rectangle(rng.Next(0, worldRightEndWidth), graphicsDevice.Viewport.Height - 450, 147, 147),
-                        rangeTexture, Level.One, false, gameTime);
+                        rangeTexture, Level.One, true, gameTime);
                     enemies.Add(enemy);
                 }
 
                 else if (choice == 3)
                 {
                     Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, 0), graphicsDevice.Viewport.Height - 750, 147, 147),
-                        rangeTexture, Level.One, false, gameTime);
+                        rangeTexture, Level.One, true, gameTime);
                     enemies.Add(enemy);
                 }
 
                 else if (choice == 4)
                 {
                     Enemy enemy = new Enemy(new Rectangle(rng.Next(0, worldRightEndWidth), graphicsDevice.Viewport.Height - 750, 147, 147),
-                        rangeTexture, Level.One, false, gameTime);
+                        rangeTexture, Level.One, true, gameTime);
                     enemies.Add(enemy);
                 }
             }
@@ -425,8 +478,22 @@ namespace Purpose
                 //{
                 //    return;
                 //}
-                if(enemies[i].X < player.X)
+
+                // Limiting stuff for melee enemies
+                if(enemies[i].X == player.X - 15 && enemies[i].Ranged == false)
                 {
+                    enemies[i].X = enemies[i].X;
+                }
+
+                if (enemies[i].X == player.X + 15 && enemies[i].Ranged == false)
+                {
+                    enemies[i].X = enemies[i].X;
+                }
+
+                // If right of player, move left and update frame and texture
+                if (enemies[i].X < player.X - 15 && enemies[i].Ranged == false)
+                {
+                    enemies[i].IsFacingLeft = false;
                     if (enemies[i].Texture == textureManager.LeftEnemyWalk1 || enemies[i].Texture == textureManager.LeftEnemyWalk2 || enemies[i].Texture == textureManager.LeftEnemyWalk3)
                     {
                         enemies[i].Texture = textureManager.RightEnemyWalk1;
@@ -452,8 +519,79 @@ namespace Purpose
                     }
                 }
 
-                else if(enemies[i].X > player.X)
+                // If right of player, move left and update frame and texture
+                else if(enemies[i].X > player.X + 15 && enemies[i].Ranged == false)
                 {
+                    enemies[i].IsFacingLeft = true;
+                    if (enemies[i].Texture == textureManager.RightEnemyWalk1 || enemies[i].Texture == textureManager.RightEnemyWalk2 || enemies[i].Texture == textureManager.RightEnemyWalk3)
+                    {
+                        enemies[i].Texture = textureManager.LeftEnemyWalk1;
+                        enemies[i].FrameCounter = 0;
+                    }
+                    enemies[i].FrameCounter++;
+                    enemies[i].X -= 5;
+                    if (enemies[i].FrameCounter >= 5)
+                    {
+                        if (enemies[i].Texture == textureManager.LeftEnemyWalk1)
+                        {
+                            enemies[i].Texture = textureManager.LeftEnemyWalk2;
+                        }
+                        else if (enemies[i].Texture == textureManager.LeftEnemyWalk2)
+                        {
+                            enemies[i].Texture = textureManager.LeftEnemyWalk3;
+                        }
+                        else if (enemies[i].Texture == textureManager.LeftEnemyWalk3)
+                        {
+                            enemies[i].Texture = textureManager.LeftEnemyWalk1;
+                        }
+                        enemies[i].FrameCounter = 0;
+                    }
+                }
+
+                // Limiting movement for ranged enemies
+                if (enemies[i].X == player.X - 555 && enemies[i].Ranged)
+                {
+                    enemies[i].X = enemies[i].X;
+                }
+
+                if (enemies[i].X == player.X + 555 && enemies[i].Ranged)
+                {
+                    enemies[i].X = enemies[i].X;
+                }
+
+                // If on right of player, move left and update frames and texture
+                if (enemies[i].X < player.X - 555 && enemies[i].Ranged)
+                {
+                    enemies[i].IsFacingLeft = false;
+                    if (enemies[i].Texture == textureManager.LeftEnemyWalk1 || enemies[i].Texture == textureManager.LeftEnemyWalk2 || enemies[i].Texture == textureManager.LeftEnemyWalk3)
+                    {
+                        enemies[i].Texture = textureManager.RightEnemyWalk1;
+                        enemies[i].FrameCounter = 0;
+                    }
+                    enemies[i].FrameCounter++;
+                    enemies[i].X += 5;
+                    if (enemies[i].FrameCounter >= 5)
+                    {
+                        if (enemies[i].Texture == textureManager.RightEnemyWalk1)
+                        {
+                            enemies[i].Texture = textureManager.RightEnemyWalk2;
+                        }
+                        else if (enemies[i].Texture == textureManager.RightEnemyWalk2)
+                        {
+                            enemies[i].Texture = textureManager.RightEnemyWalk3;
+                        }
+                        else if (enemies[i].Texture == textureManager.RightEnemyWalk3)
+                        {
+                            enemies[i].Texture = textureManager.RightEnemyWalk1;
+                        }
+                        enemies[i].FrameCounter = 0;
+                    }
+                }
+
+                // If left of player, move right and update frame and texture
+                else if (enemies[i].X > player.X + 555 && enemies[i].Ranged)
+                {
+                    enemies[i].IsFacingLeft = true;
                     if (enemies[i].Texture == textureManager.RightEnemyWalk1 || enemies[i].Texture == textureManager.RightEnemyWalk2 || enemies[i].Texture == textureManager.RightEnemyWalk3)
                     {
                         enemies[i].Texture = textureManager.LeftEnemyWalk1;
@@ -491,8 +629,39 @@ namespace Purpose
 
             foreach(Enemy e in enemies)
             {
-                int damage = e.Attack(player.Position, gameTime);
+                // Call attack methods based on type of enemy and position
+                int damage = 0;
+                if (e.Ranged && e.IsFacingLeft)
+                {
+                    damage = e.Attack(new Rectangle(player.Position.X - 555, player.Position.Y, player.Position.Width, player.Position.Height), gameTime);
+                }
+
+                else if(e.Ranged && e.IsFacingLeft == false)
+                {
+                    damage = e.Attack(new Rectangle(player.Position.X + 555, player.Position.Y, player.Position.Width, player.Position.Height), gameTime);
+                }
+
+                else if(e.Ranged == false && e.IsFacingLeft)
+                {
+                    damage = e.Attack(new Rectangle(player.Position.X - 15, player.Position.Y, player.Position.Width, player.Position.Height), gameTime);
+                }
+
+                else if (e.Ranged == false && e.IsFacingLeft == false)
+                {
+                    damage = e.Attack(new Rectangle(player.Position.X + 15, player.Position.Y, player.Position.Width, player.Position.Height), gameTime);
+                }
                 player.TakeDamage(damage);
+
+                // Moving the bullets along
+                if(e.HasBullet && e.IsFacingLeft)
+                {
+                    e.BulletX -= 25;
+                }
+
+                if (e.HasBullet && e.IsFacingLeft == false)
+                {
+                    e.BulletX += 25;
+                }
             }
         }
 
@@ -506,6 +675,7 @@ namespace Purpose
             player.IsDead = false;
             player.X = 225;
             player.Y = 225;
+            isCrouching = false;
             enemies.Clear();
             FillEnemyList(rng, waves[i].NumberOfMelee, waves[i].Difficulty, worldLeftEndWidth, worldRightEndWidth, gameTime);
             FillRangedList(rng, waves[i].NumberOfRanged, waves[i].Difficulty, worldLeftEndWidth, worldRightEndWidth, tempTexture, gameTime);

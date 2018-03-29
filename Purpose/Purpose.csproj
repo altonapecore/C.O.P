@@ -41,12 +41,6 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ArenaWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ArenaWindow.Designer.cs">
-      <DependentUpon>ArenaWindow.cs</DependentUpon>
-    </Compile>
     <Compile Include="Character.cs" />
     <Compile Include="Enemy.cs" />
     <Compile Include="Game1.cs" />
@@ -97,9 +91,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ArenaWindow.resx">
-      <DependentUpon>ArenaWindow.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="PauseMenu.resx">
       <DependentUpon>PauseMenu.cs</DependentUpon>
     </EmbeddedResource>

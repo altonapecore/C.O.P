@@ -90,7 +90,7 @@ namespace Purpose
 
         //Field for the Wave
         private Wave wave;
-        private Game1 game1;
+        //private Game1 game1;
 
         //temporary stuff
         private Texture2D tempTexture;
@@ -301,62 +301,14 @@ namespace Purpose
 
             switch (gameManager.WaveNumber)
             {
-
-                case GameState.Menu:
-                    // Reset game
-                    gameManager.ResetGame(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture, 0);
-
-                    //Using the selection from the ArenaWindow pciks the background to use in the Game
-                    if (gameManager.BackgroundSelection == Background.WhiteBackground)
-                    {
-                        background = whiteBack; //Changes the background to White
-                    }
-                    else if (gameManager.BackgroundSelection == Background.MetalBackground)
-                    {
-                        background = metalBack; // Background is Metal
-                    }
-                    else if (gameManager.BackgroundSelection == Background.RustBackground)
-                    {
-                        background = rustyBack; //Background is Rusty
-                    }
-
-                    if (startButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed)
-                    {
-                        gameManager.GameState = GameState.Game;
-                    }
-
+                case WaveNumber.One:
+                    UpdateHelper(kbState, previouskbState, ms, previousMs, 0, gameTime);
                     break;
-
-                case GameState.Game:
-                    //arenaManagerCounter = 0;
-                    camera.MinimumZoom = 0.5f;
-                    camera.MaximumZoom = 1.0f;
-                    camera.Zoom = 0.5f;
-
-                    // Stuff for moving player and enemy, as well as player attack
-                    ms = Mouse.GetState();
-                    gameManager.PlayerMove(kbState, previouskbState, ms, previousMs, camera, totalPlatforms, gameTime);
-                    // Jump logic
-                    if(gameManager.JumpNum >= 1 && gameManager.JumpNum <= 10)
-                    {
-                        player.Jump();
-                        gameManager.JumpNum++;
-                    }
-                    if(gameManager.JumpNum == 10)
-                    {
-                        gameManager.JumpNum = 0;
-                    }
-
-                    gameManager.EnemyMove(gameTime);
-                    if (kbState.IsKeyDown(Keys.P))
-                    {
-                        gameManager.GameState = GameState.Pause;
-                    }
-
-                    if (player.IsDead || player.Y >= GraphicsDevice.Viewport.Height )
-                    {
-                        gameManager.GameState = GameState.GameOver;
-                    }
+                case WaveNumber.Two:
+                    UpdateHelper(kbState, previouskbState, ms, previousMs, 1, gameTime);
+                    break;
+                case WaveNumber.Three:
+                    UpdateHelper(kbState, previouskbState, ms, previousMs, 2, gameTime);
                     break;
                 case WaveNumber.Four:
                     UpdateHelper(kbState, previouskbState, ms, previousMs, 3, gameTime);
