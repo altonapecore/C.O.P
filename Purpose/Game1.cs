@@ -301,19 +301,19 @@ namespace Purpose
             switch (gameManager.WaveNumber)
             {
                 case WaveNumber.One:
-                    UpdateHelper(kbState, previouskbState, ms, previousMs, 0);
+                    UpdateHelper(kbState, previouskbState, ms, previousMs, 0, gameTime);
                     break;
                 case WaveNumber.Two:
-                    UpdateHelper(kbState, previouskbState, ms, previousMs, 1);
+                    UpdateHelper(kbState, previouskbState, ms, previousMs, 1, gameTime);
                     break;
                 case WaveNumber.Three:
-                    UpdateHelper(kbState, previouskbState, ms, previousMs, 2);
+                    UpdateHelper(kbState, previouskbState, ms, previousMs, 2, gameTime);
                     break;
                 case WaveNumber.Four:
-                    UpdateHelper(kbState, previouskbState, ms, previousMs, 3);
+                    UpdateHelper(kbState, previouskbState, ms, previousMs, 3, gameTime);
                     break;
                 case WaveNumber.Five:
-                    UpdateHelper(kbState, previouskbState, ms, previousMs, 4);
+                    UpdateHelper(kbState, previouskbState, ms, previousMs, 4, gameTime);
                     break;
                 default:
                     break;
@@ -508,7 +508,7 @@ namespace Purpose
             base.Draw(gameTime);
         }
 
-        private void UpdateHelper(KeyboardState kbState, KeyboardState previouskbState, MouseState msState, MouseState previousMs, int waveNumber)
+        private void UpdateHelper(KeyboardState kbState, KeyboardState previouskbState, MouseState msState, MouseState previousMs, int waveNumber, GameTime gameTime)
         {
             // GameState finite state machine
             switch (gameManager.GameState)
