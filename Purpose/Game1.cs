@@ -576,23 +576,30 @@ namespace Purpose
                         if (gameManager.WaveNumber == WaveNumber.One)
                         {
                             gameManager.WaveNumber = WaveNumber.Two;
+                            gameManager.GameState = GameState.Menu;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Two)
                         {
                             gameManager.WaveNumber = WaveNumber.Three;
+                            gameManager.GameState = GameState.Menu;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Three)
                         {
                             gameManager.WaveNumber = WaveNumber.Four;
+                            gameManager.GameState = GameState.Menu;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Four)
                         {
                             gameManager.WaveNumber = WaveNumber.Five;
+                            gameManager.GameState = GameState.Menu;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Five)
                         {
                             gameManager.GameState = GameState.GameOver;
+                            break;
                         }
+                        camera.Zoom = 1.0f;
+                        camera.Position = new Vector2(0, 0);
                     }
                     break;
 
@@ -647,6 +654,7 @@ namespace Purpose
                 case GameState.GameOver:
                     camera.Zoom = 1.0f;
                     camera.Position = new Vector2(0, 0);
+                    gameManager.WaveNumber = WaveNumber.One;
                     // Press enter to go back to menu
                     if (kbState.IsKeyDown(Keys.Enter))
                     {

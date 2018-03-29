@@ -671,7 +671,6 @@ namespace Purpose
         public void ResetGame(Camera2D camera, Random rng, int worldLeftEndWidth, int worldRightEndWidth, GameTime gameTime, Texture2D tempTexture, int i)
         {
             player.Health = 100;
-            waveNumber = WaveNumber.One;
             isCrouching = false;
             enemies.Clear();
             FillEnemyList(rng, waves[i].NumberOfMelee, waves[i].Difficulty, worldLeftEndWidth, worldRightEndWidth, gameTime);
