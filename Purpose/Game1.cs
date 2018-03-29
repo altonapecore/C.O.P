@@ -55,7 +55,6 @@ namespace Purpose
         private List<Platform> totalPlatforms;
         private Texture2D basePlatform;
         private Texture2D notBasePlatform;
-        private ArenaWindow arenaWindow;
         private Camera2D camera;
         private int worldLeftEndWidth;
         private int worldRightEndWidth;
@@ -89,6 +88,10 @@ namespace Purpose
         //textureManager object
         private TextureManager textureManager;
 
+        //Field for the Wave
+        private Wave wave;
+        private Game1 game1;
+
         //temporary stuff
         private Texture2D tempTexture;
         //private Texture2D tempCrouchTexture;
@@ -101,6 +104,30 @@ namespace Purpose
         private Texture2D whiteBack;
         private Texture2D rustyBack;
         private Texture2D metalBack;
+
+        public Random Rng
+        {
+            get { return rng; }
+            set { rng = value; }
+        }
+
+        public int WorldLeftEndWidth
+        {
+            get { return worldLeftEndWidth; }
+            set { worldLeftEndWidth = value; }
+        }
+
+        public int WorldRightEndWidth
+        {
+            get { return worldRightEndWidth; }
+            set { worldRightEndWidth = value; }
+        }
+
+        public GameTime GameTime
+        {
+            get { return gameTime; }
+            set { gameTime = value; }
+        }
 
         public Game1()
         {
@@ -140,7 +167,6 @@ namespace Purpose
             //bottomPlatforms = new List<Platform>();
             ViewportAdapter viewportAdapter = new BoxingViewportAdapter(Window, GraphicsDevice, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
             camera = new Camera2D(viewportAdapter);
-
         }
 
         /// <summary>
@@ -228,19 +254,19 @@ namespace Purpose
                 Content.Load<Texture2D>("LeftStandingSprite"), Content.Load<Texture2D>("RightStandingSprite"),
                 Content.Load<Texture2D>("LeftRunningSprite"), Content.Load<Texture2D>("RightRunningSprite"), 
                 Content.Load<Texture2D>("RightEnemyWalk1"), Content.Load<Texture2D>("RightEnemyWalk2"), Content.Load<Texture2D>("RightEnemyWalk3"),
-                Content.Load<Texture2D>("LeftEnemyWalk1"), Content.Load<Texture2D>("LeftEnemyWalk2"), Content.Load<Texture2D>("LeftEnemyWalk3"));
+                Content.Load<Texture2D>("LeftEnemyWalk1"), Content.Load<Texture2D>("LeftEnemyWalk2"), Content.Load<Texture2D>("LeftEnemyWalk3"), tempTexture);
 
             player = new Player("Dude", new Rectangle(225, 225, 139, 352), textureManager, gameTime);
 
             gameManager = new GameManager(player, bottomPlatforms, GraphicsDevice, textureManager);
+            //wave = new Wave(gameManager, game1 = new Game1());
 
-            arenaWindow = new ArenaWindow(gameManager);
             gameManager.GameState = GameState.Menu;
             //arenaWindow.ShowDialog(); //Loads arenaWindow here to allow User to change settings of level, enemies, and background
 
 
             //Initializing Reader
-            reader = new Reader(gameManager);
+            reader = new Reader(gameManager, game1);
             //Runs the Reader method to vcreate enemies needed
             reader.ReadEditor();
         }
@@ -271,125 +297,27 @@ namespace Purpose
             MouseState previousMs = ms;
             ms = Mouse.GetState();
 
-            // GameState finite state machine
-            switch (gameManager.GameState)
+            switch (gameManager.WaveNumber)
             {
-
-                case GameState.Menu:
-                    // Reset game
-                    gameManager.ResetGame(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture, 0);
-
-                    //Using the selection from the ArenaWindow pciks the background to use in the Game
-                    if (gameManager.BackgroundSelection == Background.WhiteBackground)
-                    {
-                        background = whiteBack; //Changes the background to White
-                    }
-                    else if (gameManager.BackgroundSelection == Background.MetalBackground)
-                    {
-                        background = metalBack; // Background is Metal
-                    }
-                    else if (gameManager.BackgroundSelection == Background.RustBackground)
-                    {
-                        background = rustyBack; //Background is Rusty
-                    }
-
-                    if (startButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed)
-                    {
-                        gameManager.GameState = GameState.Game;
-                    }
-
+                case WaveNumber.One:
+                    UpdateHelper(kbState, previouskbState, ms, previousMs, 0);
                     break;
-
-                case GameState.Game:
-                    //arenaManagerCounter = 0;
-                    camera.MinimumZoom = 0.5f;
-                    camera.MaximumZoom = 1.0f;
-                    camera.Zoom = 0.5f;
-
-                    // Stuff for moving player and enemy, as well as player attack
-                    ms = Mouse.GetState();
-                    gameManager.PlayerMove(kbState, previouskbState, ms, previousMs, camera, totalPlatforms, gameTime);
-                    // Jump logic
-                    if(gameManager.JumpNum >= 1 && gameManager.JumpNum <= 10)
-                    {
-                        player.Jump();
-                        gameManager.JumpNum++;
-                    }
-                    if(gameManager.JumpNum == 10)
-                    {
-                        gameManager.JumpNum = 0;
-                    }
-
-                    gameManager.EnemyMove(gameTime);
-                    if (kbState.IsKeyDown(Keys.P))
-                    {
-                        gameManager.GameState = GameState.Pause;
-                    }
-
-                    if (player.IsDead || player.Y >= GraphicsDevice.Viewport.Height )
-                    {
-                        gameManager.GameState = GameState.GameOver;
-                    }
+                case WaveNumber.Two:
+                    UpdateHelper(kbState, previouskbState, ms, previousMs, 1);
                     break;
-
-                case GameState.Pause:
-                    camera.Zoom = 1.0f;
-                    camera.Position = new Vector2(0, 0);
-
-                    if (returnToGameButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed)
-                    {
-                        gameManager.GameState = GameState.Game;
-                    }
-                    else if (upgradesButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed)
-                    {
-                        gameManager.GameState = GameState.UpgradeMenu;
-                    }
-
+                case WaveNumber.Three:
+                    UpdateHelper(kbState, previouskbState, ms, previousMs, 2);
                     break;
-
-                case GameState.UpgradeMenu:
-                    if (returnToPauseButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed)
-                    {
-                        gameManager.GameState = GameState.Pause;
-                    }
-
-                    if (groundPoundButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
-                    {
-                        gameManager.Player.UgManager.ActivateGroundPound();
-                    }
-                    else if (attackUpButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
-                    {
-                        gameManager.Player.Damage = gameManager.Player.UgManager.AttackUpgrade(gameManager.Player.Damage);
-                    }
-                    else if (staminaUpButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
-                    {
-                        gameManager.Player.Stamina = gameManager.Player.UgManager.StaminaUpgrade(gameManager.Player.Stamina);
-                    }
-                    else if (healthUpButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
-                    {
-                        gameManager.Player.Health = gameManager.Player.UgManager.HealthUpgrade(gameManager.Player.Health);
-                    }
-                    else if (dashButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
-                    {
-                        gameManager.Player.UgManager.ActivateDash();
-                    }
-                    else if (dashDistanceUpButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
-                    {
-                        gameManager.Player.DashDistance = gameManager.Player.UgManager.DashDistanceUpgrade(gameManager.Player.DashDistance);
-                    }
-
+                case WaveNumber.Four:
+                    UpdateHelper(kbState, previouskbState, ms, previousMs, 3);
                     break;
-
-                case GameState.GameOver:
-                    camera.Zoom = 1.0f;
-                    camera.Position = new Vector2(0, 0);
-                    // Press enter to go back to menu
-                    if (kbState.IsKeyDown(Keys.Enter))
-                    {
-                        gameManager.GameState = GameState.Menu;
-                    }
+                case WaveNumber.Five:
+                    UpdateHelper(kbState, previouskbState, ms, previousMs, 4);
+                    break;
+                default:
                     break;
             }
+
 
             base.Update(gameTime);
         }
@@ -569,6 +497,154 @@ namespace Purpose
 
             spriteBatch.End();
             base.Draw(gameTime);
+        }
+
+        private void UpdateHelper(KeyboardState kbState, KeyboardState previouskbState, MouseState msState, MouseState previousMs, int waveNumber)
+        {
+            // GameState finite state machine
+            switch (gameManager.GameState)
+            {
+
+                case GameState.Menu:
+                    // Reset game
+                    gameManager.ResetGame(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture, waveNumber);
+
+                    //Using the selection from the ArenaWindow pciks the background to use in the Game
+                    if (gameManager.BackgroundSelection == Background.WhiteBackground)
+                    {
+                        background = whiteBack; //Changes the background to White
+                    }
+                    else if (gameManager.BackgroundSelection == Background.MetalBackground)
+                    {
+                        background = metalBack; // Background is Metal
+                    }
+                    else if (gameManager.BackgroundSelection == Background.RustBackground)
+                    {
+                        background = rustyBack; //Background is Rusty
+                    }
+
+                    if (startButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed)
+                    {
+                        gameManager.GameState = GameState.Game;
+                    }
+
+                    break;
+
+                case GameState.Game:
+                    //arenaManagerCounter = 0;
+                    camera.MinimumZoom = 0.5f;
+                    camera.MaximumZoom = 1.0f;
+                    camera.Zoom = 0.5f;
+
+                    // Stuff for moving player and enemy, as well as player attack
+                    ms = Mouse.GetState();
+                    gameManager.PlayerMove(kbState, previouskbState, ms, previousMs, camera, totalPlatforms, gameTime);
+                    // Jump logic
+                    if (gameManager.JumpNum >= 1 && gameManager.JumpNum <= 10)
+                    {
+                        player.Jump();
+                        gameManager.JumpNum++;
+                    }
+                    if (gameManager.JumpNum == 10)
+                    {
+                        gameManager.JumpNum = 0;
+                    }
+
+                    gameManager.EnemyMove(gameTime);
+                    if (kbState.IsKeyDown(Keys.P))
+                    {
+                        gameManager.GameState = GameState.Pause;
+                    }
+
+                    if (player.IsDead || player.Y >= GraphicsDevice.Viewport.Height)
+                    {
+                        gameManager.GameState = GameState.GameOver;
+                    }
+
+                    //When all enemies are dead calls in the next wave method
+                    if (gameManager.Enemies.Count == 0)
+                    {
+                        if (gameManager.WaveNumber == WaveNumber.One)
+                        {
+                            gameManager.WaveNumber = WaveNumber.Two;
+                        }
+                        else if (gameManager.WaveNumber == WaveNumber.Two)
+                        {
+                            gameManager.WaveNumber = WaveNumber.Three;
+                        }
+                        else if (gameManager.WaveNumber == WaveNumber.Three)
+                        {
+                            gameManager.WaveNumber = WaveNumber.Four;
+                        }
+                        else if (gameManager.WaveNumber == WaveNumber.Four)
+                        {
+                            gameManager.WaveNumber = WaveNumber.Five;
+                        }
+                        else if (gameManager.WaveNumber == WaveNumber.Five)
+                        {
+                            gameManager.GameState = GameState.GameOver;
+                        }
+                    }
+                    break;
+
+                case GameState.Pause:
+                    camera.Zoom = 1.0f;
+                    camera.Position = new Vector2(0, 0);
+
+                    if (returnToGameButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed)
+                    {
+                        gameManager.GameState = GameState.Game;
+                    }
+                    else if (upgradesButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed)
+                    {
+                        gameManager.GameState = GameState.UpgradeMenu;
+                    }
+
+                    break;
+
+                case GameState.UpgradeMenu:
+                    if (returnToPauseButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed)
+                    {
+                        gameManager.GameState = GameState.Pause;
+                    }
+
+                    if (groundPoundButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
+                    {
+                        gameManager.Player.UgManager.ActivateGroundPound();
+                    }
+                    else if (attackUpButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
+                    {
+                        gameManager.Player.Damage = gameManager.Player.UgManager.AttackUpgrade(gameManager.Player.Damage);
+                    }
+                    else if (staminaUpButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
+                    {
+                        gameManager.Player.Stamina = gameManager.Player.UgManager.StaminaUpgrade(gameManager.Player.Stamina);
+                    }
+                    else if (healthUpButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
+                    {
+                        gameManager.Player.Health = gameManager.Player.UgManager.HealthUpgrade(gameManager.Player.Health);
+                    }
+                    else if (dashButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
+                    {
+                        gameManager.Player.UgManager.ActivateDash();
+                    }
+                    else if (dashDistanceUpButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
+                    {
+                        gameManager.Player.DashDistance = gameManager.Player.UgManager.DashDistanceUpgrade(gameManager.Player.DashDistance);
+                    }
+
+                    break;
+
+                case GameState.GameOver:
+                    camera.Zoom = 1.0f;
+                    camera.Position = new Vector2(0, 0);
+                    // Press enter to go back to menu
+                    if (kbState.IsKeyDown(Keys.Enter))
+                    {
+                        gameManager.GameState = GameState.Menu;
+                    }
+                    break;
+            }
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Purpose
         private int difficulty;
 
         //Making Game Manager to have variables to save the info from text file
-        private GameManager gameManager;
+        private Game1 game1;
 
         //Properties for enemies
         public int NumberOfMelee
@@ -39,22 +39,22 @@ namespace Purpose
             set { difficulty = value; }
         }
 
-        //Default Constructor
-        public Wave(GameManager gameManager)
-        {
-            numberOfMelee = 0;
-            numberOfRanged = 0;
-            difficulty = 1;
-            this.gameManager = gameManager;
-        }
+        ////Default Constructor
+        //public Wave(GameManager gameManager, Game1 game1)
+        //{
+        //    numberOfMelee = 0;
+        //    numberOfRanged = 0;
+        //    difficulty = 1;
+        //    this.game1 = game1;
+        //}
 
         //Parameterized Constructor
         public Wave(int numberOfMelee, int numberOfRanged, int difficulty)
         {
             //Numbers for enemies and difficulty saved into gamemanager
-            gameManager.NumberOfEnemies = numberOfMelee;
-            gameManager.NumberOfRanged = numberOfRanged;
-            gameManager.Difficulty = difficulty;
+            this.numberOfMelee = numberOfMelee;
+            this.numberOfRanged = numberOfRanged;
+            this.difficulty = difficulty;
         }
     }
 }

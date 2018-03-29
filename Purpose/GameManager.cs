@@ -29,17 +29,18 @@ namespace Purpose
         private Background backgroundSelection;
         private int jumpNum;
         private bool abovePlatform;
+        private WaveNumber waveNumber;
 
-        //Deals with the enemies
-        private int numberOfEnemies;
-        private int numberOfRanged;
-        private int difficulty;
+        ////Deals with the enemies
+        //private int numberOfEnemies;
+        //private int numberOfRanged;
+        //private int difficulty;
 
         //private List<Wave> waves;
         private List<Wave> waves;
-       // private List<>
 
         private TextureManager textureManager;
+        private Texture2D rangeTexture;
 
         int keyCounter;
         //int frameCounter;
@@ -73,26 +74,6 @@ namespace Purpose
             set { backgroundSelection = value; }
         }
 
-        //This is for the number of Melee Enemies
-        public int NumberOfEnemies
-        {
-            get { return numberOfEnemies; }
-            set { numberOfEnemies = value; }
-        }
-
-        //This is for number of Ranged Enemies
-        public int NumberOfRanged
-        {
-            get { return numberOfRanged; }
-            set { numberOfRanged = value; }
-        }
-
-        public int Difficulty
-        {
-            get { return difficulty; }
-            set { difficulty = value; }
-        }
-
         public List<Wave> Waves
         {
             get { return waves; }
@@ -105,6 +86,14 @@ namespace Purpose
             get { return jumpNum; }
             set { jumpNum = value; }
         }
+
+        public Texture2D RangeTexture
+        {
+            get { return rangeTexture; }
+            set { rangeTexture = value; }
+        }
+
+        public WaveNumber WaveNumber { get { return waveNumber; } set { waveNumber = value; } }
 
         //constructor
 
@@ -119,6 +108,8 @@ namespace Purpose
             backgroundSelection = Purpose.Background.WhiteBackground;
             this.textureManager = textureManager;
             waves = new List<Wave>();
+            rangeTexture = textureManager.RangedEnemyTexture;
+            waveNumber = WaveNumber.One;
         }
 
         //methods
@@ -502,6 +493,8 @@ namespace Purpose
         public void ResetGame(Camera2D camera, Random rng, int worldLeftEndWidth, int worldRightEndWidth, GameTime gameTime, Texture2D tempTexture, int i)
         {
             player.Health = 100;
+            waveNumber = WaveNumber.One;
+            isCrouching = false;
             enemies.Clear();
             FillEnemyList(rng, waves[i].NumberOfMelee, waves[i].Difficulty, worldLeftEndWidth, worldRightEndWidth, gameTime);
             FillRangedList(rng, waves[i].NumberOfRanged, waves[i].Difficulty, worldLeftEndWidth, worldRightEndWidth, tempTexture, gameTime);

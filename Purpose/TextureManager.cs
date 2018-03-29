@@ -24,6 +24,7 @@ namespace Purpose
         private Texture2D leftEnemyWalk1;
         private Texture2D leftEnemyWalk2;
         private Texture2D leftEnemyWalk3;
+        private Texture2D rangedEnemyTexture;
 
         //sprite properties
         public Texture2D RightCrouchSprite { get { return rightCrouchSprite; } }
@@ -40,11 +41,12 @@ namespace Purpose
         public Texture2D LeftEnemyWalk1 { get { return leftEnemyWalk1; } }
         public Texture2D LeftEnemyWalk2 { get { return leftEnemyWalk2; } }
         public Texture2D LeftEnemyWalk3 { get { return leftEnemyWalk3; } }
+        public Texture2D RangedEnemyTexture { get { return rangedEnemyTexture; } }
 
         //constructor
         public TextureManager(Texture2D leftCrouchSprite, Texture2D rightCrouchSprite, Texture2D leftStandingSprite,
             Texture2D rightStandingSprite, Texture2D leftRunningSprite, Texture2D rightRunningSprite, 
-            Texture2D rightEnemyWalk1, Texture2D rightEnemyWalk2, Texture2D rightEnemyWalk3, Texture2D leftEnemyWalk1, Texture2D leftEnemyWalk2, Texture2D leftEnemyWalk3)
+            Texture2D rightEnemyWalk1, Texture2D rightEnemyWalk2, Texture2D rightEnemyWalk3, Texture2D leftEnemyWalk1, Texture2D leftEnemyWalk2, Texture2D leftEnemyWalk3, Texture2D rangedEnemyTexture)
         {
             this.rightCrouchSprite = rightCrouchSprite;
             this.leftCrouchSprite = leftCrouchSprite;
@@ -58,6 +60,7 @@ namespace Purpose
             this.leftEnemyWalk1 = leftEnemyWalk1;
             this.leftEnemyWalk2 = leftEnemyWalk2;
             this.leftEnemyWalk3 = leftEnemyWalk3;
+            this.rangedEnemyTexture = rangedEnemyTexture;
 
             rightJumpSprite = rightStandingSprite;
             leftJumpSprite = leftStandingSprite;
