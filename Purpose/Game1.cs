@@ -198,7 +198,8 @@ namespace Purpose
             metalBack = Content.Load<Texture2D>("metalback");
             rustyBack = Content.Load<Texture2D>("rustyback");
 
-            background = Content.Load<Texture2D>("background");
+            background = metalBack;
+            //background = Content.Load<Texture2D>("background");
             basePlatform = Content.Load<Texture2D>("PlatformTest");
             notBasePlatform = Content.Load<Texture2D>("PlatformTest2");
 
@@ -260,7 +261,7 @@ namespace Purpose
 
             player = new Player("Dude", new Rectangle(225, 225, 139, 352), textureManager, gameTime);
 
-            gameManager = new GameManager(player, bottomPlatforms, GraphicsDevice, textureManager);
+            gameManager = new GameManager(player, totalPlatforms, GraphicsDevice, textureManager);
             //wave = new Wave(gameManager, game1 = new Game1());
 
             gameManager.GameState = GameState.Menu;
@@ -520,20 +521,6 @@ namespace Purpose
                     // Reset game
                     gameManager.ResetGame(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture, waveNumber);
 
-                    //Using the selection from the ArenaWindow pciks the background to use in the Game
-                    if (gameManager.BackgroundSelection == Background.WhiteBackground)
-                    {
-                        background = whiteBack; //Changes the background to White
-                    }
-                    else if (gameManager.BackgroundSelection == Background.MetalBackground)
-                    {
-                        background = metalBack; // Background is Metal
-                    }
-                    else if (gameManager.BackgroundSelection == Background.RustBackground)
-                    {
-                        background = rustyBack; //Background is Rusty
-                    }
-
                     if (startButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed)
                     {
                         gameManager.GameState = GameState.Game;
@@ -550,7 +537,7 @@ namespace Purpose
                     healthBar = new Vector2(player.Position.X, player.Position.Y + 30);
                     // Stuff for moving player and enemy, as well as player attack
                     ms = Mouse.GetState();
-                    gameManager.PlayerMove(kbState, previouskbState, ms, previousMs, camera, totalPlatforms, gameTime);
+                    gameManager.PlayerMove(kbState, previouskbState, ms, previousMs, camera, gameTime);
                     // Jump logic
                     if (gameManager.JumpNum >= 1 && gameManager.JumpNum <= 10)
                     {
