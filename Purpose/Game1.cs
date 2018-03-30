@@ -332,8 +332,6 @@ namespace Purpose
                         }
                     }
 
-                    spriteBatch.Draw(textureManager.ButtonFrame, new Rectangle(gameManager.Player.Position.X - 200, (gameManager.Player.Position.Y + gameManager.Player.Position.Height - 20), 500, 20), Color.Red);
-
                     // Platforms
                     foreach (Platform p in totalPlatforms)
                     {
@@ -343,33 +341,16 @@ namespace Purpose
                     spriteBatch.Draw(gameManager.Player.Texture, new Rectangle(gameManager.Player.X, gameManager.Player.Y, player.Position.Width, player.Position.Height),
                         Color.White);
                     spriteBatch.DrawString(agency30,gameManager.Player.Health.ToString(),healthBar,Color.Red);
-                    // Enemies
-                    //for (int i = 0; i < gameManager.Enemies.Count; i++)
-                    //{
-
-                    //    spriteBatch.Draw(gameManager.Enemies[i].Texture, new Rectangle(gameManager.Enemies[i].X, gameManager.Enemies[i].Y, 147, 147), Color.White);
-                    //}
 
                     foreach (Enemy e in gameManager.Enemies)
                     {
-                        // If attacking, draw this
-                        if (e.IsAttacking)
-                        {
-                            spriteBatch.Draw(e.Texture, e.Position, Color.Red);
-                        }
-                        
-                        // If not, draw this
-                        else
-                        {
-                            spriteBatch.Draw(e.Texture, e.Position, Color.White);
-                        }
+                        spriteBatch.Draw(e.Texture, e.Position, Color.White);
 
                         // Drawing bullet bois
                         if(e.HasBullet)
                         {
                             spriteBatch.Draw(e.Texture, e.Bullet, Color.White);
                         }
-                        //spriteBatch.Draw(e.Texture, e.Position, Color.White);
                     }
                     break;
 
@@ -389,7 +370,6 @@ namespace Purpose
                 case GameState.UpgradeMenu:
                     spriteBatch.Draw(textureManager.UpgradeScreen, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
                     spriteBatch.DrawString(agency30, "Upgrade Points: " + gameManager.Player.UgManager.UpgradePoints.ToString(), new Vector2(1090,730), Color.White);
-                    //spriteBatch.Draw(buttonFrame, new Rectangle(1192, 722, 54, 60), Color.Black);
 
                     if (returnToNewWaveButton.Intersects(ms.Position))
                     {
