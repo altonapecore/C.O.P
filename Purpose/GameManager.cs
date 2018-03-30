@@ -28,7 +28,8 @@ namespace Purpose
         private GameState gameState;
         private Texture2D background;
         private Background backgroundSelection;
-        private int jumpNum;
+        private int playerJumpNum;
+        private int enemyJumpNum;
         private bool abovePlatform;
         private WaveNumber waveNumber;
 
@@ -82,10 +83,16 @@ namespace Purpose
         }
 
         // This is for jump logic
-        public int JumpNum
+        public int PlayerJumpNum
         {
-            get { return jumpNum; }
-            set { jumpNum = value; }
+            get { return playerJumpNum; }
+            set { playerJumpNum = value; }
+        }
+
+        public int EnemyJumpNum
+        {
+            get { return enemyJumpNum; }
+            set { enemyJumpNum = value; }
         }
 
         public Texture2D RangeTexture
@@ -139,7 +146,7 @@ namespace Purpose
             //if not, make them fall
             if (!onPlatform)
             {
-                player.Y += 5;
+                player.Y += 7;
                 // moving camera with player
                 camera.LookAt(new Vector2(player.X, player.Y - 250));
             }
@@ -287,7 +294,7 @@ namespace Purpose
             }
             if (kbState.IsKeyDown(Keys.Space) && !previouskbState.IsKeyDown(Keys.Space) && onPlatform && !isCrouching) //jump
             {
-                jumpNum = 1;
+                playerJumpNum = 1;
             }
             if (kbState.IsKeyDown(Keys.Q) && !previouskbState.IsKeyDown(Keys.Q) && !kbState.IsKeyDown(Keys.Space)) //dash
             {
@@ -377,28 +384,28 @@ namespace Purpose
                 int choice = rng.Next(1, 5);
                 if (choice == 1)
                 {
-                    Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, 0), graphicsDevice.Viewport.Height - 450, 122, 250),
+                    Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, 0), graphicsDevice.Viewport.Height - 350, 122, 250),
                         textureManager.RightEnemyWalk1, Level.One, false, gameTime);
                     enemies.Add(enemy);
                 }
 
                 else if (choice == 2)
                 {
-                    Enemy enemy = new Enemy(new Rectangle(rng.Next(0, worldRightEndWidth), graphicsDevice.Viewport.Height - 450, 122, 250),
+                    Enemy enemy = new Enemy(new Rectangle(rng.Next(0, worldRightEndWidth), graphicsDevice.Viewport.Height - 350, 122, 250),
                         textureManager.LeftEnemyWalk1, Level.One, false, gameTime);
                     enemies.Add(enemy);
                 }
 
                 else if (choice == 3)
                 {
-                    Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, 0), graphicsDevice.Viewport.Height - 750, 122, 250),
+                    Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, -1250), graphicsDevice.Viewport.Height - 550, 122, 250),
                         textureManager.RightEnemyWalk1, Level.One, false, gameTime);
                     enemies.Add(enemy);
                 }
 
                 else if (choice == 4)
                 {
-                    Enemy enemy = new Enemy(new Rectangle(rng.Next(0, worldRightEndWidth), graphicsDevice.Viewport.Height - 750, 122, 250),
+                    Enemy enemy = new Enemy(new Rectangle(rng.Next(1250, worldRightEndWidth), graphicsDevice.Viewport.Height - 550, 122, 250),
                         textureManager.LeftEnemyWalk1, Level.One, false, gameTime);
                     enemies.Add(enemy);
                 }
@@ -420,28 +427,28 @@ namespace Purpose
                 int choice = rng.Next(1, 5);
                 if (choice == 1)
                 {
-                    Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, 0), graphicsDevice.Viewport.Height - 450, 147, 147),
+                    Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, 0), graphicsDevice.Viewport.Height - 247, 147, 147),
                         rangeTexture, Level.One, true, gameTime);
                     enemies.Add(enemy);
                 }
 
                 else if (choice == 2)
                 {
-                    Enemy enemy = new Enemy(new Rectangle(rng.Next(0, worldRightEndWidth), graphicsDevice.Viewport.Height - 450, 147, 147),
+                    Enemy enemy = new Enemy(new Rectangle(rng.Next(0, worldRightEndWidth), graphicsDevice.Viewport.Height - 247, 147, 147),
                         rangeTexture, Level.One, true, gameTime);
                     enemies.Add(enemy);
                 }
 
                 else if (choice == 3)
                 {
-                    Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, 0), graphicsDevice.Viewport.Height - 750, 147, 147),
+                    Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, -1250), graphicsDevice.Viewport.Height - 447, 147, 147),
                         rangeTexture, Level.One, true, gameTime);
                     enemies.Add(enemy);
                 }
 
                 else if (choice == 4)
                 {
-                    Enemy enemy = new Enemy(new Rectangle(rng.Next(0, worldRightEndWidth), graphicsDevice.Viewport.Height - 750, 147, 147),
+                    Enemy enemy = new Enemy(new Rectangle(rng.Next(1250, worldRightEndWidth), graphicsDevice.Viewport.Height - 447, 147, 147),
                         rangeTexture, Level.One, true, gameTime);
                     enemies.Add(enemy);
                 }
@@ -455,18 +462,24 @@ namespace Purpose
         public void EnemyMove(GameTime gameTime)
         {
             // On platform and gravity stuff
-            bool onPlatform = false;
+            
             foreach (Enemy e in enemies)
             {
                 foreach (Platform p in platforms)
                 {
                     if (e.Position.Intersects(p.Position))
                     {
-                        onPlatform = true;
+                        e.OnPlatform = true;
                         break;
                     }
+
+                    else if (!e.Position.Intersects(p.Position))
+                    {
+                        e.OnPlatform = false;
+                        
+                    }
                 }
-                if (!onPlatform)
+                if (!e.OnPlatform)
                 {
                     e.Y += 5;
                 }

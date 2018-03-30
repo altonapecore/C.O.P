@@ -144,9 +144,9 @@ namespace Purpose
             rng = new Random();
 
             // Set size of world width and height
-            worldLeftEndWidth = -5000;
-            worldRightEndWidth = 5000;
-            worldTopHeight = -2000;
+            worldLeftEndWidth = -3000;
+            worldRightEndWidth = 3000;
+            worldTopHeight = -1500;
             worldBottomHeight = 1000;
 
             // Initialize gameTime
@@ -219,37 +219,43 @@ namespace Purpose
             totalPlatforms = new List<Platform>();
             firstLevelPlatforms = new List<Platform>();
             // Base platforms
-            for (int i = 0; i > worldLeftEndWidth / 100; i--)
+            for (int i = 0; i > worldLeftEndWidth; i -= 100)
             {
-                bottomPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 100, 100, 100), basePlatform));
-                totalPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 100, 100, 100), basePlatform));
+                bottomPlatforms.Add(new Platform(new Rectangle(i, GraphicsDevice.Viewport.Height - 100, 100, 100), basePlatform));
+                totalPlatforms.Add(new Platform(new Rectangle(i, GraphicsDevice.Viewport.Height - 100, 100, 100), basePlatform));
             }
-            for (int i = 0; i < worldRightEndWidth / 100; i++)
+            for (int i = 0; i < worldRightEndWidth; i += 100)
             {
-                bottomPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 100, 100, 100), basePlatform));
-                totalPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 100, 100, 100), basePlatform));
+                bottomPlatforms.Add(new Platform(new Rectangle(i, GraphicsDevice.Viewport.Height - 100, 100, 100), basePlatform));
+                totalPlatforms.Add(new Platform(new Rectangle(i, GraphicsDevice.Viewport.Height - 100, 100, 100), basePlatform));
             }
             // First level platforms
-            for (int i = 0; i > worldLeftEndWidth / 100; i -= 5)
+            // NEED TO UPDATE
+            
+            for (int i = -1250; i > worldLeftEndWidth; i -= 100)
             {
-                firstLevelPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 250, 100, 50), notBasePlatform));
-                totalPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 250, 100, 50), notBasePlatform));
+            
+                firstLevelPlatforms.Add(new Platform(new Rectangle(i, GraphicsDevice.Viewport.Height - 300, 100, 50), notBasePlatform));
+                totalPlatforms.Add(new Platform(new Rectangle(i, GraphicsDevice.Viewport.Height - 300, 100, 50), notBasePlatform));
+                
             }
-            for (int i = 0; i < worldRightEndWidth / 100; i += 5)
+            for (int i = 1250; i < worldRightEndWidth; i += 100)
             {
-                firstLevelPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 250, 100, 50), notBasePlatform));
-                totalPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 250, 100, 50), notBasePlatform));
+            
+                firstLevelPlatforms.Add(new Platform(new Rectangle(i, GraphicsDevice.Viewport.Height - 300, 100, 50), notBasePlatform));
+                totalPlatforms.Add(new Platform(new Rectangle(i, GraphicsDevice.Viewport.Height - 300, 100, 50), notBasePlatform));
+            
             }
-            for (int i = 1; i > worldLeftEndWidth / 100; i -= 5)
-            {
-                firstLevelPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 250, 100, 50), notBasePlatform));
-                totalPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 250, 100, 50), notBasePlatform));
-            }
-            for (int i = 1; i < worldRightEndWidth / 100; i += 5)
-            {
-                firstLevelPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 250, 100, 50), notBasePlatform));
-                totalPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 250, 100, 50), notBasePlatform));
-            }
+            //for (int i = 1; i > worldLeftEndWidth / 100; i -= 5)
+            //{
+            //    firstLevelPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 250, 100, 50), notBasePlatform));
+            //    totalPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 250, 100, 50), notBasePlatform));
+            //}
+            //for (int i = 1; i < worldRightEndWidth / 100; i += 5)
+            //{
+            //    firstLevelPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 250, 100, 50), notBasePlatform));
+            //    totalPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 250, 100, 50), notBasePlatform));
+            //}
             // Makes player, gameManager object and fills enemy list
             textureManager = new TextureManager(Content.Load<Texture2D>("LeftCrouchingSprite"), Content.Load<Texture2D>("RightCrouchingSprite"),
                 Content.Load<Texture2D>("LeftStandingSprite"), Content.Load<Texture2D>("RightStandingSprite"), Content.Load<Texture2D>("LeftMiddleRunningSprite"),
@@ -260,7 +266,7 @@ namespace Purpose
 
             player = new Player("Dude", new Rectangle(225, 225, 139, 352), textureManager, gameTime);
 
-            gameManager = new GameManager(player, bottomPlatforms, GraphicsDevice, textureManager);
+            gameManager = new GameManager(player, totalPlatforms, GraphicsDevice, textureManager);
             //wave = new Wave(gameManager, game1 = new Game1());
 
             gameManager.GameState = GameState.Menu;
@@ -496,11 +502,6 @@ namespace Purpose
                     break;
 
                 case GameState.GameOver:
-                    // Temp drawing stuffs
-                    //spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
-                    //spriteBatch.DrawString(comicSans24, "Press ENTER to go back to menu", new Vector2(GraphicsDevice.Viewport.X / 2, GraphicsDevice.Viewport.Y / 2),
-                    //    Color.Yellow);
-
                     spriteBatch.Draw(gameOver, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
 
                     break;
@@ -520,7 +521,7 @@ namespace Purpose
                     // Reset game
                     gameManager.ResetGame(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture, waveNumber);
 
-                    //Using the selection from the ArenaWindow pciks the background to use in the Game
+                    //Using the selection from the ArenaWindow picks the background to use in the Game
                     if (gameManager.BackgroundSelection == Background.WhiteBackground)
                     {
                         background = whiteBack; //Changes the background to White
@@ -552,14 +553,14 @@ namespace Purpose
                     ms = Mouse.GetState();
                     gameManager.PlayerMove(kbState, previouskbState, ms, previousMs, camera, totalPlatforms, gameTime);
                     // Jump logic
-                    if (gameManager.JumpNum >= 1 && gameManager.JumpNum <= 10)
+                    if (gameManager.PlayerJumpNum >= 1 && gameManager.PlayerJumpNum <= 13)
                     {
                         player.Jump();
-                        gameManager.JumpNum++;
+                        gameManager.PlayerJumpNum++;
                     }
-                    if (gameManager.JumpNum == 10)
+                    if (gameManager.PlayerJumpNum == 13)
                     {
-                        gameManager.JumpNum = 0;
+                        gameManager.PlayerJumpNum = 0;
                     }
 
                     gameManager.EnemyMove(gameTime);
