@@ -96,10 +96,11 @@ namespace Purpose
 
         //Field for the Wave
         private Wave wave;
-        private Game1 game1;
+        //private Game1 game1;
 
         //temporary stuff
         private Texture2D tempTexture;
+        private Vector2 healthBar = new Vector2(10, 10);
         //private Texture2D tempCrouchTexture;
         private Texture2D trent;
         private SpriteFont comicSans24;
@@ -201,7 +202,8 @@ namespace Purpose
             metalBack = Content.Load<Texture2D>("metalback");
             rustyBack = Content.Load<Texture2D>("rustyback");
 
-            background = Content.Load<Texture2D>("background");
+            background = metalBack;
+            //background = Content.Load<Texture2D>("background");
             basePlatform = Content.Load<Texture2D>("PlatformTest");
             notBasePlatform = Content.Load<Texture2D>("PlatformTest2");
 
@@ -265,7 +267,7 @@ namespace Purpose
 
             player = new Player("Dude", new Rectangle(225, 225, 139, 352), textureManager, gameTime);
 
-            gameManager = new GameManager(player, bottomPlatforms, GraphicsDevice, textureManager);
+            gameManager = new GameManager(player, totalPlatforms, GraphicsDevice, textureManager);
             //wave = new Wave(gameManager, game1 = new Game1());
 
             gameManager.GameState = GameState.Menu;
@@ -273,7 +275,7 @@ namespace Purpose
 
 
             //Initializing Reader
-            reader = new Reader(gameManager, game1);
+            reader = new Reader(gameManager);
             //Runs the Reader method to vcreate enemies needed
             reader.ReadEditor();
         }
@@ -378,6 +380,7 @@ namespace Purpose
                     // Player
                     spriteBatch.Draw(gameManager.Player.Texture, new Rectangle(gameManager.Player.X, gameManager.Player.Y, player.Position.Width, player.Position.Height),
                         Color.White);
+                    spriteBatch.DrawString(agency30,gameManager.Player.Health.ToString(),healthBar,Color.Red);
                     // Enemies
                     //for (int i = 0; i < gameManager.Enemies.Count; i++)
                     //{
@@ -546,20 +549,6 @@ namespace Purpose
                     // Reset game
                     gameManager.ResetGame(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture, waveNumber);
 
-                    //Using the selection from the ArenaWindow pciks the background to use in the Game
-                    if (gameManager.BackgroundSelection == Background.WhiteBackground)
-                    {
-                        background = whiteBack; //Changes the background to White
-                    }
-                    else if (gameManager.BackgroundSelection == Background.MetalBackground)
-                    {
-                        background = metalBack; // Background is Metal
-                    }
-                    else if (gameManager.BackgroundSelection == Background.RustBackground)
-                    {
-                        background = rustyBack; //Background is Rusty
-                    }
-
                     if (startButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed)
                     {
                         gameManager.GameState = GameState.Game;
@@ -573,9 +562,10 @@ namespace Purpose
                     camera.MaximumZoom = 1.0f;
                     camera.Zoom = 0.5f;
 
+                    healthBar = new Vector2(player.Position.X, player.Position.Y + 30);
                     // Stuff for moving player and enemy, as well as player attack
                     ms = Mouse.GetState();
-                    gameManager.PlayerMove(kbState, previouskbState, ms, previousMs, camera, totalPlatforms, gameTime);
+                    gameManager.PlayerMove(kbState, previouskbState, ms, previousMs, camera, gameTime);
                     // Jump logic
                     if (gameManager.JumpNum >= 1 && gameManager.JumpNum <= 10)
                     {

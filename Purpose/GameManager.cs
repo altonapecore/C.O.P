@@ -121,7 +121,7 @@ namespace Purpose
         /// <param name="previouskbState">The previous state of the keyboard</param>
         /// <param name="ms">The current mouse state</param>
         /// <param name="previousMs">The previous mouse state</param>
-        public void PlayerMove(KeyboardState kbState, KeyboardState previouskbState, MouseState ms, MouseState previousMs, Camera2D camera, List<Platform> platforms, GameTime gameTime)
+        public void PlayerMove(KeyboardState kbState, KeyboardState previouskbState, MouseState ms, MouseState previousMs, Camera2D camera, GameTime gameTime)
         {
             //a boolean representing if the player is on the platform
             bool onPlatform = false;
@@ -671,11 +671,14 @@ namespace Purpose
         public void ResetGame(Camera2D camera, Random rng, int worldLeftEndWidth, int worldRightEndWidth, GameTime gameTime, Texture2D tempTexture, int i)
         {
             player.Health = 100;
+            camera.Zoom = 1.0f;
+            player.IsDead = false;
+            player.X = 225;
+            player.Y = 225;
             isCrouching = false;
             enemies.Clear();
             FillEnemyList(rng, waves[i].NumberOfMelee, waves[i].Difficulty, worldLeftEndWidth, worldRightEndWidth, gameTime);
             FillRangedList(rng, waves[i].NumberOfRanged, waves[i].Difficulty, worldLeftEndWidth, worldRightEndWidth, tempTexture, gameTime);
-            camera.Zoom = 1.0f;
             player.UgManager.UpgradePoints = 0;
         }
     }
