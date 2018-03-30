@@ -17,6 +17,7 @@ namespace Purpose
         private bool isFacingLeft;
         private Rectangle bullet;
         private bool hasBullet;
+        bool onPlatform;
         // Temp field for attacking
         private bool isAttacking;
         
@@ -58,6 +59,12 @@ namespace Purpose
         {
             get { return hasBullet; }
             set { hasBullet = value; }
+        }
+
+        public bool OnPlatform
+        {
+            get { return onPlatform; }
+            set { onPlatform = value; }
         }
 
         // Temp property for attacking
@@ -106,11 +113,11 @@ namespace Purpose
                 }
 
                 //  If they have a bullet, attack and take bullet away
-                if (ranged && hasBullet && bullet.Intersects(rectangle))
+                if (hasBullet && bullet.Intersects(rectangle))
                 {
                     this.gameTime = gameTime.TotalGameTime.Seconds;
-                    bullet.X = 0;
-                    bullet.Y = 0;
+                    bullet.Height = 0;
+                    bullet.Width = 0;
                     hasBullet = false;
                     return damage;
                 }
@@ -140,6 +147,12 @@ namespace Purpose
             }
         }
 
-        
+        /// <summary>
+        /// Allows the enemy to jump
+        /// </summary>
+        public void Jump()
+        {
+            position.Y -= 25;
+        }
     }
 }
