@@ -108,7 +108,7 @@ namespace Purpose
 
         public int DashDistanceUpgrade(int dashDistance)
         {
-            if (upgradePoints > 0)
+            if (upgradePoints > 0 && dashActive)
             {
                 stealthTier++;
                 if (stealthTier < 3)

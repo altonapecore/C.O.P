@@ -222,7 +222,7 @@ namespace Purpose
             }
             
             // Walls
-            for(int i = 0; ;)
+            //for(int i = 0; ;)
             // Makes player, gameManager object and fills enemy list
             background = textureManager.MetalBack;
             player = new Player("Dude", new Rectangle(225, 225, 139, 352), textureManager, gameTime);                                                       
@@ -331,6 +331,8 @@ namespace Purpose
                             spriteBatch.Draw(background, new Rectangle(x, y, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
                         }
                     }
+
+                    spriteBatch.Draw(textureManager.ButtonFrame, new Rectangle(gameManager.Player.Position.X - 200, (gameManager.Player.Position.Y + gameManager.Player.Position.Height - 20), 500, 20), Color.Red);
 
                     // Platforms
                     foreach (Platform p in totalPlatforms)

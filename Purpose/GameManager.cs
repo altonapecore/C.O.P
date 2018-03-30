@@ -351,6 +351,18 @@ namespace Purpose
                     }
                 }
             }
+            if (kbState.IsKeyDown(Keys.E) && previouskbState.IsKeyUp(Keys.E) && player.UgManager.GroundPoundActive && ms.LeftButton == ButtonState.Released && !isCrouching)
+            {
+                if (frameCounter == 3)
+                {
+                    player.GroundPound(enemies);
+                    frameCounter = 0;
+                }
+                else if (frameCounter != 3)
+                {
+                    frameCounter++;
+                }
+            }
 
 
             //limiting player movement in both x directions and lower y direction
