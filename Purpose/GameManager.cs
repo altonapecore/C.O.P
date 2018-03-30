@@ -474,11 +474,6 @@ namespace Purpose
 
             for (int i = 0; i < enemies.Count; i++)
             {
-                //if (Math.Abs(enemies[i].X -player.X) < 100)
-                //{
-                //    return;
-                //}
-
                 // Limiting stuff for melee enemies
                 if(enemies[i].X == player.X - 15 && enemies[i].Ranged == false)
                 {

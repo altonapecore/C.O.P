@@ -337,7 +337,7 @@ namespace Purpose
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.White);
+            GraphicsDevice.Clear(Color.Black);
 
             var transformMatrix = camera.GetViewMatrix();
             spriteBatch.Begin(transformMatrix: transformMatrix);
@@ -517,12 +517,8 @@ namespace Purpose
                     break;
 
                 case GameState.GameOver:
-                    // Temp drawing stuffs
-                    //spriteBatch.Draw(background, new Vector2(0, 0), Color.White);
-                    //spriteBatch.DrawString(comicSans24, "Press ENTER to go back to menu", new Vector2(GraphicsDevice.Viewport.X / 2, GraphicsDevice.Viewport.Y / 2),
-                    //    Color.Yellow);
-
                     spriteBatch.Draw(gameOver, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
+
                     if (returnToMenuButton.Intersects(ms.Position))
                     {
                         spriteBatch.Draw(returnToMenuButton.Texture, returnToMenuButton.Position, Color.Black);
@@ -531,7 +527,6 @@ namespace Purpose
                     {
                         spriteBatch.Draw(returnToMenuButton.Texture, returnToMenuButton.Position, Color.White);
                     }
-
                     break;
             }
 
@@ -549,11 +544,10 @@ namespace Purpose
                     // Reset game
                     gameManager.ResetGame(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture, waveNumber);
 
-                    if (startButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed)
+                    if (startButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
                     {
                         gameManager.GameState = GameState.Game;
                     }
-
                     break;
 
                 case GameState.Game:
@@ -688,6 +682,7 @@ namespace Purpose
                     camera.Zoom = 1.0f;
                     camera.Position = new Vector2(0, 0);
                     gameManager.WaveNumber = WaveNumber.One;
+
                     // Press enter to go back to menu
                     if (returnToMenuButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
                     {
