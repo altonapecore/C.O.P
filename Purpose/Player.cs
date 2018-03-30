@@ -134,14 +134,20 @@ namespace Purpose
         /// <param name="enemies">The list of enemies in the game</param>
         public void GroundPound(List<Enemy> enemies)
         {
-            Rectangle groundPoundArea = new Rectangle(position.X, (position.Y + position.Height), 100, 10);
+            Rectangle groundPoundArea = new Rectangle(position.X-200, (position.Y + position.Height-20), 500, 20);
             if (ugManager.GroundPoundActive)
             {
-                foreach(Enemy e in enemies)
+                for (int i = 0; i < enemies.Count; i++)
                 {
-                    if (groundPoundArea.Intersects(e.Position))
+                    enemies[i].TakeDamage(15);
+                    if (enemies[i].IsDead)
                     {
-                        e.TakeDamage(15);
+                        enemies.RemoveAt(i);
+                        kills++;
+                        if (kills != 0 && kills % 3 == 0)
+                        {
+                            ugManager.UpgradePoints++;
+                        }
                     }
                 }
             }

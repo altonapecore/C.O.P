@@ -338,6 +338,8 @@ namespace Purpose
                         }
                     }
 
+                    spriteBatch.Draw(textureManager.ButtonFrame, new Rectangle(gameManager.Player.Position.X - 200, (gameManager.Player.Position.Y + gameManager.Player.Position.Height - 20), 500, 20), Color.Red);
+
                     // Platforms
                     foreach (Platform p in totalPlatforms)
                     {
@@ -515,7 +517,7 @@ namespace Purpose
 
                 case GameState.Menu:
                     // Reset game
-                    gameManager.ResetGame(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture, waveNumber);
+                    gameManager.ResetOnPlayerDeath(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture);
 
                     if (startButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
                     {
@@ -639,7 +641,7 @@ namespace Purpose
                     camera.Zoom = 1.0f;
                     camera.Position = new Vector2(0, 0);
 
-                    gameManager.ResetGame(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture, waveNumber);
+                    gameManager.ResetForNextWave(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture, waveNumber);
 
                     if (goOnButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
                     {
