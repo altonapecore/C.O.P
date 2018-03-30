@@ -344,7 +344,7 @@ namespace Purpose
                     {
                         enemies.RemoveAt(i);
                         player.Kills++;
-                        if(player.Kills != 0 && player.Kills % 5 == 0)
+                        if(player.Kills != 0 && player.Kills % 3 == 0)
                         {
                             player.UgManager.UpgradePoints++;
                         }
@@ -676,7 +676,7 @@ namespace Purpose
         /// <summary>
         /// Resets game to beginning
         /// </summary>
-        public void ResetGame(Camera2D camera, Random rng, int worldLeftEndWidth, int worldRightEndWidth, GameTime gameTime, Texture2D tempTexture, int i)
+        public void ResetOnPlayerDeath(Camera2D camera, Random rng, int worldLeftEndWidth, int worldRightEndWidth, GameTime gameTime, Texture2D tempTexture)
         {
             player.Health = 100;
             camera.Zoom = 1.0f;
@@ -685,9 +685,20 @@ namespace Purpose
             player.Y = 225;
             isCrouching = false;
             enemies.Clear();
-            FillEnemyList(rng, waves[i].NumberOfMelee, waves[i].Difficulty, worldLeftEndWidth, worldRightEndWidth, gameTime);
-            FillRangedList(rng, waves[i].NumberOfRanged, waves[i].Difficulty, worldLeftEndWidth, worldRightEndWidth, tempTexture, gameTime);
+            FillEnemyList(rng, waves[1].NumberOfMelee, waves[1].Difficulty, worldLeftEndWidth, worldRightEndWidth, gameTime);
+            FillRangedList(rng, waves[1].NumberOfRanged, waves[1].Difficulty, worldLeftEndWidth, worldRightEndWidth, tempTexture, gameTime);
             player.UgManager.UpgradePoints = 0;
+        }
+
+        public void ResetForNextWave(Camera2D camera, Random rng, int worldLeftEndWidth, int worldRightEndWidth, GameTime gameTime, Texture2D tempTexture, int waveNumber)
+        {
+            camera.Zoom = 1.0f;
+            player.X = 225;
+            player.Y = 225;
+            isCrouching = false;
+            enemies.Clear();
+            FillEnemyList(rng, waves[waveNumber].NumberOfMelee, waves[waveNumber].Difficulty, worldLeftEndWidth, worldRightEndWidth, gameTime);
+            FillRangedList(rng, waves[waveNumber].NumberOfRanged, waves[waveNumber].Difficulty, worldLeftEndWidth, worldRightEndWidth, tempTexture, gameTime);
         }
     }
 }
