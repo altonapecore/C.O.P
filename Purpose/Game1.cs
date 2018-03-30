@@ -53,7 +53,8 @@ namespace Purpose
         private List<Platform> bottomPlatforms;
         private List<Platform> firstLevelPlatforms;
         private List<Platform> totalPlatforms;
-        private List<Platform> totalWalls;
+        private List<Platform> leftWalls;
+        private List<Platform> rightWalls;
         private Camera2D camera;
         private int worldLeftEndWidth;
         private int worldRightEndWidth;
@@ -199,7 +200,9 @@ namespace Purpose
             bottomPlatforms = new List<Platform>();
             totalPlatforms = new List<Platform>();
             firstLevelPlatforms = new List<Platform>();
-            totalWalls = new List<Platform>();
+            leftWalls = new List<Platform>();
+            rightWalls = new List<Platform>();
+
             // Base platforms
             for (int i = 0; i > worldLeftEndWidth; i -= 100)
             {
@@ -226,14 +229,18 @@ namespace Purpose
             // Walls
             for(int i = -1500;i <= GraphicsDevice.Viewport.Height; i += 100)
             {
-                totalWalls.Add(new Platform(new Rectangle(worldLeftEndWidth, i, 100, 100), textureManager.BasePlatform));
-                totalWalls.Add(new Platform(new Rectangle(worldRightEndWidth, i, 100, 100), textureManager.BasePlatform));
+                leftWalls.Add(new Platform(new Rectangle(worldLeftEndWidth, i, 100, 100), textureManager.BasePlatform));
             }
+            for (int i = -1500; i <= GraphicsDevice.Viewport.Height; i+= 100)
+            {
+                rightWalls.Add(new Platform(new Rectangle(worldRightEndWidth, i, 100, 100), textureManager.BasePlatform));
+            }
+
             // Makes player, gameManager object and fills enemy list
             background = textureManager.MetalBack;
             player = new Player("Dude", new Rectangle(225, 225, 139, 352), textureManager, gameTime);                                                       
 
-            gameManager = new GameManager(player, totalPlatforms, totalWalls, GraphicsDevice, textureManager);
+            gameManager = new GameManager(player, totalPlatforms, leftWalls, rightWalls, GraphicsDevice, textureManager);
             //wave = new Wave(gameManager, game1 = new Game1());
 
             gameManager.GameState = GameState.Menu;
@@ -345,7 +352,11 @@ namespace Purpose
                     }
 
                     // Walls
-                    foreach (Platform w in totalWalls)
+                    foreach (Platform w in leftWalls)
+                    {
+                        spriteBatch.Draw(w.Texture, w.Position, Color.White);
+                    }
+                    foreach (Platform w in rightWalls)
                     {
                         spriteBatch.Draw(w.Texture, w.Position, Color.White);
                     }
