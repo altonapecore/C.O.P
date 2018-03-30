@@ -32,6 +32,21 @@ namespace Purpose
         private Texture2D leftEnemyWalk3;
         private Texture2D rangedEnemyTexture;
 
+        //Temporary BackGround
+        private Texture2D whiteBack;
+        private Texture2D rustyBack;
+        private Texture2D metalBack;
+
+        private Texture2D startScreen;
+        private Texture2D buttonFrame;
+        private Texture2D roundedFrame;
+        private Texture2D upgradeScreen;
+        private Texture2D pauseScreen;
+        private Texture2D nextWaveScreen;
+        private Texture2D gameOver;
+
+        private Texture2D basePlatform;
+        private Texture2D notBasePlatform;
 
         //sprite properties
         public Texture2D RightCrouchSprite { get { return rightCrouchSprite; } }
@@ -56,12 +71,28 @@ namespace Purpose
         public Texture2D LeftEnemyWalk3 { get { return leftEnemyWalk3; } }
         public Texture2D RangedEnemyTexture { get { return rangedEnemyTexture; } }
 
+        public Texture2D WhiteBack { get { return whiteBack; } }
+        public Texture2D RustyBack { get { return rustyBack; } }
+        public Texture2D MetalBack { get { return metalBack; } }
+
+        public Texture2D StartScreen { get { return startScreen; } }
+        public Texture2D ButtonFrame { get { return buttonFrame; } }
+        public Texture2D RoundedFrame { get { return roundedFrame; } }
+        public Texture2D UpgradeScreen { get { return upgradeScreen; } }
+        public Texture2D PauseScreen { get { return pauseScreen; } }
+        public Texture2D NextWaveScreen { get { return nextWaveScreen; } }
+        public Texture2D GameOver { get { return gameOver; } }
+
+        public Texture2D BasePlatform { get { return basePlatform; } }
+        public Texture2D NotBasePlatform { get { return notBasePlatform; } }
+
         //constructor
         public TextureManager(Texture2D leftCrouchSprite, Texture2D rightCrouchSprite, Texture2D leftStandingSprite,
             Texture2D rightStandingSprite, Texture2D leftMiddleRunningSprite, Texture2D rightMiddleRunningSprite,
             Texture2D leftRunningSprite, Texture2D rightRunningSprite, Texture2D rightPlayerAttack1, Texture2D leftPlayerAttack1, Texture2D rightPlayerAttack2, Texture2D leftPlayerAttack2,
             Texture2D rightEnemyWalk1, Texture2D rightEnemyWalk2, Texture2D rightEnemyWalk3, Texture2D leftEnemyWalk1, Texture2D leftEnemyWalk2, Texture2D leftEnemyWalk3, 
-            Texture2D rangedEnemyTexture)
+            Texture2D rangedEnemyTexture, Texture2D whiteBack, Texture2D rustyBack, Texture2D metalBack, Texture2D startScreen, Texture2D buttonFrame, Texture2D roundedFrame, 
+            Texture2D upgradeScreen, Texture2D pauseScreen, Texture2D nextWaveScreen, Texture2D gameOver, Texture2D basePlatform, Texture2D notBasePlatform)
         {
             this.rightCrouchSprite = rightCrouchSprite;
             this.leftCrouchSprite = leftCrouchSprite;
@@ -86,6 +117,20 @@ namespace Purpose
             rightJumpSprite = rightStandingSprite;
             leftJumpSprite = leftStandingSprite;
 
+            this.metalBack = metalBack;
+            this.rustyBack = rustyBack;
+            this.whiteBack = whiteBack;
+
+            this.startScreen = startScreen;
+            this.buttonFrame = buttonFrame;
+            this.roundedFrame = roundedFrame;
+            this.upgradeScreen = upgradeScreen;
+            this.pauseScreen = pauseScreen;
+            this.nextWaveScreen = nextWaveScreen;
+            this.gameOver = gameOver;
+
+            this.basePlatform = basePlatform;
+            this.notBasePlatform = notBasePlatform;
         }
     }
 }

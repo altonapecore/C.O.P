@@ -128,7 +128,7 @@ namespace Purpose
         /// <param name="previouskbState">The previous state of the keyboard</param>
         /// <param name="ms">The current mouse state</param>
         /// <param name="previousMs">The previous mouse state</param>
-        public void PlayerMove(KeyboardState kbState, KeyboardState previouskbState, MouseState ms, MouseState previousMs, Camera2D camera, List<Platform> platforms, GameTime gameTime)
+        public void PlayerMove(KeyboardState kbState, KeyboardState previouskbState, MouseState ms, MouseState previousMs, Camera2D camera, GameTime gameTime)
         {
             //a boolean representing if the player is on the platform
             bool onPlatform = false;
@@ -487,11 +487,6 @@ namespace Purpose
 
             for (int i = 0; i < enemies.Count; i++)
             {
-                //if (Math.Abs(enemies[i].X -player.X) < 100)
-                //{
-                //    return;
-                //}
-
                 // Limiting stuff for melee enemies
                 if(enemies[i].X == player.X - 15 && enemies[i].Ranged == false)
                 {
