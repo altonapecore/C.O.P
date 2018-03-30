@@ -23,6 +23,7 @@ namespace Purpose
         private List<Enemy> enemies;
         private Player player;
         private List<Platform> platforms;
+        private List<Platform> walls;
         private bool isCrouching;
         private GraphicsDevice graphicsDevice;
         private GameState gameState;
@@ -106,10 +107,11 @@ namespace Purpose
         //constructor
 
         //temporary constructor
-        public GameManager(Player player, List<Platform> platforms, GraphicsDevice graphicsDevice, TextureManager textureManager)
+        public GameManager(Player player, List<Platform> platforms, List<Platform> walls, GraphicsDevice graphicsDevice, TextureManager textureManager)
         {
             this.player = player;
             this.platforms = platforms;
+            this.walls = walls;
             isCrouching = false;
             enemies = new List<Enemy>();
             this.graphicsDevice = graphicsDevice;
@@ -149,6 +151,22 @@ namespace Purpose
                 player.Y += 7;
                 // moving camera with player
                 camera.LookAt(new Vector2(player.X, player.Y - 250));
+            }
+
+            // Wall collisions
+            foreach (Platform w in walls)
+            {
+                if (player.Position.Intersects(w.Position))
+                {
+                    if(player.X < 0)
+                    {
+                        player.X = -2850;
+                    }
+                    else if(player.X > 0)
+                    {
+                        player.X = 2850;
+                    }
+                }
             }
 
             if (player.Texture == textureManager.LeftPlayerAttack1)
