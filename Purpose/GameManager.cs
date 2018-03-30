@@ -323,7 +323,7 @@ namespace Purpose
                 isCrouching = player.Crouch(kbState); //sets the isCrouching bool based on the Crouch() method
             }
             // Player attack done here as well as enemy takeDamage
-            if (ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
+            if (ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released && !isCrouching)
             {
                 if (player.Texture == textureManager.LeftCrouchSprite || player.Texture == textureManager.LeftJumpSprite ||
                         player.Texture == textureManager.LeftRunningSprite || player.Texture == textureManager.LeftStandingSprite ||
