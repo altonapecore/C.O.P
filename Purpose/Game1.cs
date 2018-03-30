@@ -49,13 +49,10 @@ namespace Purpose
         private KeyboardState kbState;
         private MouseState ms;
         private Player player;
-        private Texture2D background;
         private GameManager gameManager;
         private List<Platform> bottomPlatforms;
         private List<Platform> firstLevelPlatforms;
         private List<Platform> totalPlatforms;
-        private Texture2D basePlatform;
-        private Texture2D notBasePlatform;
         private Camera2D camera;
         private int worldLeftEndWidth;
         private int worldRightEndWidth;
@@ -63,13 +60,8 @@ namespace Purpose
         private int worldBottomHeight;
         private GameTime gameTime;
 
-        private Texture2D startScreen;
         private GameObject startButton;
 
-        private Texture2D buttonFrame;
-        private Texture2D roundedFrame;
-
-        private Texture2D upgradeScreen;
         private GameObject returnToNewWaveButton;
         private GameObject groundPoundButton;
         private GameObject attackUpButton;
@@ -78,14 +70,11 @@ namespace Purpose
         private GameObject dashButton;
         private GameObject dashDistanceUpButton;
 
-        private Texture2D pauseScreen;
         private GameObject returnToGameButton;
 
-        private Texture2D nextWaveScreen;
         private GameObject goOnButton;
         private GameObject upgradesButton;
 
-        public Texture2D gameOver;
         public GameObject returnToMenuButton;
 
         //Field for the Reader
@@ -94,24 +83,15 @@ namespace Purpose
         //textureManager object
         private TextureManager textureManager;
 
-        //Field for the Wave
-        private Wave wave;
-        //private Game1 game1;
-
         //temporary stuff
+        private Texture2D background;
         private Texture2D tempTexture;
-        private Vector2 healthBar = new Vector2(10, 10);
-        //private Texture2D tempCrouchTexture;
-        private Texture2D trent;
+        private Vector2 healthBar;
         private SpriteFont comicSans24;
         private SpriteFont agency30;
         private Random rng;
 
-        //Temporary BackGround
-        private Texture2D whiteBack;
-        private Texture2D rustyBack;
-        private Texture2D metalBack;
-
+        //properties
         public Random Rng
         {
             get { return rng; }
@@ -189,37 +169,30 @@ namespace Purpose
             tempTexture = Content.Load<Texture2D>("pineapple");
             comicSans24 = Content.Load<SpriteFont>("ComicSans24");
             agency30 = Content.Load<SpriteFont>("Agency30");
-            startScreen = Content.Load<Texture2D>("StartMenu");
-            buttonFrame = Content.Load<Texture2D>("buttonFrame2");
-            roundedFrame = Content.Load<Texture2D>("roundedFrame");
-            upgradeScreen = Content.Load<Texture2D>("UpgradeUI");
-            pauseScreen = Content.Load<Texture2D>("PauseMenu");
-            nextWaveScreen = Content.Load<Texture2D>("NextWaveMenu");
-            gameOver = Content.Load<Texture2D>("GameOver");
 
-            //temporary background
-            whiteBack = Content.Load<Texture2D>("whiteback");
-            metalBack = Content.Load<Texture2D>("metalback");
-            rustyBack = Content.Load<Texture2D>("rustyback");
+            textureManager = new TextureManager(Content.Load<Texture2D>("LeftCrouchingSprite"), Content.Load<Texture2D>("RightCrouchingSprite"),
+                Content.Load<Texture2D>("LeftStandingSprite"), Content.Load<Texture2D>("RightStandingSprite"), Content.Load<Texture2D>("LeftMiddleRunningSprite"),
+                Content.Load<Texture2D>("RightMiddleRunningSprite"), Content.Load<Texture2D>("LeftRunningSprite"), Content.Load<Texture2D>("RightRunningSprite"),
+                Content.Load<Texture2D>("RightPlayerAttackSprite1"), Content.Load<Texture2D>("LeftPlayerAttackSprite1"), Content.Load<Texture2D>("RightPlayerAttackSprite2"), Content.Load<Texture2D>("LeftPlayerAttackSprite2"),
+                Content.Load<Texture2D>("RightEnemyWalk1"), Content.Load<Texture2D>("RightEnemyWalk2"), Content.Load<Texture2D>("RightEnemyWalk3"),
+                Content.Load<Texture2D>("LeftEnemyWalk1"), Content.Load<Texture2D>("LeftEnemyWalk2"), Content.Load<Texture2D>("LeftEnemyWalk3"), tempTexture,
+                Content.Load<Texture2D>("whiteback"), Content.Load<Texture2D>("rustyback"), Content.Load<Texture2D>("metalback"), Content.Load<Texture2D>("StartMenu"), Content.Load<Texture2D>("buttonFrame2"), Content.Load<Texture2D>("roundedFrame"),
+                Content.Load<Texture2D>("UpgradeUI"), Content.Load<Texture2D>("PauseMenu"), Content.Load<Texture2D>("NextWaveMenu"), Content.Load<Texture2D>("GameOver"), Content.Load<Texture2D>("PlatformTest"), Content.Load<Texture2D>("PlatformTest2"));
 
-            background = metalBack;
-            //background = Content.Load<Texture2D>("background");
-            basePlatform = Content.Load<Texture2D>("PlatformTest");
-            notBasePlatform = Content.Load<Texture2D>("PlatformTest2");
 
-            startButton = new GameObject(buttonFrame, new Rectangle(500, 335, 349, 155));
-            returnToNewWaveButton = new GameObject(buttonFrame, new Rectangle(10,340,242,109));
-            returnToGameButton = new GameObject(buttonFrame, new Rectangle(500, 280, 349, 160));
-            goOnButton = new GameObject(buttonFrame, new Rectangle(500, 272, 349, 160));
-            upgradesButton = new GameObject(buttonFrame, new Rectangle(500, 512, 349, 160));
-            returnToMenuButton = new GameObject(buttonFrame, new Rectangle(500, 343, 349, 160));
+            startButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 335, 349, 155));
+            returnToNewWaveButton = new GameObject(textureManager.ButtonFrame, new Rectangle(10,340,242,109));
+            returnToGameButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 280, 349, 160));
+            goOnButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 272, 349, 160));
+            upgradesButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 512, 349, 160));
+            returnToMenuButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 343, 349, 160));
 
-            groundPoundButton = new GameObject(roundedFrame, new Rectangle(337,200,118,118));
-            attackUpButton = new GameObject(roundedFrame, new Rectangle(510, 292, 118, 118));
-            staminaUpButton = new GameObject(roundedFrame, new Rectangle(725, 292, 118, 118));
-            healthUpButton = new GameObject(roundedFrame, new Rectangle(889, 200, 118, 118));
-            dashButton = new GameObject(roundedFrame, new Rectangle(620, 490, 118, 118));
-            dashDistanceUpButton = new GameObject(roundedFrame, new Rectangle(620, 680, 118, 118));
+            groundPoundButton = new GameObject(textureManager.RoundedFrame, new Rectangle(337,200,118,118));
+            attackUpButton = new GameObject(textureManager.RoundedFrame, new Rectangle(510, 292, 118, 118));
+            staminaUpButton = new GameObject(textureManager.RoundedFrame, new Rectangle(725, 292, 118, 118));
+            healthUpButton = new GameObject(textureManager.RoundedFrame, new Rectangle(889, 200, 118, 118));
+            dashButton = new GameObject(textureManager.RoundedFrame, new Rectangle(620, 490, 118, 118));
+            dashDistanceUpButton = new GameObject(textureManager.RoundedFrame, new Rectangle(620, 680, 118, 118));
 
             // Makes platforms
             bottomPlatforms = new List<Platform>();
@@ -228,44 +201,38 @@ namespace Purpose
             // Base platforms
             for (int i = 0; i > worldLeftEndWidth / 100; i--)
             {
-                bottomPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 100, 100, 100), basePlatform));
-                totalPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 100, 100, 100), basePlatform));
+                bottomPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 100, 100, 100), textureManager.BasePlatform));
+                totalPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 100, 100, 100), textureManager.BasePlatform));
             }
             for (int i = 0; i < worldRightEndWidth / 100; i++)
             {
-                bottomPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 100, 100, 100), basePlatform));
-                totalPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 100, 100, 100), basePlatform));
+                bottomPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 100, 100, 100), textureManager.BasePlatform));
+                totalPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 100, 100, 100), textureManager.BasePlatform));
             }
             // First level platforms
             for (int i = 0; i > worldLeftEndWidth / 100; i -= 5)
             {
-                firstLevelPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 250, 100, 50), notBasePlatform));
-                totalPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 250, 100, 50), notBasePlatform));
+                firstLevelPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 250, 100, 50), textureManager.NotBasePlatform));
+                totalPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 250, 100, 50), textureManager.NotBasePlatform));
             }
             for (int i = 0; i < worldRightEndWidth / 100; i += 5)
             {
-                firstLevelPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 250, 100, 50), notBasePlatform));
-                totalPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 250, 100, 50), notBasePlatform));
+                firstLevelPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 250, 100, 50), textureManager.NotBasePlatform));
+                totalPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 250, 100, 50), textureManager.NotBasePlatform));
             }
             for (int i = 1; i > worldLeftEndWidth / 100; i -= 5)
             {
-                firstLevelPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 250, 100, 50), notBasePlatform));
-                totalPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 250, 100, 50), notBasePlatform));
+                firstLevelPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 250, 100, 50), textureManager.NotBasePlatform));
+                totalPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 250, 100, 50), textureManager.NotBasePlatform));
             }
             for (int i = 1; i < worldRightEndWidth / 100; i += 5)
             {
-                firstLevelPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 250, 100, 50), notBasePlatform));
-                totalPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 250, 100, 50), notBasePlatform));
+                firstLevelPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 250, 100, 50), textureManager.NotBasePlatform));
+                totalPlatforms.Add(new Platform(new Rectangle(i * 100, GraphicsDevice.Viewport.Height - 250, 100, 50), textureManager.NotBasePlatform));
             }
             // Makes player, gameManager object and fills enemy list
-            textureManager = new TextureManager(Content.Load<Texture2D>("LeftCrouchingSprite"), Content.Load<Texture2D>("RightCrouchingSprite"),
-                Content.Load<Texture2D>("LeftStandingSprite"), Content.Load<Texture2D>("RightStandingSprite"), Content.Load<Texture2D>("LeftMiddleRunningSprite"),
-                Content.Load<Texture2D>("RightMiddleRunningSprite"), Content.Load<Texture2D>("LeftRunningSprite"), Content.Load<Texture2D>("RightRunningSprite"),
-                Content.Load<Texture2D>("RightPlayerAttackSprite1"), Content.Load<Texture2D>("LeftPlayerAttackSprite1"), Content.Load<Texture2D>("RightPlayerAttackSprite2"), Content.Load<Texture2D>("LeftPlayerAttackSprite2"),
-                Content.Load<Texture2D>("RightEnemyWalk1"), Content.Load<Texture2D>("RightEnemyWalk2"), Content.Load<Texture2D>("RightEnemyWalk3"),
-                Content.Load<Texture2D>("LeftEnemyWalk1"), Content.Load<Texture2D>("LeftEnemyWalk2"), Content.Load<Texture2D>("LeftEnemyWalk3"), tempTexture);
-
-            player = new Player("Dude", new Rectangle(225, 225, 139, 352), textureManager, gameTime);
+            background = textureManager.MetalBack;
+            player = new Player("Dude", new Rectangle(225, 225, 139, 352), textureManager, gameTime);                                                       
 
             gameManager = new GameManager(player, totalPlatforms, GraphicsDevice, textureManager);
             //wave = new Wave(gameManager, game1 = new Game1());
@@ -349,7 +316,7 @@ namespace Purpose
             {
                 case GameState.Menu:
 
-                    spriteBatch.Draw(startScreen, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
+                    spriteBatch.Draw(textureManager.StartScreen, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
                     if (startButton.Intersects(ms.Position))
                     {
                         spriteBatch.Draw(startButton.Texture, startButton.Position, Color.Black);
@@ -412,7 +379,7 @@ namespace Purpose
                     break;
 
                 case GameState.Pause:
-                    spriteBatch.Draw(pauseScreen, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
+                    spriteBatch.Draw(textureManager.PauseScreen, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
 
                     if (returnToGameButton.Intersects(ms.Position))
                     {
@@ -425,7 +392,7 @@ namespace Purpose
                     break;
 
                 case GameState.UpgradeMenu:
-                    spriteBatch.Draw(upgradeScreen, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
+                    spriteBatch.Draw(textureManager.UpgradeScreen, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
                     spriteBatch.DrawString(agency30, "Upgrade Points: " + gameManager.Player.UgManager.UpgradePoints.ToString(), new Vector2(1090,730), Color.White);
                     //spriteBatch.Draw(buttonFrame, new Rectangle(1192, 722, 54, 60), Color.Black);
 
@@ -494,7 +461,7 @@ namespace Purpose
                     break;
 
                 case GameState.NextWave:
-                    spriteBatch.Draw(nextWaveScreen, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
+                    spriteBatch.Draw(textureManager.NextWaveScreen, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
 
                     if (goOnButton.Intersects(ms.Position))
                     {
@@ -517,7 +484,7 @@ namespace Purpose
                     break;
 
                 case GameState.GameOver:
-                    spriteBatch.Draw(gameOver, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
+                    spriteBatch.Draw(textureManager.GameOver, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
 
                     if (returnToMenuButton.Intersects(ms.Position))
                     {
