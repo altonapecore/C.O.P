@@ -40,5 +40,7 @@ namespace Purpose
         public abstract int Attack(Rectangle rectangle, GameTime gameTime);
 
         public abstract void TakeDamage(int damage);
+
+        public abstract bool OnBasePlatform(Rectangle characterToBeChecked);
     }
 }

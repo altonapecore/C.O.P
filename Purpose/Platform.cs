@@ -31,7 +31,7 @@ namespace Purpose
         /// Checks to see if the platform is above another platform
         /// If it is, return true. If not, return false
         /// </summary>
-        public bool AbovePlatform(List<Platform> platforms)
+        public bool IsBasePlatform(List<Platform> platforms)
         {
             foreach(Platform platformToBeChecked in platforms)
             {
@@ -39,11 +39,11 @@ namespace Purpose
                 {
                     if(platformToBeChecked.Y > platformToBeCheckedAgainst.Y)
                     {
-                        return true;
+                        return false;
                     }
                     else
                     {
-                        return false;
+                        return true;
                     }
                 }
             }

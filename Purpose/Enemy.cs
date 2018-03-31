@@ -17,7 +17,9 @@ namespace Purpose
         private bool isFacingLeft;
         private Rectangle bullet;
         private bool hasBullet;
-        bool onPlatform;
+        private bool onPlatform;
+        private bool onBasePlatform;
+        private int jumpNum;
         // Temp field for attacking
         private bool isAttacking;
         
@@ -65,6 +67,18 @@ namespace Purpose
         {
             get { return onPlatform; }
             set { onPlatform = value; }
+        }
+
+        public bool IsOnBasePlatform
+        {
+            get { return onBasePlatform; }
+            set { onBasePlatform = value; }
+        }
+
+        public int JumpNum
+        {
+            get { return jumpNum; }
+            set { jumpNum = value; }
         }
 
         // Temp property for attacking
@@ -152,7 +166,23 @@ namespace Purpose
         /// </summary>
         public void Jump()
         {
-            position.Y -= 25;
+            position.Y -= 30;
+        }
+
+        public override bool OnBasePlatform(Rectangle characterToBeChecked)
+        {
+            int aboveThisMany = 0;
+            if(characterToBeChecked.Y + 100 < 745  && characterToBeChecked.Y + 100 > 595)
+            {
+                aboveThisMany++;
+            }
+
+            if (aboveThisMany == 1)
+            {
+                return true;
+            }
+
+            else { return false; }
         }
     }
 }

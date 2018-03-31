@@ -17,6 +17,7 @@ namespace Purpose
         private TextureManager textureManager;
         private int stamina;
         private int dashDistance;
+        private bool onBasePlatform;
 
         //properties
         public int Kills
@@ -35,6 +36,12 @@ namespace Purpose
         {
             get { return dashDistance; }
             set { dashDistance = value; }
+        }
+
+        public bool IsOnBasePlatform
+        {
+            get { return onBasePlatform; }
+            set { onBasePlatform = value; }
         }
 
         public UpgradeManager UgManager { get { return ugManager; } }
@@ -151,6 +158,29 @@ namespace Purpose
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Checks if the character is above the platform or not
+        /// </summary>
+        /// <param name="platforms">List of platforms to be checked</param>
+        /// <param name="characterToBeChecked">Character to be checked against to see if they're on the base platform</param>
+        /// <returns></returns>
+        public override bool OnBasePlatform(Rectangle characterToBeChecked)
+        {
+            int aboveThisMany = 0;
+
+            if (characterToBeChecked.Y + 100 < 745 && characterToBeChecked.Y + 100 > 595)
+            {
+                aboveThisMany++;
+            }
+
+            if (aboveThisMany == 1)
+            {
+                return true;
+            }
+
+            else { return false; }
         }
     }
 }

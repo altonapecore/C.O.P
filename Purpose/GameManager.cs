@@ -32,7 +32,7 @@ namespace Purpose
         private Background backgroundSelection;
         private int playerJumpNum;
         private int enemyJumpNum;
-        private bool abovePlatform;
+        private bool onBasePlatform;
         private WaveNumber waveNumber;
 
         ////Deals with the enemies
@@ -140,7 +140,7 @@ namespace Purpose
             //a loop to check if the player is on the platform
             foreach (Platform p in platforms)
             {
-                abovePlatform = p.AbovePlatform(platforms);
+                onBasePlatform = p.IsBasePlatform(platforms);
                 if (player.Position.Intersects(p.Position))
                 {
                     onPlatform = true;
@@ -530,11 +530,53 @@ namespace Purpose
                     enemies[i].X = enemies[i].X;
                 }
 
+                // Logic for enemies jumping and moving betwwen platforms
+                player.IsOnBasePlatform = player.OnBasePlatform(player.Position);
+                enemies[i].IsOnBasePlatform = enemies[i].OnBasePlatform(enemies[i].Position);
+                if (!player.IsOnBasePlatform && enemies[i].IsOnBasePlatform)
+                {
+                    if(player.X < 0)
+                    {
+                        if(enemies[i].X > -1250 && enemies[i].X < -1200)
+                        {
+                            enemies[i].JumpNum++;
+
+                            if (enemies[i].JumpNum>= 1 && enemies[i].JumpNum <= 13)
+                            {
+                                enemies[i].Jump();
+                                enemies[i].JumpNum++;
+                            }
+                            if (enemies[i].JumpNum == 13)
+                            {
+                                enemies[i].JumpNum = 0;
+                            }
+                        }
+                    }
+                    if(player.X > 0)
+                    {
+                        if (enemies[i].X > 1200 && enemies[i].X < 1250)
+                        {
+                            enemies[i].JumpNum++;
+
+                            if (enemies[i].JumpNum >= 1 && enemies[i].JumpNum <= 13)
+                            {
+                                enemies[i].Jump();
+                                enemies[i].JumpNum++;
+                            }
+                            if (enemies[i].JumpNum == 13)
+                            {
+                                enemies[i].JumpNum = 0;
+                            }
+                        }
+                    }
+                }
+
                 // If right of player, move left and update frame and texture
                 if (enemies[i].X < player.X - 15 && enemies[i].Ranged == false)
                 {
                     enemies[i].IsFacingLeft = false;
-                    if (enemies[i].Texture == textureManager.LeftEnemyWalk1 || enemies[i].Texture == textureManager.LeftEnemyWalk2 || enemies[i].Texture == textureManager.LeftEnemyWalk3)
+                    if (enemies[i].Texture == textureManager.LeftEnemyWalk1 || enemies[i].Texture == textureManager.LeftEnemyWalk2 
+                        || enemies[i].Texture == textureManager.LeftEnemyWalk3)
                     {
                         enemies[i].Texture = textureManager.RightEnemyWalk1;
                         enemies[i].FrameCounter = 0;
@@ -563,7 +605,8 @@ namespace Purpose
                 else if(enemies[i].X > player.X + 15 && enemies[i].Ranged == false)
                 {
                     enemies[i].IsFacingLeft = true;
-                    if (enemies[i].Texture == textureManager.RightEnemyWalk1 || enemies[i].Texture == textureManager.RightEnemyWalk2 || enemies[i].Texture == textureManager.RightEnemyWalk3)
+                    if (enemies[i].Texture == textureManager.RightEnemyWalk1 || enemies[i].Texture == textureManager.RightEnemyWalk2 
+                        || enemies[i].Texture == textureManager.RightEnemyWalk3)
                     {
                         enemies[i].Texture = textureManager.LeftEnemyWalk1;
                         enemies[i].FrameCounter = 0;
@@ -603,7 +646,8 @@ namespace Purpose
                 if (enemies[i].X < player.X - 555 && enemies[i].Ranged)
                 {
                     enemies[i].IsFacingLeft = false;
-                    if (enemies[i].Texture == textureManager.LeftEnemyWalk1 || enemies[i].Texture == textureManager.LeftEnemyWalk2 || enemies[i].Texture == textureManager.LeftEnemyWalk3)
+                    if (enemies[i].Texture == textureManager.LeftEnemyWalk1 || enemies[i].Texture == textureManager.LeftEnemyWalk2 
+                        || enemies[i].Texture == textureManager.LeftEnemyWalk3)
                     {
                         enemies[i].Texture = textureManager.RightEnemyWalk1;
                         enemies[i].FrameCounter = 0;
@@ -632,7 +676,8 @@ namespace Purpose
                 else if (enemies[i].X > player.X + 555 && enemies[i].Ranged)
                 {
                     enemies[i].IsFacingLeft = true;
-                    if (enemies[i].Texture == textureManager.RightEnemyWalk1 || enemies[i].Texture == textureManager.RightEnemyWalk2 || enemies[i].Texture == textureManager.RightEnemyWalk3)
+                    if (enemies[i].Texture == textureManager.RightEnemyWalk1 || enemies[i].Texture == textureManager.RightEnemyWalk2 
+                        || enemies[i].Texture == textureManager.RightEnemyWalk3)
                     {
                         enemies[i].Texture = textureManager.LeftEnemyWalk1;
                         enemies[i].FrameCounter = 0;
