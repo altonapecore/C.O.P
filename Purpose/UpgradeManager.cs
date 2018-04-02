@@ -49,40 +49,40 @@ namespace Purpose
         }
 
         // Methods
-        public int StaminaUpgrade(int stamina)
+        public int StaminaUpgrade(int staminaMax)
         {
             if (upgradePoints > 0)
             {
                 staminaTier++;
                 if (staminaTier < 3)
                 {
-                    stamina += 5;
+                    staminaMax += 5;
                 }
                 else if (staminaTier > 3)
                 {
-                    stamina += 10;
+                    staminaMax += 10;
                 }
                 upgradePoints--;
-                return stamina;
+                return staminaMax;
             }
             return 0;
         }
 
-        public int HealthUpgrade(int health)
+        public int HealthUpgrade(int healthMax)
         {
             if (upgradePoints > 0)
             {
                 healthTier++;
                 if (healthTier < 3)
                 {
-                    health += 5;
+                    healthMax += 5;
                 }
                 else if (healthTier > 3)
                 {
-                    health += 10;
+                    healthMax += 10;
                 }
                 upgradePoints--;
-                return health;
+                return healthMax;
             }
             return 0;
         }

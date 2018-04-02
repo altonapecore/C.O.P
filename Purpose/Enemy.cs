@@ -84,6 +84,11 @@ namespace Purpose
             set { jumpNum = value; }
         }
 
+        public Color Color
+        {
+            get { return color; }
+        }
+
         // Temp property for attacking
         public bool IsAttacking { get { return isAttacking; } }
 
@@ -97,9 +102,49 @@ namespace Purpose
             this.ranged = ranged; //Decides whether or not a ranged enemy is spawned
             this.position = position;
             this.gameTime = gameTime.TotalGameTime.Seconds;
-            //this.color = color;
-            //this.damage = damage;
-            //this.health = health;
+            this.difficulty = difficulty;
+            if (difficulty == 1)
+            {
+                color = Color.White;
+                if (ranged)
+                {
+                    damage = 7;
+                    health = 30;
+                }
+                else
+                {
+                    damage = 5;
+                    health = 50;
+                }
+            }
+            else if (difficulty == 2)
+            {
+                color = Color.Firebrick;
+                if (ranged)
+                {
+                    damage = 10;
+                    health = 35;
+                }
+                else
+                {
+                    damage = 8;
+                    health = 55;
+                }
+            }
+            else if (difficulty == 3)
+            {
+                color = Color.CornflowerBlue;
+                if (ranged)
+                {
+                    damage = 13;
+                    health = 40;
+                }
+                else
+                {
+                    damage = 11;
+                    health = 60;
+                }
+            }
             frameCounter = 0;
             bullet = new Rectangle(0, 0, 0, 0);
             hasBullet = false;
@@ -109,10 +154,10 @@ namespace Purpose
         /// <summary>
         /// Attack method for enemy. Checks for collision & returns damge if it does collide
         /// </summary>
-        /// <param name="rectangle">Player rectangle to check against</param>
+        /// <param name="playerPosition">Player rectangle to check against</param>
         /// <param name="gameTime">Used for checking to see if the player can attack</param>
         /// <returns></returns>
-        public override int Attack(Rectangle rectangle, GameTime gameTime)
+        public override int Attack(Rectangle playerPosition, GameTime gameTime)
         {
             if (this.gameTime + 2 == gameTime.TotalGameTime.Seconds)
             {
@@ -129,7 +174,7 @@ namespace Purpose
                 }
 
                 //  If they have a bullet, attack and take bullet away
-                if (hasBullet && bullet.Intersects(rectangle))
+                if (hasBullet && bullet.Intersects(playerPosition))
                 {
                     this.gameTime = gameTime.TotalGameTime.Seconds;
                     bullet.Height = 0;
@@ -139,7 +184,7 @@ namespace Purpose
                 }
 
                 // Melee attack stuff
-                else if (ranged == false && position.Intersects(rectangle))
+                else if (ranged == false && position.Intersects(playerPosition))
                 {
                     this.gameTime = gameTime.TotalGameTime.Seconds;
                     return damage;

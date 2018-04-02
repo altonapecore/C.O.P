@@ -16,9 +16,6 @@ namespace Purpose
         //Holds level of difficulty for enemies
         private int difficulty;
 
-        //Making Game Manager to have variables to save the info from text file
-        private Game1 game1;
-
         //Properties for enemies
         public int NumberOfMelee
         {

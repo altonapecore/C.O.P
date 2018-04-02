@@ -19,6 +19,8 @@ namespace Purpose
         private int dashDistance;
         private bool onBasePlatform;
         private int healthMax;
+        private int staminaMax;
+        private int velocity;
 
         //properties
         public int Kills
@@ -50,6 +52,19 @@ namespace Purpose
             get { return healthMax; }
             set { healthMax = value; }
         }
+
+        public int StaminaMax
+        {
+            get { return staminaMax; }
+            set { staminaMax = value; }
+        }
+
+        public int Velocity
+        {
+            get { return velocity; }
+            set { velocity = value; }
+        }
+
         public UpgradeManager UgManager { get { return ugManager; } }
 
         //secondary temporary constructor for debug purposes
@@ -101,7 +116,8 @@ namespace Purpose
         /// </summary>
         public void Jump()
         {
-            position.Y -= 30;
+            velocity = -40;
+            Y += velocity;
         }
 
         /// <summary>
@@ -164,7 +180,23 @@ namespace Purpose
                         }
                     }
                 }
+                stamina -= 40;
             }
+        }
+
+        public void Dash()
+        {
+            if (texture == textureManager.RightStandingSprite || texture == textureManager.RightRunningSprite
+                || texture == textureManager.RightCrouchSprite) //dash to the right
+            {
+                X += dashDistance;
+            }
+            else if (texture == textureManager.LeftStandingSprite || texture == textureManager.LeftRunningSprite
+                || texture == textureManager.LeftCrouchSprite) //dash to the left
+            {
+                X -= dashDistance;
+            }
+            stamina -= 20;
         }
 
         /// <summary>

@@ -96,12 +96,12 @@ namespace Purpose
         private GameTime gameTime;
         private PresetWaves presetWaves;
         private TextureManager textureManager;
-        private Enemy enemy;
 
         //temporary stuff
         private Texture2D background;
         private Texture2D tempTexture;
         private Vector2 healthBar;
+        private Vector2 staminaBar;
         private SpriteFont comicSans24;
         private SpriteFont agency30;
         private Random rng;
@@ -252,7 +252,7 @@ namespace Purpose
             // Makes player, gameManager object and fills enemy list
             background = textureManager.MetalBack;
             player = new Player("Dude", new Rectangle(0, 490, 139, 352), textureManager, gameTime);
-            gameManager = new GameManager(player, totalPlatforms, leftWalls, rightWalls, GraphicsDevice, textureManager, enemy);
+            gameManager = new GameManager(player, totalPlatforms, leftWalls, rightWalls, GraphicsDevice, textureManager);
             //wave = new Wave(gameManager, game1 = new Game1());
 
             gameManager.GameState = GameState.Menu;
@@ -314,31 +314,31 @@ namespace Purpose
                     UpdateHelper(kbState, previouskbState, ms, previousMs, 4, gameTime);
                     break;
                 case WaveNumber.Six:
-                    UpdateHelper(kbState, previouskbState, ms, previousMs,5, gameTime);
+                    UpdateHelper(kbState, previouskbState, ms, previousMs, 5, gameTime);
                     break;
                 case WaveNumber.Seven:
-                    UpdateHelper(kbState, previouskbState, ms, previousMs,6, gameTime);
+                    UpdateHelper(kbState, previouskbState, ms, previousMs, 6, gameTime);
                     break;
                 case WaveNumber.Eight:
-                    UpdateHelper(kbState, previouskbState, ms, previousMs,7, gameTime);
+                    UpdateHelper(kbState, previouskbState, ms, previousMs, 7, gameTime);
                     break;
                 case WaveNumber.Nine:
-                    UpdateHelper(kbState, previouskbState, ms, previousMs,8, gameTime);
+                    UpdateHelper(kbState, previouskbState, ms, previousMs, 8, gameTime);
                     break;
                 case WaveNumber.Ten:
-                    UpdateHelper(kbState, previouskbState, ms, previousMs,9, gameTime);
+                    UpdateHelper(kbState, previouskbState, ms, previousMs, 9, gameTime);
                     break;
                 case WaveNumber.Eleven:
-                    UpdateHelper(kbState, previouskbState, ms, previousMs,10, gameTime);
+                    UpdateHelper(kbState, previouskbState, ms, previousMs, 10, gameTime);
                     break;
                 case WaveNumber.Twelve:
-                    UpdateHelper(kbState, previouskbState, ms, previousMs,11, gameTime);
+                    UpdateHelper(kbState, previouskbState, ms, previousMs, 11, gameTime);
                     break;
                 case WaveNumber.Thirteen:
-                    UpdateHelper(kbState, previouskbState, ms, previousMs,12, gameTime);
+                    UpdateHelper(kbState, previouskbState, ms, previousMs, 12, gameTime);
                     break;
                 case WaveNumber.Fourteen:
-                    UpdateHelper(kbState, previouskbState, ms, previousMs,13, gameTime);
+                    UpdateHelper(kbState, previouskbState, ms, previousMs, 13, gameTime);
                     break;
                 case WaveNumber.Fifteen:
                     UpdateHelper(kbState, previouskbState, ms, previousMs, 14, gameTime);
@@ -412,10 +412,11 @@ namespace Purpose
                     spriteBatch.Draw(gameManager.Player.Texture, new Rectangle(gameManager.Player.X, gameManager.Player.Y, player.Position.Width, player.Position.Height),
                         Color.White);
                     spriteBatch.DrawString(agency30,gameManager.Player.Health.ToString(),healthBar,Color.Red);
+                    spriteBatch.DrawString(agency30, gameManager.Player.Stamina.ToString(), staminaBar, Color.Green);
 
                     foreach (Enemy e in gameManager.Enemies)
                     {
-                            spriteBatch.Draw(e.Texture, e.Position, Color.White);
+                            spriteBatch.Draw(e.Texture, e.Position, e.Color);
                         
                         // Drawing bullet bois
                         if(e.HasBullet)
@@ -570,19 +571,10 @@ namespace Purpose
                     camera.Zoom = 0.5f;
 
                     healthBar = new Vector2(player.Position.X, player.Position.Y + 30);
+                    staminaBar = new Vector2(player.Position.X + player.Position.Width, player.Position.Y + 30);
                     // Stuff for moving player and enemy, as well as player attack
                     ms = Mouse.GetState();
                     gameManager.PlayerMove(kbState, previouskbState, ms, previousMs, camera, gameTime);
-                    // Jump logic
-                    if (gameManager.PlayerJumpNum >= 1 && gameManager.PlayerJumpNum <= 13)
-                    {
-                        player.Jump();
-                        gameManager.PlayerJumpNum++;
-                    }
-                    if (gameManager.PlayerJumpNum == 13)
-                    {
-                        gameManager.PlayerJumpNum = 0;
-                    }
 
                     gameManager.EnemyMove(gameTime);
                     if (kbState.IsKeyDown(Keys.P))
@@ -704,12 +696,11 @@ namespace Purpose
                     }
                     else if (staminaUpButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
                     {
-                        gameManager.Player.Stamina = gameManager.Player.UgManager.StaminaUpgrade(gameManager.Player.Stamina);
+                        gameManager.Player.StaminaMax = gameManager.Player.UgManager.StaminaUpgrade(gameManager.Player.StaminaMax);
                     }
                     else if (healthUpButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
                     {
-                        gameManager.Player.Health = gameManager.Player.UgManager.HealthUpgrade(gameManager.Player.Health);
-                        gameManager.Player.HealthMax = gameManager.Player.Health;
+                        gameManager.Player.HealthMax = gameManager.Player.UgManager.HealthUpgrade(gameManager.Player.HealthMax);
                     }
                     else if (dashButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
                     {
