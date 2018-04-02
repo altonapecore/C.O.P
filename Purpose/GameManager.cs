@@ -546,7 +546,7 @@ namespace Purpose
                 {
                     if(player.X < 0)
                     {
-                        if(enemies[i].X > -1250 && enemies[i].X < -1200)
+                        if(enemies[i].X > -1250 && enemies[i].X < -2500)
                         {
                             enemies[i].JumpNum++;
 
@@ -563,7 +563,7 @@ namespace Purpose
                     }
                     if(player.X > 0)
                     {
-                        if (enemies[i].X > 1200 && enemies[i].X < 1250)
+                        if (enemies[i].X > 1200 && enemies[i].X < 2500)
                         {
                             enemies[i].JumpNum++;
 
