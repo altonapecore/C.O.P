@@ -18,6 +18,7 @@ namespace Purpose
         private int stamina;
         private int dashDistance;
         private bool onBasePlatform;
+        private int healthMax;
 
         //properties
         public int Kills
@@ -44,6 +45,11 @@ namespace Purpose
             set { onBasePlatform = value; }
         }
 
+        public int HealthMax
+        {
+            get { return healthMax; }
+            set { healthMax = value; }
+        }
         public UpgradeManager UgManager { get { return ugManager; } }
 
         //secondary temporary constructor for debug purposes
@@ -54,6 +60,7 @@ namespace Purpose
 
             this.position = position;
             health = 100;
+            healthMax = health;
             stamina = 100;
             dashDistance = 100;
             damage = 10;

@@ -20,9 +20,12 @@ namespace Purpose
         private bool onPlatform;
         private bool onBasePlatform;
         private int jumpNum;
+        private int difficulty;
+        private Color color;
+
         // Temp field for attacking
         private bool isAttacking;
-        
+
 
         // Properties
         public bool Ranged
@@ -87,17 +90,16 @@ namespace Purpose
         // Normal stuff below
         public int GameTime { get { return gameTime; } }
 
+        public int Difficulty{get { return difficulty; } }
         // Constructor
-        public Enemy(Rectangle position, Texture2D texture, Level level, bool ranged, GameTime gameTime) : base(texture)
+        public Enemy(Rectangle position, Texture2D texture, int difficulty, bool ranged, GameTime gameTime) : base(texture)
         {
-            //Placeholder for Level. Thought as level increases so does damage or health
-
-
             this.ranged = ranged; //Decides whether or not a ranged enemy is spawned
             this.position = position;
             this.gameTime = gameTime.TotalGameTime.Seconds;
-            health = 50;
-            damage = 10;
+            //this.color = color;
+            //this.damage = damage;
+            //this.health = health;
             frameCounter = 0;
             bullet = new Rectangle(0, 0, 0, 0);
             hasBullet = false;

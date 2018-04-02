@@ -29,7 +29,17 @@ namespace Purpose
         Two, 
         Three, 
         Four, 
-        Five
+        Five,
+        Six,
+        Seven,
+        Eight,
+        Nine,
+        Ten,
+        Eleven,
+        Twelve,
+        Thirteen,
+        Fourteen,
+        Fifteen
     }
 
     public enum GameState
@@ -43,27 +53,30 @@ namespace Purpose
     }
     public class Game1 : Game
     {
-        //Fields 
+        //Fields for MonoGame
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
+        private Camera2D camera;
+
+        //Fields for Key,Mouse States, etc.
         private KeyboardState kbState;
         private MouseState ms;
-        private Player player;
-        private GameManager gameManager;
+
+        //Fields for Platforms and Walls
         private List<Platform> bottomPlatforms;
         private List<Platform> firstLevelPlatforms;
         private List<Platform> totalPlatforms;
         private List<Platform> leftWalls;
         private List<Platform> rightWalls;
-        private Camera2D camera;
+
+        //Fields for World Size
         private int worldLeftEndWidth;
         private int worldRightEndWidth;
         private int worldTopHeight;
         private int worldBottomHeight;
-        private GameTime gameTime;
 
+        //Fields for Buttons/GameObjects
         private GameObject startButton;
-
         private GameObject returnToNewWaveButton;
         private GameObject groundPoundButton;
         private GameObject attackUpButton;
@@ -71,19 +84,19 @@ namespace Purpose
         private GameObject healthUpButton;
         private GameObject dashButton;
         private GameObject dashDistanceUpButton;
-
         private GameObject returnToGameButton;
-
         private GameObject goOnButton;
         private GameObject upgradesButton;
+        private GameObject returnToMenuButton;
 
-        public GameObject returnToMenuButton;
-
-        //Field for the Reader
+        //Field for other Classes
         private Reader reader;
-
-        //textureManager object
+        private Player player;
+        private GameManager gameManager;
+        private GameTime gameTime;
+        private PresetWaves presetWaves;
         private TextureManager textureManager;
+        private Enemy enemy;
 
         //temporary stuff
         private Texture2D background;
@@ -238,19 +251,23 @@ namespace Purpose
 
             // Makes player, gameManager object and fills enemy list
             background = textureManager.MetalBack;
-            player = new Player("Dude", new Rectangle(0, 490, 139, 352), textureManager, gameTime);                                                       
-
-            gameManager = new GameManager(player, totalPlatforms, leftWalls, rightWalls, GraphicsDevice, textureManager);
+            player = new Player("Dude", new Rectangle(0, 490, 139, 352), textureManager, gameTime);
+            gameManager = new GameManager(player, totalPlatforms, leftWalls, rightWalls, GraphicsDevice, textureManager, enemy);
             //wave = new Wave(gameManager, game1 = new Game1());
 
             gameManager.GameState = GameState.Menu;
             //arenaWindow.ShowDialog(); //Loads arenaWindow here to allow User to change settings of level, enemies, and background
-            
+
 
             //Initializing Reader
-            reader = new Reader(gameManager);
+            //reader = new Reader(gameManager);
             //Runs the Reader method to vcreate enemies needed
-            reader.ReadEditor();
+            //reader.ReadEditor();
+
+            //Intializing the PresetWaves
+            presetWaves = new PresetWaves(gameManager);
+            //Creates all the waves
+            presetWaves.CreateWaves();
         }
 
         /// <summary>
@@ -295,6 +312,36 @@ namespace Purpose
                     break;
                 case WaveNumber.Five:
                     UpdateHelper(kbState, previouskbState, ms, previousMs, 4, gameTime);
+                    break;
+                case WaveNumber.Six:
+                    UpdateHelper(kbState, previouskbState, ms, previousMs,5, gameTime);
+                    break;
+                case WaveNumber.Seven:
+                    UpdateHelper(kbState, previouskbState, ms, previousMs,6, gameTime);
+                    break;
+                case WaveNumber.Eight:
+                    UpdateHelper(kbState, previouskbState, ms, previousMs,7, gameTime);
+                    break;
+                case WaveNumber.Nine:
+                    UpdateHelper(kbState, previouskbState, ms, previousMs,8, gameTime);
+                    break;
+                case WaveNumber.Ten:
+                    UpdateHelper(kbState, previouskbState, ms, previousMs,9, gameTime);
+                    break;
+                case WaveNumber.Eleven:
+                    UpdateHelper(kbState, previouskbState, ms, previousMs,10, gameTime);
+                    break;
+                case WaveNumber.Twelve:
+                    UpdateHelper(kbState, previouskbState, ms, previousMs,11, gameTime);
+                    break;
+                case WaveNumber.Thirteen:
+                    UpdateHelper(kbState, previouskbState, ms, previousMs,12, gameTime);
+                    break;
+                case WaveNumber.Fourteen:
+                    UpdateHelper(kbState, previouskbState, ms, previousMs,13, gameTime);
+                    break;
+                case WaveNumber.Fifteen:
+                    UpdateHelper(kbState, previouskbState, ms, previousMs, 14, gameTime);
                     break;
                 default:
                     break;
@@ -368,8 +415,8 @@ namespace Purpose
 
                     foreach (Enemy e in gameManager.Enemies)
                     {
-                        spriteBatch.Draw(e.Texture, e.Position, Color.White);
-
+                            spriteBatch.Draw(e.Texture, e.Position, Color.White);
+                        
                         // Drawing bullet bois
                         if(e.HasBullet)
                         {
@@ -573,6 +620,51 @@ namespace Purpose
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Five)
                         {
+                            gameManager.WaveNumber = WaveNumber.Six;
+                            gameManager.GameState = GameState.NextWave;
+                        }
+                        else if (gameManager.WaveNumber == WaveNumber.Six)
+                        {
+                            gameManager.WaveNumber = WaveNumber.Seven;
+                            gameManager.GameState = GameState.NextWave;
+                        }
+                        else if (gameManager.WaveNumber == WaveNumber.Eight)
+                        {
+                            gameManager.WaveNumber = WaveNumber.Nine;
+                            gameManager.GameState = GameState.NextWave;
+                        }
+                        else if (gameManager.WaveNumber == WaveNumber.Nine)
+                        {
+                            gameManager.WaveNumber = WaveNumber.Ten;
+                            gameManager.GameState = GameState.NextWave;
+                        }
+                        else if (gameManager.WaveNumber == WaveNumber.Ten)
+                        {
+                            gameManager.WaveNumber = WaveNumber.Eleven;
+                            gameManager.GameState = GameState.NextWave;
+                        }
+                        else if (gameManager.WaveNumber == WaveNumber.Eleven)
+                        {
+                            gameManager.WaveNumber = WaveNumber.Twelve;
+                            gameManager.GameState = GameState.NextWave;
+                        }
+                        else if (gameManager.WaveNumber == WaveNumber.Twelve)
+                        {
+                            gameManager.WaveNumber = WaveNumber.Thirteen;
+                            gameManager.GameState = GameState.NextWave;
+                        }
+                        else if (gameManager.WaveNumber == WaveNumber.Thirteen)
+                        {
+                            gameManager.WaveNumber = WaveNumber.Fourteen;
+                            gameManager.GameState = GameState.NextWave;
+                        }
+                        else if (gameManager.WaveNumber == WaveNumber.Fourteen)
+                        {
+                            gameManager.WaveNumber = WaveNumber.Fifteen;
+                            gameManager.GameState = GameState.NextWave;
+                        }
+                        else if (gameManager.WaveNumber == WaveNumber.Fifteen)
+                        {
                             gameManager.GameState = GameState.GameOver;
                             break;
                         }
@@ -617,6 +709,7 @@ namespace Purpose
                     else if (healthUpButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
                     {
                         gameManager.Player.Health = gameManager.Player.UgManager.HealthUpgrade(gameManager.Player.Health);
+                        gameManager.Player.HealthMax = gameManager.Player.Health;
                     }
                     else if (dashButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
                     {

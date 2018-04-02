@@ -34,6 +34,7 @@ namespace Purpose
         private int enemyJumpNum;
         private bool onBasePlatform;
         private WaveNumber waveNumber;
+        private Enemy enemy;
 
         ////Deals with the enemies
         //private int numberOfEnemies;
@@ -108,7 +109,8 @@ namespace Purpose
         //constructor
 
         //temporary constructor
-        public GameManager(Player player, List<Platform> platforms, List<Platform> leftWalls, List<Platform> rightWalls, GraphicsDevice graphicsDevice, TextureManager textureManager)
+        public GameManager(Player player, List<Platform> platforms, List<Platform> leftWalls, List<Platform> rightWalls, GraphicsDevice graphicsDevice,
+            TextureManager textureManager, Enemy enemy)
         {
             this.player = player;
             this.platforms = platforms;
@@ -122,6 +124,7 @@ namespace Purpose
             waves = new List<Wave>();
             rangeTexture = textureManager.RangedEnemyTexture;
             waveNumber = WaveNumber.One;
+            this.enemy = enemy;
         }
 
         //methods
@@ -417,28 +420,28 @@ namespace Purpose
                 if (choice == 1)
                 {
                     Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, 0), graphicsDevice.Viewport.Height - 350, 122, 250),
-                        textureManager.RightEnemyWalk1, Level.One, false, gameTime);
+                        textureManager.RightEnemyWalk1, difficulty, false, gameTime);
                     enemies.Add(enemy);
                 }
 
                 else if (choice == 2)
                 {
                     Enemy enemy = new Enemy(new Rectangle(rng.Next(0, worldRightEndWidth), graphicsDevice.Viewport.Height - 350, 122, 250),
-                        textureManager.LeftEnemyWalk1, Level.One, false, gameTime);
+                        textureManager.LeftEnemyWalk1, difficulty, false, gameTime);
                     enemies.Add(enemy);
                 }
 
                 else if (choice == 3)
                 {
                     Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, -1250), graphicsDevice.Viewport.Height - 550, 122, 250),
-                        textureManager.RightEnemyWalk1, Level.One, false, gameTime);
+                        textureManager.RightEnemyWalk1, difficulty, false, gameTime);
                     enemies.Add(enemy);
                 }
 
                 else if (choice == 4)
                 {
                     Enemy enemy = new Enemy(new Rectangle(rng.Next(1250, worldRightEndWidth), graphicsDevice.Viewport.Height - 550, 122, 250),
-                        textureManager.LeftEnemyWalk1, Level.One, false, gameTime);
+                        textureManager.LeftEnemyWalk1, difficulty, false, gameTime);
                     enemies.Add(enemy);
                 }
             }
@@ -452,36 +455,37 @@ namespace Purpose
         /// <param name="graphicsDevice">Limits the enemies spawn point</param>
         /// <param name="rangeTexture">The texture for the Ranged Enemies</param>
         public void FillRangedList(Random rng, int numberOfRanged, int difficulty, int worldLeftEndWidth, int worldRightEndWidth, Texture2D rangeTexture, 
-            GameTime gameTime)
+            GameTime gameTime )
         {
             for (int i = 0; i < numberOfRanged; i++)
             {
+
                 int choice = rng.Next(1, 5);
                 if (choice == 1)
                 {
                     Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, 0), graphicsDevice.Viewport.Height - 247, 147, 147),
-                        rangeTexture, Level.One, true, gameTime);
+                        rangeTexture, difficulty, true, gameTime);
                     enemies.Add(enemy);
                 }
 
                 else if (choice == 2)
                 {
                     Enemy enemy = new Enemy(new Rectangle(rng.Next(0, worldRightEndWidth), graphicsDevice.Viewport.Height - 247, 147, 147),
-                        rangeTexture, Level.One, true, gameTime);
+                        rangeTexture, difficulty, true, gameTime);
                     enemies.Add(enemy);
                 }
 
                 else if (choice == 3)
                 {
                     Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, -1250), graphicsDevice.Viewport.Height - 447, 147, 147),
-                        rangeTexture, Level.One, true, gameTime);
+                        rangeTexture, difficulty, true, gameTime);
                     enemies.Add(enemy);
                 }
 
                 else if (choice == 4)
                 {
                     Enemy enemy = new Enemy(new Rectangle(rng.Next(1250, worldRightEndWidth), graphicsDevice.Viewport.Height - 447, 147, 147),
-                        rangeTexture, Level.One, true, gameTime);
+                        rangeTexture, difficulty, true, gameTime);
                     enemies.Add(enemy);
                 }
             }
@@ -756,14 +760,15 @@ namespace Purpose
         public void ResetOnPlayerDeath(Camera2D camera, Random rng, int worldLeftEndWidth, int worldRightEndWidth, GameTime gameTime, Texture2D tempTexture)
         {
             player.Health = 100;
+            player.HealthMax = player.Health;
             camera.Zoom = 1.0f;
             player.IsDead = false;
             player.X = 225;
             player.Y = 225;
             isCrouching = false;
             enemies.Clear();
-            FillEnemyList(rng, waves[1].NumberOfMelee, waves[1].Difficulty, worldLeftEndWidth, worldRightEndWidth, gameTime);
-            FillRangedList(rng, waves[1].NumberOfRanged, waves[1].Difficulty, worldLeftEndWidth, worldRightEndWidth, tempTexture, gameTime);
+            FillEnemyList(rng, waves[0].NumberOfMelee, waves[0].Difficulty, worldLeftEndWidth, worldRightEndWidth, gameTime);
+            FillRangedList(rng, waves[0].NumberOfRanged, waves[0].Difficulty, worldLeftEndWidth, worldRightEndWidth, tempTexture, gameTime);
             player.UgManager.UpgradePoints = 0;
         }
 
@@ -772,10 +777,12 @@ namespace Purpose
             camera.Zoom = 1.0f;
             player.X = 225;
             player.Y = 225;
+            player.Health = player.HealthMax;
             isCrouching = false;
             enemies.Clear();
             FillEnemyList(rng, waves[waveNumber].NumberOfMelee, waves[waveNumber].Difficulty, worldLeftEndWidth, worldRightEndWidth, gameTime);
-            FillRangedList(rng, waves[waveNumber].NumberOfRanged, waves[waveNumber].Difficulty, worldLeftEndWidth, worldRightEndWidth, tempTexture, gameTime);
+            FillRangedList(rng, waves[waveNumber].NumberOfRanged, waves[waveNumber].Difficulty, worldLeftEndWidth, worldRightEndWidth,
+                tempTexture, gameTime);
         }
     }
 }
