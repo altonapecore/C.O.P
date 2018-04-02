@@ -628,6 +628,11 @@ namespace Purpose
                             gameManager.WaveNumber = WaveNumber.Seven;
                             gameManager.GameState = GameState.NextWave;
                         }
+                        else if(gameManager.WaveNumber == WaveNumber.Seven)
+                        {
+                            gameManager.WaveNumber = WaveNumber.Eight;
+                            gameManager.GameState = GameState.NextWave;
+                        }
                         else if (gameManager.WaveNumber == WaveNumber.Eight)
                         {
                             gameManager.WaveNumber = WaveNumber.Nine;

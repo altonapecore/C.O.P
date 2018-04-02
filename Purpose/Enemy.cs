@@ -100,6 +100,8 @@ namespace Purpose
             //this.color = color;
             //this.damage = damage;
             //this.health = health;
+            damage = 10;
+            health = 50;
             frameCounter = 0;
             bullet = new Rectangle(0, 0, 0, 0);
             hasBullet = false;
