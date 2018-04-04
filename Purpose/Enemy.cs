@@ -22,6 +22,7 @@ namespace Purpose
         private int jumpNum;
         private int difficulty;
         private Color color;
+        private int velocity;
 
         // Temp field for attacking
         private bool isAttacking;
@@ -89,6 +90,12 @@ namespace Purpose
             get { return color; }
         }
 
+        public int Velocity
+        {
+            get { return velocity; }
+            set { velocity = value; }
+        }
+
         // Temp property for attacking
         public bool IsAttacking { get { return isAttacking; } }
 
@@ -146,7 +153,6 @@ namespace Purpose
                 }
             }
             frameCounter = 0;
-            bullet = new Rectangle(0, 0, 0, 0);
             hasBullet = false;
         }
 
@@ -157,9 +163,9 @@ namespace Purpose
         /// <param name="playerPosition">Player rectangle to check against</param>
         /// <param name="gameTime">Used for checking to see if the player can attack</param>
         /// <returns></returns>
-        public override int Attack(Rectangle playerPosition, GameTime gameTime)
+        public override int Attack(Character player, GameTime gameTime)
         {
-            if (this.gameTime + 2 == gameTime.TotalGameTime.Seconds)
+            if (this.gameTime + 1 == gameTime.TotalGameTime.TotalSeconds)
             {
                 // If the enemy is ranged and doesn't have a bullet, spawn a bullet
                 if (ranged && hasBullet == false && isFacingLeft)
@@ -174,7 +180,7 @@ namespace Purpose
                 }
 
                 //  If they have a bullet, attack and take bullet away
-                if (hasBullet && bullet.Intersects(playerPosition))
+                if (hasBullet && bullet.Intersects(player.Position))
                 {
                     this.gameTime = gameTime.TotalGameTime.Seconds;
                     bullet.Height = 0;
@@ -184,7 +190,7 @@ namespace Purpose
                 }
 
                 // Melee attack stuff
-                else if (ranged == false && position.Intersects(playerPosition))
+                else if (ranged == false && position.Intersects(player.Position))
                 {
                     this.gameTime = gameTime.TotalGameTime.Seconds;
                     return damage;
@@ -213,23 +219,8 @@ namespace Purpose
         /// </summary>
         public void Jump()
         {
-            position.Y -= 30;
-        }
-
-        public override bool OnBasePlatform(Rectangle characterToBeChecked)
-        {
-            int aboveThisMany = 0;
-            if(characterToBeChecked.Y + 100 < 745  && characterToBeChecked.Y + 100 > 595)
-            {
-                aboveThisMany++;
-            }
-
-            if (aboveThisMany == 1)
-            {
-                return true;
-            }
-
-            else { return false; }
+            velocity = -30;
+            Y += velocity;
         }
     }
 }

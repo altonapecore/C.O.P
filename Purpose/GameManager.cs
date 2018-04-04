@@ -23,6 +23,8 @@ namespace Purpose
         private List<Enemy> enemies;
         private Player player;
         private List<Platform> platforms;
+        private List<Platform> basePlatforms;
+        private List<Platform> firstLevelPlatforms;
         private List<Platform> leftWalls;
         private List<Platform> rightWalls;
         private bool isCrouching;
@@ -32,7 +34,6 @@ namespace Purpose
         private Background backgroundSelection;
         private int playerJumpNum;
         private int enemyJumpNum;
-        private bool onBasePlatform;
         private WaveNumber waveNumber;
         private int gravity = -2;
 
@@ -47,6 +48,9 @@ namespace Purpose
 
         int healthFrameCounter;
         int staminaFrameCounter;
+
+        private bool onBasePlatform;
+        //private bool onPlatform;
 
         //properties
         public List<Enemy> Enemies { get { return enemies; } }
@@ -105,11 +109,13 @@ namespace Purpose
         public WaveNumber WaveNumber { get { return waveNumber; } set { waveNumber = value; } }
 
         //constructor
-        public GameManager(Player player, List<Platform> platforms, List<Platform> leftWalls, List<Platform> rightWalls, GraphicsDevice graphicsDevice,
+        public GameManager(Player player, List<Platform> platforms, List<Platform> basePlatforms, List<Platform> firstLevelPlatforms, List<Platform> leftWalls, List<Platform> rightWalls, GraphicsDevice graphicsDevice,
             TextureManager textureManager)
         {
             this.player = player;
             this.platforms = platforms;
+            this.basePlatforms = basePlatforms;
+            this.firstLevelPlatforms = firstLevelPlatforms;
             this.leftWalls = leftWalls;
             this.rightWalls = rightWalls;
             isCrouching = false;
@@ -120,6 +126,9 @@ namespace Purpose
             waves = new List<Wave>();
             rangeTexture = textureManager.RangedEnemyTexture;
             waveNumber = WaveNumber.One;
+
+            onBasePlatform = false;
+            //onPlatform = false;
         }
 
         //methods
@@ -132,16 +141,16 @@ namespace Purpose
         /// <param name="previousMs">The previous mouse state</param>
         public void PlayerMove(KeyboardState kbState, KeyboardState previouskbState, MouseState ms, MouseState previousMs, Camera2D camera, GameTime gameTime)
         {
-            if (player.Stamina < player.StaminaMax && staminaFrameCounter >= 10)
+            if (player.Stamina < player.StaminaMax && staminaFrameCounter >= 20)
             {
-                player.Stamina += 5;
+                player.Stamina += 1;
                 staminaFrameCounter = 0;
             }
             else
             {
                 staminaFrameCounter++;
             }
-            if (player.Health < player.HealthMax && healthFrameCounter >= 50)
+            if (player.Health < player.HealthMax && healthFrameCounter >= 80)
             {
                 player.Health += 1;
                 healthFrameCounter = 0;
@@ -152,20 +161,35 @@ namespace Purpose
             }
 
             //a boolean representing if the player is on the platform
-            bool onPlatform = false;
+            onBasePlatform = false;
+            bool onFirstLevelPlatform = false;
+
+            if ((player.Y + player.Position.Height) >= basePlatforms[1].Y + 100)
+            {
+                player.Y = graphicsDevice.Viewport.Height - 100 - player.Position.Height;
+            }
 
             //a loop to check if the player is on the platform
-            foreach (Platform p in platforms)
+            foreach (Platform p in basePlatforms)
             {
-                onBasePlatform = p.IsBasePlatform(platforms);
+                //onBasePlatform = p.IsBasePlatform(platforms);
                 if (player.Position.Intersects(p.Position))
                 {
-                    onPlatform = true;
+                    onBasePlatform = true;
                     break;
                 }
             }
+
+            foreach (Platform p in firstLevelPlatforms)
+            {
+                if ((player.Y + player.Position.Height) < 20 + p.Y && p.Position.Intersects(player.Position))
+                {
+                    onFirstLevelPlatform = true;
+                }
+            }
+
             //if not, make them fall
-            if (!onPlatform)
+            if (!onBasePlatform && !onFirstLevelPlatform)
             {
                 player.Y += player.Velocity;
                 player.Velocity -= gravity;
@@ -332,7 +356,7 @@ namespace Purpose
                 // moving camera with player
                 camera.LookAt(new Vector2(player.X, player.Y - 250));
             }
-            if (kbState.IsKeyDown(Keys.Space) && !previouskbState.IsKeyDown(Keys.Space) && onPlatform && !isCrouching) //jump
+            if (kbState.IsKeyDown(Keys.Space) && !previouskbState.IsKeyDown(Keys.Space) && (onBasePlatform || onFirstLevelPlatform) && !isCrouching) //jump
             {
                 player.Jump();
             }
@@ -345,7 +369,7 @@ namespace Purpose
                 }           
             }
             if (kbState.IsKeyDown(Keys.S) && previouskbState.IsKeyUp(Keys.S) //crouch
-                && !kbState.IsKeyDown(Keys.Space) && onPlatform)
+                && !kbState.IsKeyDown(Keys.Space) && (onBasePlatform || onFirstLevelPlatform))
             {
                 isCrouching = player.Crouch(kbState); //sets the isCrouching bool based on the Crouch() method
             }
@@ -367,7 +391,7 @@ namespace Purpose
                 }
                 for (int i = 0; i < enemies.Count; i++)
                 {
-                    enemies[i].TakeDamage(player.Attack(enemies[i].Position, gameTime));
+                    enemies[i].TakeDamage(player.Attack(enemies[i], gameTime));
                     if (enemies[i].IsDead)
                     {
                         enemies.RemoveAt(i);
@@ -379,7 +403,8 @@ namespace Purpose
                     }
                 }
             }
-            if (kbState.IsKeyDown(Keys.E) && previouskbState.IsKeyUp(Keys.E) && player.UgManager.GroundPoundActive && ms.LeftButton == ButtonState.Released && !isCrouching)
+            if (kbState.IsKeyDown(Keys.E) && previouskbState.IsKeyUp(Keys.E) && player.UgManager.GroundPoundActive && ms.LeftButton == ButtonState.Released 
+                && !isCrouching)
             {
                 if (frameCounter == 3)
                 {
@@ -391,23 +416,6 @@ namespace Purpose
                     frameCounter++;
                 }
             }
-
-
-            //limiting player movement in both x directions and lower y direction
-            //if (player.X <= 0)
-            //{
-            //    player.X = 0;
-            //}
-            //if (player.X >= graphicsDevice.Viewport.Width-200)
-            //{
-            //    player.X = graphicsDevice.Viewport.Width-200;
-            //}
-            //if (player.Y >= graphicsDevice.Viewport.Height)
-            //{
-            //    player.Y = graphicsDevice.Viewport.Height - 200;
-            //}
-
-
         }
 
         /// <summary>
@@ -537,47 +545,6 @@ namespace Purpose
                 if (enemies[i].X == player.X + 15 && enemies[i].Ranged == false)
                 {
                     enemies[i].X = enemies[i].X;
-                }
-
-                // Logic for enemies jumping and moving betwwen platforms
-                player.IsOnBasePlatform = player.OnBasePlatform(player.Position);
-                enemies[i].IsOnBasePlatform = enemies[i].OnBasePlatform(enemies[i].Position);
-                if (!player.IsOnBasePlatform && enemies[i].IsOnBasePlatform)
-                {
-                    if(player.X < 0)
-                    {
-                        if(enemies[i].X > -1250 && enemies[i].X < -2500)
-                        {
-                            enemies[i].JumpNum++;
-
-                            if (enemies[i].JumpNum>= 1 && enemies[i].JumpNum <= 13)
-                            {
-                                enemies[i].Jump();
-                                enemies[i].JumpNum++;
-                            }
-                            if (enemies[i].JumpNum == 13)
-                            {
-                                enemies[i].JumpNum = 0;
-                            }
-                        }
-                    }
-                    if(player.X > 0)
-                    {
-                        if (enemies[i].X > 1200 && enemies[i].X < 2500)
-                        {
-                            enemies[i].JumpNum++;
-
-                            if (enemies[i].JumpNum >= 1 && enemies[i].JumpNum <= 13)
-                            {
-                                enemies[i].Jump();
-                                enemies[i].JumpNum++;
-                            }
-                            if (enemies[i].JumpNum == 13)
-                            {
-                                enemies[i].JumpNum = 0;
-                            }
-                        }
-                    }
                 }
 
                 // If right of player, move left and update frame and texture
@@ -727,22 +694,22 @@ namespace Purpose
                 int damage = 0;
                 if (e.Ranged && e.IsFacingLeft)
                 {
-                    damage = e.Attack(new Rectangle(player.Position.X - 555, player.Position.Y, player.Position.Width, player.Position.Height), gameTime);
+                    damage = e.Attack(player, gameTime);
                 }
 
                 else if(e.Ranged && e.IsFacingLeft == false)
                 {
-                    damage = e.Attack(new Rectangle(player.Position.X + 555, player.Position.Y, player.Position.Width, player.Position.Height), gameTime);
+                    damage = e.Attack(player, gameTime);
                 }
 
                 else if(!e.Ranged && e.IsFacingLeft)
                 {
-                    damage = e.Attack(new Rectangle(player.Position.X - 15, player.Position.Y, player.Position.Width, player.Position.Height), gameTime);
+                    damage = e.Attack(player, gameTime);
                 }
 
                 else if (!e.Ranged && e.IsFacingLeft == false)
                 {
-                    damage = e.Attack(new Rectangle(player.Position.X + 15, player.Position.Y, player.Position.Width, player.Position.Height), gameTime);
+                    damage = e.Attack(player, gameTime);
                 }
                 player.TakeDamage(damage);
 
@@ -782,7 +749,6 @@ namespace Purpose
             camera.Zoom = 1.0f;
             player.X = 225;
             player.Y = 225;
-            player.Health = player.HealthMax;
             isCrouching = false;
             enemies.Clear();
             FillEnemyList(rng, waves[waveNumber].NumberOfMelee, waves[waveNumber].Difficulty, worldLeftEndWidth, worldRightEndWidth, gameTime);
