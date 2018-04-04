@@ -296,7 +296,7 @@ namespace Purpose
 
             MouseState previousMs = ms;
             ms = Mouse.GetState();
-
+            
             // Checks for the GameState which is determined by user
             // If they want to use editor tool they get game based of input from text file
             // If they pick regular start they get preset waves
