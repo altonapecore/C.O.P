@@ -21,6 +21,7 @@ namespace Purpose
         private int healthMax;
         private int staminaMax;
         private int velocity;
+        private int gameTime;
 
         //properties
         public int Kills
@@ -67,6 +68,8 @@ namespace Purpose
 
         public UpgradeManager UgManager { get { return ugManager; } }
 
+        public int GameTime { get { return gameTime; } }
+
         //secondary temporary constructor for debug purposes
         public Player(String name, Rectangle position, TextureManager textureManager, GameTime gameTime) : base(textureManager.RightStandingSprite)
         {
@@ -82,6 +85,7 @@ namespace Purpose
             damage = 10;
             texture = textureManager.RightStandingSprite;
             kills = 0;
+            this.gameTime = gameTime.TotalGameTime.Milliseconds;
         }
 
         //methods
@@ -90,11 +94,16 @@ namespace Purpose
         /// </summary>
         /// <param name="enemyPosition">The position of the enemy</param>
         /// <returns>Returns an integer value for the damage done</returns>
-        public override int Attack(Rectangle enemyPosition, GameTime gameTime)
+        public override int Attack(Character enemy, GameTime gameTime)
         {
-            if (position.Intersects(enemyPosition))
+            if (this.gameTime + 200 <= gameTime.TotalGameTime.TotalMilliseconds)
             {
-                return damage;
+                if (position.Intersects(enemy.Position))
+                {
+                    this.gameTime = gameTime.TotalGameTime.Milliseconds;
+                    return damage;
+                }
+                return 0;
             }
             return 0;
         }
@@ -117,7 +126,7 @@ namespace Purpose
         /// </summary>
         public void Jump()
         {
-            velocity = -40;
+            velocity = -30;
             Y += velocity;
         }
 
@@ -198,29 +207,6 @@ namespace Purpose
                 X -= dashDistance;
             }
             stamina -= 20;
-        }
-
-        /// <summary>
-        /// Checks if the character is above the platform or not
-        /// </summary>
-        /// <param name="platforms">List of platforms to be checked</param>
-        /// <param name="characterToBeChecked">Character to be checked against to see if they're on the base platform</param>
-        /// <returns></returns>
-        public override bool OnBasePlatform(Rectangle characterToBeChecked)
-        {
-            int aboveThisMany = 0;
-
-            if (characterToBeChecked.Y + 100 < 745 && characterToBeChecked.Y + 100 > 595)
-            {
-                aboveThisMany++;
-            }
-
-            if (aboveThisMany == 1)
-            {
-                return true;
-            }
-
-            else { return false; }
         }
     }
 }

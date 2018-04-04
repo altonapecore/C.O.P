@@ -391,7 +391,7 @@ namespace Purpose
                 }
                 for (int i = 0; i < enemies.Count; i++)
                 {
-                    enemies[i].TakeDamage(player.Attack(enemies[i].Position, gameTime));
+                    enemies[i].TakeDamage(player.Attack(enemies[i], gameTime));
                     if (enemies[i].IsDead)
                     {
                         enemies.RemoveAt(i);
@@ -403,7 +403,8 @@ namespace Purpose
                     }
                 }
             }
-            if (kbState.IsKeyDown(Keys.E) && previouskbState.IsKeyUp(Keys.E) && player.UgManager.GroundPoundActive && ms.LeftButton == ButtonState.Released && !isCrouching)
+            if (kbState.IsKeyDown(Keys.E) && previouskbState.IsKeyUp(Keys.E) && player.UgManager.GroundPoundActive && ms.LeftButton == ButtonState.Released 
+                && !isCrouching)
             {
                 if (frameCounter == 3)
                 {
@@ -544,47 +545,6 @@ namespace Purpose
                 if (enemies[i].X == player.X + 15 && enemies[i].Ranged == false)
                 {
                     enemies[i].X = enemies[i].X;
-                }
-
-                // Logic for enemies jumping and moving betwwen platforms
-                player.IsOnBasePlatform = player.OnBasePlatform(player.Position);
-                enemies[i].IsOnBasePlatform = enemies[i].OnBasePlatform(enemies[i].Position);
-                if (!player.IsOnBasePlatform && enemies[i].IsOnBasePlatform)
-                {
-                    if(player.X < 0)
-                    {
-                        if(enemies[i].X > -1250 && enemies[i].X < -2500)
-                        {
-                            enemies[i].JumpNum++;
-
-                            if (enemies[i].JumpNum>= 1 && enemies[i].JumpNum <= 13)
-                            {
-                                enemies[i].Jump();
-                                enemies[i].JumpNum++;
-                            }
-                            if (enemies[i].JumpNum == 13)
-                            {
-                                enemies[i].JumpNum = 0;
-                            }
-                        }
-                    }
-                    if(player.X > 0)
-                    {
-                        if (enemies[i].X > 1200 && enemies[i].X < 2500)
-                        {
-                            enemies[i].JumpNum++;
-
-                            if (enemies[i].JumpNum >= 1 && enemies[i].JumpNum <= 13)
-                            {
-                                enemies[i].Jump();
-                                enemies[i].JumpNum++;
-                            }
-                            if (enemies[i].JumpNum == 13)
-                            {
-                                enemies[i].JumpNum = 0;
-                            }
-                        }
-                    }
                 }
 
                 // If right of player, move left and update frame and texture
@@ -734,22 +694,22 @@ namespace Purpose
                 int damage = 0;
                 if (e.Ranged && e.IsFacingLeft)
                 {
-                    damage = e.Attack(new Rectangle(player.Position.X - 555, player.Position.Y, player.Position.Width, player.Position.Height), gameTime);
+                    damage = e.Attack(player, gameTime);
                 }
 
                 else if(e.Ranged && e.IsFacingLeft == false)
                 {
-                    damage = e.Attack(new Rectangle(player.Position.X + 555, player.Position.Y, player.Position.Width, player.Position.Height), gameTime);
+                    damage = e.Attack(player, gameTime);
                 }
 
                 else if(!e.Ranged && e.IsFacingLeft)
                 {
-                    damage = e.Attack(new Rectangle(player.Position.X - 15, player.Position.Y, player.Position.Width, player.Position.Height), gameTime);
+                    damage = e.Attack(player, gameTime);
                 }
 
                 else if (!e.Ranged && e.IsFacingLeft == false)
                 {
-                    damage = e.Attack(new Rectangle(player.Position.X + 15, player.Position.Y, player.Position.Width, player.Position.Height), gameTime);
+                    damage = e.Attack(player, gameTime);
                 }
                 player.TakeDamage(damage);
 
