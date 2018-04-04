@@ -77,6 +77,7 @@ namespace Purpose
             health = 100;
             healthMax = health;
             stamina = 100;
+            staminaMax = stamina;
             dashDistance = 100;
             damage = 10;
             texture = textureManager.RightStandingSprite;
@@ -145,11 +146,11 @@ namespace Purpose
             {
                 Rectangle prevPosition = position;
                 position = new Rectangle(prevPosition.X, prevPosition.Y + prevPosition.Height/2, prevPosition.Width, prevPosition.Height/2);
-                if (texture == textureManager.RightStandingSprite || texture == textureManager.RightRunningSprite)
+                if (texture == textureManager.RightStandingSprite || texture == textureManager.RightRunningSprite || texture == textureManager.RightMiddleRunningSprite)
                 {
                     texture = textureManager.RightCrouchSprite;
                 }
-                else if (texture == textureManager.LeftStandingSprite || texture == textureManager.LeftRunningSprite)
+                else if (texture == textureManager.LeftStandingSprite || texture == textureManager.LeftRunningSprite || texture == textureManager.LeftMiddleRunningSprite)
                 {
                     texture = textureManager.LeftCrouchSprite;
                 }

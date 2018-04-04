@@ -252,7 +252,7 @@ namespace Purpose
             // Makes player, gameManager object and fills enemy list
             background = textureManager.MetalBack;
             player = new Player("Dude", new Rectangle(0, 490, 139, 352), textureManager, gameTime);
-            gameManager = new GameManager(player, totalPlatforms, leftWalls, rightWalls, GraphicsDevice, textureManager);
+            gameManager = new GameManager(player, totalPlatforms, bottomPlatforms, firstLevelPlatforms, leftWalls, rightWalls, GraphicsDevice, textureManager);
             //wave = new Wave(gameManager, game1 = new Game1());
 
             gameManager.GameState = GameState.Menu;
