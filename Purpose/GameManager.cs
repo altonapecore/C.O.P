@@ -167,7 +167,7 @@ namespace Purpose
             {
                 foreach (Platform p in platforms)
                 {
-                    if (player.Position.Intersects(p.Position))
+                    if (new Rectangle(player.X, player.Y + 100, player.Position.Width, player.Position.Height / 5).Intersects(p.Position))
                     {
                         player.Velocity = 0;
                         onPlatform = true;
@@ -678,7 +678,7 @@ namespace Purpose
 
             foreach(Enemy e in enemies)
             {
-                e.GameTime = (int)gameTime.TotalGameTime.TotalSeconds;
+                //e.GameTime = (int)gameTime.TotalGameTime.TotalSeconds;
                 // Call attack methods based on type of enemy and position
                 int damage = 0;
                 if (e.Ranged && e.IsFacingLeft)
