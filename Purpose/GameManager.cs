@@ -167,7 +167,7 @@ namespace Purpose
             {
                 foreach (Platform p in platforms)
                 {
-                    if (new Rectangle(player.X, player.Y + 100, player.Position.Width, player.Position.Height / 5).Intersects(p.Position))
+                    if (new Rectangle(player.X, player.Y + 300, player.Position.Width, 52).Intersects(p.Position))
                     {
                         player.Velocity = 0;
                         onPlatform = true;
