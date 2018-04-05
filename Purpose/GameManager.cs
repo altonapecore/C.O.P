@@ -161,39 +161,27 @@ namespace Purpose
             }
 
             //a boolean representing if the player is on the platform
-            onBasePlatform = false;
-            bool onFirstLevelPlatform = false;
+            bool onPlatform = false;
 
-            if ((player.Y + player.Position.Height) >= basePlatforms[1].Y + 100)
+            if (player.Velocity > 0)
             {
-                player.Y = graphicsDevice.Viewport.Height - 100 - player.Position.Height;
-            }
-
-            //a loop to check if the player is on the platform
-            foreach (Platform p in basePlatforms)
-            {
-                //onBasePlatform = p.IsBasePlatform(platforms);
-                if (player.Position.Intersects(p.Position))
+                foreach (Platform p in platforms)
                 {
-                    onBasePlatform = true;
-                    break;
-                }
-            }
-
-            foreach (Platform p in firstLevelPlatforms)
-            {
-                if ((player.Y + player.Position.Height) < 20 + p.Y && p.Position.Intersects(player.Position))
-                {
-                    onFirstLevelPlatform = true;
+                    if (player.Position.Intersects(p.Position))
+                    {
+                        player.Velocity = 0;
+                        onPlatform = true;
+                        break;
+                    }
                 }
             }
 
             //if not, make them fall
-            if (!onBasePlatform && !onFirstLevelPlatform)
+            if (!onPlatform)
             {
                 player.Y += player.Velocity;
                 player.Velocity -= gravity;
-                // moving camera with player
+                //moving camera with player
                 camera.LookAt(new Vector2(player.X, player.Y - 250));
             }
 
@@ -356,7 +344,7 @@ namespace Purpose
                 // moving camera with player
                 camera.LookAt(new Vector2(player.X, player.Y - 250));
             }
-            if (kbState.IsKeyDown(Keys.Space) && !previouskbState.IsKeyDown(Keys.Space) && (onBasePlatform || onFirstLevelPlatform) && !isCrouching) //jump
+            if (kbState.IsKeyDown(Keys.Space) && !previouskbState.IsKeyDown(Keys.Space) && !isCrouching)//jump
             {
                 player.Jump();
             }
@@ -369,7 +357,7 @@ namespace Purpose
                 }           
             }
             if (kbState.IsKeyDown(Keys.S) && previouskbState.IsKeyUp(Keys.S) //crouch
-                && !kbState.IsKeyDown(Keys.Space) && (onBasePlatform || onFirstLevelPlatform))
+                && !kbState.IsKeyDown(Keys.Space) && onPlatform)
             {
                 isCrouching = player.Crouch(kbState); //sets the isCrouching bool based on the Crouch() method
             }
@@ -690,6 +678,7 @@ namespace Purpose
 
             foreach(Enemy e in enemies)
             {
+                e.GameTime = (int)gameTime.TotalGameTime.TotalSeconds;
                 // Call attack methods based on type of enemy and position
                 int damage = 0;
                 if (e.Ranged && e.IsFacingLeft)
@@ -697,7 +686,7 @@ namespace Purpose
                     damage = e.Attack(player, gameTime);
                 }
 
-                else if(e.Ranged && e.IsFacingLeft == false)
+                else if(e.Ranged && !e.IsFacingLeft)
                 {
                     damage = e.Attack(player, gameTime);
                 }
@@ -707,7 +696,7 @@ namespace Purpose
                     damage = e.Attack(player, gameTime);
                 }
 
-                else if (!e.Ranged && e.IsFacingLeft == false)
+                else if (!e.Ranged && !e.IsFacingLeft)
                 {
                     damage = e.Attack(player, gameTime);
                 }

@@ -251,7 +251,7 @@ namespace Purpose
 
             // Makes player, gameManager object and fills enemy list
             background = textureManager.MetalBack;
-            player = new Player("Dude", new Rectangle(0, 490, 139, 352), textureManager, gameTime);
+            player = new Player("Dude", new Rectangle(0, bottomPlatforms[1].Y - 352, 139, 352), textureManager, gameTime);
             gameManager = new GameManager(player, totalPlatforms, bottomPlatforms, firstLevelPlatforms, leftWalls, rightWalls, GraphicsDevice, textureManager);
             //wave = new Wave(gameManager, game1 = new Game1());
 
@@ -261,7 +261,7 @@ namespace Purpose
 
             //Initializing Reader
             //reader = new Reader(gameManager);
-            //Runs the Reader method to vcreate enemies needed
+            //Runs the Reader method to create enemies needed
             //reader.ReadEditor();
 
             //Intializing the PresetWaves

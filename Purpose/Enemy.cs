@@ -100,7 +100,7 @@ namespace Purpose
         public bool IsAttacking { get { return isAttacking; } }
 
         // Normal stuff below
-        public int GameTime { get { return gameTime; } }
+        public int GameTime { get { return gameTime; } set { gameTime = value; } }
 
         public int Difficulty{get { return difficulty; } }
         // Constructor
@@ -152,6 +152,11 @@ namespace Purpose
                     health = 60;
                 }
             }
+            else
+            {
+                damage = 5;
+                health = 50;
+            }
             frameCounter = 0;
             hasBullet = false;
         }
@@ -168,12 +173,12 @@ namespace Purpose
             if (this.gameTime + 1 == gameTime.TotalGameTime.TotalSeconds)
             {
                 // If the enemy is ranged and doesn't have a bullet, spawn a bullet
-                if (ranged && hasBullet == false && isFacingLeft)
+                if (ranged && !hasBullet && isFacingLeft)
                 {
                     bullet = new Rectangle(position.X, position.Y + 55, 33, 33);
                     hasBullet = true;
                 }
-                else if (ranged && hasBullet == false && isFacingLeft == false)
+                else if (ranged && !hasBullet && isFacingLeft == false)
                 {
                     bullet = new Rectangle(position.X + 147, position.Y + 55, 33, 33);
                     hasBullet = true;
@@ -190,7 +195,7 @@ namespace Purpose
                 }
 
                 // Melee attack stuff
-                else if (ranged == false && position.Intersects(player.Position))
+                else if (!ranged && position.Intersects(player.Position))
                 {
                     this.gameTime = gameTime.TotalGameTime.Seconds;
                     return damage;
