@@ -165,18 +165,18 @@ namespace Purpose
         /// <returns></returns>
         public override int Attack(Character player, GameTime gameTime)
         {
-            if (this.gameTime + 1 == gameTime.TotalGameTime.TotalSeconds)
+            if (this.gameTime + 1 == gameTime.TotalGameTime.Seconds)
             {
                 // If the enemy is ranged and doesn't have a bullet, spawn a bullet
                 if (ranged && hasBullet == false && isFacingLeft)
                 {
-                    bullet = new Rectangle(position.X, position.Y + 55, 33, 33);
                     hasBullet = true;
+                    bullet = new Rectangle(position.X, position.Y + 55, 33, 33);
                 }
                 else if (ranged && hasBullet == false && isFacingLeft == false)
                 {
-                    bullet = new Rectangle(position.X + 147, position.Y + 55, 33, 33);
                     hasBullet = true;
+                    bullet = new Rectangle(position.X + 147, position.Y + 55, 33, 33);
                 }
 
                 //  If they have a bullet, attack and take bullet away

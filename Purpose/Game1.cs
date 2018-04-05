@@ -260,16 +260,16 @@ namespace Purpose
 
 
             //Initializing Reader
-            //reader = new Reader(gameManager);
+            reader = new Reader(gameManager);
             //Runs the Reader method to vcreate enemies needed
-            //reader.ReadEditor();
+            reader.ReadEditor();
 
             //Intializing the PresetWaves
             presetWaves = new PresetWaves(gameManager);
             //Creates all the waves
             presetWaves.CreateWaves();
         }
-
+        
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload
         /// game-specific content.
