@@ -502,19 +502,20 @@ namespace Purpose
             
             foreach (Enemy e in enemies)
             {
+                e.OnPlatform = false;
                 foreach (Platform p in platforms)
                 {
-                    if (e.Position.Intersects(p.Position))
+                    if (new Rectangle(e.X, e.Y + 130, e.Position.Width, e.Position.Height - 130).Intersects(p.Position))
                     {
                         e.OnPlatform = true;
                         break;
                     }
 
-                    else if (!e.Position.Intersects(p.Position))
-                    {
-                        e.OnPlatform = false;
-                        
-                    }
+                    //else if (!e.Position.Intersects(p.Position))
+                    //{
+                    //    e.OnPlatform = false;
+                    //    
+                    //}
                 }
                 if (!e.OnPlatform)
                 {
