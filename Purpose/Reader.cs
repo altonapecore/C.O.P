@@ -49,7 +49,7 @@ namespace Purpose
                     Wave newWave = new Wave(numberOfMelee, numberOfRanged, difficulty);
                     //Using info gathered above creates a new Wave
                     //Wave wave = new Wave(wave.NumberOfMelee, wave.NumberOfRanged, wave.Difficulty);
-                    gameManager.Waves.Add(newWave); //Adds that new wave to the list.
+                    gameManager.EditedWaves.Add(newWave); //Adds that new wave to the list.
                 }
             }
             catch(Exception e)

@@ -78,7 +78,8 @@ namespace Purpose
         private int worldBottomHeight;
 
         //Fields for Buttons/GameObjects
-        private GameObject startButton;
+        private GameObject editedGameButton;
+        private GameObject presetGameButton;
         private GameObject returnToNewWaveButton;
         private GameObject groundPoundButton;
         private GameObject attackUpButton;
@@ -107,6 +108,8 @@ namespace Purpose
         private SpriteFont comicSans24;
         private SpriteFont agency30;
         private Random rng;
+
+        private bool editedGame;
 
         //properties
         public Random Rng
@@ -154,6 +157,8 @@ namespace Purpose
 
             // Initialize gameTime
             gameTime = new GameTime();
+
+            editedGame = false;
         }
 
         /// <summary>
@@ -197,7 +202,8 @@ namespace Purpose
                 Content.Load<Texture2D>("UpgradeUI"), Content.Load<Texture2D>("PauseMenu"), Content.Load<Texture2D>("NextWaveMenu"), Content.Load<Texture2D>("GameOver"), Content.Load<Texture2D>("PlatformTest"), Content.Load<Texture2D>("PlatformTest2"));
 
 
-            startButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 335, 349, 155));
+            editedGameButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 335, 349, 155));
+            presetGameButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 635, 349, 155));
             returnToNewWaveButton = new GameObject(textureManager.ButtonFrame, new Rectangle(10,340,242,109));
             returnToGameButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 280, 349, 160));
             goOnButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 272, 349, 160));
@@ -316,6 +322,8 @@ namespace Purpose
             // If they pick regular start they get preset waves
             //if (gameManager.GameState == GameState.Game)
             //{
+            if (!editedGame)
+            {
                 switch (gameManager.WaveNumber)
                 {
                     case WaveNumber.One:
@@ -366,29 +374,30 @@ namespace Purpose
                     default:
                         break;
                 }
-            //}
-            //else if(gameManager.GameState == GameState.EditorGame)
-            //{
-            //    switch(gameManager.WaveNumber)
-            //    {
-            //        case WaveNumber.One:
-            //            UpdateHelper(kbState, previouskbState, ms, previousMs, 0, gameTime);
-            //            break;
-            //        case WaveNumber.Two:
-            //            UpdateHelper(kbState, previouskbState, ms, previousMs, 1, gameTime);
-            //            break;
-            //        case WaveNumber.Three:
-            //            UpdateHelper(kbState, previouskbState, ms, previousMs, 2, gameTime);
-            //            break;
-            //        case WaveNumber.Four:
-            //            UpdateHelper(kbState, previouskbState, ms, previousMs, 3, gameTime);
-            //            break;
-            //        case WaveNumber.Five:
-            //            UpdateHelper(kbState, previouskbState, ms, previousMs, 4, gameTime);
-            //            break;
-            //    }
-            //}
-
+            }
+            else if (editedGame)
+            {
+                switch (gameManager.WaveNumber)
+                {
+                    case WaveNumber.One:
+                        UpdateHelper(kbState, previouskbState, ms, previousMs, 0, gameTime);
+                        break;
+                    case WaveNumber.Two:
+                        UpdateHelper(kbState, previouskbState, ms, previousMs, 1, gameTime);
+                        break;
+                    case WaveNumber.Three:
+                        UpdateHelper(kbState, previouskbState, ms, previousMs, 2, gameTime);
+                        break;
+                    case WaveNumber.Four:
+                        UpdateHelper(kbState, previouskbState, ms, previousMs, 3, gameTime);
+                        break;
+                    case WaveNumber.Five:
+                        UpdateHelper(kbState, previouskbState, ms, previousMs, 4, gameTime);
+                        break;
+                    default:
+                        break;
+                }
+            }
             base.Update(gameTime);
         }
 
@@ -411,14 +420,25 @@ namespace Purpose
                 case GameState.Menu:
 
                     spriteBatch.Draw(textureManager.StartScreen, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
-                    if (startButton.Intersects(ms.Position))
+                    if (editedGameButton.Intersects(ms.Position))
                     {
-                        spriteBatch.Draw(startButton.Texture, startButton.Position, Color.Black);
+                        spriteBatch.Draw(editedGameButton.Texture, editedGameButton.Position, Color.Black);
                     }
                     else
                     {
-                        spriteBatch.Draw(startButton.Texture, startButton.Position, Color.White);
+                        spriteBatch.Draw(editedGameButton.Texture, editedGameButton.Position, Color.White);
                     }
+
+                    if (presetGameButton.Intersects(ms.Position))
+                    {
+                        spriteBatch.Draw(presetGameButton.Texture, presetGameButton.Position, Color.Black);
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(presetGameButton.Texture, presetGameButton.Position, Color.White);
+                    }
+
+                    
 
 
                     break;
@@ -640,12 +660,26 @@ namespace Purpose
             {
 
                 case GameState.Menu:
-                    // Reset game
-                    gameManager.ResetOnPlayerDeath(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture);
+                    if (editedGameButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
+                    {
+                        gameManager.GameState = GameState.EditorGame;
+                        editedGame = true;
+                    }
 
-                    if (startButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
+                    if (presetGameButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
                     {
                         gameManager.GameState = GameState.Game;
+                        editedGame = false;
+                    }
+
+                    //Reset Game
+                    if (editedGame)
+                    {
+                        gameManager.ResetOnPlayerDeathEdited(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture);
+                    }
+                    else
+                    {
+                        gameManager.ResetOnPlayerDeathPreset(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture);
                     }
                     break;
 
@@ -856,9 +890,21 @@ namespace Purpose
                     camera.Zoom = 1.0f;
                     camera.Position = new Vector2(0, 0);
 
-                    gameManager.ResetForNextWave(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture, waveNumber);
+                    //Reset Game
+                    if (editedGame)
+                    {
+                        gameManager.ResetForNextWaveEdited(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture, waveNumber);
+                    }
+                    else
+                    {
+                        gameManager.ResetForNextWavePreset(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture, waveNumber);
+                    }
 
-                    if (goOnButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
+                    if (goOnButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released && editedGame)
+                    {
+                        gameManager.GameState = GameState.EditorGame;
+                    }
+                    else if (goOnButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released && !editedGame)
                     {
                         gameManager.GameState = GameState.Game;
                     }
@@ -866,7 +912,7 @@ namespace Purpose
                     {
                         gameManager.GameState = GameState.UpgradeMenu;
                     }
-                    break;
+                    break; 
 
                 case GameState.GameOver:
                     camera.Zoom = 1.0f;

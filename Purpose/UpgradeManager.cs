@@ -77,7 +77,7 @@ namespace Purpose
                 {
                     healthMax += 5;
                 }
-                else if (healthTier > 3)
+                else if (healthTier >= 3)
                 {
                     healthMax += 10;
                 }
@@ -96,7 +96,7 @@ namespace Purpose
                 {
                     damage += 5;
                 }
-                else if (damageTier > 3)
+                else if (damageTier >= 3)
                 {
                     damage += 10;
                 }
@@ -115,7 +115,7 @@ namespace Purpose
                 {
                     dashDistance += 10;
                 }
-                else if (stealthTier > 3)
+                else if (stealthTier >= 3)
                 {
                     dashDistance += 15;
                 }

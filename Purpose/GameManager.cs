@@ -32,13 +32,13 @@ namespace Purpose
         private GameState gameState;
         private Texture2D background;
         private Background backgroundSelection;
-        private int playerJumpNum;
         private int enemyJumpNum;
         private WaveNumber waveNumber;
         private int gravity = -2;
 
         //private List<Wave> waves;
-        private List<Wave> waves;
+        private List<Wave> editedWaves;
+        private List<Wave> presetWaves;
 
         private TextureManager textureManager;
         private Texture2D rangeTexture;
@@ -49,8 +49,7 @@ namespace Purpose
         int healthFrameCounter;
         int staminaFrameCounter;
 
-        private bool onBasePlatform;
-        //private bool onPlatform;
+        bool jumping;
 
         //properties
         public List<Enemy> Enemies { get { return enemies; } }
@@ -81,17 +80,16 @@ namespace Purpose
             set { backgroundSelection = value; }
         }
 
-        public List<Wave> Waves
+        public List<Wave> EditedWaves
         {
-            get { return waves; }
-            set { waves = value; }
+            get { return editedWaves; }
+            set { editedWaves = value; }
         }
 
-        // This is for jump logic
-        public int PlayerJumpNum
+        public List<Wave> PresetWaves
         {
-            get { return playerJumpNum; }
-            set { playerJumpNum = value; }
+            get { return presetWaves; }
+            set { presetWaves = value; }
         }
 
         public int EnemyJumpNum
@@ -123,12 +121,14 @@ namespace Purpose
             this.graphicsDevice = graphicsDevice;
             backgroundSelection = Purpose.Background.WhiteBackground;
             this.textureManager = textureManager;
-            waves = new List<Wave>();
+            editedWaves = new List<Wave>();
+            presetWaves = new List<Wave>();
             rangeTexture = textureManager.RangedEnemyTexture;
             waveNumber = WaveNumber.One;
 
-            onBasePlatform = false;
-            //onPlatform = false;
+
+            //a boolean representing if the player is on the platform
+            jumping = false;
         }
 
         //methods
@@ -152,7 +152,7 @@ namespace Purpose
             }
             if (player.Health < player.HealthMax && healthFrameCounter >= 80)
             {
-                player.Health += 1;
+                player.Health += 2;
                 healthFrameCounter = 0;
             }
             else
@@ -160,7 +160,6 @@ namespace Purpose
                 healthFrameCounter++;
             }
 
-            //a boolean representing if the player is on the platform
             bool onPlatform = false;
 
             if (player.Velocity > 0)
@@ -171,6 +170,7 @@ namespace Purpose
                     {
                         player.Velocity = 0;
                         onPlatform = true;
+                        jumping = false;
                         break;
                     }
                 }
@@ -344,23 +344,21 @@ namespace Purpose
                 // moving camera with player
                 camera.LookAt(new Vector2(player.X, player.Y - 250));
             }
-            if (kbState.IsKeyDown(Keys.Space) && !previouskbState.IsKeyDown(Keys.Space) && !isCrouching)//jump
+            if (kbState.IsKeyDown(Keys.Space) && !previouskbState.IsKeyDown(Keys.Space) && !isCrouching && player.Y > -100)//jump
             {
                 player.Jump();
+                jumping = true;
             }
             if (kbState.IsKeyDown(Keys.Q) && !previouskbState.IsKeyDown(Keys.Q) && !kbState.IsKeyDown(Keys.Space)) //dash
             {
-                if (player.UgManager.DashActive)
-                {
-                    player.Dash();
-                    camera.LookAt(new Vector2(player.X, player.Y - 250));
-                }           
+                player.Dash();
+                camera.LookAt(new Vector2(player.X, player.Y - 250));          
             }
-            if (kbState.IsKeyDown(Keys.S) && previouskbState.IsKeyUp(Keys.S) //crouch
-                && !kbState.IsKeyDown(Keys.Space) && onPlatform)
-            {
-                isCrouching = player.Crouch(kbState); //sets the isCrouching bool based on the Crouch() method
-            }
+            //if (kbState.IsKeyDown(Keys.S) && previouskbState.IsKeyUp(Keys.S) //crouch
+            //    && !kbState.IsKeyDown(Keys.Space) && !jumping)
+            //{
+            //    isCrouching = player.Crouch(kbState); //sets the isCrouching bool based on the Crouch() method
+            //}
 
             // Player attack done here as well as enemy takeDamage
             if (ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released && !isCrouching)
@@ -719,7 +717,7 @@ namespace Purpose
         /// <summary>
         /// Resets game to beginning
         /// </summary>
-        public void ResetOnPlayerDeath(Camera2D camera, Random rng, int worldLeftEndWidth, int worldRightEndWidth, GameTime gameTime, Texture2D tempTexture)
+        public void ResetOnPlayerDeathEdited(Camera2D camera, Random rng, int worldLeftEndWidth, int worldRightEndWidth, GameTime gameTime, Texture2D tempTexture)
         {
             player.Health = 100;
             player.HealthMax = player.Health;
@@ -729,20 +727,47 @@ namespace Purpose
             player.Y = 225;
             isCrouching = false;
             enemies.Clear();
-            FillEnemyList(rng, waves[0].NumberOfMelee, waves[0].Difficulty, worldLeftEndWidth, worldRightEndWidth, gameTime);
-            FillRangedList(rng, waves[0].NumberOfRanged, waves[0].Difficulty, worldLeftEndWidth, worldRightEndWidth, tempTexture, gameTime);
+            FillEnemyList(rng, editedWaves[0].NumberOfMelee, editedWaves[0].Difficulty, worldLeftEndWidth, worldRightEndWidth, gameTime);
+            FillRangedList(rng, editedWaves[0].NumberOfRanged, editedWaves[0].Difficulty, worldLeftEndWidth, worldRightEndWidth, tempTexture, gameTime);
             player.UgManager.UpgradePoints = 0;
         }
 
-        public void ResetForNextWave(Camera2D camera, Random rng, int worldLeftEndWidth, int worldRightEndWidth, GameTime gameTime, Texture2D tempTexture, int waveNumber)
+        public void ResetForNextWaveEdited(Camera2D camera, Random rng, int worldLeftEndWidth, int worldRightEndWidth, GameTime gameTime, Texture2D tempTexture, int waveNumber)
         {
             camera.Zoom = 1.0f;
             player.X = 225;
             player.Y = 225;
             isCrouching = false;
             enemies.Clear();
-            FillEnemyList(rng, waves[waveNumber].NumberOfMelee, waves[waveNumber].Difficulty, worldLeftEndWidth, worldRightEndWidth, gameTime);
-            FillRangedList(rng, waves[waveNumber].NumberOfRanged, waves[waveNumber].Difficulty, worldLeftEndWidth, worldRightEndWidth,
+            FillEnemyList(rng, editedWaves[waveNumber].NumberOfMelee, editedWaves[waveNumber].Difficulty, worldLeftEndWidth, worldRightEndWidth, gameTime);
+            FillRangedList(rng, editedWaves[waveNumber].NumberOfRanged, editedWaves[waveNumber].Difficulty, worldLeftEndWidth, worldRightEndWidth,
+                tempTexture, gameTime);
+        }
+
+        public void ResetOnPlayerDeathPreset(Camera2D camera, Random rng, int worldLeftEndWidth, int worldRightEndWidth, GameTime gameTime, Texture2D tempTexture)
+        {
+            player.Health = 100;
+            player.HealthMax = player.Health;
+            camera.Zoom = 1.0f;
+            player.IsDead = false;
+            player.X = 225;
+            player.Y = 225;
+            isCrouching = false;
+            enemies.Clear();
+            FillEnemyList(rng, presetWaves[0].NumberOfMelee, presetWaves[0].Difficulty, worldLeftEndWidth, worldRightEndWidth, gameTime);
+            FillRangedList(rng, presetWaves[0].NumberOfRanged, presetWaves[0].Difficulty, worldLeftEndWidth, worldRightEndWidth, tempTexture, gameTime);
+            player.UgManager.UpgradePoints = 0;
+        }
+
+        public void ResetForNextWavePreset(Camera2D camera, Random rng, int worldLeftEndWidth, int worldRightEndWidth, GameTime gameTime, Texture2D tempTexture, int waveNumber)
+        {
+            camera.Zoom = 1.0f;
+            player.X = 225;
+            player.Y = 225;
+            isCrouching = false;
+            enemies.Clear();
+            FillEnemyList(rng, presetWaves[waveNumber].NumberOfMelee, presetWaves[waveNumber].Difficulty, worldLeftEndWidth, worldRightEndWidth, gameTime);
+            FillRangedList(rng, presetWaves[waveNumber].NumberOfRanged, presetWaves[waveNumber].Difficulty, worldLeftEndWidth, worldRightEndWidth,
                 tempTexture, gameTime);
         }
     }
