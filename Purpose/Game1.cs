@@ -638,11 +638,11 @@ namespace Purpose
                     //Reset Game
                     if (editedGame)
                     {
-                        gameManager.ResetOnPlayerDeathEdited(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture);
+                        gameManager.ResetOnPlayerDeathEdited(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture, platformManager);
                     }
                     else
                     {
-                        gameManager.ResetOnPlayerDeathPreset(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture);
+                        gameManager.ResetOnPlayerDeathPreset(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture, platformManager);
                     }
                     break;
 
@@ -856,11 +856,11 @@ namespace Purpose
                     //Reset Game
                     if (editedGame)
                     {
-                        gameManager.ResetForNextWaveEdited(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture, waveNumber);
+                        gameManager.ResetForNextWaveEdited(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture, waveNumber, platformManager);
                     }
                     else
                     {
-                        gameManager.ResetForNextWavePreset(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture, waveNumber);
+                        gameManager.ResetForNextWavePreset(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture, waveNumber, platformManager);
                     }
 
                     if (goOnButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released && editedGame)

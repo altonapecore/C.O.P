@@ -713,7 +713,8 @@ namespace Purpose
         /// <summary>
         /// Resets game to beginning
         /// </summary>
-        public void ResetOnPlayerDeathEdited(Camera2D camera, Random rng, int worldLeftEndWidth, int worldRightEndWidth, GameTime gameTime, Texture2D tempTexture)
+        public void ResetOnPlayerDeathEdited(Camera2D camera, Random rng, int worldLeftEndWidth, int worldRightEndWidth, GameTime gameTime, 
+            Texture2D tempTexture, PlatformManager platformManager)
         {
             player.Health = 100;
             player.HealthMax = player.Health;
@@ -726,9 +727,12 @@ namespace Purpose
             FillEnemyList(rng, editedWaves[0].NumberOfMelee, editedWaves[0].Difficulty, worldLeftEndWidth, worldRightEndWidth, gameTime);
             FillRangedList(rng, editedWaves[0].NumberOfRanged, editedWaves[0].Difficulty, worldLeftEndWidth, worldRightEndWidth, tempTexture, gameTime);
             player.UgManager.UpgradePoints = 0;
+            platformManager.ClearPlatformLists();
+            platformManager.MakePlatforms(WaveNumber.One, graphicsDevice, textureManager);
         }
 
-        public void ResetForNextWaveEdited(Camera2D camera, Random rng, int worldLeftEndWidth, int worldRightEndWidth, GameTime gameTime, Texture2D tempTexture, int waveNumber)
+        public void ResetForNextWaveEdited(Camera2D camera, Random rng, int worldLeftEndWidth, int worldRightEndWidth, GameTime gameTime, Texture2D tempTexture, 
+            int waveNumber, PlatformManager platformManager)
         {
             camera.Zoom = 1.0f;
             player.X = 225;
@@ -738,10 +742,11 @@ namespace Purpose
             FillEnemyList(rng, editedWaves[waveNumber].NumberOfMelee, editedWaves[waveNumber].Difficulty, worldLeftEndWidth, worldRightEndWidth, gameTime);
             FillRangedList(rng, editedWaves[waveNumber].NumberOfRanged, editedWaves[waveNumber].Difficulty, worldLeftEndWidth, worldRightEndWidth,
                 tempTexture, gameTime);
+            platformManager.ClearPlatformLists();
+            platformManager.MakePlatforms(this.waveNumber, graphicsDevice, textureManager);
         }
 
-        public void ResetOnPlayerDeathPreset(Camera2D camera, Random rng, int worldLeftEndWidth, int worldRightEndWidth, GameTime gameTime, Texture2D tempTexture)
-        public void ResetOnPlayerDeath(Camera2D camera, Random rng, int worldLeftEndWidth, int worldRightEndWidth, GameTime gameTime, 
+        public void ResetOnPlayerDeathPreset(Camera2D camera, Random rng, int worldLeftEndWidth, int worldRightEndWidth, GameTime gameTime, 
             Texture2D tempTexture, PlatformManager platformManager)
         {
             player.Health = 100;
@@ -759,7 +764,7 @@ namespace Purpose
             platformManager.MakePlatforms(WaveNumber.One, graphicsDevice, textureManager);
         }
 
-        public void ResetForNextWave(Camera2D camera, Random rng, int worldLeftEndWidth, int worldRightEndWidth, GameTime gameTime, Texture2D tempTexture, 
+        public void ResetForNextWavePreset(Camera2D camera, Random rng, int worldLeftEndWidth, int worldRightEndWidth, GameTime gameTime, Texture2D tempTexture, 
             int waveNumber, PlatformManager platformManager)
         {
             camera.Zoom = 1.0f;
