@@ -46,7 +46,6 @@ namespace Purpose
     {
         Menu,
         Game,
-        EditorGame,
         Pause,
         UpgradeMenu,
         NextWave,
@@ -107,6 +106,7 @@ namespace Purpose
         private SpriteFont comicSans24;
         private SpriteFont agency30;
         private Random rng;
+        private Vector2 waveIndicator;
 
         //properties
         public Random Rng
@@ -271,13 +271,11 @@ namespace Purpose
             //wave = new Wave(gameManager, game1 = new Game1());
 
             gameManager.GameState = GameState.Menu;
-            //arenaWindow.ShowDialog(); //Loads arenaWindow here to allow User to change settings of level, enemies, and background
-
 
             //Initializing Reader
-            reader = new Reader(gameManager);
+            //reader = new Reader(gameManager);
             //Runs the Reader method to vcreate enemies needed
-            reader.ReadEditor();
+            //reader.ReadEditor();
 
             //Intializing the PresetWaves
             presetWaves = new PresetWaves(gameManager);
@@ -310,84 +308,59 @@ namespace Purpose
 
             MouseState previousMs = ms;
             ms = Mouse.GetState();
+
+            UpgradeManager upgradeManager = new UpgradeManager();
             
-            // Checks for the GameState which is determined by user
-            // If they want to use editor tool they get game based of input from text file
-            // If they pick regular start they get preset waves
-            //if (gameManager.GameState == GameState.Game)
-            //{
-                switch (gameManager.WaveNumber)
-                {
-                    case WaveNumber.One:
-                        UpdateHelper(kbState, previouskbState, ms, previousMs, 0, gameTime);
-                        break;
-                    case WaveNumber.Two:
-                        UpdateHelper(kbState, previouskbState, ms, previousMs, 1, gameTime);
-                        break;
-                    case WaveNumber.Three:
-                        UpdateHelper(kbState, previouskbState, ms, previousMs, 2, gameTime);
-                        break;
-                    case WaveNumber.Four:
-                        UpdateHelper(kbState, previouskbState, ms, previousMs, 3, gameTime);
-                        break;
-                    case WaveNumber.Five:
-                        UpdateHelper(kbState, previouskbState, ms, previousMs, 4, gameTime);
-                        break;
-                    case WaveNumber.Six:
-                        UpdateHelper(kbState, previouskbState, ms, previousMs, 5, gameTime);
-                        break;
-                    case WaveNumber.Seven:
-                        UpdateHelper(kbState, previouskbState, ms, previousMs, 6, gameTime);
-                        break;
-                    case WaveNumber.Eight:
-                        UpdateHelper(kbState, previouskbState, ms, previousMs, 7, gameTime);
-                        break;
-                    case WaveNumber.Nine:
-                        UpdateHelper(kbState, previouskbState, ms, previousMs, 8, gameTime);
-                        break;
-                    case WaveNumber.Ten:
-                        UpdateHelper(kbState, previouskbState, ms, previousMs, 9, gameTime);
-                        break;
-                    case WaveNumber.Eleven:
-                        UpdateHelper(kbState, previouskbState, ms, previousMs, 10, gameTime);
-                        break;
-                    case WaveNumber.Twelve:
-                        UpdateHelper(kbState, previouskbState, ms, previousMs, 11, gameTime);
-                        break;
-                    case WaveNumber.Thirteen:
-                        UpdateHelper(kbState, previouskbState, ms, previousMs, 12, gameTime);
-                        break;
-                    case WaveNumber.Fourteen:
-                        UpdateHelper(kbState, previouskbState, ms, previousMs, 13, gameTime);
-                        break;
-                    case WaveNumber.Fifteen:
-                        UpdateHelper(kbState, previouskbState, ms, previousMs, 14, gameTime);
-                        break;
-                    default:
-                        break;
+            switch (gameManager.WaveNumber)
+            {
+                case WaveNumber.One:
+                    UpdateHelper(kbState, previouskbState, ms, previousMs, 0, gameTime);
+                    break;
+                case WaveNumber.Two:
+                    UpdateHelper(kbState, previouskbState, ms, previousMs, 1, gameTime);
+                    break;
+                case WaveNumber.Three:
+                    UpdateHelper(kbState, previouskbState, ms, previousMs, 2, gameTime);
+                    break;
+                case WaveNumber.Four:
+                    UpdateHelper(kbState, previouskbState, ms, previousMs, 3, gameTime);
+                    break;
+                case WaveNumber.Five:
+                    UpdateHelper(kbState, previouskbState, ms, previousMs, 4, gameTime);
+                    break;
+                case WaveNumber.Six:
+                    UpdateHelper(kbState, previouskbState, ms, previousMs, 5, gameTime);
+                    break;
+                case WaveNumber.Seven:
+                    UpdateHelper(kbState, previouskbState, ms, previousMs, 6, gameTime);
+                    break;
+                case WaveNumber.Eight:
+                    UpdateHelper(kbState, previouskbState, ms, previousMs, 7, gameTime);
+                    break;
+                case WaveNumber.Nine:
+                    UpdateHelper(kbState, previouskbState, ms, previousMs, 8, gameTime);
+                    break;
+                case WaveNumber.Ten:
+                    UpdateHelper(kbState, previouskbState, ms, previousMs, 9, gameTime);
+                    break;
+                case WaveNumber.Eleven:
+                    UpdateHelper(kbState, previouskbState, ms, previousMs, 10, gameTime);
+                    break;
+                case WaveNumber.Twelve:
+                    UpdateHelper(kbState, previouskbState, ms, previousMs, 11, gameTime);
+                    break;
+                case WaveNumber.Thirteen:
+                    UpdateHelper(kbState, previouskbState, ms, previousMs, 12, gameTime);
+                    break;
+                case WaveNumber.Fourteen:
+                    UpdateHelper(kbState, previouskbState, ms, previousMs, 13, gameTime);
+                    break;
+                case WaveNumber.Fifteen:
+                    UpdateHelper(kbState, previouskbState, ms, previousMs, 14, gameTime);
+                    break;
+                default:
+                    break;
                 }
-            //}
-            //else if(gameManager.GameState == GameState.EditorGame)
-            //{
-            //    switch(gameManager.WaveNumber)
-            //    {
-            //        case WaveNumber.One:
-            //            UpdateHelper(kbState, previouskbState, ms, previousMs, 0, gameTime);
-            //            break;
-            //        case WaveNumber.Two:
-            //            UpdateHelper(kbState, previouskbState, ms, previousMs, 1, gameTime);
-            //            break;
-            //        case WaveNumber.Three:
-            //            UpdateHelper(kbState, previouskbState, ms, previousMs, 2, gameTime);
-            //            break;
-            //        case WaveNumber.Four:
-            //            UpdateHelper(kbState, previouskbState, ms, previousMs, 3, gameTime);
-            //            break;
-            //        case WaveNumber.Five:
-            //            UpdateHelper(kbState, previouskbState, ms, previousMs, 4, gameTime);
-            //            break;
-            //    }
-            //}
 
             base.Update(gameTime);
         }
@@ -455,49 +428,7 @@ namespace Purpose
                     spriteBatch.DrawString(agency30,gameManager.Player.Health.ToString(),healthBar,Color.Red);
                     spriteBatch.DrawString(agency30, gameManager.Player.Stamina.ToString(), staminaBar, Color.Green);
 
-                    foreach (Enemy e in gameManager.Enemies)
-                    {
-                            spriteBatch.Draw(e.Texture, e.Position, e.Color);
-                        
-                        // Drawing bullet bois
-                        if(e.HasBullet)
-                        {
-                            spriteBatch.Draw(e.Texture, e.Bullet, Color.White);
-                        }
-                    }
-                    break;
-
-                case GameState.EditorGame:
-                                        // Background
-                    for (int x = worldLeftEndWidth; x < worldRightEndWidth; x += background.Width)
-                    {
-                        for (int y = worldTopHeight; y < worldBottomHeight; y += background.Height)
-                        {
-                            spriteBatch.Draw(background, new Rectangle(x, y, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
-                        }
-                    }
-
-                    // Platforms
-                    foreach (Platform p in totalPlatforms)
-                    {
-                        spriteBatch.Draw(p.Texture, p.Position, Color.White);
-                    }
-
-                    // Walls
-                    foreach (Platform w in leftWalls)
-                    {
-                        spriteBatch.Draw(w.Texture, w.Position, Color.White);
-                    }
-                    foreach (Platform w in rightWalls)
-                    {
-                        spriteBatch.Draw(w.Texture, w.Position, Color.White);
-                    }
-
-                    // Player
-                    spriteBatch.Draw(gameManager.Player.Texture, new Rectangle(gameManager.Player.X, gameManager.Player.Y, player.Position.Width, player.Position.Height),
-                        Color.White);
-                    spriteBatch.DrawString(agency30,gameManager.Player.Health.ToString(),healthBar,Color.Red);
-                    spriteBatch.DrawString(agency30, gameManager.Player.Stamina.ToString(), staminaBar, Color.Green);
+                    spriteBatch.DrawString(agency30,"Wave: " + gameManager.WaveNumber.ToString(), waveIndicator, Color.Red);
 
                     foreach (Enemy e in gameManager.Enemies)
                     {
@@ -641,10 +572,10 @@ namespace Purpose
 
                 case GameState.Menu:
                     // Reset game
-                    gameManager.ResetOnPlayerDeath(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture);
 
                     if (startButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
                     {
+                        gameManager.ResetOnPlayerDeath(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture);
                         gameManager.GameState = GameState.Game;
                     }
                     break;
@@ -657,6 +588,11 @@ namespace Purpose
 
                     healthBar = new Vector2(player.Position.X, player.Position.Y + 30);
                     staminaBar = new Vector2(player.Position.X + player.Position.Width, player.Position.Y + 30);
+
+                    //Used to Indicate and let the player know what wave they are on
+                    waveIndicator = new Vector2(player.Position.X - 1250, player.Position.Y - 1000);
+
+
                     // Stuff for moving player and enemy, as well as player attack
                     ms = Mouse.GetState();
                     gameManager.PlayerMove(kbState, previouskbState, ms, previousMs, camera, gameTime);
@@ -753,58 +689,6 @@ namespace Purpose
                     }
                     break;
 
-                case GameState.EditorGame:
-
-                    camera.MinimumZoom = 0.5f;
-                    camera.MaximumZoom = 1.0f;
-                    camera.Zoom = 0.5f;
-
-                    healthBar = new Vector2(player.Position.X, player.Position.Y + 30);
-                    staminaBar = new Vector2(player.Position.X + player.Position.Width, player.Position.Y + 30);
-                    // Stuff for moving player and enemy, as well as player attack
-                    ms = Mouse.GetState();
-                    gameManager.PlayerMove(kbState, previouskbState, ms, previousMs, camera, gameTime);
-
-                    gameManager.EnemyMove(gameTime);
-                    if (kbState.IsKeyDown(Keys.P))
-                    {
-                        gameManager.GameState = GameState.Pause;
-                    }
-
-                    if (player.IsDead || player.Y >= GraphicsDevice.Viewport.Height)
-                    {
-                        gameManager.GameState = GameState.GameOver;
-                    }
-
-                    if (gameManager.Enemies.Count == 0)
-                    {
-                        if (gameManager.WaveNumber == WaveNumber.One)
-                        {
-                            gameManager.WaveNumber = WaveNumber.Two;
-                            gameManager.GameState = GameState.NextWave;
-                        }
-                        else if (gameManager.WaveNumber == WaveNumber.Two)
-                        {
-                            gameManager.WaveNumber = WaveNumber.Three;
-                            gameManager.GameState = GameState.NextWave;
-                        }
-                        else if (gameManager.WaveNumber == WaveNumber.Three)
-                        {
-                            gameManager.WaveNumber = WaveNumber.Four;
-                            gameManager.GameState = GameState.NextWave;
-                        }
-                        else if (gameManager.WaveNumber == WaveNumber.Four)
-                        {
-                            gameManager.WaveNumber = WaveNumber.Five;
-                            gameManager.GameState = GameState.NextWave;
-                        }
-                        else if (gameManager.WaveNumber == WaveNumber.Five)
-                        {
-                            gameManager.GameState = GameState.GameOver;
-                        }
-                    }
-                    break;
-
                 case GameState.Pause:
                     camera.Zoom = 1.0f;
                     camera.Position = new Vector2(0, 0);
@@ -881,5 +765,11 @@ namespace Purpose
                     break;
             }
         }
+
+        public void WaveDisplay(int waveNumber)
+        {
+            
+        }
+        
     }
 }

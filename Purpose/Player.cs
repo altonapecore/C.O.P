@@ -81,7 +81,7 @@ namespace Purpose
             healthMax = health;
             stamina = 100;
             staminaMax = stamina;
-            dashDistance = 100;
+            dashDistance = 150;
             damage = 10;
             texture = textureManager.RightStandingSprite;
             kills = 0;
@@ -174,12 +174,14 @@ namespace Purpose
         /// <param name="enemies">The list of enemies in the game</param>
         public void GroundPound(List<Enemy> enemies)
         {
-            Rectangle groundPoundArea = new Rectangle(position.X-200, (position.Y + position.Height-20), 500, 20);
+            Rectangle groundPoundArea = new Rectangle((Position.X - 125), Position.Y, 250, 5);
             if (ugManager.GroundPoundActive)
-            {
+            { 
                 for (int i = 0; i < enemies.Count; i++)
-                {
-                    enemies[i].TakeDamage(15);
+                {    
+                        enemies[i].TakeDamage(15);
+                        enemies[i].Y -= 50;                    
+
                     if (enemies[i].IsDead)
                     {
                         enemies.RemoveAt(i);

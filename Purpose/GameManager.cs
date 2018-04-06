@@ -728,10 +728,12 @@ namespace Purpose
             player.X = 225;
             player.Y = 225;
             isCrouching = false;
+            player.UgManager.DashActive = false;
+            player.UgManager.GroundPoundActive = false;
             enemies.Clear();
             FillEnemyList(rng, waves[0].NumberOfMelee, waves[0].Difficulty, worldLeftEndWidth, worldRightEndWidth, gameTime);
             FillRangedList(rng, waves[0].NumberOfRanged, waves[0].Difficulty, worldLeftEndWidth, worldRightEndWidth, tempTexture, gameTime);
-            player.UgManager.UpgradePoints = 0;
+            player.UgManager.UpgradePoints = 0;            
         }
 
         public void ResetForNextWave(Camera2D camera, Random rng, int worldLeftEndWidth, int worldRightEndWidth, GameTime gameTime, Texture2D tempTexture, int waveNumber)
