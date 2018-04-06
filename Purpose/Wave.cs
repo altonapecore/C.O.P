@@ -36,15 +36,6 @@ namespace Purpose
             set { difficulty = value; }
         }
 
-        ////Default Constructor
-        //public Wave(GameManager gameManager, Game1 game1)
-        //{
-        //    numberOfMelee = 0;
-        //    numberOfRanged = 0;
-        //    difficulty = 1;
-        //    this.game1 = game1;
-        //}
-
         //Parameterized Constructor
         public Wave(int numberOfMelee, int numberOfRanged, int difficulty)
         {
