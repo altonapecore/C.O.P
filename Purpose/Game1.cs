@@ -277,8 +277,6 @@ namespace Purpose
             //wave = new Wave(gameManager, game1 = new Game1());
 
             gameManager.GameState = GameState.Menu;
-            //arenaWindow.ShowDialog(); //Loads arenaWindow here to allow User to change settings of level, enemies, and background
-
 
             //Initializing Reader
             reader = new Reader(gameManager);
@@ -437,10 +435,6 @@ namespace Purpose
                     {
                         spriteBatch.Draw(presetGameButton.Texture, presetGameButton.Position, Color.White);
                     }
-
-                    
-
-
                     break;
 
                 case GameState.Game:
@@ -488,7 +482,7 @@ namespace Purpose
                     break;
 
                 case GameState.EditorGame:
-                                        // Background
+                    // Background
                     for (int x = worldLeftEndWidth; x < worldRightEndWidth; x += background.Width)
                     {
                         for (int y = worldTopHeight; y < worldBottomHeight; y += background.Height)
