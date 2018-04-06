@@ -63,11 +63,7 @@ namespace Purpose
         private KeyboardState kbState;
         private MouseState ms;
 
-        //Fields for Platforms and Walls
-        private List<Platform> bottomPlatforms;
-        private List<Platform> firstLevelPlatforms;
-        private List<Platform> secondLevelPlatforms;
-        private List<Platform> totalPlatforms;
+        
         private List<Platform> leftWalls;
         private List<Platform> rightWalls;
 
@@ -98,6 +94,7 @@ namespace Purpose
         private GameTime gameTime;
         private PresetWaves presetWaves;
         private TextureManager textureManager;
+        private PlatformManager platformManager;
 
         //temporary stuff
         private Texture2D background;
@@ -152,8 +149,9 @@ namespace Purpose
             worldTopHeight = -1500;
             worldBottomHeight = 1000;
 
-            // Initialize gameTime
+            // Initialize gameTime and platformManager
             gameTime = new GameTime();
+            platformManager = new PlatformManager();
         }
 
         /// <summary>
@@ -212,47 +210,12 @@ namespace Purpose
             dashDistanceUpButton = new GameObject(textureManager.RoundedFrame, new Rectangle(620, 680, 118, 118));
 
             // Makes platforms & walls
-            bottomPlatforms = new List<Platform>();
-            totalPlatforms = new List<Platform>();
-            firstLevelPlatforms = new List<Platform>();
-            secondLevelPlatforms = new List<Platform>();
+            platformManager.MakePlatforms(WaveNumber.One, GraphicsDevice, textureManager);
             leftWalls = new List<Platform>();
             rightWalls = new List<Platform>();
 
-            // Base platforms
-            for (int i = 0; i > -3000; i -= 100)
-            {
-                bottomPlatforms.Add(new Platform(new Rectangle(i, GraphicsDevice.Viewport.Height - 100, 100, 100), textureManager.BasePlatform));
-                totalPlatforms.Add(new Platform(new Rectangle(i, GraphicsDevice.Viewport.Height - 100, 100, 100), textureManager.BasePlatform));
-            }
-            for (int i = 0; i < 3000; i += 100)
-            {
-                bottomPlatforms.Add(new Platform(new Rectangle(i, GraphicsDevice.Viewport.Height - 100, 100, 100), textureManager.BasePlatform));
-                totalPlatforms.Add(new Platform(new Rectangle(i, GraphicsDevice.Viewport.Height - 100, 100, 100), textureManager.BasePlatform));
-            }
-            // First level platforms
-            for (int i = -1250; i > -3000; i -= 100)
-            {
-                firstLevelPlatforms.Add(new Platform(new Rectangle(i, GraphicsDevice.Viewport.Height - 300, 100, 50), textureManager.NotBasePlatform));
-                totalPlatforms.Add(new Platform(new Rectangle(i, GraphicsDevice.Viewport.Height - 300, 100, 50), textureManager.NotBasePlatform));
-            }
-            for (int i = 1250; i < 3000; i += 100)
-            {
-                firstLevelPlatforms.Add(new Platform(new Rectangle(i, GraphicsDevice.Viewport.Height - 300, 100, 50), textureManager.NotBasePlatform));
-                totalPlatforms.Add(new Platform(new Rectangle(i, GraphicsDevice.Viewport.Height - 300, 100, 50), textureManager.NotBasePlatform));
-            }
+            
 
-            // Second level platforms
-            for (int i = -175; i > -1100; i -= 100)
-            {
-                secondLevelPlatforms.Add(new Platform(new Rectangle(i, GraphicsDevice.Viewport.Height - 500, 100, 50), textureManager.NotBasePlatform));
-                totalPlatforms.Add(new Platform(new Rectangle(i, GraphicsDevice.Viewport.Height - 500, 100, 50), textureManager.NotBasePlatform));
-            }
-            for (int i = 175; i < 1100; i += 100)
-            {
-                secondLevelPlatforms.Add(new Platform(new Rectangle(i, GraphicsDevice.Viewport.Height - 500, 100, 50), textureManager.NotBasePlatform));
-                totalPlatforms.Add(new Platform(new Rectangle(i, GraphicsDevice.Viewport.Height - 500, 100, 50), textureManager.NotBasePlatform));
-            }
 
             // Walls
             for (int i = -1500;i <= GraphicsDevice.Viewport.Height; i += 100)
@@ -266,8 +229,8 @@ namespace Purpose
 
             // Makes player, gameManager object and fills enemy list
             background = textureManager.MetalBack;
-            player = new Player("Dude", new Rectangle(0, bottomPlatforms[1].Y - 352, 139, 352), textureManager, gameTime);
-            gameManager = new GameManager(player, totalPlatforms, bottomPlatforms, firstLevelPlatforms, leftWalls, rightWalls, GraphicsDevice, textureManager);
+            player = new Player("Dude", new Rectangle(0, platformManager.BottomPlatforms[1].Y - 352, 139, 352), textureManager, gameTime);
+            gameManager = new GameManager(player, platformManager.TotalPlatforms, leftWalls, rightWalls, GraphicsDevice, textureManager);
             //wave = new Wave(gameManager, game1 = new Game1());
 
             gameManager.GameState = GameState.Menu;
@@ -434,7 +397,7 @@ namespace Purpose
                     }
 
                     // Platforms
-                    foreach (Platform p in totalPlatforms)
+                    foreach (Platform p in platformManager.TotalPlatforms)
                     {
                         spriteBatch.Draw(p.Texture, p.Position, Color.White);
                     }
@@ -478,7 +441,7 @@ namespace Purpose
                     }
 
                     // Platforms
-                    foreach (Platform p in totalPlatforms)
+                    foreach (Platform p in platformManager.TotalPlatforms)
                     {
                         spriteBatch.Draw(p.Texture, p.Position, Color.White);
                     }
@@ -641,7 +604,7 @@ namespace Purpose
 
                 case GameState.Menu:
                     // Reset game
-                    gameManager.ResetOnPlayerDeath(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture);
+                    gameManager.ResetOnPlayerDeath(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture, platformManager);
 
                     if (startButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
                     {
@@ -856,7 +819,7 @@ namespace Purpose
                     camera.Zoom = 1.0f;
                     camera.Position = new Vector2(0, 0);
 
-                    gameManager.ResetForNextWave(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture, waveNumber);
+                    gameManager.ResetForNextWave(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture, waveNumber, platformManager);
 
                     if (goOnButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
                     {

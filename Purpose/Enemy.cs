@@ -8,6 +8,23 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Purpose
 {
+    public enum spawnLevel
+    {
+        baseLevel,
+        firstLevelLeft,
+        firstLevelCenter,
+        firstLevelRight,
+        secondLevelLeft,
+        secondLevelCenter,
+        secondLevelRight,
+        thirdLevelLeft,
+        thirdLevelCenter,
+        thirdLevelRight,
+        fourthLevelLeft,
+        fourthLevelCenter,
+        fourthLevelRight,
+        fifthLevel
+    }
     public class Enemy : Character
     {
         // Fields
