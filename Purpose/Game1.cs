@@ -243,9 +243,9 @@ namespace Purpose
             gameManager.GameState = GameState.Menu;
 
             //Initializing Reader
-            //reader = new Reader(gameManager);
+            reader = new Reader(gameManager);
             //Runs the Reader method to vcreate enemies needed
-            //reader.ReadEditor();
+            reader.ReadEditor();
 
             //Intializing the PresetWaves
             presetWaves = new PresetWaves(gameManager);
@@ -439,6 +439,28 @@ namespace Purpose
 
                     spriteBatch.DrawString(agency30,"Wave: " + gameManager.WaveNumber.ToString(), waveIndicator, Color.Red);
 
+                    foreach (Enemy e in gameManager.Enemies)
+                    {
+                            spriteBatch.Draw(e.Texture, e.Position, e.Color);
+                        
+                        // Drawing bullet bois
+                        if(e.HasBullet)
+                        {
+                            spriteBatch.Draw(e.Texture, e.Bullet, Color.White);
+                        }
+                    }
+                    break;
+
+                case GameState.EditorGame:
+                    // Background
+                    for (int x = worldLeftEndWidth; x < worldRightEndWidth; x += background.Width)
+                    {
+                        for (int y = worldTopHeight; y < worldBottomHeight; y += background.Height)
+                        {
+                            spriteBatch.Draw(background, new Rectangle(x, y, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
+                        }
+                    }
+
                     // Platforms
                     foreach (Platform p in platformManager.TotalPlatforms)
                     {
@@ -458,15 +480,17 @@ namespace Purpose
                     // Player
                     spriteBatch.Draw(gameManager.Player.Texture, new Rectangle(gameManager.Player.X, gameManager.Player.Y, player.Position.Width, player.Position.Height),
                         Color.White);
-                    spriteBatch.DrawString(agency30,gameManager.Player.Health.ToString(),healthBar,Color.Red);
+                    spriteBatch.DrawString(agency30, gameManager.Player.Health.ToString(), healthBar, Color.Red);
                     spriteBatch.DrawString(agency30, gameManager.Player.Stamina.ToString(), staminaBar, Color.Green);
+
+                    spriteBatch.DrawString(agency30, "Wave: " + gameManager.WaveNumber.ToString(), waveIndicator, Color.Red);
 
                     foreach (Enemy e in gameManager.Enemies)
                     {
-                            spriteBatch.Draw(e.Texture, e.Position, e.Color);
-                        
+                        spriteBatch.Draw(e.Texture, e.Position, e.Color);
+
                         // Drawing bullet bois
-                        if(e.HasBullet)
+                        if (e.HasBullet)
                         {
                             spriteBatch.Draw(e.Texture, e.Bullet, Color.White);
                         }
@@ -731,6 +755,65 @@ namespace Purpose
                             gameManager.GameState = GameState.GameOver;
                             break;
                         }
+                    }
+                    break;
+
+                case GameState.EditorGame:
+                    //arenaManagerCounter = 0;
+                    camera.MinimumZoom = 0.1f;
+                    camera.MaximumZoom = 1.0f;
+                    camera.Zoom = 0.5f;
+
+                    healthBar = new Vector2(player.Position.X, player.Position.Y + 30);
+                    staminaBar = new Vector2(player.Position.X + player.Position.Width, player.Position.Y + 30);
+
+                    //Used to Indicate and let the player know what wave they are on
+                    waveIndicator = new Vector2(player.Position.X - 1250, player.Position.Y - 1000);
+
+
+                    // Stuff for moving player and enemy, as well as player attack
+                    ms = Mouse.GetState();
+                    gameManager.PlayerMove(kbState, previouskbState, ms, previousMs, camera, gameTime);
+
+                    gameManager.EnemyMove(gameTime);
+                    if (kbState.IsKeyDown(Keys.P))
+                    {
+                        gameManager.GameState = GameState.Pause;
+                    }
+
+                    if (player.IsDead || player.Y >= GraphicsDevice.Viewport.Height)
+                    {
+                        gameManager.GameState = GameState.GameOver;
+                    }
+
+                    //When all enemies are dead calls in the next wave method
+                    if (gameManager.Enemies.Count == 0)
+                    {
+                        if (gameManager.WaveNumber == WaveNumber.One)
+                        {
+                            gameManager.WaveNumber = WaveNumber.Two;
+                            gameManager.GameState = GameState.NextWave;
+                        }
+                        else if (gameManager.WaveNumber == WaveNumber.Two)
+                        {
+                            gameManager.WaveNumber = WaveNumber.Three;
+                            gameManager.GameState = GameState.NextWave;
+                        }
+                        else if (gameManager.WaveNumber == WaveNumber.Three)
+                        {
+                            gameManager.WaveNumber = WaveNumber.Four;
+                            gameManager.GameState = GameState.NextWave;
+                        }
+                        else if (gameManager.WaveNumber == WaveNumber.Four)
+                        {
+                            gameManager.WaveNumber = WaveNumber.Five;
+                            gameManager.GameState = GameState.NextWave;
+                        }
+                        else if (gameManager.WaveNumber == WaveNumber.Five)
+                        {
+                            gameManager.GameState = GameState.GameOver;
+                        }
+                        
                     }
                     break;
 
