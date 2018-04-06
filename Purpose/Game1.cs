@@ -46,6 +46,7 @@ namespace Purpose
     {
         Menu,
         Game,
+        EditorGame,
         Pause,
         UpgradeMenu,
         NextWave,
@@ -609,7 +610,6 @@ namespace Purpose
 
                     if (presetGameButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
                     {
-                        gameManager.ResetOnPlayerDeath(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture);
                         gameManager.GameState = GameState.Game;
                         editedGame = false;
                     }
