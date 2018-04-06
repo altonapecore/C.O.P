@@ -53,6 +53,7 @@
       <DependentUpon>PauseMenu.cs</DependentUpon>
     </Compile>
     <Compile Include="Platform.cs" />
+    <Compile Include="PlatformManager.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="PresetWaves.cs" />
     <Compile Include="Program.cs" />

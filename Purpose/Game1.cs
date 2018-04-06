@@ -63,11 +63,7 @@ namespace Purpose
         private KeyboardState kbState;
         private MouseState ms;
 
-        //Fields for Platforms and Walls
-        private List<Platform> bottomPlatforms;
-        private List<Platform> firstLevelPlatforms;
-        private List<Platform> secondLevelPlatforms;
-        private List<Platform> totalPlatforms;
+        
         private List<Platform> leftWalls;
         private List<Platform> rightWalls;
 
@@ -99,6 +95,7 @@ namespace Purpose
         private GameTime gameTime;
         private PresetWaves presetWaves;
         private TextureManager textureManager;
+        private PlatformManager platformManager;
 
         //temporary stuff
         private Texture2D background;
@@ -108,6 +105,7 @@ namespace Purpose
         private SpriteFont comicSans24;
         private SpriteFont agency30;
         private Random rng;
+        private Vector2 waveIndicator;
 
         private bool editedGame;
 
@@ -155,8 +153,9 @@ namespace Purpose
             worldTopHeight = -1500;
             worldBottomHeight = 1000;
 
-            // Initialize gameTime
+            // Initialize gameTime and platformManager
             gameTime = new GameTime();
+            platformManager = new PlatformManager();
 
             editedGame = false;
         }
@@ -218,47 +217,12 @@ namespace Purpose
             dashDistanceUpButton = new GameObject(textureManager.RoundedFrame, new Rectangle(620, 680, 118, 118));
 
             // Makes platforms & walls
-            bottomPlatforms = new List<Platform>();
-            totalPlatforms = new List<Platform>();
-            firstLevelPlatforms = new List<Platform>();
-            secondLevelPlatforms = new List<Platform>();
+            platformManager.MakePlatforms(WaveNumber.One, GraphicsDevice, textureManager);
             leftWalls = new List<Platform>();
             rightWalls = new List<Platform>();
 
-            // Base platforms
-            for (int i = 0; i > -3000; i -= 100)
-            {
-                bottomPlatforms.Add(new Platform(new Rectangle(i, GraphicsDevice.Viewport.Height - 100, 100, 100), textureManager.BasePlatform));
-                totalPlatforms.Add(new Platform(new Rectangle(i, GraphicsDevice.Viewport.Height - 100, 100, 100), textureManager.BasePlatform));
-            }
-            for (int i = 0; i < 3000; i += 100)
-            {
-                bottomPlatforms.Add(new Platform(new Rectangle(i, GraphicsDevice.Viewport.Height - 100, 100, 100), textureManager.BasePlatform));
-                totalPlatforms.Add(new Platform(new Rectangle(i, GraphicsDevice.Viewport.Height - 100, 100, 100), textureManager.BasePlatform));
-            }
-            // First level platforms
-            for (int i = -1250; i > -3000; i -= 100)
-            {
-                firstLevelPlatforms.Add(new Platform(new Rectangle(i, GraphicsDevice.Viewport.Height - 300, 100, 50), textureManager.NotBasePlatform));
-                totalPlatforms.Add(new Platform(new Rectangle(i, GraphicsDevice.Viewport.Height - 300, 100, 50), textureManager.NotBasePlatform));
-            }
-            for (int i = 1250; i < 3000; i += 100)
-            {
-                firstLevelPlatforms.Add(new Platform(new Rectangle(i, GraphicsDevice.Viewport.Height - 300, 100, 50), textureManager.NotBasePlatform));
-                totalPlatforms.Add(new Platform(new Rectangle(i, GraphicsDevice.Viewport.Height - 300, 100, 50), textureManager.NotBasePlatform));
-            }
+            
 
-            // Second level platforms
-            for (int i = -175; i > -1100; i -= 100)
-            {
-                secondLevelPlatforms.Add(new Platform(new Rectangle(i, GraphicsDevice.Viewport.Height - 500, 100, 50), textureManager.NotBasePlatform));
-                totalPlatforms.Add(new Platform(new Rectangle(i, GraphicsDevice.Viewport.Height - 500, 100, 50), textureManager.NotBasePlatform));
-            }
-            for (int i = 175; i < 1100; i += 100)
-            {
-                secondLevelPlatforms.Add(new Platform(new Rectangle(i, GraphicsDevice.Viewport.Height - 500, 100, 50), textureManager.NotBasePlatform));
-                totalPlatforms.Add(new Platform(new Rectangle(i, GraphicsDevice.Viewport.Height - 500, 100, 50), textureManager.NotBasePlatform));
-            }
 
             // Walls
             for (int i = -1500;i <= GraphicsDevice.Viewport.Height; i += 100)
@@ -272,8 +236,8 @@ namespace Purpose
 
             // Makes player, gameManager object and fills enemy list
             background = textureManager.MetalBack;
-            player = new Player("Dude", new Rectangle(0, bottomPlatforms[1].Y - 352, 139, 352), textureManager, gameTime);
-            gameManager = new GameManager(player, totalPlatforms, bottomPlatforms, firstLevelPlatforms, leftWalls, rightWalls, GraphicsDevice, textureManager);
+            player = new Player("Dude", new Rectangle(0, platformManager.BottomPlatforms[1].Y - 352, 139, 352), textureManager, gameTime);
+            gameManager = new GameManager(player, platformManager.TotalPlatforms, leftWalls, rightWalls, GraphicsDevice, textureManager);
             //wave = new Wave(gameManager, game1 = new Game1());
 
             gameManager.GameState = GameState.Menu;
@@ -448,7 +412,7 @@ namespace Purpose
                     }
 
                     // Platforms
-                    foreach (Platform p in totalPlatforms)
+                    foreach (Platform p in platformManager.TotalPlatforms)
                     {
                         spriteBatch.Draw(p.Texture, p.Position, Color.White);
                     }
@@ -468,6 +432,8 @@ namespace Purpose
                         Color.White);
                     spriteBatch.DrawString(agency30,gameManager.Player.Health.ToString(),healthBar,Color.Red);
                     spriteBatch.DrawString(agency30, gameManager.Player.Stamina.ToString(), staminaBar, Color.Green);
+
+                    spriteBatch.DrawString(agency30,"Wave: " + gameManager.WaveNumber.ToString(), waveIndicator, Color.Red);
 
                     foreach (Enemy e in gameManager.Enemies)
                     {
@@ -492,7 +458,7 @@ namespace Purpose
                     }
 
                     // Platforms
-                    foreach (Platform p in totalPlatforms)
+                    foreach (Platform p in platformManager.TotalPlatforms)
                     {
                         spriteBatch.Draw(p.Texture, p.Position, Color.White);
                     }
@@ -510,15 +476,17 @@ namespace Purpose
                     // Player
                     spriteBatch.Draw(gameManager.Player.Texture, new Rectangle(gameManager.Player.X, gameManager.Player.Y, player.Position.Width, player.Position.Height),
                         Color.White);
-                    spriteBatch.DrawString(agency30,gameManager.Player.Health.ToString(),healthBar,Color.Red);
+                    spriteBatch.DrawString(agency30, gameManager.Player.Health.ToString(), healthBar, Color.Red);
                     spriteBatch.DrawString(agency30, gameManager.Player.Stamina.ToString(), staminaBar, Color.Green);
+
+                    spriteBatch.DrawString(agency30, "Wave: " + gameManager.WaveNumber.ToString(), waveIndicator, Color.Red);
 
                     foreach (Enemy e in gameManager.Enemies)
                     {
-                            spriteBatch.Draw(e.Texture, e.Position, e.Color);
-                        
+                        spriteBatch.Draw(e.Texture, e.Position, e.Color);
+
                         // Drawing bullet bois
-                        if(e.HasBullet)
+                        if (e.HasBullet)
                         {
                             spriteBatch.Draw(e.Texture, e.Bullet, Color.White);
                         }
@@ -669,11 +637,11 @@ namespace Purpose
                     //Reset Game
                     if (editedGame)
                     {
-                        gameManager.ResetOnPlayerDeathEdited(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture);
+                        gameManager.ResetOnPlayerDeathEdited(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture, platformManager);
                     }
                     else
                     {
-                        gameManager.ResetOnPlayerDeathPreset(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture);
+                        gameManager.ResetOnPlayerDeathPreset(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture, platformManager);
                     }
                     break;
 
@@ -685,6 +653,11 @@ namespace Purpose
 
                     healthBar = new Vector2(player.Position.X, player.Position.Y + 30);
                     staminaBar = new Vector2(player.Position.X + player.Position.Width, player.Position.Y + 30);
+
+                    //Used to Indicate and let the player know what wave they are on
+                    waveIndicator = new Vector2(player.Position.X - 1250, player.Position.Y - 1000);
+
+
                     // Stuff for moving player and enemy, as well as player attack
                     ms = Mouse.GetState();
                     gameManager.PlayerMove(kbState, previouskbState, ms, previousMs, camera, gameTime);
@@ -782,13 +755,18 @@ namespace Purpose
                     break;
 
                 case GameState.EditorGame:
-
-                    camera.MinimumZoom = 0.5f;
+                    //arenaManagerCounter = 0;
+                    camera.MinimumZoom = 0.1f;
                     camera.MaximumZoom = 1.0f;
                     camera.Zoom = 0.5f;
 
                     healthBar = new Vector2(player.Position.X, player.Position.Y + 30);
                     staminaBar = new Vector2(player.Position.X + player.Position.Width, player.Position.Y + 30);
+
+                    //Used to Indicate and let the player know what wave they are on
+                    waveIndicator = new Vector2(player.Position.X - 1250, player.Position.Y - 1000);
+
+
                     // Stuff for moving player and enemy, as well as player attack
                     ms = Mouse.GetState();
                     gameManager.PlayerMove(kbState, previouskbState, ms, previousMs, camera, gameTime);
@@ -804,6 +782,7 @@ namespace Purpose
                         gameManager.GameState = GameState.GameOver;
                     }
 
+                    //When all enemies are dead calls in the next wave method
                     if (gameManager.Enemies.Count == 0)
                     {
                         if (gameManager.WaveNumber == WaveNumber.One)
@@ -830,6 +809,7 @@ namespace Purpose
                         {
                             gameManager.GameState = GameState.GameOver;
                         }
+                        
                     }
                     break;
 
@@ -887,11 +867,11 @@ namespace Purpose
                     //Reset Game
                     if (editedGame)
                     {
-                        gameManager.ResetForNextWaveEdited(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture, waveNumber);
+                        gameManager.ResetForNextWaveEdited(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture, waveNumber, platformManager);
                     }
                     else
                     {
-                        gameManager.ResetForNextWavePreset(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture, waveNumber);
+                        gameManager.ResetForNextWavePreset(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture, waveNumber, platformManager);
                     }
 
                     if (goOnButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released && editedGame)
@@ -921,5 +901,11 @@ namespace Purpose
                     break;
             }
         }
+
+        public void WaveDisplay(int waveNumber)
+        {
+            
+        }
+        
     }
 }

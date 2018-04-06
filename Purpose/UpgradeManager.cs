@@ -117,7 +117,7 @@ namespace Purpose
                 }
                 else if (stealthTier >= 3)
                 {
-                    dashDistance += 15;
+                    dashDistance += 20;
                 }
                 upgradePoints--;
                 return dashDistance;

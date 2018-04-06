@@ -23,8 +23,6 @@ namespace Purpose
         private List<Enemy> enemies;
         private Player player;
         private List<Platform> platforms;
-        private List<Platform> basePlatforms;
-        private List<Platform> firstLevelPlatforms;
         private List<Platform> leftWalls;
         private List<Platform> rightWalls;
         private bool isCrouching;
@@ -107,13 +105,11 @@ namespace Purpose
         public WaveNumber WaveNumber { get { return waveNumber; } set { waveNumber = value; } }
 
         //constructor
-        public GameManager(Player player, List<Platform> platforms, List<Platform> basePlatforms, List<Platform> firstLevelPlatforms, List<Platform> leftWalls, List<Platform> rightWalls, GraphicsDevice graphicsDevice,
+        public GameManager(Player player, List<Platform> platforms, List<Platform> leftWalls, List<Platform> rightWalls, GraphicsDevice graphicsDevice,
             TextureManager textureManager)
         {
             this.player = player;
             this.platforms = platforms;
-            this.basePlatforms = basePlatforms;
-            this.firstLevelPlatforms = firstLevelPlatforms;
             this.leftWalls = leftWalls;
             this.rightWalls = rightWalls;
             isCrouching = false;
@@ -717,7 +713,8 @@ namespace Purpose
         /// <summary>
         /// Resets game to beginning
         /// </summary>
-        public void ResetOnPlayerDeathEdited(Camera2D camera, Random rng, int worldLeftEndWidth, int worldRightEndWidth, GameTime gameTime, Texture2D tempTexture)
+        public void ResetOnPlayerDeathEdited(Camera2D camera, Random rng, int worldLeftEndWidth, int worldRightEndWidth, GameTime gameTime, 
+            Texture2D tempTexture, PlatformManager platformManager)
         {
             player.Health = 100;
             player.HealthMax = player.Health;
@@ -730,9 +727,12 @@ namespace Purpose
             FillEnemyList(rng, editedWaves[0].NumberOfMelee, editedWaves[0].Difficulty, worldLeftEndWidth, worldRightEndWidth, gameTime);
             FillRangedList(rng, editedWaves[0].NumberOfRanged, editedWaves[0].Difficulty, worldLeftEndWidth, worldRightEndWidth, tempTexture, gameTime);
             player.UgManager.UpgradePoints = 0;
+            platformManager.ClearPlatformLists();
+            platformManager.MakePlatforms(WaveNumber.One, graphicsDevice, textureManager);
         }
 
-        public void ResetForNextWaveEdited(Camera2D camera, Random rng, int worldLeftEndWidth, int worldRightEndWidth, GameTime gameTime, Texture2D tempTexture, int waveNumber)
+        public void ResetForNextWaveEdited(Camera2D camera, Random rng, int worldLeftEndWidth, int worldRightEndWidth, GameTime gameTime, Texture2D tempTexture, 
+            int waveNumber, PlatformManager platformManager)
         {
             camera.Zoom = 1.0f;
             player.X = 225;
@@ -742,9 +742,12 @@ namespace Purpose
             FillEnemyList(rng, editedWaves[waveNumber].NumberOfMelee, editedWaves[waveNumber].Difficulty, worldLeftEndWidth, worldRightEndWidth, gameTime);
             FillRangedList(rng, editedWaves[waveNumber].NumberOfRanged, editedWaves[waveNumber].Difficulty, worldLeftEndWidth, worldRightEndWidth,
                 tempTexture, gameTime);
+            platformManager.ClearPlatformLists();
+            platformManager.MakePlatforms(this.waveNumber, graphicsDevice, textureManager);
         }
 
-        public void ResetOnPlayerDeathPreset(Camera2D camera, Random rng, int worldLeftEndWidth, int worldRightEndWidth, GameTime gameTime, Texture2D tempTexture)
+        public void ResetOnPlayerDeathPreset(Camera2D camera, Random rng, int worldLeftEndWidth, int worldRightEndWidth, GameTime gameTime, 
+            Texture2D tempTexture, PlatformManager platformManager)
         {
             player.Health = 100;
             player.HealthMax = player.Health;
@@ -753,13 +756,18 @@ namespace Purpose
             player.X = 225;
             player.Y = 225;
             isCrouching = false;
+            player.UgManager.DashActive = false;
+            player.UgManager.GroundPoundActive = false;
             enemies.Clear();
             FillEnemyList(rng, presetWaves[0].NumberOfMelee, presetWaves[0].Difficulty, worldLeftEndWidth, worldRightEndWidth, gameTime);
             FillRangedList(rng, presetWaves[0].NumberOfRanged, presetWaves[0].Difficulty, worldLeftEndWidth, worldRightEndWidth, tempTexture, gameTime);
             player.UgManager.UpgradePoints = 0;
+            platformManager.ClearPlatformLists();
+            platformManager.MakePlatforms(WaveNumber.One, graphicsDevice, textureManager);
         }
 
-        public void ResetForNextWavePreset(Camera2D camera, Random rng, int worldLeftEndWidth, int worldRightEndWidth, GameTime gameTime, Texture2D tempTexture, int waveNumber)
+        public void ResetForNextWavePreset(Camera2D camera, Random rng, int worldLeftEndWidth, int worldRightEndWidth, GameTime gameTime, Texture2D tempTexture, 
+            int waveNumber, PlatformManager platformManager)
         {
             camera.Zoom = 1.0f;
             player.X = 225;
@@ -769,6 +777,8 @@ namespace Purpose
             FillEnemyList(rng, presetWaves[waveNumber].NumberOfMelee, presetWaves[waveNumber].Difficulty, worldLeftEndWidth, worldRightEndWidth, gameTime);
             FillRangedList(rng, presetWaves[waveNumber].NumberOfRanged, presetWaves[waveNumber].Difficulty, worldLeftEndWidth, worldRightEndWidth,
                 tempTexture, gameTime);
+            platformManager.ClearPlatformLists();
+            platformManager.MakePlatforms(this.WaveNumber, graphicsDevice, textureManager);
         }
     }
 }
