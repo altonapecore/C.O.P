@@ -42,10 +42,6 @@ namespace Purpose
         private Color color;
         private int velocity;
 
-        // Temp field for attacking
-        private bool isAttacking;
-
-
         // Properties
         public bool Ranged
         {
@@ -113,9 +109,6 @@ namespace Purpose
             get { return velocity; }
             set { velocity = value; }
         }
-
-        // Temp property for attacking
-        public bool IsAttacking { get { return isAttacking; } }
 
         // Normal stuff below
         public float AttackTime { get { return meleeAttackTimer; } set { meleeAttackTimer = value; } }

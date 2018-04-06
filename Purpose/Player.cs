@@ -165,7 +165,6 @@ namespace Purpose
                 }
                 return true;
             }
-
         }
 
         /// <summary>
@@ -175,7 +174,7 @@ namespace Purpose
         public void GroundPound(List<Enemy> enemies)
         {
             Rectangle groundPoundArea = new Rectangle(position.X-200, (position.Y + position.Height-20), 500, 20);
-            if (ugManager.GroundPoundActive)
+            if (ugManager.GroundPoundActive && stamina >= 40)
             {
                 for (int i = 0; i < enemies.Count; i++)
                 {
@@ -196,17 +195,20 @@ namespace Purpose
 
         public void Dash()
         {
-            if (texture == textureManager.RightStandingSprite || texture == textureManager.RightRunningSprite
-                || texture == textureManager.RightCrouchSprite) //dash to the right
+            if (ugManager.DashActive && stamina >= 20)
             {
-                X += dashDistance;
+                if (texture == textureManager.RightStandingSprite || texture == textureManager.RightRunningSprite
+                    || texture == textureManager.RightCrouchSprite) //dash to the right
+                {
+                    X += dashDistance;
+                }
+                else if (texture == textureManager.LeftStandingSprite || texture == textureManager.LeftRunningSprite
+                    || texture == textureManager.LeftCrouchSprite) //dash to the left
+                {
+                    X -= dashDistance;
+                }
+                stamina -= 20;
             }
-            else if (texture == textureManager.LeftStandingSprite || texture == textureManager.LeftRunningSprite
-                || texture == textureManager.LeftCrouchSprite) //dash to the left
-            {
-                X -= dashDistance;
-            }
-            stamina -= 20;
         }
     }
 }
