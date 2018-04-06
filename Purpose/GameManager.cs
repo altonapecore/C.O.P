@@ -756,6 +756,8 @@ namespace Purpose
             player.X = 225;
             player.Y = 225;
             isCrouching = false;
+            player.UgManager.DashActive = false;
+            player.UgManager.GroundPoundActive = false;
             enemies.Clear();
             FillEnemyList(rng, presetWaves[0].NumberOfMelee, presetWaves[0].Difficulty, worldLeftEndWidth, worldRightEndWidth, gameTime);
             FillRangedList(rng, presetWaves[0].NumberOfRanged, presetWaves[0].Difficulty, worldLeftEndWidth, worldRightEndWidth, tempTexture, gameTime);

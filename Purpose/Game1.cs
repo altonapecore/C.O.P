@@ -46,7 +46,6 @@ namespace Purpose
     {
         Menu,
         Game,
-        EditorGame,
         Pause,
         UpgradeMenu,
         NextWave,
@@ -105,6 +104,7 @@ namespace Purpose
         private SpriteFont comicSans24;
         private SpriteFont agency30;
         private Random rng;
+        private Vector2 waveIndicator;
 
         private bool editedGame;
 
@@ -240,13 +240,11 @@ namespace Purpose
             //wave = new Wave(gameManager, game1 = new Game1());
 
             gameManager.GameState = GameState.Menu;
-            //arenaWindow.ShowDialog(); //Loads arenaWindow here to allow User to change settings of level, enemies, and background
-
 
             //Initializing Reader
-            reader = new Reader(gameManager);
+            //reader = new Reader(gameManager);
             //Runs the Reader method to vcreate enemies needed
-            reader.ReadEditor();
+            //reader.ReadEditor();
 
             //Intializing the PresetWaves
             presetWaves = new PresetWaves(gameManager);
@@ -438,27 +436,7 @@ namespace Purpose
                     spriteBatch.DrawString(agency30,gameManager.Player.Health.ToString(),healthBar,Color.Red);
                     spriteBatch.DrawString(agency30, gameManager.Player.Stamina.ToString(), staminaBar, Color.Green);
 
-                    foreach (Enemy e in gameManager.Enemies)
-                    {
-                            spriteBatch.Draw(e.Texture, e.Position, e.Color);
-                        
-                        // Drawing bullet bois
-                        if(e.HasBullet)
-                        {
-                            spriteBatch.Draw(e.Texture, e.Bullet, Color.White);
-                        }
-                    }
-                    break;
-
-                case GameState.EditorGame:
-                                        // Background
-                    for (int x = worldLeftEndWidth; x < worldRightEndWidth; x += background.Width)
-                    {
-                        for (int y = worldTopHeight; y < worldBottomHeight; y += background.Height)
-                        {
-                            spriteBatch.Draw(background, new Rectangle(x, y, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
-                        }
-                    }
+                    spriteBatch.DrawString(agency30,"Wave: " + gameManager.WaveNumber.ToString(), waveIndicator, Color.Red);
 
                     // Platforms
                     foreach (Platform p in platformManager.TotalPlatforms)
@@ -631,6 +609,7 @@ namespace Purpose
 
                     if (presetGameButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
                     {
+                        gameManager.ResetOnPlayerDeath(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture);
                         gameManager.GameState = GameState.Game;
                         editedGame = false;
                     }
@@ -654,6 +633,11 @@ namespace Purpose
 
                     healthBar = new Vector2(player.Position.X, player.Position.Y + 30);
                     staminaBar = new Vector2(player.Position.X + player.Position.Width, player.Position.Y + 30);
+
+                    //Used to Indicate and let the player know what wave they are on
+                    waveIndicator = new Vector2(player.Position.X - 1250, player.Position.Y - 1000);
+
+
                     // Stuff for moving player and enemy, as well as player attack
                     ms = Mouse.GetState();
                     gameManager.PlayerMove(kbState, previouskbState, ms, previousMs, camera, gameTime);
@@ -750,58 +734,6 @@ namespace Purpose
                     }
                     break;
 
-                case GameState.EditorGame:
-
-                    camera.MinimumZoom = 0.5f;
-                    camera.MaximumZoom = 1.0f;
-                    camera.Zoom = 0.5f;
-
-                    healthBar = new Vector2(player.Position.X, player.Position.Y + 30);
-                    staminaBar = new Vector2(player.Position.X + player.Position.Width, player.Position.Y + 30);
-                    // Stuff for moving player and enemy, as well as player attack
-                    ms = Mouse.GetState();
-                    gameManager.PlayerMove(kbState, previouskbState, ms, previousMs, camera, gameTime);
-
-                    gameManager.EnemyMove(gameTime);
-                    if (kbState.IsKeyDown(Keys.P))
-                    {
-                        gameManager.GameState = GameState.Pause;
-                    }
-
-                    if (player.IsDead || player.Y >= GraphicsDevice.Viewport.Height)
-                    {
-                        gameManager.GameState = GameState.GameOver;
-                    }
-
-                    if (gameManager.Enemies.Count == 0)
-                    {
-                        if (gameManager.WaveNumber == WaveNumber.One)
-                        {
-                            gameManager.WaveNumber = WaveNumber.Two;
-                            gameManager.GameState = GameState.NextWave;
-                        }
-                        else if (gameManager.WaveNumber == WaveNumber.Two)
-                        {
-                            gameManager.WaveNumber = WaveNumber.Three;
-                            gameManager.GameState = GameState.NextWave;
-                        }
-                        else if (gameManager.WaveNumber == WaveNumber.Three)
-                        {
-                            gameManager.WaveNumber = WaveNumber.Four;
-                            gameManager.GameState = GameState.NextWave;
-                        }
-                        else if (gameManager.WaveNumber == WaveNumber.Four)
-                        {
-                            gameManager.WaveNumber = WaveNumber.Five;
-                            gameManager.GameState = GameState.NextWave;
-                        }
-                        else if (gameManager.WaveNumber == WaveNumber.Five)
-                        {
-                            gameManager.GameState = GameState.GameOver;
-                        }
-                    }
-                    break;
-
                 case GameState.Pause:
                     camera.Zoom = 1.0f;
                     camera.Position = new Vector2(0, 0);
@@ -890,5 +822,11 @@ namespace Purpose
                     break;
             }
         }
+
+        public void WaveDisplay(int waveNumber)
+        {
+            
+        }
+        
     }
 }
