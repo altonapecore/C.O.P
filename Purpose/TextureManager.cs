@@ -44,6 +44,7 @@ namespace Purpose
         private Texture2D pauseScreen;
         private Texture2D nextWaveScreen;
         private Texture2D gameOver;
+        private Texture2D controlScreen;
 
         private Texture2D basePlatform;
         private Texture2D notBasePlatform;
@@ -82,6 +83,7 @@ namespace Purpose
         public Texture2D PauseScreen { get { return pauseScreen; } }
         public Texture2D NextWaveScreen { get { return nextWaveScreen; } }
         public Texture2D GameOver { get { return gameOver; } }
+        public Texture2D ControlScreen { get { return controlScreen; } }
 
         public Texture2D BasePlatform { get { return basePlatform; } }
         public Texture2D NotBasePlatform { get { return notBasePlatform; } }
@@ -90,9 +92,9 @@ namespace Purpose
         public TextureManager(Texture2D leftCrouchSprite, Texture2D rightCrouchSprite, Texture2D leftStandingSprite,
             Texture2D rightStandingSprite, Texture2D leftMiddleRunningSprite, Texture2D rightMiddleRunningSprite,
             Texture2D leftRunningSprite, Texture2D rightRunningSprite, Texture2D rightPlayerAttack1, Texture2D leftPlayerAttack1, Texture2D rightPlayerAttack2, Texture2D leftPlayerAttack2,
-            Texture2D rightEnemyWalk1, Texture2D rightEnemyWalk2, Texture2D rightEnemyWalk3, Texture2D leftEnemyWalk1, Texture2D leftEnemyWalk2, Texture2D leftEnemyWalk3, 
-            Texture2D rangedEnemyTexture, Texture2D whiteBack, Texture2D rustyBack, Texture2D metalBack, Texture2D startScreen, Texture2D buttonFrame, Texture2D roundedFrame, 
-            Texture2D upgradeScreen, Texture2D pauseScreen, Texture2D nextWaveScreen, Texture2D gameOver, Texture2D basePlatform, Texture2D notBasePlatform)
+            Texture2D rightEnemyWalk1, Texture2D rightEnemyWalk2, Texture2D rightEnemyWalk3, Texture2D leftEnemyWalk1, Texture2D leftEnemyWalk2, Texture2D leftEnemyWalk3,
+            Texture2D rangedEnemyTexture, Texture2D whiteBack, Texture2D rustyBack, Texture2D metalBack, Texture2D startScreen, Texture2D buttonFrame, Texture2D roundedFrame,
+            Texture2D upgradeScreen, Texture2D pauseScreen, Texture2D nextWaveScreen, Texture2D gameOver, Texture2D controlScreen, Texture2D basePlatform, Texture2D notBasePlatform)
         {
             this.rightCrouchSprite = rightCrouchSprite;
             this.leftCrouchSprite = leftCrouchSprite;
@@ -128,6 +130,7 @@ namespace Purpose
             this.pauseScreen = pauseScreen;
             this.nextWaveScreen = nextWaveScreen;
             this.gameOver = gameOver;
+            this.controlScreen = controlScreen;
 
             this.basePlatform = basePlatform;
             this.notBasePlatform = notBasePlatform;

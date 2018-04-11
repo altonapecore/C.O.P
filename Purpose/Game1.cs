@@ -15,7 +15,7 @@ namespace Purpose
     /// Vansh is here
     /// </summary>
 
-    //Enums
+    #region Enums
     public enum Level
     {
         One,
@@ -45,15 +45,19 @@ namespace Purpose
     public enum GameState
     {
         Menu,
-        Game,
+        Controls,
+        PresetGame,
         EditorGame,
         Pause,
         UpgradeMenu,
         NextWave,
         GameOver
     }
+#endregion
+
     public class Game1 : Game
     {
+        #region Fields
         //Fields for MonoGame
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
@@ -76,6 +80,7 @@ namespace Purpose
         //Fields for Buttons/GameObjects
         private GameObject editedGameButton;
         private GameObject presetGameButton;
+        private GameObject toGameButton;
         private GameObject returnToNewWaveButton;
         private GameObject groundPoundButton;
         private GameObject attackUpButton;
@@ -108,8 +113,9 @@ namespace Purpose
         private Vector2 waveIndicator;
 
         private bool editedGame;
+        #endregion
 
-        //properties
+        #region Properties
         public Random Rng
         {
             get { return rng; }
@@ -133,7 +139,9 @@ namespace Purpose
             get { return gameTime; }
             set { gameTime = value; }
         }
+        #endregion
 
+        #region Constructor
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -159,6 +167,7 @@ namespace Purpose
 
             editedGame = false;
         }
+#endregion
 
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
@@ -198,11 +207,12 @@ namespace Purpose
                 Content.Load<Texture2D>("RightEnemyWalk1"), Content.Load<Texture2D>("RightEnemyWalk2"), Content.Load<Texture2D>("RightEnemyWalk3"),
                 Content.Load<Texture2D>("LeftEnemyWalk1"), Content.Load<Texture2D>("LeftEnemyWalk2"), Content.Load<Texture2D>("LeftEnemyWalk3"), tempTexture,
                 Content.Load<Texture2D>("whiteback"), Content.Load<Texture2D>("rustyback"), Content.Load<Texture2D>("metalback"), Content.Load<Texture2D>("StartMenu"), Content.Load<Texture2D>("buttonFrame2"), Content.Load<Texture2D>("roundedFrame"),
-                Content.Load<Texture2D>("UpgradeUI"), Content.Load<Texture2D>("PauseMenu"), Content.Load<Texture2D>("NextWaveMenu"), Content.Load<Texture2D>("GameOver"), Content.Load<Texture2D>("PlatformTest"), Content.Load<Texture2D>("PlatformTest2"));
+                Content.Load<Texture2D>("UpgradeUI"), Content.Load<Texture2D>("PauseMenu"), Content.Load<Texture2D>("NextWaveMenu"), Content.Load<Texture2D>("GameOver"), Content.Load<Texture2D>("Controls"), Content.Load<Texture2D>("PlatformTest"), Content.Load<Texture2D>("PlatformTest2"));
 
 
             editedGameButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 335, 349, 155));
-            presetGameButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 635, 349, 155));
+            presetGameButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 565, 349, 155));
+            toGameButton = new GameObject(textureManager.ButtonFrame, new Rectangle(965, 668, 349, 155));
             returnToNewWaveButton = new GameObject(textureManager.ButtonFrame, new Rectangle(10,340,242,109));
             returnToGameButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 280, 349, 160));
             goOnButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 272, 349, 160));
@@ -401,7 +411,19 @@ namespace Purpose
                     }
                     break;
 
-                case GameState.Game:
+                case GameState.Controls:
+                    spriteBatch.Draw(textureManager.ControlScreen, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
+                    if (toGameButton.Intersects(ms.Position))
+                    {
+                        spriteBatch.Draw(toGameButton.Texture, toGameButton.Position, Color.Black);
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(toGameButton.Texture, toGameButton.Position, Color.White);
+                    }
+                    break;
+
+                case GameState.PresetGame:
                     // Background
                     for (int x = worldLeftEndWidth; x < worldRightEndWidth; x += background.Width)
                     {
@@ -624,13 +646,13 @@ namespace Purpose
                 case GameState.Menu:
                     if (editedGameButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
                     {
-                        gameManager.GameState = GameState.EditorGame;
+                        gameManager.GameState = GameState.Controls;
                         editedGame = true;
                     }
 
                     if (presetGameButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
                     {
-                        gameManager.GameState = GameState.Game;
+                        gameManager.GameState = GameState.Controls;
                         editedGame = false;
                     }
 
@@ -645,7 +667,21 @@ namespace Purpose
                     }
                     break;
 
-                case GameState.Game:
+                case GameState.Controls:
+                    if (toGameButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
+                    {
+                        if (editedGame)
+                        {
+                            gameManager.GameState = GameState.EditorGame;
+                        }
+                        else
+                        {
+                            gameManager.GameState = GameState.PresetGame;
+                        }
+                    }
+                    break;
+
+                case GameState.PresetGame:
                     //arenaManagerCounter = 0;
                     camera.MinimumZoom = 0.1f;
                     camera.MaximumZoom = 1.0f;
@@ -819,7 +855,7 @@ namespace Purpose
 
                     if (returnToGameButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed)
                     {
-                        gameManager.GameState = GameState.Game;
+                        gameManager.GameState = GameState.PresetGame;
                     }
                     else if (upgradesButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed)
                     {
@@ -880,7 +916,7 @@ namespace Purpose
                     }
                     else if (goOnButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released && !editedGame)
                     {
-                        gameManager.GameState = GameState.Game;
+                        gameManager.GameState = GameState.PresetGame;
                     }
                     else if (upgradesButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
                     {
