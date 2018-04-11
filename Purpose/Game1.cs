@@ -12,7 +12,7 @@ namespace Purpose
     /// It's ya boy, Alex
     /// Nicholas needs a medic
     /// Overlord Trent has arrived.
-    /// Vansh is here
+    /// Vansh is (no longer) here
     /// </summary>
 
     //Enums
