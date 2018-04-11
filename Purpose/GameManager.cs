@@ -11,15 +11,9 @@ using System.Threading;
 
 namespace Purpose
 {
-    public enum Background
-    {
-        WhiteBackground,
-        MetalBackground,
-        RustBackground
-    }
     public class GameManager
     {
-        //fields
+        #region Fields
         private List<Enemy> enemies;
         private Player player;
         private List<Platform> platforms;
@@ -29,7 +23,6 @@ namespace Purpose
         private GraphicsDevice graphicsDevice;
         private GameState gameState;
         private Texture2D background;
-        private Background backgroundSelection;
         private int enemyJumpNum;
         private WaveNumber waveNumber;
         private int gravity = -2;
@@ -48,8 +41,9 @@ namespace Purpose
         int staminaFrameCounter;
 
         bool jumping;
+        #endregion
 
-        //properties
+        #region Properties
         public List<Enemy> Enemies { get { return enemies; } }
         public Player Player { get { return player; } }
         public List<Platform> Platforms { get { return platforms; } }
@@ -70,12 +64,6 @@ namespace Purpose
         {
             get { return background; }
             set { background = value; }
-        }
-
-        public Background BackgroundSelection
-        {
-            get { return backgroundSelection; }
-            set { backgroundSelection = value; }
         }
 
         public List<Wave> EditedWaves
@@ -103,6 +91,7 @@ namespace Purpose
         }
 
         public WaveNumber WaveNumber { get { return waveNumber; } set { waveNumber = value; } }
+        #endregion
 
         //constructor
         public GameManager(Player player, List<Platform> platforms, List<Platform> leftWalls, List<Platform> rightWalls, GraphicsDevice graphicsDevice,
@@ -115,7 +104,6 @@ namespace Purpose
             isCrouching = false;
             enemies = new List<Enemy>();
             this.graphicsDevice = graphicsDevice;
-            backgroundSelection = Purpose.Background.WhiteBackground;
             this.textureManager = textureManager;
             editedWaves = new List<Wave>();
             presetWaves = new List<Wave>();
@@ -137,6 +125,7 @@ namespace Purpose
         /// <param name="previousMs">The previous mouse state</param>
         public void PlayerMove(KeyboardState kbState, KeyboardState previouskbState, MouseState ms, MouseState previousMs, Camera2D camera, GameTime gameTime)
         {
+            #region Health and Stamina Regen
             if (player.Stamina < player.StaminaMax && staminaFrameCounter >= 20)
             {
                 player.Stamina += 1;
@@ -153,7 +142,7 @@ namespace Purpose
 
                 //Makes sure health doesn't regen more then it should
                 //Some cases health would end at 101 if health was odd
-                if(player.Health > player.HealthMax)
+                if (player.Health > player.HealthMax)
                 {
                     //If it goes past the max health
                     //Puts health back to max
@@ -164,7 +153,9 @@ namespace Purpose
             {
                 healthFrameCounter++;
             }
+#endregion
 
+            #region Platform Collisions
             bool onPlatform = false;
 
             if (player.Velocity > 0)
@@ -205,8 +196,9 @@ namespace Purpose
                     player.X = w.Position.X - player.Position.Width;
                 }
             }
+#endregion
 
-            //attack animation
+            #region Attack Animation
             if (player.Texture == textureManager.LeftPlayerAttack1)
             {
                 frameCounter++;
@@ -247,7 +239,9 @@ namespace Purpose
                 }
                 else { return; }
             }
+            #endregion
 
+            #region Keyboard and Mouse Input
             //checking keyboard state to make the player move
             if (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left)) //move to the left
             {
@@ -357,7 +351,7 @@ namespace Purpose
             if (kbState.IsKeyDown(Keys.Q) && !previouskbState.IsKeyDown(Keys.Q) && !kbState.IsKeyDown(Keys.Space)) //dash
             {
                 player.Dash();
-                camera.LookAt(new Vector2(player.X, player.Y - 250));          
+                camera.LookAt(new Vector2(player.X, player.Y - 250));
             }
             //if (kbState.IsKeyDown(Keys.S) && previouskbState.IsKeyUp(Keys.S) //crouch
             //    && !kbState.IsKeyDown(Keys.Space) && !jumping)
@@ -387,14 +381,14 @@ namespace Purpose
                     {
                         enemies.RemoveAt(i);
                         player.Kills++;
-                        if(player.Kills != 0 && player.Kills % 3 == 0)
+                        if (player.Kills != 0 && player.Kills % 3 == 0)
                         {
                             player.UgManager.UpgradePoints++;
                         }
                     }
                 }
             }
-            if (kbState.IsKeyDown(Keys.E) && previouskbState.IsKeyUp(Keys.E) && player.UgManager.GroundPoundActive && ms.LeftButton == ButtonState.Released 
+            if (kbState.IsKeyDown(Keys.E) && previouskbState.IsKeyUp(Keys.E) && player.UgManager.GroundPoundActive && ms.LeftButton == ButtonState.Released
                 && !isCrouching)
             {
                 if (frameCounter == 3)
@@ -406,6 +400,8 @@ namespace Purpose
                 {
                     frameCounter++;
                 }
+
+                #endregion
             }
         }
 

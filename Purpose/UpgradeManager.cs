@@ -139,12 +139,12 @@ namespace Purpose
 
         public void ActivateGroundPound()
         {
-            if (upgradePoints > 0)
+            if (upgradePoints > 1)
             {
                 if (!groundPoundActive)
                 {
                     groundPoundActive = true;
-                    upgradePoints--;
+                    upgradePoints-=2;
                 }
             }
         }
