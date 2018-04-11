@@ -51,9 +51,10 @@ namespace Purpose
         Pause,
         UpgradeMenu,
         NextWave,
-        GameOver
+        GameOver,
+        YouWin
     }
-#endregion
+    #endregion
 
     public class Game1 : Game
     {
@@ -206,8 +207,9 @@ namespace Purpose
                 Content.Load<Texture2D>("RightPlayerAttackSprite1"), Content.Load<Texture2D>("LeftPlayerAttackSprite1"), Content.Load<Texture2D>("RightPlayerAttackSprite2"), Content.Load<Texture2D>("LeftPlayerAttackSprite2"),
                 Content.Load<Texture2D>("RightEnemyWalk1"), Content.Load<Texture2D>("RightEnemyWalk2"), Content.Load<Texture2D>("RightEnemyWalk3"),
                 Content.Load<Texture2D>("LeftEnemyWalk1"), Content.Load<Texture2D>("LeftEnemyWalk2"), Content.Load<Texture2D>("LeftEnemyWalk3"), tempTexture,
-                Content.Load<Texture2D>("whiteback"), Content.Load<Texture2D>("rustyback"), Content.Load<Texture2D>("metalback"), Content.Load<Texture2D>("StartMenu"), Content.Load<Texture2D>("buttonFrame2"), Content.Load<Texture2D>("roundedFrame"),
-                Content.Load<Texture2D>("UpgradeUI"), Content.Load<Texture2D>("PauseMenu"), Content.Load<Texture2D>("NextWaveMenu"), Content.Load<Texture2D>("GameOver"), Content.Load<Texture2D>("Controls"), Content.Load<Texture2D>("PlatformTest"), Content.Load<Texture2D>("PlatformTest2"));
+                Content.Load<Texture2D>("StartMenu"), Content.Load<Texture2D>("buttonFrame2"), Content.Load<Texture2D>("roundedFrame"),
+                Content.Load<Texture2D>("UpgradeUI"), Content.Load<Texture2D>("PauseMenu"), Content.Load<Texture2D>("NextWaveMenu"), 
+                Content.Load<Texture2D>("GameOver"), Content.Load<Texture2D>("YouWin"), Content.Load<Texture2D>("Controls"), Content.Load<Texture2D>("PlatformTest"), Content.Load<Texture2D>("PlatformTest2"), Content.Load<Texture2D>("metalback"));
 
 
             editedGameButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 335, 349, 155));
@@ -230,9 +232,6 @@ namespace Purpose
             platformManager.MakePlatforms(WaveNumber.One, GraphicsDevice, textureManager);
             leftWalls = new List<Platform>();
             rightWalls = new List<Platform>();
-
-            
-
 
             // Walls
             for (int i = -1500;i <= GraphicsDevice.Viewport.Height; i += 100)
@@ -631,6 +630,18 @@ namespace Purpose
                         spriteBatch.Draw(returnToMenuButton.Texture, returnToMenuButton.Position, Color.White);
                     }
                     break;
+
+                case GameState.YouWin:
+                    spriteBatch.Draw(textureManager.YouWin, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
+                    if (returnToMenuButton.Intersects(ms.Position))
+                    {
+                        spriteBatch.Draw(returnToMenuButton.Texture, returnToMenuButton.Position, Color.Black);
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(returnToMenuButton.Texture, returnToMenuButton.Position, Color.White);
+                    }
+                    break;
             }
 
             spriteBatch.End();
@@ -642,7 +653,7 @@ namespace Purpose
             // GameState finite state machine
             switch (gameManager.GameState)
             {
-
+                #region Menu State
                 case GameState.Menu:
                     if (editedGameButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
                     {
@@ -666,7 +677,9 @@ namespace Purpose
                         gameManager.ResetOnPlayerDeathPreset(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture, platformManager);
                     }
                     break;
+                #endregion
 
+                #region Controls State
                 case GameState.Controls:
                     if (toGameButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
                     {
@@ -680,7 +693,9 @@ namespace Purpose
                         }
                     }
                     break;
+                #endregion
 
+                #region Preset Game State
                 case GameState.PresetGame:
                     //arenaManagerCounter = 0;
                     camera.MinimumZoom = 0.1f;
@@ -784,12 +799,14 @@ namespace Purpose
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Fifteen)
                         {
-                            gameManager.GameState = GameState.GameOver;
+                            gameManager.GameState = GameState.YouWin;
                             break;
                         }
                     }
                     break;
+                #endregion
 
+                #region Editor Game State
                 case GameState.EditorGame:
                     //arenaManagerCounter = 0;
                     camera.MinimumZoom = 0.1f;
@@ -843,12 +860,14 @@ namespace Purpose
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Five)
                         {
-                            gameManager.GameState = GameState.GameOver;
+                            gameManager.GameState = GameState.YouWin;
                         }
                         
                     }
                     break;
+                #endregion
 
+                #region Pause State
                 case GameState.Pause:
                     camera.Zoom = 1.0f;
                     camera.Position = new Vector2(0, 0);
@@ -863,7 +882,9 @@ namespace Purpose
                     }
 
                     break;
+                #endregion
 
+                #region Upgrade State
                 case GameState.UpgradeMenu:
                     if (returnToNewWaveButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed)
                     {
@@ -895,7 +916,9 @@ namespace Purpose
                         gameManager.Player.DashDistance = gameManager.Player.UgManager.DashDistanceUpgrade(gameManager.Player.DashDistance);
                     }
                     break;
+                #endregion
 
+                #region Next Wave State
                 case GameState.NextWave:
                     camera.Zoom = 1.0f;
                     camera.Position = new Vector2(0, 0);
@@ -922,8 +945,10 @@ namespace Purpose
                     {
                         gameManager.GameState = GameState.UpgradeMenu;
                     }
-                    break; 
+                    break;
+                #endregion
 
+                #region Game Over State
                 case GameState.GameOver:
                     camera.Zoom = 1.0f;
                     camera.Position = new Vector2(0, 0);
@@ -935,7 +960,22 @@ namespace Purpose
                         gameManager.GameState = GameState.Menu;
                     }
                     break;
+                #endregion
+
+                #region Win State
+                case GameState.YouWin:
+                    camera.Zoom = 1.0f;
+                    camera.Position = new Vector2(0, 0);
+                    gameManager.WaveNumber = WaveNumber.One;
+
+                    // Press enter to go back to menu
+                    if (returnToMenuButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
+                    {
+                        gameManager.GameState = GameState.Menu;
+                    }
+                    break;
+#endregion
             }
-        }        
+        }
     }
 }
