@@ -150,6 +150,15 @@ namespace Purpose
             {
                 player.Health += 2;
                 healthFrameCounter = 0;
+
+                //Makes sure health doesn't regen more then it should
+                //Some cases health would end at 101 if health was odd
+                if(player.Health > player.HealthMax)
+                {
+                    //If it goes past the max health
+                    //Puts health back to max
+                    player.Health = player.HealthMax;
+                }
             }
             else
             {
