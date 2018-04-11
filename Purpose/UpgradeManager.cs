@@ -49,42 +49,43 @@ namespace Purpose
         }
 
         // Methods
-        public int StaminaUpgrade(int staminaMax)
+        public void StaminaUpgrade(Player player)
         {
             if (upgradePoints > 0)
             {
                 staminaTier++;
                 if (staminaTier < 3)
                 {
-                    staminaMax += 5;
+                    player.StaminaMax += 5;
+                    player.StaminaRegen += 1;
                 }
                 else if (staminaTier > 3)
                 {
-                    staminaMax += 10;
+                    player.StaminaMax += 10;
+                    player.StaminaRegen += 3;
                 }
                 upgradePoints--;
-                return staminaMax;
             }
-            return 0;
         }
 
-        public int HealthUpgrade(int healthMax)
+        public void HealthUpgrade(Player player)
         {
             if (upgradePoints > 0)
             {
                 healthTier++;
                 if (healthTier < 3)
                 {
-                    healthMax += 5;
+                    player.HealthMax += 5;
+                    player.HealthRegen += 1;
+
                 }
                 else if (healthTier >= 3)
                 {
-                    healthMax += 10;
+                    player.HealthMax += 10;
+                    player.HealthRegen += 3;
                 }
                 upgradePoints--;
-                return healthMax;
             }
-            return 0;
         }
 
         public int AttackUpgrade(int damage)

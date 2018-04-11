@@ -880,11 +880,11 @@ namespace Purpose
                     }
                     else if (staminaUpButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
                     {
-                        gameManager.Player.StaminaMax = gameManager.Player.UgManager.StaminaUpgrade(gameManager.Player.StaminaMax);
+                        gameManager.Player.UgManager.StaminaUpgrade(gameManager.Player);
                     }
                     else if (healthUpButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
                     {
-                        gameManager.Player.HealthMax = gameManager.Player.UgManager.HealthUpgrade(gameManager.Player.HealthMax);
+                        gameManager.Player.UgManager.HealthUpgrade(gameManager.Player);
                     }
                     else if (dashButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
                     {
@@ -936,12 +936,6 @@ namespace Purpose
                     }
                     break;
             }
-        }
-
-        public void WaveDisplay(int waveNumber)
-        {
-            
-        }
-        
+        }        
     }
 }
