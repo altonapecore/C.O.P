@@ -22,6 +22,8 @@ namespace Purpose
         private int staminaMax;
         private int velocity;
         private int gameTime;
+        private int healthRegen;
+        private int staminaRegen;
 
         //properties
         public int Kills
@@ -66,6 +68,18 @@ namespace Purpose
             set { velocity = value; }
         }
 
+        public int HealthRegen
+        {
+            get { return healthRegen; }
+            set { healthRegen = value; }
+        }
+
+        public int StaminaRegen
+        {
+            get { return staminaRegen; }
+            set { staminaRegen = value; }
+        }
+
         public UpgradeManager UgManager { get { return ugManager; } }
 
         public int GameTime { get { return gameTime; } }
@@ -85,6 +99,8 @@ namespace Purpose
             damage = 10;
             texture = textureManager.RightStandingSprite;
             kills = 0;
+            healthRegen = 2;
+            staminaRegen = 1;
             this.gameTime = gameTime.TotalGameTime.Milliseconds;
         }
 
@@ -178,7 +194,7 @@ namespace Purpose
             {
                 for (int i = 0; i < enemies.Count; i++)
                 {    
-                        enemies[i].TakeDamage(15);
+                        enemies[i].TakeDamage(20);
                         enemies[i].Y -= 50;                    
 
                     if (enemies[i].IsDead)

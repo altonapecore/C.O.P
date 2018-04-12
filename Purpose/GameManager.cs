@@ -139,8 +139,16 @@ namespace Purpose
             #region Health and Stamina Regen
             if (player.Stamina < player.StaminaMax && staminaFrameCounter >= 20)
             {
-                player.Stamina += 1;
+                player.Stamina += player.StaminaRegen;
                 staminaFrameCounter = 0;
+
+                //Make sure stamina doesn't regen more then needed
+                if(player.Stamina > player.StaminaMax)
+                {
+                    //If it goes past the max
+                    //Puts the stamina to normal
+                    player.Stamina = player.StaminaMax;
+                }
             }
             else
             {
@@ -148,7 +156,7 @@ namespace Purpose
             }
             if (player.Health < player.HealthMax && healthFrameCounter >= 80)
             {
-                player.Health += 2;
+                player.Health += player.HealthRegen;
                 healthFrameCounter = 0;
 
                 //Makes sure health doesn't regen more then it should
@@ -497,10 +505,16 @@ namespace Purpose
         {
             player.Health = 100;
             player.HealthMax = player.Health;
+            player.Stamina = 100;
+            player.StaminaMax = player.Stamina;
             camera.Zoom = 1.0f;
             player.IsDead = false;
-            player.X = 175;
-            player.Y = 175;
+            player.X = 225;
+            player.Y = 225;
+            player.UgManager.UpgradePoints = 0;
+            player.HealthRegen = 2;
+            player.StaminaRegen = 1;
+            player.Damage = 10;
             isCrouching = false;
             player.UgManager.DashActive = false;
             player.UgManager.GroundPoundActive = false;
