@@ -509,8 +509,8 @@ namespace Purpose
             player.StaminaMax = player.Stamina;
             camera.Zoom = 1.0f;
             player.IsDead = false;
-            player.X = 225;
-            player.Y = 225;
+            player.X = 175;
+            player.Y = 175;
             player.UgManager.UpgradePoints = 0;
             player.HealthRegen = 2;
             player.StaminaRegen = 1;
