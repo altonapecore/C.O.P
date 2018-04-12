@@ -22,7 +22,7 @@ namespace Purpose
         //Constructor for the Reader
         public Reader(GameManager gameManager)
         {
-            input = new StreamReader("waveEditor.txt");
+            input = new StreamReader("../../../../Content/waveEditor.txt");
             line = null;
             //wave = new Wave(gameManager, game1);
             this.gameManager = gameManager;
