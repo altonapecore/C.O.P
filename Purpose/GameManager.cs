@@ -14,7 +14,6 @@ namespace Purpose
     public class GameManager
     {
         #region Fields
-        private List<Enemy> enemies;
         private Player player;
         private List<Platform> platforms;
         private List<Platform> leftWalls;
@@ -46,7 +45,6 @@ namespace Purpose
         #endregion
 
         #region Properties
-        public List<Enemy> Enemies { get { return enemies; } }
         public Player Player { get { return player; } }
         public List<Platform> Platforms { get { return platforms; } }
         public bool IsCrouching
