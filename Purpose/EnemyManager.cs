@@ -37,39 +37,182 @@ namespace Purpose
         /// <param name="numberOfEnemies">The number of enemies to spawn in</param>
         /// <param name="graphicsDevice">The graphics device to help limit the enemies' spawn positions</param>
         /// <param name="enemyTexture">The texture of the enemies</param>
-        public void FillEnemyList(Random rng, int numberOfEnemies, int difficulty, int worldLeftEndWidth, int worldRightEndWidth, GameTime gameTime)
+        public void FillEnemyList(Random rng, int numberOfEnemies, int difficulty, int worldLeftEndWidth, int worldRightEndWidth, GameTime gameTime, 
+            PlatformVersion platformVersion)
         {
-            for (int i = 0; i < numberOfEnemies; i++)
+            switch (platformVersion)
             {
-                int choice = rng.Next(1, 5);
-                if (choice == 1)
-                {
-                    Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, 0), graphicsDevice.Viewport.Height - 350, 122, 250),
-                        textureManager.RightEnemyWalk1, difficulty, false, gameTime);
-                    enemies.Add(enemy);
-                }
+                case PlatformVersion.Easy:
+                    for (int i = 0; i < numberOfEnemies; i++)
+                    {
+                        int choice = rng.Next(1, 5);
+                        if (choice == 1)
+                        {
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, 0), graphicsDevice.Viewport.Height - 350, 122, 250),
+                                textureManager.RightEnemyWalk1, difficulty, false, gameTime);
+                            enemies.Add(enemy);
+                        }
 
-                else if (choice == 2)
-                {
-                    Enemy enemy = new Enemy(new Rectangle(rng.Next(0, worldRightEndWidth), graphicsDevice.Viewport.Height - 350, 122, 250),
-                        textureManager.LeftEnemyWalk1, difficulty, false, gameTime);
-                    enemies.Add(enemy);
-                }
+                        else if (choice == 2)
+                        {
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(0, worldRightEndWidth), graphicsDevice.Viewport.Height - 350, 122, 250),
+                                textureManager.LeftEnemyWalk1, difficulty, false, gameTime);
+                            enemies.Add(enemy);
+                        }
 
-                else if (choice == 3)
-                {
-                    Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, -1250), graphicsDevice.Viewport.Height - 550, 122, 250),
-                        textureManager.RightEnemyWalk1, difficulty, false, gameTime);
-                    enemies.Add(enemy);
-                }
+                        else if (choice == 3)
+                        {
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, -1250), graphicsDevice.Viewport.Height - 550, 122, 250),
+                                textureManager.RightEnemyWalk1, difficulty, false, gameTime);
+                            enemies.Add(enemy);
+                        }
 
-                else if (choice == 4)
-                {
-                    Enemy enemy = new Enemy(new Rectangle(rng.Next(1250, worldRightEndWidth), graphicsDevice.Viewport.Height - 550, 122, 250),
-                        textureManager.LeftEnemyWalk1, difficulty, false, gameTime);
-                    enemies.Add(enemy);
-                }
+                        else if (choice == 4)
+                        {
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(1250, worldRightEndWidth), graphicsDevice.Viewport.Height - 550, 122, 250),
+                                textureManager.LeftEnemyWalk1, difficulty, false, gameTime);
+                            enemies.Add(enemy);
+                        }
+                    }
+                    break;
+
+                case PlatformVersion.Medium:
+                    for (int i = 0; i < numberOfEnemies; i++)
+                    {
+                        int choice = rng.Next(1, 5);
+                        if (choice == 1)
+                        {
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, 0), graphicsDevice.Viewport.Height - 350, 122, 250),
+                                textureManager.RightEnemyWalk1, difficulty, false, gameTime);
+                            enemies.Add(enemy);
+                        }
+
+                        else if (choice == 2)
+                        {
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(0, worldRightEndWidth), graphicsDevice.Viewport.Height - 350, 122, 250),
+                                textureManager.LeftEnemyWalk1, difficulty, false, gameTime);
+                            enemies.Add(enemy);
+                        }
+
+                        else if (choice == 3)
+                        {
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, -1250), graphicsDevice.Viewport.Height - 550, 122, 250),
+                                textureManager.RightEnemyWalk1, difficulty, false, gameTime);
+                            enemies.Add(enemy);
+                        }
+
+                        else if (choice == 4)
+                        {
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(1250, worldRightEndWidth), graphicsDevice.Viewport.Height - 550, 122, 250),
+                                textureManager.LeftEnemyWalk1, difficulty, false, gameTime);
+                            enemies.Add(enemy);
+                        }
+                    }
+                    break;
+
+                case PlatformVersion.Hard:
+                    for (int i = 0; i < numberOfEnemies; i++)
+                    {
+                        int choice = rng.Next(1, 5);
+                        if (choice == 1)
+                        {
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, 0), graphicsDevice.Viewport.Height - 350, 122, 250),
+                                textureManager.RightEnemyWalk1, difficulty, false, gameTime);
+                            enemies.Add(enemy);
+                        }
+
+                        else if (choice == 2)
+                        {
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(0, worldRightEndWidth), graphicsDevice.Viewport.Height - 350, 122, 250),
+                                textureManager.LeftEnemyWalk1, difficulty, false, gameTime);
+                            enemies.Add(enemy);
+                        }
+
+                        else if (choice == 3)
+                        {
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, -1250), graphicsDevice.Viewport.Height - 550, 122, 250),
+                                textureManager.RightEnemyWalk1, difficulty, false, gameTime);
+                            enemies.Add(enemy);
+                        }
+
+                        else if (choice == 4)
+                        {
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(1250, worldRightEndWidth), graphicsDevice.Viewport.Height - 550, 122, 250),
+                                textureManager.LeftEnemyWalk1, difficulty, false, gameTime);
+                            enemies.Add(enemy);
+                        }
+                    }
+                    break;
+
+                case PlatformVersion.Mean:
+                    for (int i = 0; i < numberOfEnemies; i++)
+                    {
+                        int choice = rng.Next(1, 5);
+                        if (choice == 1)
+                        {
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, 0), graphicsDevice.Viewport.Height - 350, 122, 250),
+                                textureManager.RightEnemyWalk1, difficulty, false, gameTime);
+                            enemies.Add(enemy);
+                        }
+
+                        else if (choice == 2)
+                        {
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(0, worldRightEndWidth), graphicsDevice.Viewport.Height - 350, 122, 250),
+                                textureManager.LeftEnemyWalk1, difficulty, false, gameTime);
+                            enemies.Add(enemy);
+                        }
+
+                        else if (choice == 3)
+                        {
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, -1250), graphicsDevice.Viewport.Height - 550, 122, 250),
+                                textureManager.RightEnemyWalk1, difficulty, false, gameTime);
+                            enemies.Add(enemy);
+                        }
+
+                        else if (choice == 4)
+                        {
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(1250, worldRightEndWidth), graphicsDevice.Viewport.Height - 550, 122, 250),
+                                textureManager.LeftEnemyWalk1, difficulty, false, gameTime);
+                            enemies.Add(enemy);
+                        }
+                    }
+                    break;
+
+                case PlatformVersion.Life:
+                    for (int i = 0; i < numberOfEnemies; i++)
+                    {
+                        int choice = rng.Next(1, 5);
+                        if (choice == 1)
+                        {
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, 0), graphicsDevice.Viewport.Height - 350, 122, 250),
+                                textureManager.RightEnemyWalk1, difficulty, false, gameTime);
+                            enemies.Add(enemy);
+                        }
+
+                        else if (choice == 2)
+                        {
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(0, worldRightEndWidth), graphicsDevice.Viewport.Height - 350, 122, 250),
+                                textureManager.LeftEnemyWalk1, difficulty, false, gameTime);
+                            enemies.Add(enemy);
+                        }
+
+                        else if (choice == 3)
+                        {
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, -1250), graphicsDevice.Viewport.Height - 550, 122, 250),
+                                textureManager.RightEnemyWalk1, difficulty, false, gameTime);
+                            enemies.Add(enemy);
+                        }
+
+                        else if (choice == 4)
+                        {
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(1250, worldRightEndWidth), graphicsDevice.Viewport.Height - 550, 122, 250),
+                                textureManager.LeftEnemyWalk1, difficulty, false, gameTime);
+                            enemies.Add(enemy);
+                        }
+                    }
+                    break;
             }
+            
         }
 
         /// <summary>
@@ -80,39 +223,186 @@ namespace Purpose
         /// <param name="graphicsDevice">Limits the enemies spawn point</param>
         /// <param name="rangeTexture">The texture for the Ranged Enemies</param>
         public void FillRangedList(Random rng, int numberOfRanged, int difficulty, int worldLeftEndWidth, int worldRightEndWidth, Texture2D rangeTexture,
-            GameTime gameTime)
+            GameTime gameTime, PlatformVersion platformVersion)
         {
-            for (int i = 0; i < numberOfRanged; i++)
+            switch (platformVersion)
             {
+                case PlatformVersion.Easy:
+                    for (int i = 0; i < numberOfRanged; i++)
+                    {
 
-                int choice = rng.Next(1, 5);
-                if (choice == 1)
-                {
-                    Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, 0), graphicsDevice.Viewport.Height - 247, 147, 147),
-                        rangeTexture, difficulty, true, gameTime);
-                    enemies.Add(enemy);
-                }
+                        int choice = rng.Next(1, 5);
+                        if (choice == 1)
+                        {
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, 0), graphicsDevice.Viewport.Height - 247, 147, 147),
+                                rangeTexture, difficulty, true, gameTime);
+                            enemies.Add(enemy);
+                        }
 
-                else if (choice == 2)
-                {
-                    Enemy enemy = new Enemy(new Rectangle(rng.Next(0, worldRightEndWidth), graphicsDevice.Viewport.Height - 247, 147, 147),
-                        rangeTexture, difficulty, true, gameTime);
-                    enemies.Add(enemy);
-                }
+                        else if (choice == 2)
+                        {
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(0, worldRightEndWidth), graphicsDevice.Viewport.Height - 247, 147, 147),
+                                rangeTexture, difficulty, true, gameTime);
+                            enemies.Add(enemy);
+                        }
 
-                else if (choice == 3)
-                {
-                    Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, -1250), graphicsDevice.Viewport.Height - 447, 147, 147),
-                        rangeTexture, difficulty, true, gameTime);
-                    enemies.Add(enemy);
-                }
+                        else if (choice == 3)
+                        {
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, -1250), graphicsDevice.Viewport.Height - 447, 147, 147),
+                                rangeTexture, difficulty, true, gameTime);
+                            enemies.Add(enemy);
+                        }
 
-                else if (choice == 4)
-                {
-                    Enemy enemy = new Enemy(new Rectangle(rng.Next(1250, worldRightEndWidth), graphicsDevice.Viewport.Height - 447, 147, 147),
-                        rangeTexture, difficulty, true, gameTime);
-                    enemies.Add(enemy);
-                }
+                        else if (choice == 4)
+                        {
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(1250, worldRightEndWidth), graphicsDevice.Viewport.Height - 447, 147, 147),
+                                rangeTexture, difficulty, true, gameTime);
+                            enemies.Add(enemy);
+                        }
+                    }
+                    break;
+
+                case PlatformVersion.Medium:
+                    for (int i = 0; i < numberOfRanged; i++)
+                    {
+
+                        int choice = rng.Next(1, 5);
+                        if (choice == 1)
+                        {
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, 0), graphicsDevice.Viewport.Height - 247, 147, 147),
+                                rangeTexture, difficulty, true, gameTime);
+                            enemies.Add(enemy);
+                        }
+
+                        else if (choice == 2)
+                        {
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(0, worldRightEndWidth), graphicsDevice.Viewport.Height - 247, 147, 147),
+                                rangeTexture, difficulty, true, gameTime);
+                            enemies.Add(enemy);
+                        }
+
+                        else if (choice == 3)
+                        {
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, -1250), graphicsDevice.Viewport.Height - 447, 147, 147),
+                                rangeTexture, difficulty, true, gameTime);
+                            enemies.Add(enemy);
+                        }
+
+                        else if (choice == 4)
+                        {
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(1250, worldRightEndWidth), graphicsDevice.Viewport.Height - 447, 147, 147),
+                                rangeTexture, difficulty, true, gameTime);
+                            enemies.Add(enemy);
+                        }
+                    }
+                    break;
+
+                case PlatformVersion.Hard:
+                    for (int i = 0; i < numberOfRanged; i++)
+                    {
+
+                        int choice = rng.Next(1, 5);
+                        if (choice == 1)
+                        {
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, 0), graphicsDevice.Viewport.Height - 247, 147, 147),
+                                rangeTexture, difficulty, true, gameTime);
+                            enemies.Add(enemy);
+                        }
+
+                        else if (choice == 2)
+                        {
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(0, worldRightEndWidth), graphicsDevice.Viewport.Height - 247, 147, 147),
+                                rangeTexture, difficulty, true, gameTime);
+                            enemies.Add(enemy);
+                        }
+
+                        else if (choice == 3)
+                        {
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, -1250), graphicsDevice.Viewport.Height - 447, 147, 147),
+                                rangeTexture, difficulty, true, gameTime);
+                            enemies.Add(enemy);
+                        }
+
+                        else if (choice == 4)
+                        {
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(1250, worldRightEndWidth), graphicsDevice.Viewport.Height - 447, 147, 147),
+                                rangeTexture, difficulty, true, gameTime);
+                            enemies.Add(enemy);
+                        }
+                    }
+                    break;
+
+                case PlatformVersion.Mean:
+                    for (int i = 0; i < numberOfRanged; i++)
+                    {
+
+                        int choice = rng.Next(1, 5);
+                        if (choice == 1)
+                        {
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, 0), graphicsDevice.Viewport.Height - 247, 147, 147),
+                                rangeTexture, difficulty, true, gameTime);
+                            enemies.Add(enemy);
+                        }
+
+                        else if (choice == 2)
+                        {
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(0, worldRightEndWidth), graphicsDevice.Viewport.Height - 247, 147, 147),
+                                rangeTexture, difficulty, true, gameTime);
+                            enemies.Add(enemy);
+                        }
+
+                        else if (choice == 3)
+                        {
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, -1250), graphicsDevice.Viewport.Height - 447, 147, 147),
+                                rangeTexture, difficulty, true, gameTime);
+                            enemies.Add(enemy);
+                        }
+
+                        else if (choice == 4)
+                        {
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(1250, worldRightEndWidth), graphicsDevice.Viewport.Height - 447, 147, 147),
+                                rangeTexture, difficulty, true, gameTime);
+                            enemies.Add(enemy);
+                        }
+                    }
+                    break;
+
+                case PlatformVersion.Life:
+                    for (int i = 0; i < numberOfRanged; i++)
+                    {
+
+                        int choice = rng.Next(1, 5);
+                        if (choice == 1)
+                        {
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, 0), graphicsDevice.Viewport.Height - 247, 147, 147),
+                                rangeTexture, difficulty, true, gameTime);
+                            enemies.Add(enemy);
+                        }
+
+                        else if (choice == 2)
+                        {
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(0, worldRightEndWidth), graphicsDevice.Viewport.Height - 247, 147, 147),
+                                rangeTexture, difficulty, true, gameTime);
+                            enemies.Add(enemy);
+                        }
+
+                        else if (choice == 3)
+                        {
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(worldLeftEndWidth, -1250), graphicsDevice.Viewport.Height - 447, 147, 147),
+                                rangeTexture, difficulty, true, gameTime);
+                            enemies.Add(enemy);
+                        }
+
+                        else if (choice == 4)
+                        {
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(1250, worldRightEndWidth), graphicsDevice.Viewport.Height - 447, 147, 147),
+                                rangeTexture, difficulty, true, gameTime);
+                            enemies.Add(enemy);
+                        }
+                    }
+                    break;
+
+            
             }
         }
 

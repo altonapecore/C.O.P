@@ -182,7 +182,7 @@ namespace Purpose
                 foreach (Platform p in platforms)
                 {
                     if (new Rectangle(player.X, player.Y + 330, player.Position.Width, 22).Intersects(
-                        new Rectangle(p.X, p.Y, p.Position.Width, 5)))
+                        new Rectangle(p.X, p.Y, p.Position.Width, 25)))
                     {
                         player.Velocity = 0;
                         onPlatform = true;
@@ -363,7 +363,7 @@ namespace Purpose
                 // moving camera with player
                 camera.LookAt(new Vector2(player.X, player.Y - 250));
             }
-            if (kbState.IsKeyDown(Keys.Space) && !previouskbState.IsKeyDown(Keys.Space) && !isCrouching && player.Y > -400)//jump
+            if (kbState.IsKeyDown(Keys.Space) && !previouskbState.IsKeyDown(Keys.Space) && !isCrouching && player.Y > -800)//jump
             {
                 player.Jump();
                 jumping = true;
@@ -477,8 +477,9 @@ namespace Purpose
             player.Y = 175;
             isCrouching = false;
             EnemyManager.Enemies.Clear();
-            enemyManager.FillEnemyList(rng, editedWaves[0].NumberOfMelee, editedWaves[0].Difficulty, worldLeftEndWidth, worldRightEndWidth, gameTime);
-            enemyManager.FillRangedList(rng, editedWaves[0].NumberOfRanged, editedWaves[0].Difficulty, worldLeftEndWidth, worldRightEndWidth, tempTexture, gameTime);
+            enemyManager.FillEnemyList(rng, editedWaves[0].NumberOfMelee, editedWaves[0].Difficulty, worldLeftEndWidth, worldRightEndWidth, gameTime, PlatformVersion.Easy);
+            enemyManager.FillRangedList(rng, editedWaves[0].NumberOfRanged, editedWaves[0].Difficulty, worldLeftEndWidth, worldRightEndWidth, tempTexture, 
+                gameTime, PlatformVersion.Easy);
             player.UgManager.UpgradePoints = 0;
             platformManager.ClearPlatformLists();
             platformManager.MakePlatforms(PlatformVersion.Easy, graphicsDevice, textureManager);
@@ -493,9 +494,9 @@ namespace Purpose
             isCrouching = false;
             enemyManager.Enemies.Clear();
             enemyManager.FillEnemyList(rng, editedWaves[waveNumber].NumberOfMelee, editedWaves[waveNumber].Difficulty, worldLeftEndWidth, 
-                worldRightEndWidth, gameTime);
+                worldRightEndWidth, gameTime, platformVersion);
             enemyManager.FillRangedList(rng, editedWaves[waveNumber].NumberOfRanged, editedWaves[waveNumber].Difficulty, worldLeftEndWidth, worldRightEndWidth,
-                tempTexture, gameTime);
+                tempTexture, gameTime, platformVersion);
             platformManager.ClearPlatformLists();
             platformManager.MakePlatforms(platformVersion, graphicsDevice, textureManager);
         }
@@ -519,8 +520,10 @@ namespace Purpose
             player.UgManager.DashActive = false;
             player.UgManager.GroundPoundActive = false;
             EnemyManager.Enemies.Clear();
-            enemyManager.FillEnemyList(rng, presetWaves[0].NumberOfMelee, presetWaves[0].Difficulty, worldLeftEndWidth, worldRightEndWidth, gameTime);
-            enemyManager.FillRangedList(rng, presetWaves[0].NumberOfRanged, presetWaves[0].Difficulty, worldLeftEndWidth, worldRightEndWidth, tempTexture, gameTime);
+            enemyManager.FillEnemyList(rng, presetWaves[0].NumberOfMelee, presetWaves[0].Difficulty, worldLeftEndWidth, worldRightEndWidth, 
+                gameTime, PlatformVersion.Easy);
+            enemyManager.FillRangedList(rng, presetWaves[0].NumberOfRanged, presetWaves[0].Difficulty, worldLeftEndWidth, worldRightEndWidth, tempTexture, 
+                gameTime, PlatformVersion.Easy);
             player.UgManager.UpgradePoints = 0;
             platformManager.ClearPlatformLists();
             platformManager.MakePlatforms(PlatformVersion.Easy, graphicsDevice, textureManager);
@@ -535,9 +538,9 @@ namespace Purpose
             isCrouching = false;
             EnemyManager.Enemies.Clear();
             enemyManager.FillEnemyList(rng, presetWaves[waveNumber].NumberOfMelee, presetWaves[waveNumber].Difficulty, worldLeftEndWidth, 
-                worldRightEndWidth, gameTime);
+                worldRightEndWidth, gameTime,platformVersion);
             enemyManager.FillRangedList(rng, presetWaves[waveNumber].NumberOfRanged, presetWaves[waveNumber].Difficulty, worldLeftEndWidth, worldRightEndWidth,
-                tempTexture, gameTime);
+                tempTexture, gameTime, platformVersion);
             platformManager.ClearPlatformLists();
             platformManager.MakePlatforms(platformVersion, graphicsDevice, textureManager);
         }
