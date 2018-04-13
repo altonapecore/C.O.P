@@ -700,7 +700,7 @@ namespace Purpose
                     //arenaManagerCounter = 0;
                     camera.MinimumZoom = 0.1f;
                     camera.MaximumZoom = 1.0f;
-                    camera.Zoom = 0.5f;
+                    camera.Zoom = 0.4f;
 
                     healthBar = new Vector2(player.Position.X, player.Position.Y + 30);
                     staminaBar = new Vector2(player.Position.X + player.Position.Width, player.Position.Y + 30);
@@ -825,7 +825,7 @@ namespace Purpose
                     //arenaManagerCounter = 0;
                     camera.MinimumZoom = 0.1f;
                     camera.MaximumZoom = 1.0f;
-                    camera.Zoom = 0.5f;
+                    camera.Zoom = 0.4f;
 
                     healthBar = new Vector2(player.Position.X, player.Position.Y + 30);
                     staminaBar = new Vector2(player.Position.X + player.Position.Width, player.Position.Y + 30);
@@ -983,7 +983,7 @@ namespace Purpose
 
                 #region Win State
                 case GameState.YouWin:
-                    camera.Zoom = 1.0f;
+                    camera.Zoom = 0.5f;
                     camera.Position = new Vector2(0, 0);
                     gameManager.WaveNumber = WaveNumber.One;
 

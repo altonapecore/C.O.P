@@ -460,6 +460,11 @@ namespace Purpose
                 {
                     e.BulletX += 25;
                 }
+
+                if(e.BulletX > 3000 || e.BulletX < -3000)
+                {
+                    e.HasBullet = false;
+                }
             }
         }
 

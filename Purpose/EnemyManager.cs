@@ -449,8 +449,9 @@ namespace Purpose
                     enemies[i].X = enemies[i].X;
                 }
 
-                // If right of player, move left and update frame and texture
-                if (enemies[i].X < player.X - 15 && enemies[i].Ranged == false)
+                // If left of player, move right and update frame and texture
+                if (enemies[i].X > player.X - 750 && enemies[i].X < player.X - 15 && enemies[i].Ranged == false 
+                    && enemies[i].Y >= player.Y && enemies[i].Y - 200 <= player.Y)
                 {
                     enemies[i].IsFacingLeft = false;
                     if (enemies[i].Texture == textureManager.LeftEnemyWalk1 || enemies[i].Texture == textureManager.LeftEnemyWalk2
@@ -480,7 +481,8 @@ namespace Purpose
                 }
 
                 // If right of player, move left and update frame and texture
-                else if (enemies[i].X > player.X + 15 && enemies[i].Ranged == false)
+                else if (enemies[i].X < player.X + 750 && enemies[i].X > player.X + 15 && enemies[i].Ranged == false 
+                    && enemies[i].Y >= player.Y && enemies[i].Y - 200 <= player.Y)
                 {
                     enemies[i].IsFacingLeft = true;
                     if (enemies[i].Texture == textureManager.RightEnemyWalk1 || enemies[i].Texture == textureManager.RightEnemyWalk2
@@ -520,8 +522,8 @@ namespace Purpose
                     enemies[i].X = enemies[i].X;
                 }
 
-                // If on right of player, move left and update frames and texture
-                if (enemies[i].X < player.X - 555 && enemies[i].Ranged)
+                // If on left of player, move right and update frames and texture
+                if (enemies[i].X > player.X - 1250 && enemies[i].X < player.X - 555 && enemies[i].Ranged)
                 {
                     enemies[i].IsFacingLeft = false;
                     if (enemies[i].Texture == textureManager.LeftEnemyWalk1 || enemies[i].Texture == textureManager.LeftEnemyWalk2
@@ -550,8 +552,8 @@ namespace Purpose
                     }
                 }
 
-                // If left of player, move right and update frame and texture
-                else if (enemies[i].X > player.X + 555 && enemies[i].Ranged)
+                // If right of player, move left and update frame and texture
+                else if (enemies[i].X < player.X + 1250 && enemies[i].X > player.X + 555 && enemies[i].Ranged)
                 {
                     enemies[i].IsFacingLeft = true;
                     if (enemies[i].Texture == textureManager.RightEnemyWalk1 || enemies[i].Texture == textureManager.RightEnemyWalk2
