@@ -155,6 +155,10 @@ namespace Purpose
             graphics.PreferredBackBufferHeight = 845;
             graphics.PreferredBackBufferWidth = 1350;
 
+            //graphics.IsFullScreen = true;
+            //graphics.PreferredBackBufferHeight = 1080;
+            //graphics.PreferredBackBufferWidth = 1920;
+
             // Temp coding stuffs
             rng = new Random();
 
@@ -167,7 +171,7 @@ namespace Purpose
             // Initialize gameTime and platformManager
             gameTime = new GameTime();
             platformManager = new PlatformManager();
-
+            
             editedGame = false;
         }
 #endregion
@@ -199,7 +203,7 @@ namespace Purpose
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // Load in textures
-            tempTexture = Content.Load<Texture2D>("pineapple");
+            tempTexture = Content.Load<Texture2D>("pineapple2");
             comicSans24 = Content.Load<SpriteFont>("ComicSans24");
             agency30 = Content.Load<SpriteFont>("Agency30");
 
@@ -246,7 +250,7 @@ namespace Purpose
                 rightWalls.Add(new Platform(new Rectangle(3000, i, 100, 100), textureManager.BasePlatform));
             }
 
-            // Makes player, gameManager object and fills enemy list
+            // Makes player, gameManager object
             background = textureManager.MetalBack;
             player = new Player("Dude", new Rectangle(50, platformManager.BottomPlatforms[1].Y - 352, 139, 352), textureManager, gameTime);
             gameManager = new GameManager(player, platformManager.TotalPlatforms, leftWalls, rightWalls, GraphicsDevice, textureManager);
@@ -385,8 +389,6 @@ namespace Purpose
 
             var transformMatrix = camera.GetViewMatrix();
             spriteBatch.Begin(transformMatrix: transformMatrix);
-
-            
 
             // GameState drawing stuffs
             switch (gameManager.GameState)

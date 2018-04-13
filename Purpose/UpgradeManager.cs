@@ -39,7 +39,7 @@ namespace Purpose
         //constructor
         public UpgradeManager()
         {
-            upgradePoints = 10;
+            upgradePoints = 0;
             dashActive = false;
             groundPoundActive = false;
             staminaTier = 0;
@@ -149,6 +149,17 @@ namespace Purpose
                     upgradePoints-=2;
                 }
             }
+        }
+
+        public void ResetUpgrades()
+        {
+            upgradePoints = 0;
+            groundPoundActive = false;
+            dashActive = false;
+            damageTier = 0;
+            stealthTier = 0;
+            staminaTier = 0;
+            healthTier = 0;
         }
     }
 }
