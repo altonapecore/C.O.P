@@ -96,12 +96,13 @@ namespace Purpose
                 if (damageTier < 3)
                 {
                     damage += 5;
+                    upgradePoints--;
                 }
-                else if (damageTier >= 3)
+                else if (damageTier >= 3 && upgradePoints > 1)
                 {
                     damage += 10;
+                    upgradePoints -= 2;
                 }
-                upgradePoints--;
                 return damage;
             }
             return 0;
