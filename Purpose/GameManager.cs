@@ -480,9 +480,9 @@ namespace Purpose
             enemyManager.FillEnemyList(rng, editedWaves[0].NumberOfMelee, editedWaves[0].Difficulty, worldLeftEndWidth, worldRightEndWidth, gameTime, PlatformVersion.Easy);
             enemyManager.FillRangedList(rng, editedWaves[0].NumberOfRanged, editedWaves[0].Difficulty, worldLeftEndWidth, worldRightEndWidth, tempTexture, 
                 gameTime, PlatformVersion.Easy);
-            player.UgManager.UpgradePoints = 0;
             platformManager.ClearPlatformLists();
             platformManager.MakePlatforms(PlatformVersion.Easy, graphicsDevice, textureManager);
+            player.UgManager.ResetUpgrades();
         }
 
         public void ResetForNextWaveEdited(Camera2D camera, Random rng, int worldLeftEndWidth, int worldRightEndWidth, GameTime gameTime, Texture2D tempTexture, 
@@ -512,21 +512,18 @@ namespace Purpose
             player.IsDead = false;
             player.X = 175;
             player.Y = 175;
-            player.UgManager.UpgradePoints = 0;
             player.HealthRegen = 2;
             player.StaminaRegen = 1;
             player.Damage = 10;
             isCrouching = false;
-            player.UgManager.DashActive = false;
-            player.UgManager.GroundPoundActive = false;
             EnemyManager.Enemies.Clear();
             enemyManager.FillEnemyList(rng, presetWaves[0].NumberOfMelee, presetWaves[0].Difficulty, worldLeftEndWidth, worldRightEndWidth, 
                 gameTime, PlatformVersion.Easy);
             enemyManager.FillRangedList(rng, presetWaves[0].NumberOfRanged, presetWaves[0].Difficulty, worldLeftEndWidth, worldRightEndWidth, tempTexture, 
                 gameTime, PlatformVersion.Easy);
-            player.UgManager.UpgradePoints = 0;
             platformManager.ClearPlatformLists();
             platformManager.MakePlatforms(PlatformVersion.Easy, graphicsDevice, textureManager);
+            player.UgManager.ResetUpgrades();
         }
 
         public void ResetForNextWavePreset(Camera2D camera, Random rng, int worldLeftEndWidth, int worldRightEndWidth, GameTime gameTime, Texture2D tempTexture, 
