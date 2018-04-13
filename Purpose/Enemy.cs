@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Purpose
 {
-    public enum spawnLevel
+    public enum SpawnLevel
     {
         baseLevel,
         firstLevelLeft,
