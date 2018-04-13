@@ -106,8 +106,10 @@ namespace Purpose
         //temporary stuff
         private Texture2D background;
         private Texture2D tempTexture;
-        private Vector2 healthBar;
-        private Vector2 staminaBar;
+        private Rectangle healthBar;
+        private Rectangle staminaBar;
+        private Rectangle staminaBack;
+        private Rectangle healthBack;
         private SpriteFont comicSans24;
         private SpriteFont agency30;
         private Random rng;
@@ -209,7 +211,8 @@ namespace Purpose
                 Content.Load<Texture2D>("LeftEnemyWalk1"), Content.Load<Texture2D>("LeftEnemyWalk2"), Content.Load<Texture2D>("LeftEnemyWalk3"), tempTexture,
                 Content.Load<Texture2D>("StartMenu"), Content.Load<Texture2D>("buttonFrame2"), Content.Load<Texture2D>("roundedFrame"),
                 Content.Load<Texture2D>("UpgradeUI"), Content.Load<Texture2D>("PauseMenu"), Content.Load<Texture2D>("NextWaveMenu"), 
-                Content.Load<Texture2D>("GameOver"), Content.Load<Texture2D>("YouWin"), Content.Load<Texture2D>("Controls"), Content.Load<Texture2D>("PlatformTest"), Content.Load<Texture2D>("PlatformTest2"), Content.Load<Texture2D>("metalback"));
+                Content.Load<Texture2D>("GameOver"), Content.Load<Texture2D>("YouWin"), Content.Load<Texture2D>("Controls"), Content.Load<Texture2D>("PlatformTest"), Content.Load<Texture2D>("PlatformTest2"), Content.Load<Texture2D>("metalback"),
+                Content.Load<Texture2D>("HealthBar/staminabar"), Content.Load<Texture2D>("HealthBar/healthbar"), Content.Load<Texture2D>("HealthBar/blackbar"));
 
 
             editedGameButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 335, 349, 155));
@@ -451,8 +454,12 @@ namespace Purpose
                     // Player
                     spriteBatch.Draw(gameManager.Player.Texture, new Rectangle(gameManager.Player.X, gameManager.Player.Y, player.Position.Width, player.Position.Height),
                         Color.White);
-                    spriteBatch.DrawString(agency30,gameManager.Player.Health.ToString(),healthBar,Color.Red);
-                    spriteBatch.DrawString(agency30, gameManager.Player.Stamina.ToString(), staminaBar, Color.Green);
+
+                    //Draws the health bar and stamina bar and their backgrounds
+                    spriteBatch.Draw(textureManager.Healthbar, healthBar, Color.White);
+                    spriteBatch.Draw(textureManager.Staminabar, staminaBar, Color.White);
+                    spriteBatch.Draw(textureManager.Blackbar, healthBack, Color.White);
+                    spriteBatch.Draw(textureManager.Blackbar, staminaBack, Color.White);
 
                     spriteBatch.DrawString(agency30,"Wave: " + gameManager.WaveNumber.ToString(), waveIndicator, Color.Red);
 
@@ -497,8 +504,12 @@ namespace Purpose
                     // Player
                     spriteBatch.Draw(gameManager.Player.Texture, new Rectangle(gameManager.Player.X, gameManager.Player.Y, player.Position.Width, player.Position.Height),
                         Color.White);
-                    spriteBatch.DrawString(agency30, gameManager.Player.Health.ToString(), healthBar, Color.Red);
-                    spriteBatch.DrawString(agency30, gameManager.Player.Stamina.ToString(), staminaBar, Color.Green);
+
+                    //Draws the health and stamina bars and their backgrounds
+                    spriteBatch.Draw(textureManager.Healthbar, healthBar, Color.White);
+                    spriteBatch.Draw(textureManager.Staminabar, staminaBar, Color.White);
+                    spriteBatch.Draw(textureManager.Blackbar, healthBack, Color.White);
+                    spriteBatch.Draw(textureManager.Blackbar, staminaBack, Color.White);
 
                     spriteBatch.DrawString(agency30, "Wave: " + gameManager.WaveNumber.ToString(), waveIndicator, Color.Red);
 
@@ -702,11 +713,15 @@ namespace Purpose
                     camera.MaximumZoom = 1.0f;
                     camera.Zoom = 0.5f;
 
-                    healthBar = new Vector2(player.Position.X, player.Position.Y + 30);
-                    staminaBar = new Vector2(player.Position.X + player.Position.Width, player.Position.Y + 30);
+                    //Used for the locations of the health bar and stamina bar
+                    healthBar = new Rectangle(player.Position.X - 1250, player.Position.Y - 1000, player.Health * 4, textureManager.Healthbar.Height);
+                    staminaBar = new Rectangle(player.Position.X - 1250, player.Position.Y - 900, player.Stamina * 4, textureManager.Staminabar.Height);
+
+                    //healthBack = new Rectangle(player.Position.X - 1250, player.Position.Y , player.HealthMax, textureManager.Blackbar.Height);
+                    //staminaBack = new Rectangle(player.Position.X - 1250, player.Position.Y , player.StaminaMax, textureManager.Blackbar.Height);
 
                     //Used to Indicate and let the player know what wave they are on
-                    waveIndicator = new Vector2(player.Position.X - 1250, player.Position.Y - 1000);
+                    waveIndicator = new Vector2(player.Position.X - 1250, player.Position.Y - 775);
 
 
                     // Stuff for moving player and enemy, as well as player attack
@@ -813,11 +828,15 @@ namespace Purpose
                     camera.MaximumZoom = 1.0f;
                     camera.Zoom = 0.5f;
 
-                    healthBar = new Vector2(player.Position.X, player.Position.Y + 30);
-                    staminaBar = new Vector2(player.Position.X + player.Position.Width, player.Position.Y + 30);
+                    //Gives location of the health bar and stamina bar and their backgrounds
+                    healthBar = new Rectangle(player.Position.X - 1250, player.Position.Y - 1000, player.Health * 4, textureManager.Healthbar.Height);
+                    staminaBar = new Rectangle(player.Position.X - 1250, player.Position.Y - 900, player.Stamina * 4, textureManager.Staminabar.Height);
+
+                    //healthBack = new Rectangle(player.Position.X - 1250, player.Position.Y - 1000, player.HealthMax, textureManager.Blackbar.Height);
+                    //staminaBack = new Rectangle(player.Position.X - 1250, player.Position.Y - 900, player.StaminaMax, textureManager.Blackbar.Height);
 
                     //Used to Indicate and let the player know what wave they are on
-                    waveIndicator = new Vector2(player.Position.X - 1250, player.Position.Y - 1000);
+                    waveIndicator = new Vector2(player.Position.X - 1250, player.Position.Y - 775);
 
 
                     // Stuff for moving player and enemy, as well as player attack
