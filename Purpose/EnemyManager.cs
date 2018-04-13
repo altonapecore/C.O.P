@@ -450,7 +450,7 @@ namespace Purpose
                 }
 
                 // If left of player, move right and update frame and texture
-                if (enemies[i].X > player.X - 750 && enemies[i].X < player.X - 15 && enemies[i].Ranged == false 
+                if (enemies[i].X > player.X - 1250 && enemies[i].X < player.X - 15 && enemies[i].Ranged == false 
                     && enemies[i].Y >= player.Y && enemies[i].Y - 200 <= player.Y)
                 {
                     enemies[i].IsFacingLeft = false;
@@ -481,7 +481,7 @@ namespace Purpose
                 }
 
                 // If right of player, move left and update frame and texture
-                else if (enemies[i].X < player.X + 750 && enemies[i].X > player.X + 15 && enemies[i].Ranged == false 
+                else if (enemies[i].X < player.X + 1250 && enemies[i].X > player.X + 15 && enemies[i].Ranged == false 
                     && enemies[i].Y >= player.Y && enemies[i].Y - 200 <= player.Y)
                 {
                     enemies[i].IsFacingLeft = true;
@@ -523,7 +523,7 @@ namespace Purpose
                 }
 
                 // If on left of player, move right and update frames and texture
-                if (enemies[i].X > player.X - 1250 && enemies[i].X < player.X - 555 && enemies[i].Ranged)
+                if (enemies[i].X > player.X - 1750 && enemies[i].X < player.X - 555 && enemies[i].Ranged)
                 {
                     enemies[i].IsFacingLeft = false;
                     if (enemies[i].Texture == textureManager.LeftEnemyWalk1 || enemies[i].Texture == textureManager.LeftEnemyWalk2
@@ -553,7 +553,7 @@ namespace Purpose
                 }
 
                 // If right of player, move left and update frame and texture
-                else if (enemies[i].X < player.X + 1250 && enemies[i].X > player.X + 555 && enemies[i].Ranged)
+                else if (enemies[i].X < player.X + 1750 && enemies[i].X > player.X + 555 && enemies[i].Ranged)
                 {
                     enemies[i].IsFacingLeft = true;
                     if (enemies[i].Texture == textureManager.RightEnemyWalk1 || enemies[i].Texture == textureManager.RightEnemyWalk2

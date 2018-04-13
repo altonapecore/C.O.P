@@ -711,7 +711,7 @@ namespace Purpose
                     //arenaManagerCounter = 0;
                     camera.MinimumZoom = 0.1f;
                     camera.MaximumZoom = 1.0f;
-                    camera.Zoom = 0.4f;
+                    camera.Zoom = 0.5f;
 
                     //Used for the locations of the health bar and stamina bar
                     healthBar = new Rectangle(player.Position.X - 1250, player.Position.Y - 1000, player.Health * 4, textureManager.Healthbar.Height);
@@ -840,7 +840,7 @@ namespace Purpose
                     //arenaManagerCounter = 0;
                     camera.MinimumZoom = 0.1f;
                     camera.MaximumZoom = 1.0f;
-                    camera.Zoom = 0.4f;
+                    camera.Zoom = 0.5f;
 
                     //Gives location of the health bar and stamina bar and their backgrounds
                     healthBar = new Rectangle(player.Position.X - 1250, player.Position.Y - 1000, player.Health * 4, textureManager.Healthbar.Height);
