@@ -103,9 +103,8 @@ namespace Purpose
                     damage += 10;
                     upgradePoints -= 2;
                 }
-                return damage;
             }
-            return 0;
+            return damage;
         }
 
         public int DashDistanceUpgrade(int dashDistance)
