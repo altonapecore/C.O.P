@@ -482,8 +482,8 @@ namespace Purpose
             player.Y = 175;
             isCrouching = false;
             EnemyManager.Enemies.Clear();
-            enemyManager.FillEnemyList(rng, editedWaves[0].NumberOfMelee, editedWaves[0].Difficulty, worldLeftEndWidth, worldRightEndWidth, gameTime, PlatformVersion.Easy);
-            enemyManager.FillRangedList(rng, editedWaves[0].NumberOfRanged, editedWaves[0].Difficulty, worldLeftEndWidth, worldRightEndWidth, tempTexture, 
+            enemyManager.FillEnemyList(rng, editedWaves[0].NumberOfMelee, editedWaves[0].Difficulty, gameTime, PlatformVersion.Easy);
+            enemyManager.FillRangedList(rng, editedWaves[0].NumberOfRanged, editedWaves[0].Difficulty, tempTexture, 
                 gameTime, PlatformVersion.Easy);
             platformManager.ClearPlatformLists();
             platformManager.MakePlatforms(PlatformVersion.Easy, graphicsDevice, textureManager);
@@ -498,10 +498,8 @@ namespace Purpose
             player.Y = 175;
             isCrouching = false;
             enemyManager.Enemies.Clear();
-            enemyManager.FillEnemyList(rng, editedWaves[waveNumber].NumberOfMelee, editedWaves[waveNumber].Difficulty, worldLeftEndWidth, 
-                worldRightEndWidth, gameTime, platformVersion);
-            enemyManager.FillRangedList(rng, editedWaves[waveNumber].NumberOfRanged, editedWaves[waveNumber].Difficulty, worldLeftEndWidth, worldRightEndWidth,
-                tempTexture, gameTime, platformVersion);
+            enemyManager.FillEnemyList(rng, editedWaves[waveNumber].NumberOfMelee, editedWaves[waveNumber].Difficulty, gameTime, platformVersion);
+            enemyManager.FillRangedList(rng, editedWaves[waveNumber].NumberOfRanged, editedWaves[waveNumber].Difficulty, tempTexture, gameTime, platformVersion);
             platformManager.ClearPlatformLists();
             platformManager.MakePlatforms(platformVersion, graphicsDevice, textureManager);
         }
@@ -522,10 +520,8 @@ namespace Purpose
             player.Damage = 10;
             isCrouching = false;
             EnemyManager.Enemies.Clear();
-            enemyManager.FillEnemyList(rng, presetWaves[0].NumberOfMelee, presetWaves[0].Difficulty, worldLeftEndWidth, worldRightEndWidth, 
-                gameTime, PlatformVersion.Easy);
-            enemyManager.FillRangedList(rng, presetWaves[0].NumberOfRanged, presetWaves[0].Difficulty, worldLeftEndWidth, worldRightEndWidth, tempTexture, 
-                gameTime, PlatformVersion.Easy);
+            enemyManager.FillEnemyList(rng, presetWaves[0].NumberOfMelee, presetWaves[0].Difficulty, gameTime, PlatformVersion.Easy);
+            enemyManager.FillRangedList(rng, presetWaves[0].NumberOfRanged, presetWaves[0].Difficulty, tempTexture, gameTime, PlatformVersion.Easy);
             platformManager.ClearPlatformLists();
             platformManager.MakePlatforms(PlatformVersion.Easy, graphicsDevice, textureManager);
             player.UgManager.ResetUpgrades();
@@ -539,10 +535,8 @@ namespace Purpose
             player.Y = 175;
             isCrouching = false;
             EnemyManager.Enemies.Clear();
-            enemyManager.FillEnemyList(rng, presetWaves[waveNumber].NumberOfMelee, presetWaves[waveNumber].Difficulty, worldLeftEndWidth, 
-                worldRightEndWidth, gameTime,platformVersion);
-            enemyManager.FillRangedList(rng, presetWaves[waveNumber].NumberOfRanged, presetWaves[waveNumber].Difficulty, worldLeftEndWidth, worldRightEndWidth,
-                tempTexture, gameTime, platformVersion);
+            enemyManager.FillEnemyList(rng, presetWaves[waveNumber].NumberOfMelee, presetWaves[waveNumber].Difficulty, gameTime,platformVersion);
+            enemyManager.FillRangedList(rng, presetWaves[waveNumber].NumberOfRanged, presetWaves[waveNumber].Difficulty, tempTexture, gameTime, platformVersion);
             platformManager.ClearPlatformLists();
             platformManager.MakePlatforms(platformVersion, graphicsDevice, textureManager);
         }
