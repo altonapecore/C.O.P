@@ -106,7 +106,7 @@ namespace Purpose
                 damageTier++;
                 if (damageTier < 3)
                 {
-                    damage += 1;
+                    damage += 3;
                     upgradePoints--;
                 }
                 else if (damageTier >= 12)
@@ -116,12 +116,12 @@ namespace Purpose
                 }
                 else if (damageTier >= 9 && upgradePoints > 5)
                 {
-                    damage += 8;
+                    damage += 3;
                     upgradePoints -= 5;
                 }
                 else if (damageTier >= 6 && upgradePoints > 2)
                 {
-                    damage += 6;
+                    damage += 3;
                     upgradePoints -= 3;
                 }
                 else if (damageTier >= 3 && upgradePoints > 1)
