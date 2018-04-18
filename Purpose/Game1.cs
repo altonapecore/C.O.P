@@ -230,6 +230,7 @@ namespace Purpose
                 Content.Load<Texture2D>("GameOver"), Content.Load<Texture2D>("YouWin"), Content.Load<Texture2D>("Controls"), Content.Load<Texture2D>("PlatformTest"), Content.Load<Texture2D>("PlatformTest2"), Content.Load<Texture2D>("metalback"),
                 Content.Load<Texture2D>("HealthBar/staminabar"), Content.Load<Texture2D>("HealthBar/healthbar"));
 
+
             editedGameButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 335, 349, 155));
             presetGameButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 565, 349, 155));
             toGameButton = new GameObject(textureManager.ButtonFrame, new Rectangle(965, 668, 349, 155));
@@ -461,12 +462,6 @@ namespace Purpose
                     spriteBatch.Draw(gameManager.Player.Texture, new Rectangle(gameManager.Player.X, gameManager.Player.Y, player.Position.Width, player.Position.Height),
                         Color.White);
 
-                    //Draws the health bar and stamina bar and their backgrounds
-                    spriteBatch.Draw(textureManager.Healthbar, healthBack, Color.Black);
-                    spriteBatch.Draw(textureManager.Staminabar, staminaBack, Color.Black);
-                    spriteBatch.Draw(textureManager.Healthbar, healthBar, Color.White);
-                    spriteBatch.Draw(textureManager.Staminabar, staminaBar, Color.White);
-
                     spriteBatch.DrawString(agency30,"Wave: " + gameManager.WaveNumber.ToString(), waveIndicator, Color.Red);
 
                     foreach (Enemy e in gameManager.EnemyManager.Enemies)
@@ -479,6 +474,18 @@ namespace Purpose
                             spriteBatch.Draw(e.Texture, e.Bullet, Color.White);
                         }
                     }
+
+                    //Draws the health bar and stamina bar and their backgrounds
+                    spriteBatch.Draw(textureManager.Healthbar, healthBack, Color.Black);
+                    spriteBatch.Draw(textureManager.Healthbar, healthBar, Color.White);
+
+                    if(player.UgManager.DashActive == true || player.UgManager.GroundPoundActive == true)
+                    {
+
+                        spriteBatch.Draw(textureManager.Staminabar, staminaBack, Color.Black);
+                        spriteBatch.Draw(textureManager.Staminabar, staminaBar, Color.White);
+                    }
+
                     break;
 
                 case GameState.EditorGame:
@@ -511,12 +518,6 @@ namespace Purpose
                     spriteBatch.Draw(gameManager.Player.Texture, new Rectangle(gameManager.Player.X, gameManager.Player.Y, player.Position.Width, player.Position.Height),
                         Color.White);
 
-                    //Draws the health and stamina bars and their backgrounds
-                    spriteBatch.Draw(textureManager.Healthbar, healthBack, Color.Black);
-                    spriteBatch.Draw(textureManager.Staminabar, staminaBack, Color.Black);
-                    spriteBatch.Draw(textureManager.Healthbar, healthBar, Color.White);
-                    spriteBatch.Draw(textureManager.Staminabar, staminaBar, Color.White);
-
                     spriteBatch.DrawString(agency30, "Wave: " + gameManager.WaveNumber.ToString(), waveIndicator, Color.Red);
 
                     foreach (Enemy e in gameManager.EnemyManager.Enemies)
@@ -528,6 +529,16 @@ namespace Purpose
                         {
                             spriteBatch.Draw(e.Texture, e.Bullet, Color.White);
                         }
+                    }
+
+                    //Draws the health and stamina bars and their backgrounds
+                    spriteBatch.Draw(textureManager.Healthbar, healthBack, Color.Black);
+                    spriteBatch.Draw(textureManager.Healthbar, healthBar, Color.White);
+
+                    if(player.UgManager.DashActive == true || player.UgManager.GroundPoundActive == true)
+                    {
+                        spriteBatch.Draw(textureManager.Staminabar, staminaBack, Color.Black);
+                        spriteBatch.Draw(textureManager.Staminabar, staminaBar, Color.White);
                     }
                     break;
 

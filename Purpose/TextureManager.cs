@@ -141,7 +141,6 @@ namespace Purpose
             this.metalBack = metalBack;
 
             //For the bars for health and stamina
-            this.blackbar = blackbar;
             this.healthbar = healthbar;
             this.staminabar = staminabar;
         }
