@@ -103,7 +103,6 @@ namespace Purpose
                     damage += 10;
                     upgradePoints -= 2;
                 }
-                return damage;
             }
             return damage;
         }

@@ -142,6 +142,18 @@ namespace Purpose
             get { return gameTime; }
             set { gameTime = value; }
         }
+
+        public List<Platform> LeftWalls
+        {
+            get { return leftWalls; }
+            set { leftWalls = value; }
+        }
+
+        public List<Platform> RightWalls
+        {
+            get { return rightWalls; }
+            set { rightWalls = value; }
+        }
         #endregion
 
         #region Constructor
@@ -165,12 +177,12 @@ namespace Purpose
             // Set size of world width and height
             worldLeftEndWidth = -3000;
             worldRightEndWidth = 3000;
-            worldTopHeight = -1500;
+            worldTopHeight = -2500;
             worldBottomHeight = 1000;
 
             // Initialize gameTime and platformManager
             gameTime = new GameTime();
-            platformManager = new PlatformManager();
+            platformManager = new PlatformManager(GraphicsDevice);
             
             editedGame = false;
         }
@@ -240,20 +252,13 @@ namespace Purpose
             leftWalls = new List<Platform>();
             rightWalls = new List<Platform>();
 
-            // Walls
-            for (int i = -1500;i <= GraphicsDevice.Viewport.Height; i += 100)
-            {
-                leftWalls.Add(new Platform(new Rectangle(-3000, i, 100, 100), textureManager.BasePlatform));
-            }
-            for (int i = -1500; i <= GraphicsDevice.Viewport.Height; i+= 100)
-            {
-                rightWalls.Add(new Platform(new Rectangle(3000, i, 100, 100), textureManager.BasePlatform));
-            }
+            
 
             // Makes player, gameManager object
             background = textureManager.MetalBack;
             player = new Player("Dude", new Rectangle(50, platformManager.BottomPlatforms[1].Y - 352, 139, 352), textureManager, gameTime);
-            gameManager = new GameManager(player, platformManager.TotalPlatforms, leftWalls, rightWalls, GraphicsDevice, textureManager);
+            gameManager = new GameManager(player, platformManager.TotalPlatforms, platformManager.LeftWalls, platformManager.RightWalls, GraphicsDevice, 
+                textureManager);
             //wave = new Wave(gameManager, game1 = new Game1());
 
             gameManager.GameState = GameState.Menu;
@@ -444,11 +449,11 @@ namespace Purpose
                     }
 
                     // Walls
-                    foreach (Platform w in leftWalls)
+                    foreach (Platform w in platformManager.LeftWalls)
                     {
                         spriteBatch.Draw(w.Texture, w.Position, Color.White);
                     }
-                    foreach (Platform w in rightWalls)
+                    foreach (Platform w in platformManager.RightWalls)
                     {
                         spriteBatch.Draw(w.Texture, w.Position, Color.White);
                     }
@@ -458,10 +463,10 @@ namespace Purpose
                         Color.White);
 
                     //Draws the health bar and stamina bar and their backgrounds
+                    spriteBatch.Draw(textureManager.Healthbar, healthBack, Color.Black);
+                    spriteBatch.Draw(textureManager.Staminabar, staminaBack, Color.Black);
                     spriteBatch.Draw(textureManager.Healthbar, healthBar, Color.White);
                     spriteBatch.Draw(textureManager.Staminabar, staminaBar, Color.White);
-                    spriteBatch.Draw(textureManager.Blackbar, healthBack, Color.White);
-                    spriteBatch.Draw(textureManager.Blackbar, staminaBack, Color.White);
 
                     spriteBatch.DrawString(agency30,"Wave: " + gameManager.WaveNumber.ToString(), waveIndicator, Color.Red);
 
@@ -494,11 +499,11 @@ namespace Purpose
                     }
 
                     // Walls
-                    foreach (Platform w in leftWalls)
+                    foreach (Platform w in platformManager.LeftWalls)
                     {
                         spriteBatch.Draw(w.Texture, w.Position, Color.White);
                     }
-                    foreach (Platform w in rightWalls)
+                    foreach (Platform w in platformManager.RightWalls)
                     {
                         spriteBatch.Draw(w.Texture, w.Position, Color.White);
                     }
@@ -508,10 +513,10 @@ namespace Purpose
                         Color.White);
 
                     //Draws the health and stamina bars and their backgrounds
+                    spriteBatch.Draw(textureManager.Healthbar, healthBack, Color.Black);
+                    spriteBatch.Draw(textureManager.Staminabar, staminaBack, Color.Black);
                     spriteBatch.Draw(textureManager.Healthbar, healthBar, Color.White);
                     spriteBatch.Draw(textureManager.Staminabar, staminaBar, Color.White);
-                    spriteBatch.Draw(textureManager.Blackbar, healthBack, Color.White);
-                    spriteBatch.Draw(textureManager.Blackbar, staminaBack, Color.White);
 
                     spriteBatch.DrawString(agency30, "Wave: " + gameManager.WaveNumber.ToString(), waveIndicator, Color.Red);
 
@@ -713,14 +718,14 @@ namespace Purpose
                     //arenaManagerCounter = 0;
                     camera.MinimumZoom = 0.1f;
                     camera.MaximumZoom = 1.0f;
-                    camera.Zoom = 0.4f;
+                    camera.Zoom = 0.5f;
 
                     //Used for the locations of the health bar and stamina bar
-                    healthBar = new Rectangle(player.Position.X - 1250, player.Position.Y - 1000, player.Health * 4, textureManager.Healthbar.Height);
-                    staminaBar = new Rectangle(player.Position.X - 1250, player.Position.Y - 900, player.Stamina * 4, textureManager.Staminabar.Height);
-
-                    //healthBack = new Rectangle(player.Position.X - 1250, player.Position.Y , player.HealthMax, textureManager.Blackbar.Height);
-                    //staminaBack = new Rectangle(player.Position.X - 1250, player.Position.Y , player.StaminaMax, textureManager.Blackbar.Height);
+                    healthBar = new Rectangle(player.Position.X - 1245, player.Position.Y - 1000, player.Health * 4, textureManager.Healthbar.Height);
+                    staminaBar = new Rectangle(player.Position.X - 1245, player.Position.Y - 900, player.Stamina * 4, textureManager.Staminabar.Height);
+              
+                    healthBack = new Rectangle(player.Position.X - 1250, player.Position.Y - 1006, (player.HealthMax * 4) + 10, textureManager.Healthbar.Height + 11);
+                    staminaBack = new Rectangle(player.Position.X - 1250, player.Position.Y - 906, (player.StaminaMax * 4) + 10, textureManager.Staminabar.Height + 11);
 
                     //Used to Indicate and let the player know what wave they are on
                     waveIndicator = new Vector2(player.Position.X - 1250, player.Position.Y - 775);
@@ -748,85 +753,71 @@ namespace Purpose
                         {
                             gameManager.WaveNumber = WaveNumber.Two;
                             gameManager.GameState = GameState.NextWave;
-                            gameManager.PlatformVersion = PlatformVersion.Easy;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Two)
                         {
                             gameManager.WaveNumber = WaveNumber.Three;
                             gameManager.GameState = GameState.NextWave;
-                            gameManager.PlatformVersion = PlatformVersion.Easy;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Three)
                         {
                             gameManager.WaveNumber = WaveNumber.Four;
                             gameManager.GameState = GameState.NextWave;
-                            gameManager.PlatformVersion = PlatformVersion.Medium;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Four)
                         {
                             gameManager.WaveNumber = WaveNumber.Five;
                             gameManager.GameState = GameState.NextWave;
-                            gameManager.PlatformVersion = PlatformVersion.Medium;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Five)
                         {
                             gameManager.WaveNumber = WaveNumber.Six;
                             gameManager.GameState = GameState.NextWave;
-                            gameManager.PlatformVersion = PlatformVersion.Medium;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Six)
                         {
                             gameManager.WaveNumber = WaveNumber.Seven;
                             gameManager.GameState = GameState.NextWave;
-                            gameManager.PlatformVersion = PlatformVersion.Hard;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Seven)
                         {
                             gameManager.WaveNumber = WaveNumber.Eight;
                             gameManager.GameState = GameState.NextWave;
-                            gameManager.PlatformVersion = PlatformVersion.Hard;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Eight)
                         {
                             gameManager.WaveNumber = WaveNumber.Nine;
                             gameManager.GameState = GameState.NextWave;
-                            gameManager.PlatformVersion = PlatformVersion.Hard;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Nine)
                         {
                             gameManager.WaveNumber = WaveNumber.Ten;
                             gameManager.GameState = GameState.NextWave;
-                            gameManager.PlatformVersion = PlatformVersion.Mean;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Ten)
                         {
                             gameManager.WaveNumber = WaveNumber.Eleven;
                             gameManager.GameState = GameState.NextWave;
-                            gameManager.PlatformVersion = PlatformVersion.Mean;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Eleven)
                         {
                             gameManager.WaveNumber = WaveNumber.Twelve;
                             gameManager.GameState = GameState.NextWave;
-                            gameManager.PlatformVersion = PlatformVersion.Mean;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Twelve)
                         {
                             gameManager.WaveNumber = WaveNumber.Thirteen;
                             gameManager.GameState = GameState.NextWave;
-                            gameManager.PlatformVersion = PlatformVersion.Life;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Thirteen)
                         {
                             gameManager.WaveNumber = WaveNumber.Fourteen;
                             gameManager.GameState = GameState.NextWave;
-                            gameManager.PlatformVersion = PlatformVersion.Life;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Fourteen)
                         {
                             gameManager.WaveNumber = WaveNumber.Fifteen;
                             gameManager.GameState = GameState.NextWave;
-                            gameManager.PlatformVersion = PlatformVersion.Life;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Fifteen)
                         {
@@ -842,7 +833,7 @@ namespace Purpose
                     //arenaManagerCounter = 0;
                     camera.MinimumZoom = 0.1f;
                     camera.MaximumZoom = 1.0f;
-                    camera.Zoom = 0.4f;
+                    camera.Zoom = 0.5f;
 
                     //Gives location of the health bar and stamina bar and their backgrounds
                     healthBar = new Rectangle(player.Position.X - 1250, player.Position.Y - 1000, player.Health * 4, textureManager.Healthbar.Height);
