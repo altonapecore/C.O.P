@@ -56,15 +56,21 @@ namespace Purpose
                 staminaTier++;
                 if (staminaTier < 3)
                 {
-                    player.StaminaMax += 5;
-                    player.StaminaRegen += 1;
+                    player.StaminaMax += 2;
+                    upgradePoints--;
                 }
-                else if (staminaTier > 3)
+                else if (staminaTier > 6 && upgradePoints > 2)
                 {
-                    player.StaminaMax += 10;
-                    player.StaminaRegen += 3;
+                    player.StaminaMax += 6;
+                    player.StaminaRegen += 2;
+                    upgradePoints -= 3;
                 }
-                upgradePoints--;
+                else if (staminaTier > 3 && upgradePoints > 1)
+                {
+                    player.StaminaMax += 4;
+                    player.StaminaRegen += 1;
+                    upgradePoints -= 2;
+                }
             }
         }
 
@@ -75,16 +81,21 @@ namespace Purpose
                 healthTier++;
                 if (healthTier < 3)
                 {
-                    player.HealthMax += 5;
-                    player.HealthRegen += 1;
-
+                    player.HealthMax += 2;
+                    upgradePoints--;
                 }
-                else if (healthTier >= 3)
+                else if (healthTier > 6 && upgradePoints > 2)
                 {
-                    player.HealthMax += 10;
-                    player.HealthRegen += 3;
+                    player.HealthMax += 6;
+                    player.HealthRegen += 2;
+                    upgradePoints -= 3;
                 }
-                upgradePoints--;
+                else if (healthTier >= 3 && upgradePoints > 1)
+                {
+                    player.HealthMax += 4;
+                    player.HealthRegen += 1;
+                    upgradePoints -= 2;
+                }
             }
         }
 
@@ -95,15 +106,29 @@ namespace Purpose
                 damageTier++;
                 if (damageTier < 3)
                 {
-                    damage += 5;
+                    damage += 1;
                     upgradePoints--;
+                }
+                else if (damageTier >= 12)
+                {
+                    damage += 0;
+                    damageTier = 12;
+                }
+                else if (damageTier >= 9 && upgradePoints > 5)
+                {
+                    damage += 8;
+                    upgradePoints -= 5;
+                }
+                else if (damageTier >= 6 && upgradePoints > 2)
+                {
+                    damage += 6;
+                    upgradePoints -= 3;
                 }
                 else if (damageTier >= 3 && upgradePoints > 1)
                 {
-                    damage += 10;
+                    damage += 3;
                     upgradePoints -= 2;
                 }
-                return damage;
             }
             return damage;
         }
@@ -115,11 +140,11 @@ namespace Purpose
                 stealthTier++;
                 if (stealthTier < 3)
                 {
-                    dashDistance += 10;
+                    dashDistance += 20;
                 }
                 else if (stealthTier >= 3)
                 {
-                    dashDistance += 20;
+                    dashDistance += 40;
                 }
                 upgradePoints--;
                 return dashDistance;
@@ -129,24 +154,24 @@ namespace Purpose
 
         public void ActivateDash()
         {
-            if (upgradePoints > 0)
+            if (upgradePoints > 2)
             {
                 if (!dashActive)
                 {
                     dashActive = true;
-                    upgradePoints--;
+                    upgradePoints -= 3;
                 }
             }
         }
 
         public void ActivateGroundPound()
         {
-            if (upgradePoints > 1)
+            if (upgradePoints > 4)
             {
                 if (!groundPoundActive)
                 {
                     groundPoundActive = true;
-                    upgradePoints-=2;
+                    upgradePoints  -= 5;
                 }
             }
         }

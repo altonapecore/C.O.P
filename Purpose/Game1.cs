@@ -228,7 +228,7 @@ namespace Purpose
                 Content.Load<Texture2D>("StartMenu"), Content.Load<Texture2D>("buttonFrame2"), Content.Load<Texture2D>("roundedFrame"),
                 Content.Load<Texture2D>("UpgradeUI"), Content.Load<Texture2D>("PauseMenu"), Content.Load<Texture2D>("NextWaveMenu"), 
                 Content.Load<Texture2D>("GameOver"), Content.Load<Texture2D>("YouWin"), Content.Load<Texture2D>("Controls"), Content.Load<Texture2D>("PlatformTest"), Content.Load<Texture2D>("PlatformTest2"), Content.Load<Texture2D>("metalback"),
-                Content.Load<Texture2D>("HealthBar/staminabar"), Content.Load<Texture2D>("HealthBar/healthbar"), Content.Load<Texture2D>("HealthBar/blackbar"));
+                Content.Load<Texture2D>("HealthBar/staminabar"), Content.Load<Texture2D>("HealthBar/healthbar"));
 
 
             editedGameButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 335, 349, 155));
@@ -462,12 +462,6 @@ namespace Purpose
                     spriteBatch.Draw(gameManager.Player.Texture, new Rectangle(gameManager.Player.X, gameManager.Player.Y, player.Position.Width, player.Position.Height),
                         Color.White);
 
-                    //Draws the health bar and stamina bar and their backgrounds
-                    spriteBatch.Draw(textureManager.Healthbar, healthBar, Color.White);
-                    spriteBatch.Draw(textureManager.Staminabar, staminaBar, Color.White);
-                    spriteBatch.Draw(textureManager.Blackbar, healthBack, Color.White);
-                    spriteBatch.Draw(textureManager.Blackbar, staminaBack, Color.White);
-
                     spriteBatch.DrawString(agency30,"Wave: " + gameManager.WaveNumber.ToString(), waveIndicator, Color.Red);
 
                     foreach (Enemy e in gameManager.EnemyManager.Enemies)
@@ -480,6 +474,18 @@ namespace Purpose
                             spriteBatch.Draw(e.Texture, e.Bullet, Color.White);
                         }
                     }
+
+                    //Draws the health bar and stamina bar and their backgrounds
+                    spriteBatch.Draw(textureManager.Healthbar, healthBack, Color.Black);
+                    spriteBatch.Draw(textureManager.Healthbar, healthBar, Color.White);
+
+                    if(player.UgManager.DashActive == true || player.UgManager.GroundPoundActive == true)
+                    {
+
+                        spriteBatch.Draw(textureManager.Staminabar, staminaBack, Color.Black);
+                        spriteBatch.Draw(textureManager.Staminabar, staminaBar, Color.White);
+                    }
+
                     break;
 
                 case GameState.EditorGame:
@@ -512,12 +518,6 @@ namespace Purpose
                     spriteBatch.Draw(gameManager.Player.Texture, new Rectangle(gameManager.Player.X, gameManager.Player.Y, player.Position.Width, player.Position.Height),
                         Color.White);
 
-                    //Draws the health and stamina bars and their backgrounds
-                    spriteBatch.Draw(textureManager.Healthbar, healthBar, Color.White);
-                    spriteBatch.Draw(textureManager.Staminabar, staminaBar, Color.White);
-                    spriteBatch.Draw(textureManager.Blackbar, healthBack, Color.White);
-                    spriteBatch.Draw(textureManager.Blackbar, staminaBack, Color.White);
-
                     spriteBatch.DrawString(agency30, "Wave: " + gameManager.WaveNumber.ToString(), waveIndicator, Color.Red);
 
                     foreach (Enemy e in gameManager.EnemyManager.Enemies)
@@ -529,6 +529,16 @@ namespace Purpose
                         {
                             spriteBatch.Draw(e.Texture, e.Bullet, Color.White);
                         }
+                    }
+
+                    //Draws the health and stamina bars and their backgrounds
+                    spriteBatch.Draw(textureManager.Healthbar, healthBack, Color.Black);
+                    spriteBatch.Draw(textureManager.Healthbar, healthBar, Color.White);
+
+                    if(player.UgManager.DashActive == true || player.UgManager.GroundPoundActive == true)
+                    {
+                        spriteBatch.Draw(textureManager.Staminabar, staminaBack, Color.Black);
+                        spriteBatch.Draw(textureManager.Staminabar, staminaBar, Color.White);
                     }
                     break;
 
@@ -721,11 +731,11 @@ namespace Purpose
                     camera.Zoom = 0.5f;
 
                     //Used for the locations of the health bar and stamina bar
-                    healthBar = new Rectangle(player.Position.X - 1250, player.Position.Y - 1000, player.Health * 4, textureManager.Healthbar.Height);
-                    staminaBar = new Rectangle(player.Position.X - 1250, player.Position.Y - 900, player.Stamina * 4, textureManager.Staminabar.Height);
-
-                    //healthBack = new Rectangle(player.Position.X - 1250, player.Position.Y , player.HealthMax, textureManager.Blackbar.Height);
-                    //staminaBack = new Rectangle(player.Position.X - 1250, player.Position.Y , player.StaminaMax, textureManager.Blackbar.Height);
+                    healthBar = new Rectangle(player.Position.X - 1245, player.Position.Y - 1000, player.Health * 4, textureManager.Healthbar.Height);
+                    staminaBar = new Rectangle(player.Position.X - 1245, player.Position.Y - 900, player.Stamina * 4, textureManager.Staminabar.Height);
+              
+                    healthBack = new Rectangle(player.Position.X - 1250, player.Position.Y - 1006, (player.HealthMax * 4) + 10, textureManager.Healthbar.Height + 11);
+                    staminaBack = new Rectangle(player.Position.X - 1250, player.Position.Y - 906, (player.StaminaMax * 4) + 10, textureManager.Staminabar.Height + 11);
 
                     //Used to Indicate and let the player know what wave they are on
                     waveIndicator = new Vector2(player.Position.X - 1250, player.Position.Y - 775);

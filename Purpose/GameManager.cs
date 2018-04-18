@@ -265,16 +265,6 @@ namespace Purpose
             //checking keyboard state to make the player move
             if (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left)) //move to the left
             {
-                //first check to see if the player is crouching
-                if (isCrouching)
-                {
-                    player.Texture = textureManager.LeftCrouchSprite;
-                    player.X -= 8;
-                    // moving camera with player
-                    camera.LookAt(new Vector2(player.X, player.Y - 250));
-                    return;
-                }
-
                 //if neither key was down previously reset keyCounter
                 if (previouskbState.IsKeyUp(Keys.A) && previouskbState.IsKeyUp(Keys.Left))
                 {
@@ -309,22 +299,16 @@ namespace Purpose
                         player.Texture = textureManager.LeftStandingSprite;
                     }
                 }
-                player.X -= 8;
+                if (Math.Abs(player.PreviousX - player.X) >= player.DashDistance)
+                {
+                    player.HorizontalVelocity = 8;
+                }
+                player.X -= player.HorizontalVelocity;
                 // moving camera with player
                 camera.LookAt(new Vector2(player.X, player.Y - 250));
             }
             if (kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right)) //move to the right
             {
-                //first check to see if player is crouching
-                if (isCrouching)
-                {
-                    player.Texture = textureManager.RightCrouchSprite;
-                    player.X += 8;
-                    // moving camera with player
-                    camera.LookAt(new Vector2(player.X, player.Y - 250));
-                    return;
-                }
-
                 //neither key was down previously reset the counter
                 if (previouskbState.IsKeyUp(Keys.D) && previouskbState.IsKeyUp(Keys.Right))
                 {
@@ -359,7 +343,11 @@ namespace Purpose
                         player.Texture = textureManager.RightStandingSprite;
                     }
                 }
-                player.X += 8;
+                if (Math.Abs(player.PreviousX - player.X) >= player.DashDistance)
+                {
+                    player.HorizontalVelocity = 8;
+                }
+                player.X += player.HorizontalVelocity;
                 // moving camera with player
                 camera.LookAt(new Vector2(player.X, player.Y - 250));
             }
@@ -373,11 +361,6 @@ namespace Purpose
                 player.Dash();
                 camera.LookAt(new Vector2(player.X, player.Y - 250));
             }
-            //if (kbState.IsKeyDown(Keys.S) && previouskbState.IsKeyUp(Keys.S) //crouch
-            //    && !kbState.IsKeyDown(Keys.Space) && !jumping)
-            //{
-            //    isCrouching = player.Crouch(kbState); //sets the isCrouching bool based on the Crouch() method
-            //}
 
             // Player attack done here as well as enemy takeDamage
             if (ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released && !isCrouching)
@@ -401,7 +384,7 @@ namespace Purpose
                     {
                         enemyManager.Enemies.RemoveAt(i);
                         player.Kills++;
-                        if (player.Kills != 0 && player.Kills % 3 == 0)
+                        if (player.Kills != 0 && player.Kills % 5 == 0)
                         {
                             player.UgManager.UpgradePoints++;
                         }
