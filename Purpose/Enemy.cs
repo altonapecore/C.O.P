@@ -227,7 +227,7 @@ namespace Purpose
             }
 
             rangedAttackTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if(rangedAttackTimer >= 3)
+            if(rangedAttackTimer >= 3 && player.Y <= Y && player.Y >= Y - 150)
             {
                 // If the enemy is ranged and doesn't have a bullet, spawn a bullet
                 if (ranged && !hasBullet && isFacingLeft)
