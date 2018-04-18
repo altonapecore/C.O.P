@@ -158,43 +158,6 @@ namespace Purpose
         }
 
         /// <summary>
-        /// Allows the player to crouch
-        /// </summary>
-        /// <returns>Returns a boolean representing if the player is crouching or not</returns>
-        public bool Crouch(KeyboardState kbState)
-        {
-            //if the player's current texture isn't the crouch sprite, make the player crouch
-            if (texture == textureManager.LeftCrouchSprite || texture == textureManager.RightCrouchSprite)
-            {
-                Rectangle prevPosition = position;
-                position = new Rectangle(prevPosition.X, prevPosition.Y - prevPosition.Height, prevPosition.Width, prevPosition.Height * 2);
-                if (texture == textureManager.RightCrouchSprite)
-                {
-                    texture = textureManager.RightStandingSprite;
-                }
-                else if (texture == textureManager.LeftCrouchSprite)
-                {
-                    texture = textureManager.LeftStandingSprite;
-                }
-                return false;
-            }
-            else
-            {
-                Rectangle prevPosition = position;
-                position = new Rectangle(prevPosition.X, prevPosition.Y + prevPosition.Height/2, prevPosition.Width, prevPosition.Height/2);
-                if (texture == textureManager.RightStandingSprite || texture == textureManager.RightRunningSprite || texture == textureManager.RightMiddleRunningSprite)
-                {
-                    texture = textureManager.RightCrouchSprite;
-                }
-                else if (texture == textureManager.LeftStandingSprite || texture == textureManager.LeftRunningSprite || texture == textureManager.LeftMiddleRunningSprite)
-                {
-                    texture = textureManager.LeftCrouchSprite;
-                }
-                return true;
-            }
-        }
-
-        /// <summary>
         /// Allows the player to execute their ground pound attack
         /// </summary>
         /// <param name="enemies">The list of enemies in the game</param>

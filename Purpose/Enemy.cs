@@ -163,6 +163,34 @@ namespace Purpose
                     health = 60;
                 }
             }
+            else if(difficulty == 4)
+            {
+                color = Color.DarkTurquoise;
+                if(ranged)
+                {
+                    damage = 16;
+                    health = 45;
+                }
+                else
+                {
+                    damage = 14;
+                    health = 65;
+                }
+            }
+            else if(difficulty == 5)
+            {
+                color = Color.Yellow;
+                if(ranged)
+                {
+                    damage = 19;
+                    health = 50;
+                }
+                else
+                {
+                    damage = 17;
+                    health = 70;
+                }                  
+            }
             else
             {
                 damage = 5;

@@ -10,8 +10,6 @@ namespace Purpose
     public class TextureManager
     {
         //fields
-        private Texture2D rightCrouchSprite;
-        private Texture2D leftCrouchSprite;
         private Texture2D rightStandingSprite;
         private Texture2D leftStandingSprite;
         private Texture2D rightMiddleRunningSprite;
@@ -49,11 +47,8 @@ namespace Purpose
 
         private Texture2D healthbar;
         private Texture2D staminabar;
-        private Texture2D blackbar;
 
         //sprite properties
-        public Texture2D RightCrouchSprite { get { return rightCrouchSprite; } }
-        public Texture2D LeftCrouchSprite { get { return leftCrouchSprite; } }
         public Texture2D RightStandingSprite { get { return rightStandingSprite; } }
         public Texture2D LeftStandingSprite { get { return leftStandingSprite; } }
         public Texture2D RightMiddleRunningSprite { get { return rightMiddleRunningSprite; } }
@@ -91,19 +86,15 @@ namespace Purpose
         
         public Texture2D Staminabar { get { return staminabar; } }
         public Texture2D Healthbar { get { return healthbar; } }
-        public Texture2D Blackbar { get { return blackbar; } }
 
         //constructor
-        public TextureManager(Texture2D leftCrouchSprite, Texture2D rightCrouchSprite, Texture2D leftStandingSprite,
-            Texture2D rightStandingSprite, Texture2D leftMiddleRunningSprite, Texture2D rightMiddleRunningSprite,
+        public TextureManager(Texture2D leftStandingSprite,Texture2D rightStandingSprite, Texture2D leftMiddleRunningSprite, Texture2D rightMiddleRunningSprite,
             Texture2D leftRunningSprite, Texture2D rightRunningSprite, Texture2D rightPlayerAttack1, Texture2D leftPlayerAttack1, Texture2D rightPlayerAttack2, Texture2D leftPlayerAttack2,
             Texture2D rightEnemyWalk1, Texture2D rightEnemyWalk2, Texture2D rightEnemyWalk3, Texture2D leftEnemyWalk1, Texture2D leftEnemyWalk2, Texture2D leftEnemyWalk3,
             Texture2D rangedEnemyTexture, Texture2D startScreen, Texture2D buttonFrame, Texture2D roundedFrame,
             Texture2D upgradeScreen, Texture2D pauseScreen, Texture2D nextWaveScreen, Texture2D gameOver, Texture2D youWin, Texture2D controlScreen, Texture2D basePlatform, Texture2D notBasePlatform, Texture2D metalBack,
             Texture2D staminabar, Texture2D healthbar)
         {
-            this.rightCrouchSprite = rightCrouchSprite;
-            this.leftCrouchSprite = leftCrouchSprite;
             this.rightStandingSprite = rightStandingSprite;
             this.leftStandingSprite = leftStandingSprite;
             this.rightMiddleRunningSprite = rightMiddleRunningSprite;

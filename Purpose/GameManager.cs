@@ -365,15 +365,13 @@ namespace Purpose
             // Player attack done here as well as enemy takeDamage
             if (ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released && !isCrouching)
             {
-                if (player.Texture == textureManager.LeftCrouchSprite || player.Texture == textureManager.LeftJumpSprite ||
-                        player.Texture == textureManager.LeftRunningSprite || player.Texture == textureManager.LeftStandingSprite ||
-                        player.Texture == textureManager.LeftMiddleRunningSprite)
+                if (player.Texture == textureManager.LeftJumpSprite || player.Texture == textureManager.LeftRunningSprite || 
+                    player.Texture == textureManager.LeftStandingSprite || player.Texture == textureManager.LeftMiddleRunningSprite)
                 {
                     player.Texture = textureManager.LeftPlayerAttack1;
                 }
-                else if (player.Texture == textureManager.RightCrouchSprite || player.Texture == textureManager.RightJumpSprite ||
-                        player.Texture == textureManager.RightRunningSprite || player.Texture == textureManager.RightStandingSprite ||
-                        player.Texture == textureManager.RightMiddleRunningSprite)
+                else if (player.Texture == textureManager.RightJumpSprite || player.Texture == textureManager.RightRunningSprite || 
+                        player.Texture == textureManager.RightStandingSprite || player.Texture == textureManager.RightMiddleRunningSprite)
                 {
                     player.Texture = textureManager.RightPlayerAttack1;
                 }
