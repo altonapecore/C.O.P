@@ -105,7 +105,7 @@ namespace Purpose
                 }
                 return damage;
             }
-            return 0;
+            return damage;
         }
 
         public int DashDistanceUpgrade(int dashDistance)
