@@ -801,7 +801,7 @@ namespace Purpose
                 e.OnPlatform = false;
                 foreach (Platform p in platforms)
                 {
-                    if (new Rectangle(e.X, e.Y + 130, e.Position.Width, e.Position.Height - 130).Intersects(p.Position))
+                    if (new Rectangle(e.X, e.Y + 175, e.Position.Width, e.Position.Height - 175).Intersects(p.Position))
                     {
                         e.OnPlatform = true;
                         break;

@@ -163,6 +163,34 @@ namespace Purpose
                     health = 60;
                 }
             }
+            else if(difficulty == 4)
+            {
+                color = Color.DarkTurquoise;
+                if(ranged)
+                {
+                    damage = 16;
+                    health = 45;
+                }
+                else
+                {
+                    damage = 14;
+                    health = 65;
+                }
+            }
+            else if(difficulty == 5)
+            {
+                color = Color.Yellow;
+                if(ranged)
+                {
+                    damage = 19;
+                    health = 50;
+                }
+                else
+                {
+                    damage = 17;
+                    health = 70;
+                }                  
+            }
             else
             {
                 damage = 5;
@@ -199,7 +227,7 @@ namespace Purpose
             }
 
             rangedAttackTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if(rangedAttackTimer >= 3)
+            if(rangedAttackTimer >= 3 && player.Y <= Y && player.Y >= Y - 150)
             {
                 // If the enemy is ranged and doesn't have a bullet, spawn a bullet
                 if (ranged && !hasBullet && isFacingLeft)

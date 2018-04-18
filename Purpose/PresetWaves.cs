@@ -36,7 +36,7 @@ namespace Purpose
             gameManager.PresetWaves.Add(newWave);
 
             //Creating the Fourth Wave
-            newWave = new Wave(2, 5, 1);
+            newWave = new Wave(2, 5, 2);
             //Adding wave to the list of Waves
             gameManager.PresetWaves.Add(newWave);
 
@@ -52,47 +52,47 @@ namespace Purpose
             gameManager.PresetWaves.Add(newWave);
 
             //Creating the Seventh Wave
-            newWave = new Wave(5, 2, 2);
+            newWave = new Wave(5, 2, 3);
             //Adding wave to the list of Waves
             gameManager.PresetWaves.Add(newWave);
 
             //Creating the Eighth Wave
-            newWave = new Wave(8, 3, 2);
+            newWave = new Wave(8, 3, 3);
             //Adding wave to the list of Waves
             gameManager.PresetWaves.Add(newWave);
 
             //Creating the Nineth Wave
-            newWave = new Wave(4, 7, 2);
+            newWave = new Wave(4, 7, 3);
             //Adding wave to the list of Waves
             gameManager.PresetWaves.Add(newWave);
 
             //Creating the Tenth Wave
-            newWave = new Wave(6, 6, 2);
+            newWave = new Wave(6, 6, 4);
             //Adding wave to the list of Waves
             gameManager.PresetWaves.Add(newWave);
 
             //Creating the Eleventh Wave
-            newWave = new Wave(7, 9, 3);
+            newWave = new Wave(7, 9, 4);
             //Adding wave to the list of Waves
             gameManager.PresetWaves.Add(newWave);
 
             //Creating the Twelveth Wave
-            newWave = new Wave(9, 5, 3);
+            newWave = new Wave(9, 5, 4);
             //Adding wave to the list of Waves
             gameManager.PresetWaves.Add(newWave);
 
             //Creating the Thirteenth Wave
-            newWave = new Wave(10, 6, 3);
+            newWave = new Wave(10, 6, 5);
             //Adding wave to the list of Waves
             gameManager.PresetWaves.Add(newWave);
 
             //Creating the Fourteenth Wave
-            newWave = new Wave(12, 8, 3);
+            newWave = new Wave(12, 8, 5);
             //Adding wave to the list of Waves
             gameManager.PresetWaves.Add(newWave);
 
             //Creating the Fifteenth Wave
-            newWave = new Wave(15, 10, 3);
+            newWave = new Wave(15, 10, 5);
             //Adding wave to the list of Waves
             gameManager.PresetWaves.Add(newWave);
         }

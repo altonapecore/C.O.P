@@ -149,7 +149,7 @@ namespace Purpose
                 upgradePoints--;
                 return dashDistance;
             }
-            return 0;
+            return dashDistance;
         }
 
         public void ActivateDash()
