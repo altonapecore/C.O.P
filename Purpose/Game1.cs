@@ -228,8 +228,7 @@ namespace Purpose
                 Content.Load<Texture2D>("StartMenu"), Content.Load<Texture2D>("buttonFrame2"), Content.Load<Texture2D>("roundedFrame"),
                 Content.Load<Texture2D>("UpgradeUI"), Content.Load<Texture2D>("PauseMenu"), Content.Load<Texture2D>("NextWaveMenu"), 
                 Content.Load<Texture2D>("GameOver"), Content.Load<Texture2D>("YouWin"), Content.Load<Texture2D>("Controls"), Content.Load<Texture2D>("PlatformTest"), Content.Load<Texture2D>("PlatformTest2"), Content.Load<Texture2D>("metalback"),
-                Content.Load<Texture2D>("HealthBar/staminabar"), Content.Load<Texture2D>("HealthBar/healthbar"), Content.Load<Texture2D>("HealthBar/blackbar"));
-
+                Content.Load<Texture2D>("HealthBar/staminabar"), Content.Load<Texture2D>("HealthBar/healthbar"));
 
             editedGameButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 335, 349, 155));
             presetGameButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 565, 349, 155));

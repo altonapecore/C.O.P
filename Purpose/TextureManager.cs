@@ -100,7 +100,7 @@ namespace Purpose
             Texture2D rightEnemyWalk1, Texture2D rightEnemyWalk2, Texture2D rightEnemyWalk3, Texture2D leftEnemyWalk1, Texture2D leftEnemyWalk2, Texture2D leftEnemyWalk3,
             Texture2D rangedEnemyTexture, Texture2D startScreen, Texture2D buttonFrame, Texture2D roundedFrame,
             Texture2D upgradeScreen, Texture2D pauseScreen, Texture2D nextWaveScreen, Texture2D gameOver, Texture2D youWin, Texture2D controlScreen, Texture2D basePlatform, Texture2D notBasePlatform, Texture2D metalBack,
-            Texture2D staminabar, Texture2D healthbar, Texture2D blackbar)
+            Texture2D staminabar, Texture2D healthbar)
         {
             this.rightCrouchSprite = rightCrouchSprite;
             this.leftCrouchSprite = leftCrouchSprite;

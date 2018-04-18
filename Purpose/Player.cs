@@ -24,6 +24,8 @@ namespace Purpose
         private int gameTime;
         private int healthRegen;
         private int staminaRegen;
+        private int previousX;
+        private int horizontalVelocity;
 
         //properties
         public int Kills
@@ -84,6 +86,14 @@ namespace Purpose
 
         public int GameTime { get { return gameTime; } }
 
+        public int PreviousX { get { return previousX; } }
+        
+        public int HorizontalVelocity
+        {
+            get { return horizontalVelocity; }
+            set { horizontalVelocity = value; }
+        }
+
         //secondary temporary constructor for debug purposes
         public Player(String name, Rectangle position, TextureManager textureManager, GameTime gameTime) : base(textureManager.RightStandingSprite)
         {
@@ -95,13 +105,14 @@ namespace Purpose
             healthMax = health;
             stamina = 100;
             staminaMax = stamina;
-            dashDistance = 150;
+            dashDistance = 200;
             damage = 10;
             texture = textureManager.RightStandingSprite;
             kills = 0;
             healthRegen = 2;
             staminaRegen = 1;
             this.gameTime = gameTime.TotalGameTime.Milliseconds;
+            horizontalVelocity = 8;
         }
 
         //methods
@@ -211,20 +222,26 @@ namespace Purpose
             }
         }
 
+        /// <summary>
+        /// Increases the player speed for a short time
+        /// </summary>
         public void Dash()
         {
+            previousX = X;
+
             if (ugManager.DashActive && stamina >= 20)
             {
-                if (texture == textureManager.RightStandingSprite || texture == textureManager.RightRunningSprite
-                    || texture == textureManager.RightCrouchSprite) //dash to the right
-                {
-                    X += dashDistance;
-                }
-                else if (texture == textureManager.LeftStandingSprite || texture == textureManager.LeftRunningSprite
-                    || texture == textureManager.LeftCrouchSprite) //dash to the left
-                {
-                    X -= dashDistance;
-                }
+                //if (texture == textureManager.RightStandingSprite || texture == textureManager.RightRunningSprite
+                //    || texture == textureManager.RightMiddleRunningSprite) //dash to the right
+                //{
+                //    X += dashDistance;
+                //}
+                //else if (texture == textureManager.LeftStandingSprite || texture == textureManager.LeftRunningSprite
+                //    || texture == textureManager.LeftMiddleRunningSprite) //dash to the left
+                //{
+                //    X -= dashDistance;
+                //}
+                horizontalVelocity = 16;
                 stamina -= 20;
             }
         }
