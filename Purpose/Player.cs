@@ -26,6 +26,7 @@ namespace Purpose
         private int staminaRegen;
         private int previousX;
         private int horizontalVelocity;
+        private bool combatStatus;
 
         //properties
         public int Kills
@@ -94,6 +95,12 @@ namespace Purpose
             set { horizontalVelocity = value; }
         }
 
+        public bool CombatStatus
+        {
+            get { return combatStatus; }
+            set { combatStatus = value; }
+        }
+
         //secondary temporary constructor for debug purposes
         public Player(String name, Rectangle position, TextureManager textureManager, GameTime gameTime) : base(textureManager.RightStandingSprite)
         {
@@ -113,6 +120,7 @@ namespace Purpose
             staminaRegen = 1;
             this.gameTime = gameTime.TotalGameTime.Milliseconds;
             horizontalVelocity = 8;
+            combatStatus = false;
         }
 
         //methods
@@ -128,6 +136,7 @@ namespace Purpose
                 if (position.Intersects(enemy.Position))
                 {
                     this.gameTime = gameTime.TotalGameTime.Milliseconds;
+                    combatStatus = true;
                     return damage;
                 }
                 return 0;
