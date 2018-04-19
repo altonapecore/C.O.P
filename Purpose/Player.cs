@@ -137,7 +137,6 @@ namespace Purpose
                 if (position.Intersects(enemy.Position))
                 {
                     this.gameTime = 0;
-                    this.gameTime = gameTime.TotalGameTime.Milliseconds;
                     combatStatus = true;
                     return damage;
                 }
