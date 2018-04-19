@@ -143,11 +143,12 @@ namespace Purpose
         /// <returns>Returns an integer value for the damage done</returns>
         public override int Attack(Character enemy, GameTime gameTime)
         {
-            if (this.gameTime + 200 <= gameTime.TotalGameTime.TotalMilliseconds)
+            this.gameTime += (int)gameTime.ElapsedGameTime.TotalMilliseconds;
+            if (this.gameTime >= 71)
             {
                 if (position.Intersects(enemy.Position))
                 {
-                    this.gameTime = gameTime.TotalGameTime.Milliseconds;
+                    this.gameTime = 0;
                     combatStatus = true;
                     return damage;
                 }
