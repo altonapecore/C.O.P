@@ -365,21 +365,26 @@ namespace Purpose
             // Player attack done here as well as enemy takeDamage
             if (ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released && !isCrouching)
             {
-                if (player.Texture == textureManager.LeftCrouchSprite || player.Texture == textureManager.LeftJumpSprite ||
-                        player.Texture == textureManager.LeftRunningSprite || player.Texture == textureManager.LeftStandingSprite ||
-                        player.Texture == textureManager.LeftMiddleRunningSprite)
-                {
-                    player.Texture = textureManager.LeftPlayerAttack1;
-                }
-                else if (player.Texture == textureManager.RightCrouchSprite || player.Texture == textureManager.RightJumpSprite ||
-                        player.Texture == textureManager.RightRunningSprite || player.Texture == textureManager.RightStandingSprite ||
-                        player.Texture == textureManager.RightMiddleRunningSprite)
-                {
-                    player.Texture = textureManager.RightPlayerAttack1;
-                }
                 for (int i = 0; i < enemyManager.Enemies.Count; i++)
                 {
-                    enemyManager.Enemies[i].TakeDamage(player.Attack(enemyManager.Enemies[i], gameTime));
+                    int damage = player.Attack(enemyManager.Enemies[i], gameTime);
+                    enemyManager.Enemies[i].TakeDamage(damage);
+                    if(damage > 0)
+                    {
+
+                        if (player.Texture == textureManager.LeftCrouchSprite || player.Texture == textureManager.LeftJumpSprite ||
+                                player.Texture == textureManager.LeftRunningSprite || player.Texture == textureManager.LeftStandingSprite ||
+                                player.Texture == textureManager.LeftMiddleRunningSprite)
+                        {
+                            player.Texture = textureManager.LeftPlayerAttack1;
+                        }
+                        else if (player.Texture == textureManager.RightCrouchSprite || player.Texture == textureManager.RightJumpSprite ||
+                                player.Texture == textureManager.RightRunningSprite || player.Texture == textureManager.RightStandingSprite ||
+                                player.Texture == textureManager.RightMiddleRunningSprite)
+                        {
+                            player.Texture = textureManager.RightPlayerAttack1;
+                        }
+                    }
                     if (enemyManager.Enemies[i].IsDead)
                     {
                         enemyManager.Enemies.RemoveAt(i);
@@ -433,21 +438,7 @@ namespace Purpose
                 }
                 player.TakeDamage(damage);
 
-                // Moving the bullets along
-                if(e.HasBullet && e.IsFacingLeft)
-                {
-                    e.BulletX -= 25;
-                }
-
-                if (e.HasBullet && e.IsFacingLeft == false)
-                {
-                    e.BulletX += 25;
-                }
-
-                if(e.BulletX > 3000 || e.BulletX < -3000)
-                {
-                    e.HasBullet = false;
-                }
+                
             }
         }
 

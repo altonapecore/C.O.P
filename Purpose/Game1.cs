@@ -783,11 +783,13 @@ namespace Purpose
                         {
                             gameManager.WaveNumber = WaveNumber.Six;
                             gameManager.GameState = GameState.NextWave;
+                            gameManager.PlatformVersion = PlatformVersion.Medium;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Six)
                         {
                             gameManager.WaveNumber = WaveNumber.Seven;
                             gameManager.GameState = GameState.NextWave;
+                            gameManager.PlatformVersion = PlatformVersion.Easy;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Seven)
                         {
@@ -798,36 +800,43 @@ namespace Purpose
                         {
                             gameManager.WaveNumber = WaveNumber.Nine;
                             gameManager.GameState = GameState.NextWave;
+                            gameManager.PlatformVersion = PlatformVersion.Medium;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Nine)
                         {
                             gameManager.WaveNumber = WaveNumber.Ten;
                             gameManager.GameState = GameState.NextWave;
+                            gameManager.PlatformVersion = PlatformVersion.Easy;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Ten)
                         {
                             gameManager.WaveNumber = WaveNumber.Eleven;
                             gameManager.GameState = GameState.NextWave;
+                            gameManager.PlatformVersion = PlatformVersion.Medium;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Eleven)
                         {
                             gameManager.WaveNumber = WaveNumber.Twelve;
                             gameManager.GameState = GameState.NextWave;
+                            gameManager.PlatformVersion = PlatformVersion.Easy;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Twelve)
                         {
                             gameManager.WaveNumber = WaveNumber.Thirteen;
                             gameManager.GameState = GameState.NextWave;
+                            gameManager.PlatformVersion = PlatformVersion.Medium;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Thirteen)
                         {
                             gameManager.WaveNumber = WaveNumber.Fourteen;
                             gameManager.GameState = GameState.NextWave;
+                            gameManager.PlatformVersion = PlatformVersion.Easy;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Fourteen)
                         {
                             gameManager.WaveNumber = WaveNumber.Fifteen;
                             gameManager.GameState = GameState.NextWave;
+                            gameManager.PlatformVersion = PlatformVersion.Medium;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Fifteen)
                         {
