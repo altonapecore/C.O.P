@@ -499,10 +499,6 @@ namespace Purpose
                         spriteBatch.Draw(w.Texture, w.Position, Color.White);
                     }
 
-                    // Player
-                    spriteBatch.Draw(gameManager.Player.Texture, new Rectangle(gameManager.Player.X, gameManager.Player.Y, player.Position.Width, player.Position.Height),
-                        Color.White);
-
                     spriteBatch.DrawString(agency30,"Wave: " + gameManager.WaveNumber.ToString(), waveIndicator, Color.Red);
 
                     foreach (Enemy e in gameManager.EnemyManager.Enemies)
@@ -515,6 +511,10 @@ namespace Purpose
                             spriteBatch.Draw(e.Texture, e.Bullet, Color.White);
                         }
                     }
+
+                    // Player
+                    spriteBatch.Draw(gameManager.Player.Texture, new Rectangle(gameManager.Player.X, gameManager.Player.Y, player.Position.Width, player.Position.Height),
+                        Color.White);
 
                     //Draws the health bar and stamina bar and their backgrounds
                     spriteBatch.Draw(textureManager.Healthbar, healthBack, Color.Black);
@@ -557,10 +557,6 @@ namespace Purpose
                         spriteBatch.Draw(w.Texture, w.Position, Color.White);
                     }
 
-                    // Player
-                    spriteBatch.Draw(gameManager.Player.Texture, new Rectangle(gameManager.Player.X, gameManager.Player.Y, player.Position.Width, player.Position.Height),
-                        Color.White);
-
                     spriteBatch.DrawString(agency30, "Wave: " + gameManager.WaveNumber.ToString(), waveIndicator, Color.Red);
 
                     foreach (Enemy e in gameManager.EnemyManager.Enemies)
@@ -573,6 +569,10 @@ namespace Purpose
                             spriteBatch.Draw(e.Texture, e.Bullet, Color.White);
                         }
                     }
+
+                    // Player
+                    spriteBatch.Draw(gameManager.Player.Texture, new Rectangle(gameManager.Player.X, gameManager.Player.Y, player.Position.Width, player.Position.Height),
+                        Color.White);
 
                     //Draws the health bar and stamina bar and their backgrounds
                     spriteBatch.Draw(textureManager.Healthbar, healthBack, Color.Black);
