@@ -29,6 +29,7 @@ namespace Purpose
         private int groundPoundStaminaCost;
         private int dashStaminaCost;
         private int groundPoundDamage;
+        private bool combatStatus;
 
         //properties
         public int Kills
@@ -103,6 +104,12 @@ namespace Purpose
 
         public int GroundPoundDamage { get { return groundPoundDamage; } }
 
+        public bool CombatStatus
+        {
+            get { return combatStatus; }
+            set { combatStatus = value; }
+        }
+
         //secondary temporary constructor for debug purposes
         public Player(String name, Rectangle position, TextureManager textureManager, GameTime gameTime) : base(textureManager.RightStandingSprite)
         {
@@ -125,6 +132,7 @@ namespace Purpose
             groundPoundStaminaCost = 40;
             dashStaminaCost = 20;
             groundPoundDamage = 20;
+            combatStatus = false;
         }
 
         //methods
@@ -140,6 +148,7 @@ namespace Purpose
                 if (position.Intersects(enemy.Position))
                 {
                     this.gameTime = gameTime.TotalGameTime.Milliseconds;
+                    combatStatus = true;
                     return damage;
                 }
                 return 0;
