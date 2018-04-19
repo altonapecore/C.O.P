@@ -483,3 +483,10 @@
 /processorParam:TextureFormat=Color
 /build:DamageIncreaseToolTip.png
 
+#begin Agency20.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Agency20.spritefont
+

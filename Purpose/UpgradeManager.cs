@@ -16,6 +16,12 @@ namespace Purpose
         private int stealthTier;
         private int damageTier;
         private int upgradePoints;
+        private int dashUpCost;
+        private int groundPoundCost;
+        private int damageUpCost;
+        private int dashCost;
+        private int healthUpCost;
+        private int staminaUpCost;
 
         //properties
         public bool DashActive
@@ -35,6 +41,13 @@ namespace Purpose
             get { return upgradePoints; }
             set { upgradePoints = value; }
         }
+
+        public int DashUpCost { get { return dashUpCost; } }
+        public int GroundPoundCost { get { return groundPoundCost; } }
+        public int DamageUpCost { get { return damageUpCost; } }
+        public int DashCost { get { return dashCost; } }
+        public int HealthUpCost { get { return healthUpCost; } }
+        public int StaminaUpCost { get { return staminaUpCost; } }
         
         //constructor
         public UpgradeManager()
@@ -46,6 +59,13 @@ namespace Purpose
             healthTier = 0;
             stealthTier = 0;
             damageTier = 0;
+
+            damageUpCost = 1;
+            dashCost = 3;
+            dashUpCost = 1;
+            groundPoundCost = 5;
+            healthUpCost = 1;
+            staminaUpCost = 1;
         }
 
         // Methods
@@ -57,19 +77,27 @@ namespace Purpose
                 if (staminaTier < 3)
                 {
                     player.StaminaMax += 2;
-                    upgradePoints--;
+                    upgradePoints -= staminaUpCost;
+                    if (staminaTier == 2)
+                    {
+                        staminaUpCost = 2;
+                    }
                 }
                 else if (staminaTier > 6 && upgradePoints > 2)
                 {
                     player.StaminaMax += 6;
                     player.StaminaRegen += 2;
-                    upgradePoints -= 3;
+                    upgradePoints -= staminaUpCost;
                 }
                 else if (staminaTier > 3 && upgradePoints > 1)
                 {
                     player.StaminaMax += 4;
                     player.StaminaRegen += 1;
-                    upgradePoints -= 2;
+                    upgradePoints -= staminaUpCost;
+                    if (staminaTier == 5)
+                    {
+                        staminaUpCost = 3;
+                    }
                 }
             }
         }
@@ -82,19 +110,27 @@ namespace Purpose
                 if (healthTier < 3)
                 {
                     player.HealthMax += 2;
-                    upgradePoints--;
+                    upgradePoints -= healthUpCost;
+                    if (healthTier == 2)
+                    {
+                        healthUpCost = 2;
+                    }
                 }
                 else if (healthTier > 6 && upgradePoints > 2)
                 {
                     player.HealthMax += 6;
                     player.HealthRegen += 2;
-                    upgradePoints -= 3;
+                    upgradePoints -= healthUpCost;
                 }
                 else if (healthTier >= 3 && upgradePoints > 1)
                 {
                     player.HealthMax += 4;
                     player.HealthRegen += 1;
-                    upgradePoints -= 2;
+                    upgradePoints -= healthUpCost;
+                    if (healthTier == 5)
+                    {
+                        healthUpCost = 3;
+                    }
                 }
             }
         }
@@ -107,7 +143,11 @@ namespace Purpose
                 if (damageTier < 3)
                 {
                     damage += 3;
-                    upgradePoints--;
+                    upgradePoints -= damageUpCost;
+                    if (damageTier == 2)
+                    {
+                        damageUpCost = 2;
+                    }
                 }
                 else if (damageTier >= 12)
                 {
@@ -117,17 +157,29 @@ namespace Purpose
                 else if (damageTier >= 9 && upgradePoints > 5)
                 {
                     damage += 3;
-                    upgradePoints -= 5;
+                    upgradePoints -= damageUpCost;
+                    if (damageTier == 11)
+                    {
+                        damageUpCost = 0;
+                    }
                 }
                 else if (damageTier >= 6 && upgradePoints > 2)
                 {
                     damage += 3;
-                    upgradePoints -= 3;
+                    upgradePoints -= damageUpCost;
+                    if (damageTier == 8)
+                    {
+                        damageUpCost = 5;
+                    }
                 }
                 else if (damageTier >= 3 && upgradePoints > 1)
                 {
                     damage += 3;
-                    upgradePoints -= 2;
+                    upgradePoints -= damageUpCost;
+                    if (damageTier == 5)
+                    {
+                        damageUpCost = 3;
+                    }
                 }
             }
             return damage;
@@ -146,7 +198,7 @@ namespace Purpose
                 {
                     dashDistance += 40;
                 }
-                upgradePoints--;
+                upgradePoints -= dashUpCost;
                 return dashDistance;
             }
             return dashDistance;
@@ -159,7 +211,7 @@ namespace Purpose
                 if (!dashActive)
                 {
                     dashActive = true;
-                    upgradePoints -= 3;
+                    upgradePoints -= dashCost;
                 }
             }
         }
@@ -171,7 +223,7 @@ namespace Purpose
                 if (!groundPoundActive)
                 {
                     groundPoundActive = true;
-                    upgradePoints  -= 5;
+                    upgradePoints -= groundPoundCost;
                 }
             }
         }
@@ -185,6 +237,12 @@ namespace Purpose
             stealthTier = 0;
             staminaTier = 0;
             healthTier = 0;
+
+            damageUpCost = 1;
+            dashCost = 3;
+            dashUpCost = 1;
+            healthUpCost = 1;
+            staminaUpCost = 1;
         }
     }
 }
