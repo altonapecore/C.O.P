@@ -74,7 +74,7 @@ namespace Purpose
             if (upgradePoints > 0)
             {
                 staminaTier++;
-                if (staminaTier < 3)
+                if (staminaTier < 3 && upgradePoints > staminaUpCost - 1)
                 {
                     player.StaminaMax += 2;
                     upgradePoints -= staminaUpCost;
@@ -83,13 +83,13 @@ namespace Purpose
                         staminaUpCost = 2;
                     }
                 }
-                else if (staminaTier > 6 && upgradePoints > 2)
+                else if (staminaTier > 6 && upgradePoints > staminaUpCost - 1)
                 {
                     player.StaminaMax += 6;
                     player.StaminaRegen += 2;
                     upgradePoints -= staminaUpCost;
                 }
-                else if (staminaTier > 3 && upgradePoints > 1)
+                else if (staminaTier > 3 && upgradePoints > staminaUpCost - 1)
                 {
                     player.StaminaMax += 4;
                     player.StaminaRegen += 1;
@@ -107,7 +107,7 @@ namespace Purpose
             if (upgradePoints > 0)
             {
                 healthTier++;
-                if (healthTier < 3)
+                if (healthTier < 3 && upgradePoints > healthUpCost - 1)
                 {
                     player.HealthMax += 2;
                     upgradePoints -= healthUpCost;
@@ -116,13 +116,13 @@ namespace Purpose
                         healthUpCost = 2;
                     }
                 }
-                else if (healthTier > 6 && upgradePoints > 2)
+                else if (healthTier > 6 && upgradePoints > healthUpCost - 1)
                 {
                     player.HealthMax += 6;
                     player.HealthRegen += 2;
                     upgradePoints -= healthUpCost;
                 }
-                else if (healthTier >= 3 && upgradePoints > 1)
+                else if (healthTier >= 3 && upgradePoints > healthUpCost - 1)
                 {
                     player.HealthMax += 4;
                     player.HealthRegen += 1;
@@ -140,7 +140,7 @@ namespace Purpose
             if (upgradePoints > 0)
             {
                 damageTier++;
-                if (damageTier < 3)
+                if (damageTier < 3 && upgradePoints > damageUpCost - 1)
                 {
                     damage += 3;
                     upgradePoints -= damageUpCost;
@@ -149,12 +149,12 @@ namespace Purpose
                         damageUpCost = 2;
                     }
                 }
-                else if (damageTier >= 12)
+                else if (damageTier >= 12 && upgradePoints > damageUpCost - 1)
                 {
                     damage += 0;
                     damageTier = 12;
                 }
-                else if (damageTier >= 9 && upgradePoints > 5)
+                else if (damageTier >= 9 && upgradePoints > damageUpCost - 1)
                 {
                     damage += 3;
                     upgradePoints -= damageUpCost;
@@ -163,7 +163,7 @@ namespace Purpose
                         damageUpCost = 0;
                     }
                 }
-                else if (damageTier >= 6 && upgradePoints > 2)
+                else if (damageTier >= 6 && upgradePoints > damageUpCost - 1)
                 {
                     damage += 3;
                     upgradePoints -= damageUpCost;
@@ -172,7 +172,7 @@ namespace Purpose
                         damageUpCost = 5;
                     }
                 }
-                else if (damageTier >= 3 && upgradePoints > 1)
+                else if (damageTier >= 3 && upgradePoints > damageUpCost - 1)
                 {
                     damage += 3;
                     upgradePoints -= damageUpCost;

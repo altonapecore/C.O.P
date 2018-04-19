@@ -189,7 +189,7 @@ namespace Purpose
             {
                 for (int i = 0; i < enemies.Count; i++)
                 {
-                    if (Math.Abs(enemies[i].X - X) < 20 && Math.Abs(enemies[i].Y - Y) < 50)
+                    if (Math.Abs(enemies[i].X - X) < 500 && Math.Abs(enemies[i].Y - Y) < 200)
                     {
                         enemies[i].TakeDamage(groundPoundDamage);
                         enemies[i].Y -= 50;
