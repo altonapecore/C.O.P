@@ -219,16 +219,19 @@ namespace Purpose
             comicSans24 = Content.Load<SpriteFont>("ComicSans24");
             agency30 = Content.Load<SpriteFont>("Agency30");
 
-            textureManager = new TextureManager(Content.Load<Texture2D>("LeftCrouchingSprite"), Content.Load<Texture2D>("RightCrouchingSprite"),
-                Content.Load<Texture2D>("LeftStandingSprite"), Content.Load<Texture2D>("RightStandingSprite"), Content.Load<Texture2D>("LeftMiddleRunningSprite"),
-                Content.Load<Texture2D>("RightMiddleRunningSprite"), Content.Load<Texture2D>("LeftRunningSprite"), Content.Load<Texture2D>("RightRunningSprite"),
-                Content.Load<Texture2D>("RightPlayerAttackSprite1"), Content.Load<Texture2D>("LeftPlayerAttackSprite1"), Content.Load<Texture2D>("RightPlayerAttackSprite2"), Content.Load<Texture2D>("LeftPlayerAttackSprite2"),
-                Content.Load<Texture2D>("RightEnemyWalk1"), Content.Load<Texture2D>("RightEnemyWalk2"), Content.Load<Texture2D>("RightEnemyWalk3"),
-                Content.Load<Texture2D>("LeftEnemyWalk1"), Content.Load<Texture2D>("LeftEnemyWalk2"), Content.Load<Texture2D>("LeftEnemyWalk3"), tempTexture,
-                Content.Load<Texture2D>("StartMenu"), Content.Load<Texture2D>("buttonFrame2"), Content.Load<Texture2D>("roundedFrame"),
-                Content.Load<Texture2D>("UpgradeUI"), Content.Load<Texture2D>("PauseMenu"), Content.Load<Texture2D>("NextWaveMenu"), 
-                Content.Load<Texture2D>("GameOver"), Content.Load<Texture2D>("YouWin"), Content.Load<Texture2D>("Controls"), Content.Load<Texture2D>("PlatformTest"), Content.Load<Texture2D>("PlatformTest2"), Content.Load<Texture2D>("metalback"),
-                Content.Load<Texture2D>("HealthBar/staminabar"), Content.Load<Texture2D>("HealthBar/healthbar"));
+            textureManager = new TextureManager(Content.Load<Texture2D>("Player/LeftStandingSprite"), Content.Load<Texture2D>("Player/RightStandingSprite"), 
+                Content.Load<Texture2D>("Player/LeftMiddleRunningSprite"), Content.Load<Texture2D>("Player/RightMiddleRunningSprite"), 
+                Content.Load<Texture2D>("Player/LeftRunningSprite"), Content.Load<Texture2D>("Player/RightRunningSprite"),
+                Content.Load<Texture2D>("Player/RightPlayerAttackSprite1"), Content.Load<Texture2D>("Player/LeftPlayerAttackSprite1"), 
+                Content.Load<Texture2D>("Player/RightPlayerAttackSprite2"), Content.Load<Texture2D>("Player/LeftPlayerAttackSprite2"),
+                Content.Load<Texture2D>("Enemy/RightEnemyWalk1"), Content.Load<Texture2D>("Enemy/RightEnemyWalk2"), 
+                Content.Load<Texture2D>("Enemy/RightEnemyWalk3"), Content.Load<Texture2D>("Enemy/LeftEnemyWalk1"), 
+                Content.Load<Texture2D>("Enemy/LeftEnemyWalk2"), Content.Load<Texture2D>("Enemy/LeftEnemyWalk3"), tempTexture,Content.Load<Texture2D>("StartMenu"), 
+                Content.Load<Texture2D>("buttonFrame2"), Content.Load<Texture2D>("roundedFrame"),Content.Load<Texture2D>("UpgradeUI"), 
+                Content.Load<Texture2D>("PauseMenu"), Content.Load<Texture2D>("NextWaveMenu"), Content.Load<Texture2D>("GameOver"), 
+                Content.Load<Texture2D>("YouWin"), Content.Load<Texture2D>("Controls"), Content.Load<Texture2D>("PlatformTest"),
+                Content.Load<Texture2D>("PlatformTest2"), Content.Load<Texture2D>("metalback"), Content.Load<Texture2D>("HealthBar/staminabar"), 
+                Content.Load<Texture2D>("HealthBar/healthbar"));
 
 
             editedGameButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 335, 349, 155));
@@ -531,11 +534,11 @@ namespace Purpose
                         }
                     }
 
-                    //Draws the health and stamina bars and their backgrounds
+                    //Draws the health bar and stamina bar and their backgrounds
                     spriteBatch.Draw(textureManager.Healthbar, healthBack, Color.Black);
                     spriteBatch.Draw(textureManager.Healthbar, healthBar, Color.White);
 
-                    if(player.UgManager.DashActive == true || player.UgManager.GroundPoundActive == true)
+                    if (player.UgManager.DashActive == true || player.UgManager.GroundPoundActive == true)
                     {
                         spriteBatch.Draw(textureManager.Staminabar, staminaBack, Color.Black);
                         spriteBatch.Draw(textureManager.Staminabar, staminaBar, Color.White);
@@ -855,11 +858,11 @@ namespace Purpose
                     camera.Zoom = 0.5f;
 
                     //Gives location of the health bar and stamina bar and their backgrounds
-                    healthBar = new Rectangle(player.Position.X - 1250, player.Position.Y - 1000, player.Health * 4, textureManager.Healthbar.Height);
-                    staminaBar = new Rectangle(player.Position.X - 1250, player.Position.Y - 900, player.Stamina * 4, textureManager.Staminabar.Height);
+                    healthBar = new Rectangle(player.Position.X - 1245, player.Position.Y - 1000, player.Health * 4, textureManager.Healthbar.Height);
+                    staminaBar = new Rectangle(player.Position.X - 1245, player.Position.Y - 900, player.Stamina * 4, textureManager.Staminabar.Height);
 
-                    //healthBack = new Rectangle(player.Position.X - 1250, player.Position.Y - 1000, player.HealthMax, textureManager.Blackbar.Height);
-                    //staminaBack = new Rectangle(player.Position.X - 1250, player.Position.Y - 900, player.StaminaMax, textureManager.Blackbar.Height);
+                    healthBack = new Rectangle(player.Position.X - 1250, player.Position.Y - 1006, (player.HealthMax * 4) + 10, textureManager.Healthbar.Height + 11);
+                    staminaBack = new Rectangle(player.Position.X - 1250, player.Position.Y - 906, (player.StaminaMax * 4) + 10, textureManager.Staminabar.Height + 11);
 
                     //Used to Indicate and let the player know what wave they are on
                     waveIndicator = new Vector2(player.Position.X - 1250, player.Position.Y - 775);

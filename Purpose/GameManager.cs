@@ -136,41 +136,45 @@ namespace Purpose
         /// <param name="previousMs">The previous mouse state</param>
         public void PlayerMove(KeyboardState kbState, KeyboardState previouskbState, MouseState ms, MouseState previousMs, Camera2D camera, GameTime gameTime)
         {
+
             #region Health and Stamina Regen
-            if (player.Stamina < player.StaminaMax && staminaFrameCounter >= 20)
+            if(player.CombatStatus == false)
             {
-                player.Stamina += player.StaminaRegen;
-                staminaFrameCounter = 0;
-
-                //Make sure stamina doesn't regen more then needed
-                if(player.Stamina > player.StaminaMax)
+                if (player.Stamina < player.StaminaMax && staminaFrameCounter >= 20)
                 {
-                    //If it goes past the max
-                    //Puts the stamina to normal
-                    player.Stamina = player.StaminaMax;
-                }
-            }
-            else
-            {
-                staminaFrameCounter++;
-            }
-            if (player.Health < player.HealthMax && healthFrameCounter >= 80)
-            {
-                player.Health += player.HealthRegen;
-                healthFrameCounter = 0;
+                    player.Stamina += player.StaminaRegen;
+                    staminaFrameCounter = 0;
 
-                //Makes sure health doesn't regen more then it should
-                //Some cases health would end at 101 if health was odd
-                if (player.Health > player.HealthMax)
-                {
-                    //If it goes past the max health
-                    //Puts health back to max
-                    player.Health = player.HealthMax;
+                    //Make sure stamina doesn't regen more then needed
+                    if(player.Stamina > player.StaminaMax)
+                    {
+                        //If it goes past the max
+                        //Puts the stamina to normal
+                        player.Stamina = player.StaminaMax;
+                    }
                 }
-            }
-            else
-            {
-                healthFrameCounter++;
+                else
+                {
+                    staminaFrameCounter++;
+                }
+                if (player.Health < player.HealthMax && healthFrameCounter >= 80)
+                {
+                    player.Health += player.HealthRegen;
+                    healthFrameCounter = 0;
+
+                    //Makes sure health doesn't regen more then it should
+                    //Some cases health would end at 101 if health was odd
+                    if (player.Health > player.HealthMax)
+                    {
+                        //If it goes past the max health
+                        //Puts health back to max
+                        player.Health = player.HealthMax;
+                    }
+                }
+                else
+                {
+                    healthFrameCounter++;
+                }
             }
 #endregion
 
@@ -389,6 +393,7 @@ namespace Purpose
                     {
                         enemyManager.Enemies.RemoveAt(i);
                         player.Kills++;
+                        player.CombatStatus = false;
                         if (player.Kills != 0 && player.Kills % 5 == 0)
                         {
                             player.UgManager.UpgradePoints++;
