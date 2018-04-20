@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
 using System;
 using System.Collections.Generic;
 using MonoGame.Extended;
@@ -90,6 +91,7 @@ namespace Purpose
         private GameObject dashButton;
         private GameObject dashDistanceUpButton;
         private GameObject returnToGameButton;
+        private GameObject exitGameButton;
         private GameObject goOnButton;
         private GameObject upgradesButton;
         private GameObject returnToMenuButton;
@@ -122,6 +124,9 @@ namespace Purpose
         private SpriteFont agency20;
         private Random rng;
         private Vector2 waveIndicator;
+
+        //Field for sound
+        private SoundManager soundManager;
 
         private bool editedGame;
         #endregion
@@ -228,14 +233,17 @@ namespace Purpose
             agency30 = Content.Load<SpriteFont>("Agency30");
             agency20 = Content.Load<SpriteFont>("Agency20");
 
+            //Loading in the sound effects
+            soundManager = new SoundManager(Content.Load<SoundEffect>("Sound/Grunts"), Content.Load<SoundEffect>("Sound/PingPongPaddle"));
+
             textureManager = new TextureManager(Content.Load<Texture2D>("Player/LeftStandingSprite"), Content.Load<Texture2D>("Player/RightStandingSprite"), 
                 Content.Load<Texture2D>("Player/LeftMiddleRunningSprite"), Content.Load<Texture2D>("Player/RightMiddleRunningSprite"), 
                 Content.Load<Texture2D>("Player/LeftRunningSprite"), Content.Load<Texture2D>("Player/RightRunningSprite"),
                 Content.Load<Texture2D>("Player/RightPlayerAttackSprite1"), Content.Load<Texture2D>("Player/LeftPlayerAttackSprite1"), 
                 Content.Load<Texture2D>("Player/RightPlayerAttackSprite2"), Content.Load<Texture2D>("Player/LeftPlayerAttackSprite2"),
-                Content.Load<Texture2D>("Enemy/RightEnemyWalk1"), Content.Load<Texture2D>("Enemy/RightEnemyWalk2"), 
-                Content.Load<Texture2D>("Enemy/RightEnemyWalk3"), Content.Load<Texture2D>("Enemy/LeftEnemyWalk1"), 
-                Content.Load<Texture2D>("Enemy/LeftEnemyWalk2"), Content.Load<Texture2D>("Enemy/LeftEnemyWalk3"), tempTexture,Content.Load<Texture2D>("StartMenu"), 
+                Content.Load<Texture2D>("Enemy/RightMeleePineapple1"), Content.Load<Texture2D>("Enemy/RightMeleePineapple2"), 
+                Content.Load<Texture2D>("Enemy/RightMeleePineapple3"), Content.Load<Texture2D>("Enemy/LeftMeleePineapple1"), 
+                Content.Load<Texture2D>("Enemy/LeftMeleePineapple2"), Content.Load<Texture2D>("Enemy/LeftMeleePineapple3"), tempTexture,Content.Load<Texture2D>("StartMenu"), 
                 Content.Load<Texture2D>("buttonFrame2"), Content.Load<Texture2D>("roundedFrame"),Content.Load<Texture2D>("UpgradeUI"), 
                 Content.Load<Texture2D>("PauseMenu"), Content.Load<Texture2D>("NextWaveMenu"), Content.Load<Texture2D>("GameOver"), 
                 Content.Load<Texture2D>("YouWin"), Content.Load<Texture2D>("Controls"), Content.Load<Texture2D>("PlatformTest"),
@@ -248,6 +256,7 @@ namespace Purpose
             toGameButton = new GameObject(textureManager.ButtonFrame, new Rectangle(965, 668, 349, 155));
             returnToNewWaveButton = new GameObject(textureManager.ButtonFrame, new Rectangle(10,340,242,109));
             returnToGameButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 280, 349, 160));
+            exitGameButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 502, 349, 160));
             goOnButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 272, 349, 160));
             upgradesButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 512, 349, 160));
             returnToMenuButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 343, 349, 160));
@@ -276,9 +285,9 @@ namespace Purpose
 
             // Makes player, gameManager object
             background = textureManager.MetalBack;
-            player = new Player("Dude", new Rectangle(50, platformManager.BottomPlatforms[1].Y - 352, 139, 352), textureManager, gameTime);
+            player = new Player("Dude", new Rectangle(50, platformManager.BottomPlatforms[1].Y - 352, 139, 352), textureManager, gameTime, soundManager);
             gameManager = new GameManager(player, platformManager.TotalPlatforms, platformManager.LeftWalls, platformManager.RightWalls, GraphicsDevice, 
-                textureManager);
+                textureManager, soundManager);
             //wave = new Wave(gameManager, game1 = new Game1());
 
             gameManager.GameState = GameState.Menu;
@@ -597,6 +606,15 @@ namespace Purpose
                     else
                     {
                         spriteBatch.Draw(returnToGameButton.Texture, returnToGameButton.Position, Color.White);
+                    }
+
+                    if (exitGameButton.Intersects(ms.Position))
+                    {
+                        spriteBatch.Draw(exitGameButton.Texture, exitGameButton.Position, Color.Black);
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(exitGameButton.Texture, exitGameButton.Position, Color.White);
                     }
                     break;
                 #endregion
@@ -1008,9 +1026,9 @@ namespace Purpose
                     {
                         gameManager.GameState = GameState.PresetGame;
                     }
-                    else if (upgradesButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed)
+                    else if (exitGameButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
                     {
-                        gameManager.GameState = GameState.UpgradeMenu;
+                        Exit();
                     }
 
                     break;

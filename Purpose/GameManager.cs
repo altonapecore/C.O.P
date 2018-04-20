@@ -27,6 +27,7 @@ namespace Purpose
         private int gravity = -2;
         private PlatformVersion platformVersion;
         private EnemyManager enemyManager;
+        private SoundManager soundManager;
 
         //private List<Wave> waves;
         private List<Wave> editedWaves;
@@ -106,7 +107,7 @@ namespace Purpose
 
         //constructor
         public GameManager(Player player, List<Platform> platforms, List<Platform> leftWalls, List<Platform> rightWalls, GraphicsDevice graphicsDevice,
-            TextureManager textureManager)
+            TextureManager textureManager, SoundManager soundManager)
         {
             this.player = player;
             this.platforms = platforms;
@@ -115,6 +116,7 @@ namespace Purpose
             isCrouching = false;
             this.graphicsDevice = graphicsDevice;
             this.textureManager = textureManager;
+            this.soundManager = soundManager;
             editedWaves = new List<Wave>();
             presetWaves = new List<Wave>();
             rangeTexture = textureManager.RangedEnemyTexture;
@@ -360,7 +362,7 @@ namespace Purpose
                 player.Jump();
                 jumping = true;
             }
-            if (kbState.IsKeyDown(Keys.Q) && !previouskbState.IsKeyDown(Keys.Q) && !kbState.IsKeyDown(Keys.Space)) //dash
+            if (kbState.IsKeyDown(Keys.LeftShift) && !previouskbState.IsKeyDown(Keys.LeftShift)) //dash
             {
                 player.Dash();
                 camera.LookAt(new Vector2(player.X, player.Y - 250));
@@ -371,7 +373,7 @@ namespace Purpose
             {
                 for (int i = 0; i < enemyManager.Enemies.Count; i++)
                 {
-                    int damage = player.Attack(enemyManager.Enemies[i], gameTime);
+                    int damage = player.Attack(enemyManager.Enemies[i], gameTime, soundManager);
                     enemyManager.Enemies[i].TakeDamage(damage);
                     if(damage > 0)
                     {
@@ -421,22 +423,22 @@ namespace Purpose
                 int damage = 0;
                 if (e.Ranged && e.IsFacingLeft)
                 {
-                    damage = e.Attack(player, gameTime);
+                    damage = e.Attack(player, gameTime, soundManager);
                 }
 
                 else if(e.Ranged && !e.IsFacingLeft)
                 {
-                    damage = e.Attack(player, gameTime);
+                    damage = e.Attack(player, gameTime, soundManager);
                 }
 
                 else if(!e.Ranged && e.IsFacingLeft)
                 {
-                    damage = e.Attack(player, gameTime);
+                    damage = e.Attack(player, gameTime, soundManager);
                 }
 
                 else if (!e.Ranged && !e.IsFacingLeft)
                 {
-                    damage = e.Attack(player, gameTime);
+                    damage = e.Attack(player, gameTime, soundManager);
                 }
                 player.TakeDamage(damage);
 

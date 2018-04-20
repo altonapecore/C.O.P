@@ -65,7 +65,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Reader.cs" />
+    <Compile Include="SoundManager.cs" />
     <Compile Include="TextureManager.cs" />
+    <Compile Include="Unlockables.cs" />
     <Compile Include="UpgradeManager.cs" />
     <Compile Include="Wave.cs" />
   </ItemGroup>

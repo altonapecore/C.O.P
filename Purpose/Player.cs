@@ -15,6 +15,7 @@ namespace Purpose
         private int kills;
         private UpgradeManager ugManager;
         private TextureManager textureManager;
+        private SoundManager soundManager;
         private int stamina;
         private int dashDistance;
         private bool onBasePlatform;
@@ -111,10 +112,11 @@ namespace Purpose
         }
 
         //secondary temporary constructor for debug purposes
-        public Player(String name, Rectangle position, TextureManager textureManager, GameTime gameTime) : base(textureManager.RightStandingSprite)
+        public Player(String name, Rectangle position, TextureManager textureManager, GameTime gameTime, SoundManager soundManager) : base(textureManager.RightStandingSprite)
         {
             this.textureManager = textureManager;
             ugManager = new UpgradeManager();
+            this.soundManager = soundManager;
 
             this.position = position;
             health = 100;
@@ -122,7 +124,7 @@ namespace Purpose
             stamina = 100;
             staminaMax = stamina;
             dashDistance = 200;
-            damage = 10;
+            damage = 15;
             texture = textureManager.RightStandingSprite;
             kills = 0;
             healthRegen = 2;
@@ -141,15 +143,18 @@ namespace Purpose
         /// </summary>
         /// <param name="enemyPosition">The position of the enemy</param>
         /// <returns>Returns an integer value for the damage done</returns>
-        public override int Attack(Character enemy, GameTime gameTime)
+        public override int Attack(Character enemy, GameTime gameTime, SoundManager soundManager)
         {
             this.gameTime += (int)gameTime.ElapsedGameTime.TotalMilliseconds;
             if (this.gameTime >= 25)
             {
+                 soundManager.Punch.Play();
+
                 if (position.Intersects(enemy.Position))
                 {
                     this.gameTime = 0;
                     combatStatus = true;
+                    soundManager.Grunt.Play();
                     return damage;
                 }
                 return 0;
