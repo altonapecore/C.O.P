@@ -267,11 +267,11 @@ namespace Purpose
                     }
 
                     // Walls
-                    for (int i = -1500; i <= graphicsDevice.Viewport.Height; i += 100)
+                    for (int i = -2200; i <= graphicsDevice.Viewport.Height; i += 100)
                     {
                         leftWalls.Add(new Platform(new Rectangle(-2000, i, 100, 100), textureManager.BasePlatform));
                     }
-                    for (int i = -1500; i <= graphicsDevice.Viewport.Height; i += 100)
+                    for (int i = -2200; i <= graphicsDevice.Viewport.Height; i += 100)
                     {
                         rightWalls.Add(new Platform(new Rectangle(2000, i, 100, 100), textureManager.BasePlatform));
                     }

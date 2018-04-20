@@ -9,26 +9,24 @@ namespace Purpose
 {
     public class SoundManager
     {
+        #region Fields
         private SoundEffect punch;
         private SoundEffect grunt;
+        private SoundEffect playerDeath;
+        #endregion
 
-        public SoundEffect Grunt
-        {
-            get { return grunt; }
-            set { grunt = value; }
-        }
+        public SoundEffect Grunt { get { return grunt; } }
 
-        public SoundEffect Punch
-        {
-            get { return punch; }
-            set { punch = value; }
-        }
+        public SoundEffect Punch { get { return punch; } }
+
+        public SoundEffect PlayerDeath { get { return playerDeath; } }
 
 
-        public SoundManager(SoundEffect grunt, SoundEffect punch)
+        public SoundManager(SoundEffect grunt, SoundEffect punch, SoundEffect playerDeath)
         {
             this.grunt = grunt;
             this.punch = punch;
+            this.playerDeath = playerDeath;
         }
     }
 }

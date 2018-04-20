@@ -146,7 +146,7 @@ namespace Purpose
         public override int Attack(Character enemy, GameTime gameTime, SoundManager soundManager)
         {
             this.gameTime += (int)gameTime.ElapsedGameTime.TotalMilliseconds;
-            if (this.gameTime >= 71)
+            if (this.gameTime >= 25)
             {
                  soundManager.Punch.Play();
 
