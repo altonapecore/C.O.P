@@ -362,7 +362,7 @@ namespace Purpose
                 player.Jump();
                 jumping = true;
             }
-            if (kbState.IsKeyDown(Keys.Q) && !previouskbState.IsKeyDown(Keys.Q) && !kbState.IsKeyDown(Keys.Space)) //dash
+            if (kbState.IsKeyDown(Keys.LeftShift) && !previouskbState.IsKeyDown(Keys.LeftShift)) //dash
             {
                 player.Dash();
                 camera.LookAt(new Vector2(player.X, player.Y - 250));
