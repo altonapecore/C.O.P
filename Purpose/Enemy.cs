@@ -247,7 +247,6 @@ namespace Purpose
             //  If they have a bullet, attack and take bullet away
             if (hasBullet && bullet.Intersects(player.Position))
             {
-                meleeAttackTimer = 0;
                 bullet.Height = 0;
                 bullet.Width = 0;
                 hasBullet = false;

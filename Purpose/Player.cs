@@ -144,7 +144,7 @@ namespace Purpose
         public override int Attack(Character enemy, GameTime gameTime)
         {
             this.gameTime += (int)gameTime.ElapsedGameTime.TotalMilliseconds;
-            if (this.gameTime >= 71)
+            if (this.gameTime >= 25)
             {
                 if (position.Intersects(enemy.Position))
                 {
