@@ -376,13 +376,13 @@ namespace Purpose
                     if(damage > 0)
                     {
 
-                        if (player.Texture == textureManager.LeftCrouchSprite || player.Texture == textureManager.LeftJumpSprite ||
+                        if (player.Texture == textureManager.LeftJumpSprite ||
                                 player.Texture == textureManager.LeftRunningSprite || player.Texture == textureManager.LeftStandingSprite ||
                                 player.Texture == textureManager.LeftMiddleRunningSprite)
                         {
                             player.Texture = textureManager.LeftPlayerAttack1;
                         }
-                        else if (player.Texture == textureManager.RightCrouchSprite || player.Texture == textureManager.RightJumpSprite ||
+                        else if (player.Texture == textureManager.RightJumpSprite ||
                                 player.Texture == textureManager.RightRunningSprite || player.Texture == textureManager.RightStandingSprite ||
                                 player.Texture == textureManager.RightMiddleRunningSprite)
                         {
