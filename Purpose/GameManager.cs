@@ -464,6 +464,7 @@ namespace Purpose
             platformManager.ClearPlatformLists();
             platformManager.MakePlatforms(PlatformVersion.Easy, graphicsDevice, textureManager);
             player.UgManager.ResetUpgrades();
+
         }
 
         public void ResetForNextWaveEdited(Camera2D camera, Random rng, int worldLeftEndWidth, int worldRightEndWidth, GameTime gameTime, Texture2D tempTexture, 

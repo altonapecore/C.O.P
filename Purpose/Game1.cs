@@ -247,7 +247,7 @@ namespace Purpose
                 Content.Load<Texture2D>("buttonFrame2"), Content.Load<Texture2D>("roundedFrame"),Content.Load<Texture2D>("UpgradeUI"), 
                 Content.Load<Texture2D>("PauseMenu"), Content.Load<Texture2D>("NextWaveMenu"), Content.Load<Texture2D>("GameOver"), 
                 Content.Load<Texture2D>("YouWin"), Content.Load<Texture2D>("Controls"), Content.Load<Texture2D>("PlatformTest"),
-                Content.Load<Texture2D>("PlatformTest2"), Content.Load<Texture2D>("metalback"), Content.Load<Texture2D>("HealthBar/staminabar"), 
+                Content.Load<Texture2D>("PlatformTest2"), Content.Load<Texture2D>("background"), Content.Load<Texture2D>("HealthBar/staminabar"), 
                 Content.Load<Texture2D>("HealthBar/healthbar"), Content.Load<Texture2D>("GroundPoundToolTip"), Content.Load<Texture2D>("DamageIncreaseToolTip"), 
                 Content.Load<Texture2D>("StaminaIncreaseToolTip"), Content.Load<Texture2D>("HealthIncreaseToolTip"), Content.Load<Texture2D>("DashToolTip"), Content.Load<Texture2D>("DashUpToolTip"));
 
@@ -488,7 +488,7 @@ namespace Purpose
                     {
                         for (int y = worldTopHeight; y < worldBottomHeight; y += background.Height)
                         {
-                            spriteBatch.Draw(background, new Rectangle(x, y, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
+                            spriteBatch.Draw(background, new Rectangle(x, y, background.Width, background.Height), Color.White);
                         }
                     }
 
@@ -546,7 +546,7 @@ namespace Purpose
                     {
                         for (int y = worldTopHeight; y < worldBottomHeight; y += background.Height)
                         {
-                            spriteBatch.Draw(background, new Rectangle(x, y, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
+                            spriteBatch.Draw(background, new Rectangle(x, y, background.Width, background.Height), Color.White);
                         }
                     }
 
@@ -854,6 +854,7 @@ namespace Purpose
                     if (player.IsDead || player.Y >= GraphicsDevice.Viewport.Height)
                     {
                         gameManager.GameState = GameState.GameOver;
+                        soundManager.PlayerDeath.Play();
                     }
 
                         //When all enemies are dead calls in the next wave method
@@ -978,6 +979,7 @@ namespace Purpose
                     if (player.IsDead || player.Y >= GraphicsDevice.Viewport.Height)
                     {
                         gameManager.GameState = GameState.GameOver;
+                        soundManager.PlayerDeath.Play();
                     }
 
                     //When all enemies are dead calls in the next wave method
@@ -1101,7 +1103,7 @@ namespace Purpose
                 #region Game Over State
                 case GameState.GameOver:
 
-                    soundManager.PlayerDeath.Play();
+                    
                      
                     camera.Zoom = 1.0f;
                     camera.Position = new Vector2(0, 0);
