@@ -93,6 +93,14 @@ namespace Purpose
         private GameObject goOnButton;
         private GameObject upgradesButton;
         private GameObject returnToMenuButton;
+        private GameObject returnToMainButton;
+
+        private GameObject groundPoundTip;
+        private GameObject damageUpTip;
+        private GameObject staminaUpTip;
+        private GameObject healthUpTip;
+        private GameObject dashTip;
+        private GameObject dashUpTip;
 
         //Field for other Classes
         private Reader reader;
@@ -103,7 +111,6 @@ namespace Purpose
         private TextureManager textureManager;
         private PlatformManager platformManager;
 
-        //temporary stuff
         private Texture2D background;
         private Texture2D tempTexture;
         private Rectangle healthBar;
@@ -112,6 +119,7 @@ namespace Purpose
         private Rectangle healthBack;
         private SpriteFont comicSans24;
         private SpriteFont agency30;
+        private SpriteFont agency20;
         private Random rng;
         private Vector2 waveIndicator;
 
@@ -218,6 +226,7 @@ namespace Purpose
             tempTexture = Content.Load<Texture2D>("pineapple2");
             comicSans24 = Content.Load<SpriteFont>("ComicSans24");
             agency30 = Content.Load<SpriteFont>("Agency30");
+            agency20 = Content.Load<SpriteFont>("Agency20");
 
             textureManager = new TextureManager(Content.Load<Texture2D>("Player/LeftStandingSprite"), Content.Load<Texture2D>("Player/RightStandingSprite"), 
                 Content.Load<Texture2D>("Player/LeftMiddleRunningSprite"), Content.Load<Texture2D>("Player/RightMiddleRunningSprite"), 
@@ -231,8 +240,8 @@ namespace Purpose
                 Content.Load<Texture2D>("PauseMenu"), Content.Load<Texture2D>("NextWaveMenu"), Content.Load<Texture2D>("GameOver"), 
                 Content.Load<Texture2D>("YouWin"), Content.Load<Texture2D>("Controls"), Content.Load<Texture2D>("PlatformTest"),
                 Content.Load<Texture2D>("PlatformTest2"), Content.Load<Texture2D>("metalback"), Content.Load<Texture2D>("HealthBar/staminabar"), 
-                Content.Load<Texture2D>("HealthBar/healthbar"));
-
+                Content.Load<Texture2D>("HealthBar/healthbar"), Content.Load<Texture2D>("GroundPoundToolTip"), Content.Load<Texture2D>("DamageIncreaseToolTip"), 
+                Content.Load<Texture2D>("StaminaIncreaseToolTip"), Content.Load<Texture2D>("HealthIncreaseToolTip"), Content.Load<Texture2D>("DashToolTip"), Content.Load<Texture2D>("DashUpToolTip"));
 
             editedGameButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 335, 349, 155));
             presetGameButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 565, 349, 155));
@@ -242,6 +251,14 @@ namespace Purpose
             goOnButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 272, 349, 160));
             upgradesButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 512, 349, 160));
             returnToMenuButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 343, 349, 160));
+            returnToMainButton = new GameObject(textureManager.ButtonFrame, new Rectangle(35, 35, 243, 108));
+
+            groundPoundTip = new GameObject(textureManager.GroundPoundTip, new Rectangle(0, 0, 250, 250));
+            damageUpTip = new GameObject(textureManager.DamageUpTip, new Rectangle(0, 0, 250, 250));
+            staminaUpTip = new GameObject(textureManager.StaminaUpTip, new Rectangle(0, 0, 250, 250));
+            healthUpTip = new GameObject(textureManager.HealthUpTip, new Rectangle(0, 0, 250, 250));
+            dashTip = new GameObject(textureManager.DashTip, new Rectangle(0, 0, 250, 250));
+            dashUpTip = new GameObject(textureManager.DashUpTip, new Rectangle(0, 0, 250, 250));
 
             groundPoundButton = new GameObject(textureManager.RoundedFrame, new Rectangle(337,200,118,118));
             attackUpButton = new GameObject(textureManager.RoundedFrame, new Rectangle(510, 292, 118, 118));
@@ -302,7 +319,14 @@ namespace Purpose
 
             MouseState previousMs = ms;
             ms = Mouse.GetState();
-            
+
+            groundPoundTip.Position = new Rectangle(ms.X, ms.Y, 300, 300);
+            damageUpTip.Position = new Rectangle(ms.X, ms.Y, 300, 300);
+            staminaUpTip.Position = new Rectangle(ms.X, ms.Y, 300, 300);
+            healthUpTip.Position = new Rectangle(ms.X, ms.Y, 300, 300);
+            dashTip.Position = new Rectangle(ms.X, ms.Y-250, 300, 300);
+            dashUpTip.Position = new Rectangle(ms.X, ms.Y-250, 300, 300);
+
             // Checks for the GameState which is determined by user
             // If they want to use editor tool they get game based of input from text file
             // If they pick regular start they get preset waves
@@ -401,6 +425,7 @@ namespace Purpose
             // GameState drawing stuffs
             switch (gameManager.GameState)
             {
+                #region Menu Draw State
                 case GameState.Menu:
 
                     spriteBatch.Draw(textureManager.StartScreen, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
@@ -422,7 +447,9 @@ namespace Purpose
                         spriteBatch.Draw(presetGameButton.Texture, presetGameButton.Position, Color.White);
                     }
                     break;
+                #endregion
 
+                #region Controls Draw State
                 case GameState.Controls:
                     spriteBatch.Draw(textureManager.ControlScreen, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
                     if (toGameButton.Intersects(ms.Position))
@@ -433,8 +460,19 @@ namespace Purpose
                     {
                         spriteBatch.Draw(toGameButton.Texture, toGameButton.Position, Color.White);
                     }
-                    break;
 
+                    if (returnToMainButton.Intersects(ms.Position))
+                    {
+                        spriteBatch.Draw(returnToMainButton.Texture, returnToMainButton.Position, Color.Black);
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(returnToMainButton.Texture, returnToMainButton.Position, Color.White);
+                    }
+                    break;
+                #endregion
+
+                #region Preset Game Draw State
                 case GameState.PresetGame:
                     // Background
                     for (int x = worldLeftEndWidth; x < worldRightEndWidth; x += background.Width)
@@ -461,10 +499,6 @@ namespace Purpose
                         spriteBatch.Draw(w.Texture, w.Position, Color.White);
                     }
 
-                    // Player
-                    spriteBatch.Draw(gameManager.Player.Texture, new Rectangle(gameManager.Player.X, gameManager.Player.Y, player.Position.Width, player.Position.Height),
-                        Color.White);
-
                     spriteBatch.DrawString(agency30,"Wave: " + gameManager.WaveNumber.ToString(), waveIndicator, Color.Red);
 
                     foreach (Enemy e in gameManager.EnemyManager.Enemies)
@@ -478,6 +512,10 @@ namespace Purpose
                         }
                     }
 
+                    // Player
+                    spriteBatch.Draw(gameManager.Player.Texture, new Rectangle(gameManager.Player.X, gameManager.Player.Y, player.Position.Width, player.Position.Height),
+                        Color.White);
+
                     //Draws the health bar and stamina bar and their backgrounds
                     spriteBatch.Draw(textureManager.Healthbar, healthBack, Color.Black);
                     spriteBatch.Draw(textureManager.Healthbar, healthBar, Color.White);
@@ -490,7 +528,9 @@ namespace Purpose
                     }
 
                     break;
+                #endregion
 
+                #region Edited Game Draw State
                 case GameState.EditorGame:
                     // Background
                     for (int x = worldLeftEndWidth; x < worldRightEndWidth; x += background.Width)
@@ -517,10 +557,6 @@ namespace Purpose
                         spriteBatch.Draw(w.Texture, w.Position, Color.White);
                     }
 
-                    // Player
-                    spriteBatch.Draw(gameManager.Player.Texture, new Rectangle(gameManager.Player.X, gameManager.Player.Y, player.Position.Width, player.Position.Height),
-                        Color.White);
-
                     spriteBatch.DrawString(agency30, "Wave: " + gameManager.WaveNumber.ToString(), waveIndicator, Color.Red);
 
                     foreach (Enemy e in gameManager.EnemyManager.Enemies)
@@ -534,6 +570,10 @@ namespace Purpose
                         }
                     }
 
+                    // Player
+                    spriteBatch.Draw(gameManager.Player.Texture, new Rectangle(gameManager.Player.X, gameManager.Player.Y, player.Position.Width, player.Position.Height),
+                        Color.White);
+
                     //Draws the health bar and stamina bar and their backgrounds
                     spriteBatch.Draw(textureManager.Healthbar, healthBack, Color.Black);
                     spriteBatch.Draw(textureManager.Healthbar, healthBar, Color.White);
@@ -544,7 +584,9 @@ namespace Purpose
                         spriteBatch.Draw(textureManager.Staminabar, staminaBar, Color.White);
                     }
                     break;
+                #endregion
 
+                #region Pause Draw State
                 case GameState.Pause:
                     spriteBatch.Draw(textureManager.PauseScreen, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
 
@@ -557,7 +599,9 @@ namespace Purpose
                         spriteBatch.Draw(returnToGameButton.Texture, returnToGameButton.Position, Color.White);
                     }
                     break;
+                #endregion
 
+                #region Upgrade Menu Draw State
                 case GameState.UpgradeMenu:
                     spriteBatch.Draw(textureManager.UpgradeScreen, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
                     spriteBatch.DrawString(agency30, "Upgrade Points: " + gameManager.Player.UgManager.UpgradePoints.ToString(), new Vector2(1090,730), Color.White);
@@ -571,45 +615,39 @@ namespace Purpose
                         spriteBatch.Draw(returnToNewWaveButton.Texture, returnToNewWaveButton.Position, Color.White);
                     }
 
-                    if (groundPoundButton.Intersects(ms.Position))
-                    {
-                        spriteBatch.Draw(groundPoundButton.Texture, groundPoundButton.Position, Color.Black);
-                    }
-                    else
-                    {
-                        spriteBatch.Draw(groundPoundButton.Texture, groundPoundButton.Position, Color.White);
-                    }
-
-                    if (attackUpButton.Intersects(ms.Position))
-                    {
-                        spriteBatch.Draw(attackUpButton.Texture, attackUpButton.Position, Color.Black);
-                    }
-                    else
-                    {
-                        spriteBatch.Draw(attackUpButton.Texture, attackUpButton.Position, Color.White);
-                    }
-
-                    if (staminaUpButton.Intersects(ms.Position))
-                    {
-                        spriteBatch.Draw(staminaUpButton.Texture, staminaUpButton.Position, Color.Black);
-                    }
-                    else
-                    {
-                        spriteBatch.Draw(staminaUpButton.Texture, staminaUpButton.Position, Color.White);
-                    }
-
                     if (healthUpButton.Intersects(ms.Position))
                     {
                         spriteBatch.Draw(healthUpButton.Texture, healthUpButton.Position, Color.Black);
+                        spriteBatch.Draw(healthUpTip.Texture, healthUpTip.Position, Color.White);
+                        spriteBatch.DrawString(agency20, player.HealthMax.ToString(), new Vector2(ms.X + 150, ms.Y + 125), Color.Black);
+                        spriteBatch.DrawString(agency20, player.HealthRegen.ToString(), new Vector2(ms.X + 115, ms.Y + 156), Color.Black);
+                        spriteBatch.DrawString(agency20, player.UgManager.HealthUpCost.ToString(), new Vector2(ms.X + 168, ms.Y + 188), Color.Black);
                     }
                     else
                     {
                         spriteBatch.Draw(healthUpButton.Texture, healthUpButton.Position, Color.White);
                     }
 
+                    if (staminaUpButton.Intersects(ms.Position))
+                    {
+                        spriteBatch.Draw(staminaUpButton.Texture, staminaUpButton.Position, Color.Black);
+                        spriteBatch.Draw(staminaUpTip.Texture, staminaUpTip.Position, Color.White);
+                        spriteBatch.DrawString(agency20, player.StaminaMax.ToString(), new Vector2(ms.X + 165, ms.Y + 152), Color.Black);
+                        spriteBatch.DrawString(agency20, player.StaminaRegen.ToString(), new Vector2(ms.X + 117, ms.Y + 184), Color.Black);
+                        spriteBatch.DrawString(agency20, player.UgManager.StaminaUpCost.ToString(), new Vector2(ms.X + 173, ms.Y + 215), Color.Black);
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(staminaUpButton.Texture, staminaUpButton.Position, Color.White);
+                    }
+
                     if (dashButton.Intersects(ms.Position))
                     {
                         spriteBatch.Draw(dashButton.Texture, dashButton.Position, Color.Black);
+                        spriteBatch.Draw(dashTip.Texture, dashTip.Position, Color.White);
+                        spriteBatch.DrawString(agency20, player.DashDistance.ToString(), new Vector2(ms.X + 175, ms.Y - 72), Color.Black);
+                        spriteBatch.DrawString(agency20, player.DashStaminaCost.ToString(), new Vector2(ms.X + 170, ms.Y - 40), Color.Black);
+                        spriteBatch.DrawString(agency20, player.UgManager.DashCost.ToString(), new Vector2(ms.X + 175, ms.Y - 8), Color.Black);
                     }
                     else
                     {
@@ -619,13 +657,44 @@ namespace Purpose
                     if (dashDistanceUpButton.Intersects(ms.Position))
                     {
                         spriteBatch.Draw(dashDistanceUpButton.Texture, dashDistanceUpButton.Position, Color.Black);
+                        spriteBatch.Draw(dashUpTip.Texture, dashUpTip.Position, Color.White);
+                        spriteBatch.DrawString(agency20, player.DashDistance.ToString(), new Vector2(ms.X + 175, ms.Y - 98), Color.Black);
+                        spriteBatch.DrawString(agency20, player.DashStaminaCost.ToString(), new Vector2(ms.X + 170, ms.Y - 67), Color.Black);
+                        spriteBatch.DrawString(agency20, player.UgManager.DashUpCost.ToString(), new Vector2(ms.X + 170, ms.Y - 35), Color.Black);
                     }
                     else
                     {
                         spriteBatch.Draw(dashDistanceUpButton.Texture, dashDistanceUpButton.Position, Color.White);
                     }
-                    break;
 
+                    if (attackUpButton.Intersects(ms.Position))
+                    {
+                        spriteBatch.Draw(attackUpButton.Texture, attackUpButton.Position, Color.Black);
+                        spriteBatch.Draw(damageUpTip.Texture, damageUpTip.Position, Color.White);
+                        spriteBatch.DrawString(agency20, player.Damage.ToString(), new Vector2(ms.X + 133, ms.Y + 157), Color.Black);
+                        spriteBatch.DrawString(agency20, player.UgManager.DamageUpCost.ToString(), new Vector2(ms.X + 173, ms.Y + 189), Color.Black);
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(attackUpButton.Texture, attackUpButton.Position, Color.White);
+                    }
+
+                    if (groundPoundButton.Intersects(ms.Position))
+                    {
+                        spriteBatch.Draw(groundPoundButton.Texture, groundPoundButton.Position, Color.Black);
+                        spriteBatch.Draw(groundPoundTip.Texture, groundPoundTip.Position, Color.White);
+                        spriteBatch.DrawString(agency20, player.GroundPoundDamage.ToString(), new Vector2(ms.X + 130, ms.Y + 150), Color.Black);
+                        spriteBatch.DrawString(agency20, player.GroundPoundStaminaCost.ToString(), new Vector2(ms.X + 170, ms.Y + 182), Color.Black);
+                        spriteBatch.DrawString(agency20, player.UgManager.GroundPoundCost.ToString(), new Vector2(ms.X + 170, ms.Y + 213), Color.Black);
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(groundPoundButton.Texture, groundPoundButton.Position, Color.White);
+                    }
+                    break;
+                #endregion
+
+                #region Next Wave Draw State
                 case GameState.NextWave:
                     spriteBatch.Draw(textureManager.NextWaveScreen, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
 
@@ -648,7 +717,9 @@ namespace Purpose
                         spriteBatch.Draw(upgradesButton.Texture, upgradesButton.Position, Color.White);
                     }
                     break;
+                #endregion
 
+                #region Game Over Draw State
                 case GameState.GameOver:
                     spriteBatch.Draw(textureManager.GameOver, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
 
@@ -661,7 +732,9 @@ namespace Purpose
                         spriteBatch.Draw(returnToMenuButton.Texture, returnToMenuButton.Position, Color.White);
                     }
                     break;
+                #endregion
 
+                #region You Win Draw State
                 case GameState.YouWin:
                     spriteBatch.Draw(textureManager.YouWin, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
                     if (returnToMenuButton.Intersects(ms.Position))
@@ -673,6 +746,7 @@ namespace Purpose
                         spriteBatch.Draw(returnToMenuButton.Texture, returnToMenuButton.Position, Color.White);
                     }
                     break;
+                    #endregion
             }
 
             spriteBatch.End();
@@ -722,6 +796,11 @@ namespace Purpose
                         {
                             gameManager.GameState = GameState.PresetGame;
                         }
+                    }
+
+                    if (returnToMainButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
+                    {
+                        gameManager.GameState = GameState.Menu;
                     }
                     break;
                 #endregion

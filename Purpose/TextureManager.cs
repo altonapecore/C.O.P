@@ -48,6 +48,13 @@ namespace Purpose
         private Texture2D healthbar;
         private Texture2D staminabar;
 
+        private Texture2D groundPoundTip;
+        private Texture2D damageUpTip;
+        private Texture2D staminaUpTip;
+        private Texture2D healthUpTip;
+        private Texture2D dashTip;
+        private Texture2D dashUpTip;
+
         //sprite properties
         public Texture2D RightStandingSprite { get { return rightStandingSprite; } }
         public Texture2D LeftStandingSprite { get { return leftStandingSprite; } }
@@ -83,9 +90,16 @@ namespace Purpose
 
         public Texture2D BasePlatform { get { return basePlatform; } }
         public Texture2D NotBasePlatform { get { return notBasePlatform; } }
-        
+
         public Texture2D Staminabar { get { return staminabar; } }
         public Texture2D Healthbar { get { return healthbar; } }
+
+        public Texture2D GroundPoundTip { get { return groundPoundTip; } }
+        public Texture2D DamageUpTip { get { return damageUpTip; } }
+        public Texture2D StaminaUpTip { get { return staminaUpTip; } }
+        public Texture2D HealthUpTip { get { return healthUpTip; } }
+        public Texture2D DashTip { get { return dashTip; } }
+        public Texture2D DashUpTip { get { return dashUpTip; } }
 
         //constructor
         public TextureManager(Texture2D leftStandingSprite,Texture2D rightStandingSprite, Texture2D leftMiddleRunningSprite, Texture2D rightMiddleRunningSprite,
@@ -93,7 +107,7 @@ namespace Purpose
             Texture2D rightEnemyWalk1, Texture2D rightEnemyWalk2, Texture2D rightEnemyWalk3, Texture2D leftEnemyWalk1, Texture2D leftEnemyWalk2, Texture2D leftEnemyWalk3,
             Texture2D rangedEnemyTexture, Texture2D startScreen, Texture2D buttonFrame, Texture2D roundedFrame,
             Texture2D upgradeScreen, Texture2D pauseScreen, Texture2D nextWaveScreen, Texture2D gameOver, Texture2D youWin, Texture2D controlScreen, Texture2D basePlatform, Texture2D notBasePlatform, Texture2D metalBack,
-            Texture2D staminabar, Texture2D healthbar)
+            Texture2D staminabar, Texture2D healthbar, Texture2D groundPoundTip, Texture2D damageUpTip, Texture2D staminaUpTip, Texture2D healthUpTip, Texture2D dashTip, Texture2D dashUpTip)
         {
             this.rightStandingSprite = rightStandingSprite;
             this.leftStandingSprite = leftStandingSprite;
@@ -134,6 +148,13 @@ namespace Purpose
             //For the bars for health and stamina
             this.healthbar = healthbar;
             this.staminabar = staminabar;
+
+            this.groundPoundTip = groundPoundTip;
+            this.damageUpTip = damageUpTip;
+            this.staminaUpTip = staminaUpTip;
+            this.healthUpTip = healthUpTip;
+            this.dashTip = dashTip;
+            this.dashUpTip = dashUpTip;
         }
     }
 }

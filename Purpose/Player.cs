@@ -26,6 +26,9 @@ namespace Purpose
         private int staminaRegen;
         private int previousX;
         private int horizontalVelocity;
+        private int groundPoundStaminaCost;
+        private int dashStaminaCost;
+        private int groundPoundDamage;
         private bool combatStatus;
 
         //properties
@@ -95,6 +98,12 @@ namespace Purpose
             set { horizontalVelocity = value; }
         }
 
+        public int GroundPoundStaminaCost { get { return groundPoundStaminaCost; } }
+        
+        public int DashStaminaCost { get { return dashStaminaCost; } }
+
+        public int GroundPoundDamage { get { return groundPoundDamage; } }
+
         public bool CombatStatus
         {
             get { return combatStatus; }
@@ -120,6 +129,9 @@ namespace Purpose
             staminaRegen = 1;
             this.gameTime = gameTime.TotalGameTime.Milliseconds;
             horizontalVelocity = 8;
+            groundPoundStaminaCost = 40;
+            dashStaminaCost = 20;
+            groundPoundDamage = 20;
             combatStatus = false;
         }
 
@@ -177,9 +189,12 @@ namespace Purpose
             if (ugManager.GroundPoundActive && stamina >= 40)
             {
                 for (int i = 0; i < enemies.Count; i++)
-                {    
-                        enemies[i].TakeDamage(20);
-                        enemies[i].Y -= 50;                    
+                {
+                    if (Math.Abs(enemies[i].X - X) < 500 && Math.Abs(enemies[i].Y - Y) < 200)
+                    {
+                        enemies[i].TakeDamage(groundPoundDamage);
+                        enemies[i].Y -= 50;
+                    }
 
                     if (enemies[i].IsDead)
                     {
@@ -191,7 +206,7 @@ namespace Purpose
                         }
                     }
                 }
-                stamina -= 40;
+                stamina -= groundPoundStaminaCost;
             }
         }
 
@@ -215,7 +230,7 @@ namespace Purpose
                 //    X -= dashDistance;
                 //}
                 horizontalVelocity = 16;
-                stamina -= 20;
+                stamina -= dashStaminaCost;
             }
         }
     }
