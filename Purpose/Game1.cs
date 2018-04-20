@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
 using System;
 using System.Collections.Generic;
 using MonoGame.Extended;
@@ -123,6 +124,9 @@ namespace Purpose
         private Random rng;
         private Vector2 waveIndicator;
 
+        //Field for sound
+        private SoundManager soundManager;
+
         private bool editedGame;
         #endregion
 
@@ -228,6 +232,9 @@ namespace Purpose
             agency30 = Content.Load<SpriteFont>("Agency30");
             agency20 = Content.Load<SpriteFont>("Agency20");
 
+            //Loading in the sound effects
+            soundManager = new SoundManager(Content.Load<SoundEffect>("Sound/Grunts"), Content.Load<SoundEffect>("Sound/PingPongPaddle"));
+
             textureManager = new TextureManager(Content.Load<Texture2D>("Player/LeftStandingSprite"), Content.Load<Texture2D>("Player/RightStandingSprite"), 
                 Content.Load<Texture2D>("Player/LeftMiddleRunningSprite"), Content.Load<Texture2D>("Player/RightMiddleRunningSprite"), 
                 Content.Load<Texture2D>("Player/LeftRunningSprite"), Content.Load<Texture2D>("Player/RightRunningSprite"),
@@ -276,9 +283,9 @@ namespace Purpose
 
             // Makes player, gameManager object
             background = textureManager.MetalBack;
-            player = new Player("Dude", new Rectangle(50, platformManager.BottomPlatforms[1].Y - 352, 139, 352), textureManager, gameTime);
+            player = new Player("Dude", new Rectangle(50, platformManager.BottomPlatforms[1].Y - 352, 139, 352), textureManager, gameTime, soundManager);
             gameManager = new GameManager(player, platformManager.TotalPlatforms, platformManager.LeftWalls, platformManager.RightWalls, GraphicsDevice, 
-                textureManager);
+                textureManager, soundManager);
             //wave = new Wave(gameManager, game1 = new Game1());
 
             gameManager.GameState = GameState.Menu;

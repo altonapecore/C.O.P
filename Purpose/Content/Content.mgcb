@@ -490,3 +490,15 @@
 /processorParam:TextureFormat=Compressed
 /build:Agency20.spritefont
 
+#begin Sound/Grunts.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/Grunts.wav
+
+#begin Sound/PingPongPaddle.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/PingPongPaddle.wav
+

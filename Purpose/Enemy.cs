@@ -126,12 +126,12 @@ namespace Purpose
                 color = Color.White;
                 if (ranged)
                 {
-                    damage = 7;
+                    damage = 5;
                     health = 30;
                 }
                 else
                 {
-                    damage = 5;
+                    damage = 3;
                     health = 50;
                 }
             }
@@ -140,12 +140,12 @@ namespace Purpose
                 color = Color.Firebrick;
                 if (ranged)
                 {
-                    damage = 10;
+                    damage = 7;
                     health = 35;
                 }
                 else
                 {
-                    damage = 8;
+                    damage = 5;
                     health = 55;
                 }
             }
@@ -154,12 +154,12 @@ namespace Purpose
                 color = Color.CornflowerBlue;
                 if (ranged)
                 {
-                    damage = 13;
+                    damage = 9;
                     health = 40;
                 }
                 else
                 {
-                    damage = 11;
+                    damage = 7;
                     health = 60;
                 }
             }
@@ -168,12 +168,12 @@ namespace Purpose
                 color = Color.DarkTurquoise;
                 if(ranged)
                 {
-                    damage = 16;
+                    damage = 11;
                     health = 45;
                 }
                 else
                 {
-                    damage = 14;
+                    damage = 9;
                     health = 65;
                 }
             }
@@ -182,12 +182,12 @@ namespace Purpose
                 color = Color.Yellow;
                 if(ranged)
                 {
-                    damage = 19;
+                    damage = 13;
                     health = 50;
                 }
                 else
                 {
-                    damage = 17;
+                    damage = 11;
                     health = 70;
                 }                  
             }
@@ -207,7 +207,7 @@ namespace Purpose
         /// <param name="playerPosition">Player rectangle to check against</param>
         /// <param name="gameTime">Used for checking to see if the player can attack</param>
         /// <returns></returns>
-        public override int Attack(Character player, GameTime gameTime)
+        public override int Attack(Character player, GameTime gameTime, SoundManager soundManager)
         {
             meleeAttackTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (meleeAttackTimer >= 1)
