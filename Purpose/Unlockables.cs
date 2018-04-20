@@ -15,6 +15,7 @@ namespace Purpose
         private bool unlocked; //Tells whther or not the unlockable has been unlocked
         private bool equipped; //Tells whether it is unlocked or not
         private int cost; //Accounts for the cost of the unlockable
+        private List<Unlockables> items; //List of all the unlockables
 
         //Properties
         private int UnlockPoints
@@ -27,6 +28,22 @@ namespace Purpose
         {
             get { return unlocked; }
             set { unlocked = value; }
+        }
+        
+        private bool Equipped
+        {
+            get { return equipped; }
+            set { equipped = value; }
+        }
+
+        private int Cost { get { return cost; } }
+        
+        //Constructor
+        public Unlockables()
+        {
+            unlockPoints = 0;
+            items = new List<Unlockables>();
+
         }
     }
 }
