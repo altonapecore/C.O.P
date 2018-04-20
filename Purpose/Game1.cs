@@ -234,7 +234,7 @@ namespace Purpose
             agency20 = Content.Load<SpriteFont>("Agency20");
 
             //Loading in the sound effects
-            soundManager = new SoundManager(Content.Load<SoundEffect>("Sound/Grunts"), Content.Load<SoundEffect>("Sound/PingPongPaddle"));
+            soundManager = new SoundManager(Content.Load<SoundEffect>("Sound/Grunts"), Content.Load<SoundEffect>("Sound/PingPongPaddle"), Content.Load<SoundEffect>("Sound/PlayerScream"));
 
             textureManager = new TextureManager(Content.Load<Texture2D>("Player/LeftStandingSprite"), Content.Load<Texture2D>("Player/RightStandingSprite"), 
                 Content.Load<Texture2D>("Player/LeftMiddleRunningSprite"), Content.Load<Texture2D>("Player/RightMiddleRunningSprite"), 
@@ -1100,6 +1100,9 @@ namespace Purpose
 
                 #region Game Over State
                 case GameState.GameOver:
+
+                    soundManager.PlayerDeath.Play();
+                     
                     camera.Zoom = 1.0f;
                     camera.Position = new Vector2(0, 0);
                     gameManager.WaveNumber = WaveNumber.One;

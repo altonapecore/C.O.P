@@ -574,3 +574,9 @@
 /processorParam:Quality=Best
 /build:Sound/PingPongPaddle.wav
 
+#begin Sound/PlayerScream.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/PlayerScream.wav
+
