@@ -375,20 +375,18 @@ namespace Purpose
                 {
                     int damage = player.Attack(enemyManager.Enemies[i], gameTime, soundManager);
                     enemyManager.Enemies[i].TakeDamage(damage);
-                    if(damage > 0)
-                    {
 
-                        if (player.Texture == textureManager.LeftJumpSprite || player.Texture == textureManager.LeftRunningSprite
-                            || player.Texture == textureManager.LeftStandingSprite || player.Texture == textureManager.LeftMiddleRunningSprite)
-                        {
-                            player.Texture = textureManager.LeftPlayerAttack1;
-                        }
-                        else if (player.Texture == textureManager.RightJumpSprite || player.Texture == textureManager.RightRunningSprite
-                            || player.Texture == textureManager.RightStandingSprite || player.Texture == textureManager.RightMiddleRunningSprite)
-                        {
-                            player.Texture = textureManager.RightPlayerAttack1;
-                        }
+                    if (player.Texture == textureManager.LeftJumpSprite || player.Texture == textureManager.LeftRunningSprite
+                        || player.Texture == textureManager.LeftStandingSprite || player.Texture == textureManager.LeftMiddleRunningSprite)
+                    {
+                        player.Texture = textureManager.LeftPlayerAttack1;
                     }
+                    else if (player.Texture == textureManager.RightJumpSprite || player.Texture == textureManager.RightRunningSprite
+                        || player.Texture == textureManager.RightStandingSprite || player.Texture == textureManager.RightMiddleRunningSprite)
+                    {
+                        player.Texture = textureManager.RightPlayerAttack1;
+                    }
+                    
                     if (enemyManager.Enemies[i].IsDead)
                     {
                         enemyManager.Enemies.RemoveAt(i);
@@ -466,6 +464,7 @@ namespace Purpose
             platformManager.ClearPlatformLists();
             platformManager.MakePlatforms(PlatformVersion.Easy, graphicsDevice, textureManager);
             player.UgManager.ResetUpgrades();
+
         }
 
         public void ResetForNextWaveEdited(Camera2D camera, Random rng, int worldLeftEndWidth, int worldRightEndWidth, GameTime gameTime, Texture2D tempTexture, 
