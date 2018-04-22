@@ -212,7 +212,7 @@ namespace Purpose
             meleeAttackTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (meleeAttackTimer >= 1)
             {
-                
+               
                 // Melee attack stuff
                 if (!ranged && position.Intersects(player.Position))
                 {

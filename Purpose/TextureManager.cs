@@ -29,6 +29,7 @@ namespace Purpose
         private Texture2D leftEnemyWalk2;
         private Texture2D leftEnemyWalk3;
         private Texture2D rangedEnemyTexture;
+        private Texture2D fezRangedEnemy;
 
         private Texture2D startScreen;
         private Texture2D buttonFrame;
@@ -75,6 +76,7 @@ namespace Purpose
         public Texture2D LeftEnemyWalk2 { get { return leftEnemyWalk2; } }
         public Texture2D LeftEnemyWalk3 { get { return leftEnemyWalk3; } }
         public Texture2D RangedEnemyTexture { get { return rangedEnemyTexture; } }
+        public Texture2D FezRangedEnemy { get { return fezRangedEnemy; } }
 
         public Texture2D MetalBack { get { return metalBack; } }
 
@@ -107,7 +109,8 @@ namespace Purpose
             Texture2D rightEnemyWalk1, Texture2D rightEnemyWalk2, Texture2D rightEnemyWalk3, Texture2D leftEnemyWalk1, Texture2D leftEnemyWalk2, Texture2D leftEnemyWalk3,
             Texture2D rangedEnemyTexture, Texture2D startScreen, Texture2D buttonFrame, Texture2D roundedFrame,
             Texture2D upgradeScreen, Texture2D pauseScreen, Texture2D nextWaveScreen, Texture2D gameOver, Texture2D youWin, Texture2D controlScreen, Texture2D basePlatform, Texture2D notBasePlatform, Texture2D metalBack,
-            Texture2D staminabar, Texture2D healthbar, Texture2D groundPoundTip, Texture2D damageUpTip, Texture2D staminaUpTip, Texture2D healthUpTip, Texture2D dashTip, Texture2D dashUpTip)
+            Texture2D staminabar, Texture2D healthbar, Texture2D groundPoundTip, Texture2D damageUpTip, Texture2D staminaUpTip, Texture2D healthUpTip, Texture2D dashTip, Texture2D dashUpTip,
+            Texture2D fezRangedEnemy)
         {
             this.rightStandingSprite = rightStandingSprite;
             this.leftStandingSprite = leftStandingSprite;
@@ -126,6 +129,7 @@ namespace Purpose
             this.leftEnemyWalk2 = leftEnemyWalk2;
             this.leftEnemyWalk3 = leftEnemyWalk3;
             this.rangedEnemyTexture = rangedEnemyTexture;
+            this.fezRangedEnemy = fezRangedEnemy;
 
             rightJumpSprite = rightStandingSprite;
             leftJumpSprite = leftStandingSprite;

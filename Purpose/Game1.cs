@@ -115,6 +115,7 @@ namespace Purpose
 
         private Texture2D background;
         private Texture2D tempTexture;
+        private Texture2D currentTexture;
         private Rectangle healthBar;
         private Rectangle staminaBar;
         private Rectangle staminaBack;
@@ -127,6 +128,10 @@ namespace Purpose
 
         //Field for sound
         private SoundManager soundManager;
+
+        //Field for the Unlockables
+        private Unlockables unlockables;
+
 
         private bool editedGame;
         #endregion
@@ -228,10 +233,12 @@ namespace Purpose
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // Load in textures
-            tempTexture = Content.Load<Texture2D>("pineapple2");
             comicSans24 = Content.Load<SpriteFont>("ComicSans24");
             agency30 = Content.Load<SpriteFont>("Agency30");
             agency20 = Content.Load<SpriteFont>("Agency20");
+
+            //Loads in the current texture which can be changed with unlockables
+            currentTexture = Content.Load<Texture2D>("pineapple2");
 
             //Loading in the sound effects
             soundManager = new SoundManager(Content.Load<SoundEffect>("Sound/Grunts"), Content.Load<SoundEffect>("Sound/PingPongPaddle"), Content.Load<SoundEffect>("Sound/PlayerScream"));
@@ -249,7 +256,11 @@ namespace Purpose
                 Content.Load<Texture2D>("YouWin"), Content.Load<Texture2D>("Controls"), Content.Load<Texture2D>("PlatformTest"),
                 Content.Load<Texture2D>("PlatformTest2"), Content.Load<Texture2D>("background"), Content.Load<Texture2D>("HealthBar/staminabar"), 
                 Content.Load<Texture2D>("HealthBar/healthbar"), Content.Load<Texture2D>("GroundPoundToolTip"), Content.Load<Texture2D>("DamageIncreaseToolTip"), 
-                Content.Load<Texture2D>("StaminaIncreaseToolTip"), Content.Load<Texture2D>("HealthIncreaseToolTip"), Content.Load<Texture2D>("DashToolTip"), Content.Load<Texture2D>("DashUpToolTip"));
+                Content.Load<Texture2D>("StaminaIncreaseToolTip"), Content.Load<Texture2D>("HealthIncreaseToolTip"), Content.Load<Texture2D>("DashToolTip"), Content.Load<Texture2D>("DashUpToolTip"),
+                Content.Load<Texture2D>("Unlockables/FezSprites/RangedPinappleFez"));
+
+            //Creating the unlockables
+            unlockables = new Unlockables(textureManager);
 
             editedGameButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 335, 349, 155));
             presetGameButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 565, 349, 155));
@@ -291,6 +302,21 @@ namespace Purpose
             //wave = new Wave(gameManager, game1 = new Game1());
 
             gameManager.GameState = GameState.Menu;
+
+            //Loops through all the unlockables and checks which is equipped
+            for(int i = 0; i < unlockables.Items.Count; i++)
+            {
+                if (unlockables.Items[i].Equipped == true)
+                {
+                    //Sets the tempTexture as the current texture
+                    tempTexture = unlockables.Items[i].Texture;
+                }
+                else
+                {
+                    //If there are no equipped skins goes with the default
+                    tempTexture = currentTexture;
+                }
+            }
 
             //Initializing Reader
             reader = new Reader(gameManager);
