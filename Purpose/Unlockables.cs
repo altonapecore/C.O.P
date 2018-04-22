@@ -43,7 +43,33 @@ namespace Purpose
         {
             unlockPoints = 0;
             items = new List<Unlockables>();
-
         }
+
+        //Parametrized Constructor
+        //Used for each indiviual item 
+        public Unlockables(int cost)
+        {
+            this.cost = cost;
+            equipped = false;
+            unlocked = false;
+        }
+
+        //Mehtod to buy an item
+        public void Buy(Unlockables buyable)
+        {
+            //Checks if the item isn't already unlocked
+            if (buyable.Unlocked == false)
+            {
+                //Checks if the user has enough unlock points
+                //to buy the item
+                if (unlockPoints > buyable.Cost) 
+                {
+                    buyable.Unlocked = true; //Sets the item as unlocked.
+                    UnlockPoints -= buyable.Cost; //Takes the cost and subtracts from users current unlock points 
+                }
+            }
+        }
+
+
     }
 }

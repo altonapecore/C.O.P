@@ -1100,9 +1100,6 @@ namespace Purpose
 
                 #region Game Over State
                 case GameState.GameOver:
-
-                    soundManager.PlayerDeath.Play();
-                     
                     camera.Zoom = 1.0f;
                     camera.Position = new Vector2(0, 0);
                     gameManager.WaveNumber = WaveNumber.One;
