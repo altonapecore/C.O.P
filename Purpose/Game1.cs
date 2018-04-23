@@ -265,7 +265,16 @@ namespace Purpose
                 Content.Load<Texture2D>("PlatformTest2"), Content.Load<Texture2D>("background"), Content.Load<Texture2D>("HealthBar/staminabar"),
                 Content.Load<Texture2D>("HealthBar/healthbar"), Content.Load<Texture2D>("GroundPoundToolTip"), Content.Load<Texture2D>("DamageIncreaseToolTip"),
                 Content.Load<Texture2D>("StaminaIncreaseToolTip"), Content.Load<Texture2D>("HealthIncreaseToolTip"), Content.Load<Texture2D>("DashToolTip"), Content.Load<Texture2D>("DashUpToolTip"),
-                Content.Load<Texture2D>("Unlockables"), Content.Load<Texture2D>("Unlockables/FezSprites/RangedPineappleFez"));
+                Content.Load<Texture2D>("Unlockables"), Content.Load<Texture2D>("Unlockables/SombreroSprites/RangedPineappleSombrero"), Content.Load<Texture2D>("Unlockables/SombreroSprites/RightMeleePineappleSombrero1"),
+                Content.Load<Texture2D>("Unlockables/SombreroSprites/RightMeleePineappleSombrero2"), Content.Load<Texture2D>("Unlockables/SombreroSprites/RightMeleePineappleSombrero3"),
+                Content.Load<Texture2D>("Unlockables/SombreroSprites/LeftMeleePineappleSombrero1"), Content.Load<Texture2D>("Unlockables/SombreroSprites/LeftMeleePineappleSombrero2"), Content.Load<Texture2D>("Unlockables/SombreroSprites/LeftMeleePineappleSombrero3"),
+                Content.Load<Texture2D>("Unlockables/UshankaSprites/RangedPineappleUshanka"), Content.Load<Texture2D>("Unlockables/UshankaSprites/RightMeleePineappleUshanka1"),
+                Content.Load<Texture2D>("Unlockables/UshankaSprites/RightMeleePineappleUshanka2"), Content.Load<Texture2D>("Unlockables/UshankaSprites/RightMeleePineappleUshanka3"),
+                Content.Load<Texture2D>("Unlockables/UshankaSprites/LeftMeleePineappleUshanka1"), Content.Load<Texture2D>("Unlockables/UshankaSprites/LeftMeleePineappleUshanka2"), Content.Load<Texture2D>("Unlockables/UshankaSprites/LeftMeleePineappleUshanka3"),
+                Content.Load<Texture2D>("Unlockables/FezSprites/RangedPineappleFez"), Content.Load<Texture2D>("Unlockables/FezSprites/RightMeleePineappleFez1"),
+                Content.Load<Texture2D>("Unlockables/FezSprites/RightMeleePineappleFez2"), Content.Load<Texture2D>("Unlockables/FezSprites/RightMeleePineappleFez3"),
+                Content.Load<Texture2D>("Unlockables/FezSprites/LeftMeleePineappleFez1"), Content.Load<Texture2D>("Unlockables/FezSprites/LeftMeleePineappleFez2"), Content.Load<Texture2D>("Unlockables/FezSprites/LeftMeleePineappleFez3"));
+                
 
             //Creating the unlockables
             unlockables = new Unlockables(textureManager);
