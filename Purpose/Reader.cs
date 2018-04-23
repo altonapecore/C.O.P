@@ -22,7 +22,7 @@ namespace Purpose
         //Constructor for the Reader
         public Reader(GameManager gameManager)
         {
-            input = new StreamReader("waveEditor.txt");
+            input = new StreamReader("../../../../Content/waveEditor.txt");
             line = null;
             //wave = new Wave(gameManager, game1);
             this.gameManager = gameManager;
@@ -49,7 +49,7 @@ namespace Purpose
                     Wave newWave = new Wave(numberOfMelee, numberOfRanged, difficulty);
                     //Using info gathered above creates a new Wave
                     //Wave wave = new Wave(wave.NumberOfMelee, wave.NumberOfRanged, wave.Difficulty);
-                    gameManager.Waves.Add(newWave); //Adds that new wave to the list.
+                    gameManager.EditedWaves.Add(newWave); //Adds that new wave to the list.
                 }
             }
             catch(Exception e)
