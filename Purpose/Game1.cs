@@ -51,6 +51,7 @@ namespace Purpose
         EditorGame,
         Pause,
         UpgradeMenu,
+        UnlockablesMenu,
         NextWave,
         GameOver,
         YouWin
@@ -104,8 +105,15 @@ namespace Purpose
         private GameObject dashTip;
         private GameObject dashUpTip;
 
+        private GameObject sombreroButton;
+        private GameObject ushankaButton;
+        private GameObject fezButton;
+        private GameObject cowboyButton;
+        private GameObject beretButton;
+        private GameObject defaultButton;
+
         //Field for other Classes
-        //private Reader reader;
+        private Reader reader;
         private Player player;
         private GameManager gameManager;
         private GameTime gameTime;
@@ -243,21 +251,21 @@ namespace Purpose
             //Loading in the sound effects
             soundManager = new SoundManager(Content.Load<SoundEffect>("Sound/Grunts"), Content.Load<SoundEffect>("Sound/PingPongPaddle"), Content.Load<SoundEffect>("Sound/PlayerScream"));
 
-            textureManager = new TextureManager(Content.Load<Texture2D>("Player/LeftStandingSprite"), Content.Load<Texture2D>("Player/RightStandingSprite"), 
-                Content.Load<Texture2D>("Player/LeftMiddleRunningSprite"), Content.Load<Texture2D>("Player/RightMiddleRunningSprite"), 
+            textureManager = new TextureManager(Content.Load<Texture2D>("Player/LeftStandingSprite"), Content.Load<Texture2D>("Player/RightStandingSprite"),
+                Content.Load<Texture2D>("Player/LeftMiddleRunningSprite"), Content.Load<Texture2D>("Player/RightMiddleRunningSprite"),
                 Content.Load<Texture2D>("Player/LeftRunningSprite"), Content.Load<Texture2D>("Player/RightRunningSprite"),
-                Content.Load<Texture2D>("Player/RightPlayerAttackSprite1"), Content.Load<Texture2D>("Player/LeftPlayerAttackSprite1"), 
+                Content.Load<Texture2D>("Player/RightPlayerAttackSprite1"), Content.Load<Texture2D>("Player/LeftPlayerAttackSprite1"),
                 Content.Load<Texture2D>("Player/RightPlayerAttackSprite2"), Content.Load<Texture2D>("Player/LeftPlayerAttackSprite2"),
-                Content.Load<Texture2D>("Enemy/RightMeleePineapple1"), Content.Load<Texture2D>("Enemy/RightMeleePineapple2"), 
-                Content.Load<Texture2D>("Enemy/RightMeleePineapple3"), Content.Load<Texture2D>("Enemy/LeftMeleePineapple1"), 
-                Content.Load<Texture2D>("Enemy/LeftMeleePineapple2"), Content.Load<Texture2D>("Enemy/LeftMeleePineapple3"), tempTexture,Content.Load<Texture2D>("StartMenu"), 
-                Content.Load<Texture2D>("buttonFrame2"), Content.Load<Texture2D>("roundedFrame"),Content.Load<Texture2D>("UpgradeUI"), 
-                Content.Load<Texture2D>("PauseMenu"), Content.Load<Texture2D>("NextWaveMenu"), Content.Load<Texture2D>("GameOver"), 
+                Content.Load<Texture2D>("Enemy/RightMeleePineapple1"), Content.Load<Texture2D>("Enemy/RightMeleePineapple2"),
+                Content.Load<Texture2D>("Enemy/RightMeleePineapple3"), Content.Load<Texture2D>("Enemy/LeftMeleePineapple1"),
+                Content.Load<Texture2D>("Enemy/LeftMeleePineapple2"), Content.Load<Texture2D>("Enemy/LeftMeleePineapple3"), tempTexture, Content.Load<Texture2D>("StartMenu"),
+                Content.Load<Texture2D>("buttonFrame2"), Content.Load<Texture2D>("roundedFrame"), Content.Load<Texture2D>("UpgradeUI"),
+                Content.Load<Texture2D>("PauseMenu"), Content.Load<Texture2D>("NextWaveMenu"), Content.Load<Texture2D>("GameOver"),
                 Content.Load<Texture2D>("YouWin"), Content.Load<Texture2D>("Controls"), Content.Load<Texture2D>("PlatformTest"),
-                Content.Load<Texture2D>("PlatformTest2"), Content.Load<Texture2D>("background"), Content.Load<Texture2D>("HealthBar/staminabar"), 
-                Content.Load<Texture2D>("HealthBar/healthbar"), Content.Load<Texture2D>("GroundPoundToolTip"), Content.Load<Texture2D>("DamageIncreaseToolTip"), 
+                Content.Load<Texture2D>("PlatformTest2"), Content.Load<Texture2D>("background"), Content.Load<Texture2D>("HealthBar/staminabar"),
+                Content.Load<Texture2D>("HealthBar/healthbar"), Content.Load<Texture2D>("GroundPoundToolTip"), Content.Load<Texture2D>("DamageIncreaseToolTip"),
                 Content.Load<Texture2D>("StaminaIncreaseToolTip"), Content.Load<Texture2D>("HealthIncreaseToolTip"), Content.Load<Texture2D>("DashToolTip"), Content.Load<Texture2D>("DashUpToolTip"),
-                Content.Load<Texture2D>("Unlockables/FezSprites/RangedPinappleFez"));
+                Content.Load<Texture2D>("Unlockables"), Content.Load<Texture2D>("Unlockables/FezSprites/RangedPineappleFez"));
 
             //Creating the unlockables
             unlockables = new Unlockables(textureManager);
@@ -287,6 +295,13 @@ namespace Purpose
             dashButton = new GameObject(textureManager.RoundedFrame, new Rectangle(620, 490, 118, 118));
             dashDistanceUpButton = new GameObject(textureManager.RoundedFrame, new Rectangle(620, 680, 118, 118));
 
+            sombreroButton = new GameObject(textureManager.ButtonFrame, new Rectangle(158, 203, 252, 252));
+            ushankaButton = new GameObject(textureManager.ButtonFrame, new Rectangle(544, 203, 252, 252));
+            fezButton = new GameObject(textureManager.ButtonFrame, new Rectangle(930, 203, 252, 252));
+            cowboyButton = new GameObject(textureManager.ButtonFrame, new Rectangle(158, 531, 252, 252));
+            beretButton = new GameObject(textureManager.ButtonFrame, new Rectangle(544, 531, 252, 252));
+            defaultButton = new GameObject(textureManager.ButtonFrame, new Rectangle(930, 531, 252, 252));
+
             // Makes platforms & walls
             platformManager.MakePlatforms(PlatformVersion.Easy, GraphicsDevice, textureManager);
             leftWalls = new List<Platform>();
@@ -301,7 +316,7 @@ namespace Purpose
                 textureManager, soundManager);
             //wave = new Wave(gameManager, game1 = new Game1());
 
-            gameManager.GameState = GameState.Menu;
+            gameManager.GameState = GameState.UnlockablesMenu;
 
             //Loops through all the unlockables and checks which is equipped
             for(int i = 0; i < unlockables.Items.Count; i++)
@@ -735,6 +750,67 @@ namespace Purpose
                     {
                         spriteBatch.Draw(groundPoundButton.Texture, groundPoundButton.Position, Color.White);
                     }
+                    break;
+                #endregion
+
+                #region Unlockables Menu
+                case GameState.UnlockablesMenu:
+                    spriteBatch.Draw(textureManager.UnlockablesUI, new Rectangle(0,0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
+
+                    if (sombreroButton.Intersects(ms.Position))
+                    {
+                        spriteBatch.Draw(sombreroButton.Texture, sombreroButton.Position, Color.Black);
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(sombreroButton.Texture, sombreroButton.Position, Color.White);
+                    }
+
+                    if (ushankaButton.Intersects(ms.Position))
+                    {
+                        spriteBatch.Draw(ushankaButton.Texture, ushankaButton.Position, Color.Black);
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(ushankaButton.Texture, ushankaButton.Position, Color.White);
+                    }
+
+                    if (fezButton.Intersects(ms.Position))
+                    {
+                        spriteBatch.Draw(fezButton.Texture, fezButton.Position, Color.Black);
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(fezButton.Texture, fezButton.Position, Color.White);
+                    }
+
+                    if (cowboyButton.Intersects(ms.Position))
+                    {
+                        spriteBatch.Draw(cowboyButton.Texture, cowboyButton.Position, Color.Black);
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(cowboyButton.Texture, cowboyButton.Position, Color.White);
+                    }
+
+                    if (beretButton.Intersects(ms.Position))
+                    {
+                        spriteBatch.Draw(beretButton.Texture, beretButton.Position, Color.Black);
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(beretButton.Texture, beretButton.Position, Color.White);
+                    }
+
+                    if (defaultButton.Intersects(ms.Position))
+                    {
+                        spriteBatch.Draw(defaultButton.Texture, defaultButton.Position, Color.Black);
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(defaultButton.Texture, defaultButton.Position, Color.White);
+                    }
+
                     break;
                 #endregion
 
