@@ -90,7 +90,7 @@ namespace Purpose
         private GameObject returnToMenuButton;
 
         //Field for other Classes
-        private Reader reader;
+        //private Reader reader;
         private Player player;
         private GameManager gameManager;
         private GameTime gameTime;
