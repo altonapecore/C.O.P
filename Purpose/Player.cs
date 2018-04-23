@@ -15,10 +15,22 @@ namespace Purpose
         private int kills;
         private UpgradeManager ugManager;
         private TextureManager textureManager;
+        private SoundManager soundManager;
         private int stamina;
         private int dashDistance;
         private bool onBasePlatform;
         private int healthMax;
+        private int staminaMax;
+        private int velocity;
+        private int gameTime;
+        private int healthRegen;
+        private int staminaRegen;
+        private int previousX;
+        private int horizontalVelocity;
+        private int groundPoundStaminaCost;
+        private int dashStaminaCost;
+        private int groundPoundDamage;
+        private bool combatStatus;
 
         //properties
         public int Kills
@@ -50,22 +62,79 @@ namespace Purpose
             get { return healthMax; }
             set { healthMax = value; }
         }
+
+        public int StaminaMax
+        {
+            get { return staminaMax; }
+            set { staminaMax = value; }
+        }
+
+        public int Velocity
+        {
+            get { return velocity; }
+            set { velocity = value; }
+        }
+
+        public int HealthRegen
+        {
+            get { return healthRegen; }
+            set { healthRegen = value; }
+        }
+
+        public int StaminaRegen
+        {
+            get { return staminaRegen; }
+            set { staminaRegen = value; }
+        }
+
         public UpgradeManager UgManager { get { return ugManager; } }
 
+        public int GameTime { get { return gameTime; } }
+
+        public int PreviousX { get { return previousX; } }
+        
+        public int HorizontalVelocity
+        {
+            get { return horizontalVelocity; }
+            set { horizontalVelocity = value; }
+        }
+
+        public int GroundPoundStaminaCost { get { return groundPoundStaminaCost; } }
+        
+        public int DashStaminaCost { get { return dashStaminaCost; } }
+
+        public int GroundPoundDamage { get { return groundPoundDamage; } }
+
+        public bool CombatStatus
+        {
+            get { return combatStatus; }
+            set { combatStatus = value; }
+        }
+
         //secondary temporary constructor for debug purposes
-        public Player(String name, Rectangle position, TextureManager textureManager, GameTime gameTime) : base(textureManager.RightStandingSprite)
+        public Player(String name, Rectangle position, TextureManager textureManager, GameTime gameTime, SoundManager soundManager) : base(textureManager.RightStandingSprite)
         {
             this.textureManager = textureManager;
             ugManager = new UpgradeManager();
+            this.soundManager = soundManager;
 
             this.position = position;
             health = 100;
             healthMax = health;
             stamina = 100;
-            dashDistance = 100;
-            damage = 10;
+            staminaMax = stamina;
+            dashDistance = 200;
+            damage = 15;
             texture = textureManager.RightStandingSprite;
             kills = 0;
+            healthRegen = 2;
+            staminaRegen = 1;
+            this.gameTime = gameTime.TotalGameTime.Milliseconds;
+            horizontalVelocity = 8;
+            groundPoundStaminaCost = 40;
+            dashStaminaCost = 20;
+            groundPoundDamage = 20;
+            combatStatus = false;
         }
 
         //methods
@@ -74,11 +143,21 @@ namespace Purpose
         /// </summary>
         /// <param name="enemyPosition">The position of the enemy</param>
         /// <returns>Returns an integer value for the damage done</returns>
-        public override int Attack(Rectangle enemyPosition, GameTime gameTime)
+        public override int Attack(Character enemy, GameTime gameTime, SoundManager soundManager)
         {
-            if (position.Intersects(enemyPosition))
+            this.gameTime += (int)gameTime.ElapsedGameTime.TotalMilliseconds;
+            if (this.gameTime >= 25)
             {
-                return damage;
+                 soundManager.Punch.Play();
+
+                if (position.Intersects(enemy.Position))
+                {
+                    this.gameTime = 0;
+                    combatStatus = true;
+                    soundManager.Grunt.Play();
+                    return damage;
+                }
+                return 0;
             }
             return 0;
         }
@@ -101,45 +180,8 @@ namespace Purpose
         /// </summary>
         public void Jump()
         {
-            position.Y -= 30;
-        }
-
-        /// <summary>
-        /// Allows the player to crouch
-        /// </summary>
-        /// <returns>Returns a boolean representing if the player is crouching or not</returns>
-        public bool Crouch(KeyboardState kbState)
-        {
-            //if the player's current texture isn't the crouch sprite, make the player crouch
-            if (texture == textureManager.LeftCrouchSprite || texture == textureManager.RightCrouchSprite)
-            {
-                Rectangle prevPosition = position;
-                position = new Rectangle(prevPosition.X, prevPosition.Y - prevPosition.Height, prevPosition.Width, prevPosition.Height * 2);
-                if (texture == textureManager.RightCrouchSprite)
-                {
-                    texture = textureManager.RightStandingSprite;
-                }
-                else if (texture == textureManager.LeftCrouchSprite)
-                {
-                    texture = textureManager.LeftStandingSprite;
-                }
-                return false;
-            }
-            else
-            {
-                Rectangle prevPosition = position;
-                position = new Rectangle(prevPosition.X, prevPosition.Y + prevPosition.Height/2, prevPosition.Width, prevPosition.Height/2);
-                if (texture == textureManager.RightStandingSprite || texture == textureManager.RightRunningSprite)
-                {
-                    texture = textureManager.RightCrouchSprite;
-                }
-                else if (texture == textureManager.LeftStandingSprite || texture == textureManager.LeftRunningSprite)
-                {
-                    texture = textureManager.LeftCrouchSprite;
-                }
-                return true;
-            }
-
+            velocity = -30;
+            Y += velocity;
         }
 
         /// <summary>
@@ -149,11 +191,16 @@ namespace Purpose
         public void GroundPound(List<Enemy> enemies)
         {
             Rectangle groundPoundArea = new Rectangle(position.X-200, (position.Y + position.Height-20), 500, 20);
-            if (ugManager.GroundPoundActive)
+            if (ugManager.GroundPoundActive && stamina >= 40)
             {
                 for (int i = 0; i < enemies.Count; i++)
                 {
-                    enemies[i].TakeDamage(15);
+                    if (Math.Abs(enemies[i].X - X) < 500 && Math.Abs(enemies[i].Y - Y) < 200)
+                    {
+                        enemies[i].TakeDamage(groundPoundDamage);
+                        enemies[i].Y -= 50;
+                    }
+
                     if (enemies[i].IsDead)
                     {
                         enemies.RemoveAt(i);
@@ -164,30 +211,32 @@ namespace Purpose
                         }
                     }
                 }
+                stamina -= groundPoundStaminaCost;
             }
         }
 
         /// <summary>
-        /// Checks if the character is above the platform or not
+        /// Increases the player speed for a short time
         /// </summary>
-        /// <param name="platforms">List of platforms to be checked</param>
-        /// <param name="characterToBeChecked">Character to be checked against to see if they're on the base platform</param>
-        /// <returns></returns>
-        public override bool OnBasePlatform(Rectangle characterToBeChecked)
+        public void Dash()
         {
-            int aboveThisMany = 0;
+            previousX = X;
 
-            if (characterToBeChecked.Y + 100 < 745 && characterToBeChecked.Y + 100 > 595)
+            if (ugManager.DashActive && stamina >= 20)
             {
-                aboveThisMany++;
+                //if (texture == textureManager.RightStandingSprite || texture == textureManager.RightRunningSprite
+                //    || texture == textureManager.RightMiddleRunningSprite) //dash to the right
+                //{
+                //    X += dashDistance;
+                //}
+                //else if (texture == textureManager.LeftStandingSprite || texture == textureManager.LeftRunningSprite
+                //    || texture == textureManager.LeftMiddleRunningSprite) //dash to the left
+                //{
+                //    X -= dashDistance;
+                //}
+                horizontalVelocity = 16;
+                stamina -= dashStaminaCost;
             }
-
-            if (aboveThisMany == 1)
-            {
-                return true;
-            }
-
-            else { return false; }
         }
     }
 }

@@ -8,11 +8,29 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Purpose
 {
+    public enum SpawnLevel
+    {
+        baseLevel,
+        firstLevelLeft,
+        firstLevelCenter,
+        firstLevelRight,
+        secondLevelLeft,
+        secondLevelCenter,
+        secondLevelRight,
+        thirdLevelLeft,
+        thirdLevelCenter,
+        thirdLevelRight,
+        fourthLevelLeft,
+        fourthLevelCenter,
+        fourthLevelRight,
+        fifthLevel
+    }
     public class Enemy : Character
     {
         // Fields
         private bool ranged;
-        private int gameTime;
+        private float meleeAttackTimer;
+        private float rangedAttackTimer;
         private int frameCounter;
         private bool isFacingLeft;
         private Rectangle bullet;
@@ -22,10 +40,7 @@ namespace Purpose
         private int jumpNum;
         private int difficulty;
         private Color color;
-
-        // Temp field for attacking
-        private bool isAttacking;
-
+        private int velocity;
 
         // Properties
         public bool Ranged
@@ -84,11 +99,19 @@ namespace Purpose
             set { jumpNum = value; }
         }
 
-        // Temp property for attacking
-        public bool IsAttacking { get { return isAttacking; } }
+        public Color Color
+        {
+            get { return color; }
+        }
+
+        public int Velocity
+        {
+            get { return velocity; }
+            set { velocity = value; }
+        }
 
         // Normal stuff below
-        public int GameTime { get { return gameTime; } }
+        public float AttackTime { get { return meleeAttackTimer; } set { meleeAttackTimer = value; } }
 
         public int Difficulty{get { return difficulty; } }
         // Constructor
@@ -96,12 +119,84 @@ namespace Purpose
         {
             this.ranged = ranged; //Decides whether or not a ranged enemy is spawned
             this.position = position;
-            this.gameTime = gameTime.TotalGameTime.Seconds;
-            //this.color = color;
-            //this.damage = damage;
-            //this.health = health;
+            this.meleeAttackTimer = 0;
+            this.difficulty = difficulty;
+            if (difficulty == 1)
+            {
+                color = Color.White;
+                if (ranged)
+                {
+                    damage = 5;
+                    health = 30;
+                }
+                else
+                {
+                    damage = 3;
+                    health = 50;
+                }
+            }
+            else if (difficulty == 2)
+            {
+                color = Color.Firebrick;
+                if (ranged)
+                {
+                    damage = 7;
+                    health = 35;
+                }
+                else
+                {
+                    damage = 5;
+                    health = 55;
+                }
+            }
+            else if (difficulty == 3)
+            {
+                color = Color.CornflowerBlue;
+                if (ranged)
+                {
+                    damage = 9;
+                    health = 40;
+                }
+                else
+                {
+                    damage = 7;
+                    health = 60;
+                }
+            }
+            else if(difficulty == 4)
+            {
+                color = Color.DarkTurquoise;
+                if(ranged)
+                {
+                    damage = 11;
+                    health = 45;
+                }
+                else
+                {
+                    damage = 9;
+                    health = 65;
+                }
+            }
+            else if(difficulty == 5)
+            {
+                color = Color.Yellow;
+                if(ranged)
+                {
+                    damage = 13;
+                    health = 50;
+                }
+                else
+                {
+                    damage = 11;
+                    health = 70;
+                }                  
+            }
+            else
+            {
+                damage = 5;
+                health = 50;
+            }
             frameCounter = 0;
-            bullet = new Rectangle(0, 0, 0, 0);
             hasBullet = false;
         }
 
@@ -109,48 +204,55 @@ namespace Purpose
         /// <summary>
         /// Attack method for enemy. Checks for collision & returns damge if it does collide
         /// </summary>
-        /// <param name="rectangle">Player rectangle to check against</param>
+        /// <param name="playerPosition">Player rectangle to check against</param>
         /// <param name="gameTime">Used for checking to see if the player can attack</param>
         /// <returns></returns>
-        public override int Attack(Rectangle rectangle, GameTime gameTime)
+        public override int Attack(Character player, GameTime gameTime, SoundManager soundManager)
         {
-            if (this.gameTime + 2 == gameTime.TotalGameTime.Seconds)
+            meleeAttackTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (meleeAttackTimer >= 1)
             {
-                // If the enemy is ranged and doesn't have a bullet, spawn a bullet
-                if (ranged && hasBullet == false && isFacingLeft)
-                {
-                    bullet = new Rectangle(position.X, position.Y + 55, 33, 33);
-                    hasBullet = true;
-                }
-                else if (ranged && hasBullet == false && isFacingLeft == false)
-                {
-                    bullet = new Rectangle(position.X + 147, position.Y + 55, 33, 33);
-                    hasBullet = true;
-                }
-
-                //  If they have a bullet, attack and take bullet away
-                if (hasBullet && bullet.Intersects(rectangle))
-                {
-                    this.gameTime = gameTime.TotalGameTime.Seconds;
-                    bullet.Height = 0;
-                    bullet.Width = 0;
-                    hasBullet = false;
-                    return damage;
-                }
-
+               
                 // Melee attack stuff
-                else if (ranged == false && position.Intersects(rectangle))
+                if (!ranged && position.Intersects(player.Position))
                 {
-                    this.gameTime = gameTime.TotalGameTime.Seconds;
+                    meleeAttackTimer = 0;
                     return damage;
                 }
                 else
                 {
-                    this.gameTime = gameTime.TotalGameTime.Seconds;
+                    meleeAttackTimer = 0;
                     return 0;
                 }
             }
-                return 0;
+
+            rangedAttackTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if(rangedAttackTimer >= 3 && player.Y <= Y && player.Y >= Y - 150)
+            {
+                // If the enemy is ranged and doesn't have a bullet, spawn a bullet
+                if (ranged && !hasBullet && isFacingLeft)
+                {
+                    hasBullet = true;
+                    bullet = new Rectangle(position.X, position.Y + 55, 33, 33);
+                    rangedAttackTimer = 0;
+                }
+                else if (ranged && !hasBullet && isFacingLeft == false)
+                {
+                    hasBullet = true;
+                    bullet = new Rectangle(position.X + 147, position.Y + 55, 33, 33);
+                    rangedAttackTimer = 0;
+                }
+            }
+
+            //  If they have a bullet, attack and take bullet away
+            if (hasBullet && bullet.Intersects(player.Position))
+            {
+                bullet.Height = 0;
+                bullet.Width = 0;
+                hasBullet = false;
+                return 2;
+            }
+            return 0;
         }
 
         public override void TakeDamage(int damage)
@@ -168,23 +270,8 @@ namespace Purpose
         /// </summary>
         public void Jump()
         {
-            position.Y -= 30;
-        }
-
-        public override bool OnBasePlatform(Rectangle characterToBeChecked)
-        {
-            int aboveThisMany = 0;
-            if(characterToBeChecked.Y + 100 < 745  && characterToBeChecked.Y + 100 > 595)
-            {
-                aboveThisMany++;
-            }
-
-            if (aboveThisMany == 1)
-            {
-                return true;
-            }
-
-            else { return false; }
+            velocity = -30;
+            Y += velocity;
         }
     }
 }
