@@ -285,7 +285,7 @@ namespace Purpose
 
             // Makes player, gameManager object
             background = textureManager.MetalBack;
-            player = new Player("Dude", new Rectangle(50, platformManager.BottomPlatforms[1].Y - 352, 139, 352), textureManager, gameTime, soundManager);
+            player = new Player("Dude", new Rectangle(50, GraphicsDevice.Viewport.Height - 452, 139, 352), textureManager, gameTime, soundManager);
             gameManager = new GameManager(player, platformManager.TotalPlatforms, platformManager.LeftWalls, platformManager.RightWalls, GraphicsDevice, 
                 textureManager, soundManager);
             //wave = new Wave(gameManager, game1 = new Game1());
