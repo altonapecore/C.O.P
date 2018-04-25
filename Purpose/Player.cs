@@ -148,7 +148,7 @@ namespace Purpose
             this.gameTime += (int)gameTime.ElapsedGameTime.TotalMilliseconds;
             if (this.gameTime >= 25)
             {
-                 soundManager.Punch.Play();
+                 //soundManager.Punch.Play();
 
                 if (position.Intersects(enemy.Position))
                 {

@@ -10,6 +10,7 @@ namespace Purpose
     public class TextureManager
     {
         //fields
+        #region Player and Enemy Textures
         private Texture2D rightStandingSprite;
         private Texture2D leftStandingSprite;
         private Texture2D rightMiddleRunningSprite;
@@ -29,6 +30,57 @@ namespace Purpose
         private Texture2D leftEnemyWalk2;
         private Texture2D leftEnemyWalk3;
         private Texture2D rangedEnemyTexture;
+        #endregion
+
+        #region Sombrero Textures
+        private Texture2D sombreroRangedEnemy;
+        private Texture2D rightSombreroMelee1;
+        private Texture2D rightSombreroMelee2;
+        private Texture2D rightSombreroMelee3;
+        private Texture2D leftSombreroMelee1;
+        private Texture2D leftSombreroMelee2;
+        private Texture2D leftSombreroMelee3;
+        #endregion
+
+        #region Ushanka Textures
+        private Texture2D ushankaRangedEnemy;
+        private Texture2D rightUshankaMelee1;
+        private Texture2D rightUshankaMelee2;
+        private Texture2D rightUshankaMelee3;
+        private Texture2D leftUshankaMelee1;
+        private Texture2D leftUshankaMelee2;
+        private Texture2D leftUshankaMelee3;
+        #endregion
+
+        #region Fez Textures
+        private Texture2D fezRangedEnemy;
+        private Texture2D rightFezMelee1;
+        private Texture2D rightFezMelee2;
+        private Texture2D rightFezMelee3;
+        private Texture2D leftFezMelee1;
+        private Texture2D leftFezMelee2;
+        private Texture2D leftFezMelee3;
+        #endregion
+
+        #region Cowboy Textures
+        private Texture2D cowboyRangedEnemy;
+        private Texture2D rightCowboyMelee1;
+        private Texture2D rightCowboyMelee2;
+        private Texture2D rightCowboyMelee3;
+        private Texture2D leftCowboyMelee1;
+        private Texture2D leftCowboyMelee2;
+        private Texture2D leftCowboyMelee3;
+        #endregion
+
+        #region Beret Textures
+        private Texture2D beretRangedEnemy;
+        private Texture2D rightBeretMelee1;
+        private Texture2D rightBeretMelee2;
+        private Texture2D rightBeretMelee3;
+        private Texture2D leftBeretMelee1;
+        private Texture2D leftBeretMelee2;
+        private Texture2D leftBeretMelee3;
+        #endregion
 
         private Texture2D startScreen;
         private Texture2D buttonFrame;
@@ -39,6 +91,7 @@ namespace Purpose
         private Texture2D gameOver;
         private Texture2D youWin;
         private Texture2D controlScreen;
+        private Texture2D unlockablesUI;
 
         private Texture2D basePlatform;
         private Texture2D notBasePlatform;
@@ -56,6 +109,7 @@ namespace Purpose
         private Texture2D dashUpTip;
 
         //sprite properties
+        #region Player and Enemy Properties
         public Texture2D RightStandingSprite { get { return rightStandingSprite; } }
         public Texture2D LeftStandingSprite { get { return leftStandingSprite; } }
         public Texture2D RightMiddleRunningSprite { get { return rightMiddleRunningSprite; } }
@@ -75,6 +129,57 @@ namespace Purpose
         public Texture2D LeftEnemyWalk2 { get { return leftEnemyWalk2; } }
         public Texture2D LeftEnemyWalk3 { get { return leftEnemyWalk3; } }
         public Texture2D RangedEnemyTexture { get { return rangedEnemyTexture; } }
+        #endregion
+
+        #region Sombrero Properties
+        public Texture2D SombreroRangedEnemy { get { return sombreroRangedEnemy; } }
+        public Texture2D RightSombreroMelee1 { get { return rightSombreroMelee1; } }
+        public Texture2D RightSombreroMelee2 { get { return rightSombreroMelee2; } }
+        public Texture2D RightSombreroMelee3 { get { return rightSombreroMelee3; } }
+        public Texture2D LeftSombreroMelee1 { get { return leftSombreroMelee1; } }
+        public Texture2D LeftSombreroMelee2 { get { return leftSombreroMelee2; } }
+        public Texture2D LeftSombreroMelee3 { get { return leftSombreroMelee3; } }
+        #endregion
+
+        #region Ushanka Properties
+        public Texture2D UshankaRangedEnemy { get { return ushankaRangedEnemy; } }
+        public Texture2D RightUshankaMelee1 { get { return rightUshankaMelee1; } }
+        public Texture2D RightUshankaMelee2 { get { return rightUshankaMelee2; } }
+        public Texture2D RightUshankaMelee3 { get { return rightUshankaMelee3; } }
+        public Texture2D LeftUshankaMelee1 { get { return leftUshankaMelee1; } }
+        public Texture2D LeftUshankaMelee2 { get { return leftUshankaMelee2; } }
+        public Texture2D LeftUshankaMelee3 { get { return leftUshankaMelee3; } }
+        #endregion
+
+        #region Fez Properties
+        public Texture2D FezRangedEnemy { get { return fezRangedEnemy; } }
+        public Texture2D RightFezMelee1 { get { return rightFezMelee1; } }
+        public Texture2D RightFezMelee2 { get { return rightFezMelee2; } }
+        public Texture2D RightFezMelee3 { get { return rightFezMelee3; } }
+        public Texture2D LeftFezMelee1 { get { return leftFezMelee1; } }
+        public Texture2D LeftFezMelee2 { get { return leftFezMelee2; } }
+        public Texture2D LeftFezMelee3 { get { return leftFezMelee3; } }
+        #endregion
+
+        #region Cowboy Properties
+        public Texture2D CowboyRangedEnemy { get { return cowboyRangedEnemy; } }
+        public Texture2D RightCowboyMelee1 { get { return rightCowboyMelee1; } }
+        public Texture2D RightCowboyMelee2 { get { return rightCowboyMelee2; } }
+        public Texture2D RightCowboyMelee3 { get { return rightCowboyMelee3; } }
+        public Texture2D LeftCowboyMelee1 { get { return leftCowboyMelee1; } }
+        public Texture2D LeftCowboyMelee2 { get { return leftCowboyMelee2; } }
+        public Texture2D LeftCowboyMelee3 { get { return leftCowboyMelee3; } }
+        #endregion
+
+        #region Beret Properties
+        public Texture2D BeretRangedEnemy { get { return beretRangedEnemy; } }
+        public Texture2D RightBeretMelee1 { get { return rightBeretMelee1; } }
+        public Texture2D RightBeretMelee2 { get { return rightBeretMelee2; } }
+        public Texture2D RightBeretMelee3 { get { return rightBeretMelee3; } }
+        public Texture2D LeftBeretMelee1 { get { return leftBeretMelee1; } }
+        public Texture2D LeftBeretMelee2 { get { return leftBeretMelee2; } }
+        public Texture2D LeftBeretMelee3 { get { return leftBeretMelee3; } }
+        #endregion
 
         public Texture2D MetalBack { get { return metalBack; } }
 
@@ -101,13 +206,20 @@ namespace Purpose
         public Texture2D DashTip { get { return dashTip; } }
         public Texture2D DashUpTip { get { return dashUpTip; } }
 
+        public Texture2D UnlockablesUI { get { return unlockablesUI; } }
+
         //constructor
-        public TextureManager(Texture2D leftStandingSprite,Texture2D rightStandingSprite, Texture2D leftMiddleRunningSprite, Texture2D rightMiddleRunningSprite,
+        public TextureManager(Texture2D leftStandingSprite, Texture2D rightStandingSprite, Texture2D leftMiddleRunningSprite, Texture2D rightMiddleRunningSprite,
             Texture2D leftRunningSprite, Texture2D rightRunningSprite, Texture2D rightPlayerAttack1, Texture2D leftPlayerAttack1, Texture2D rightPlayerAttack2, Texture2D leftPlayerAttack2,
             Texture2D rightEnemyWalk1, Texture2D rightEnemyWalk2, Texture2D rightEnemyWalk3, Texture2D leftEnemyWalk1, Texture2D leftEnemyWalk2, Texture2D leftEnemyWalk3,
             Texture2D rangedEnemyTexture, Texture2D startScreen, Texture2D buttonFrame, Texture2D roundedFrame,
             Texture2D upgradeScreen, Texture2D pauseScreen, Texture2D nextWaveScreen, Texture2D gameOver, Texture2D youWin, Texture2D controlScreen, Texture2D basePlatform, Texture2D notBasePlatform, Texture2D metalBack,
-            Texture2D staminabar, Texture2D healthbar, Texture2D groundPoundTip, Texture2D damageUpTip, Texture2D staminaUpTip, Texture2D healthUpTip, Texture2D dashTip, Texture2D dashUpTip)
+            Texture2D staminabar, Texture2D healthbar, Texture2D groundPoundTip, Texture2D damageUpTip, Texture2D staminaUpTip, Texture2D healthUpTip, Texture2D dashTip, Texture2D dashUpTip, Texture2D unlockablesUI,
+            Texture2D sombreroRangedEnemy, Texture2D rightSombreroMelee1, Texture2D rightSombreroMelee2, Texture2D rightSombreroMelee3, Texture2D leftSombreroMelee1, Texture2D leftSombreroMelee2, Texture2D leftSombreroMelee3,
+            Texture2D ushankaRangedEnemy, Texture2D rightUshankaMelee1, Texture2D rightUshankaMelee2, Texture2D rightUshankaMelee3, Texture2D leftUshankaMelee1, Texture2D leftUshankaMelee2, Texture2D leftUshankaMelee3,
+            Texture2D fezRangedEnemy, Texture2D rightFezMelee1, Texture2D rightFezMelee2, Texture2D rightFezMelee3, Texture2D leftFezMelee1, Texture2D leftFezMelee2, Texture2D leftFezMelee3,
+            Texture2D cowboyRangedEnemy, Texture2D rightCowboyMelee1, Texture2D rightCowboyMelee2, Texture2D rightCowboyMelee3, Texture2D leftCowboyMelee1, Texture2D leftCowboyMelee2, Texture2D leftCowboyMelee3,
+            Texture2D beretRangedEnemy, Texture2D rightBeretMelee1, Texture2D rightBeretMelee2, Texture2D rightBeretMelee3, Texture2D leftBeretMelee1, Texture2D leftBeretMelee2, Texture2D leftBeretMelee3)
         {
             this.rightStandingSprite = rightStandingSprite;
             this.leftStandingSprite = leftStandingSprite;
@@ -126,6 +238,46 @@ namespace Purpose
             this.leftEnemyWalk2 = leftEnemyWalk2;
             this.leftEnemyWalk3 = leftEnemyWalk3;
             this.rangedEnemyTexture = rangedEnemyTexture;
+
+            this.sombreroRangedEnemy = sombreroRangedEnemy;
+            this.rightSombreroMelee1 = rightSombreroMelee1;
+            this.rightSombreroMelee2 = rightSombreroMelee2;
+            this.rightSombreroMelee3 = rightSombreroMelee3;
+            this.leftSombreroMelee1 = leftSombreroMelee1;
+            this.leftSombreroMelee2 = leftSombreroMelee2;
+            this.leftSombreroMelee3 = leftSombreroMelee3;
+
+            this.ushankaRangedEnemy = ushankaRangedEnemy;
+            this.rightUshankaMelee1 = rightUshankaMelee1;
+            this.rightUshankaMelee2 = rightUshankaMelee2;
+            this.rightUshankaMelee3 = rightUshankaMelee3;
+            this.leftUshankaMelee1 = leftUshankaMelee1;
+            this.leftUshankaMelee2 = leftUshankaMelee2;
+            this.leftUshankaMelee3 = leftUshankaMelee3;
+
+            this.fezRangedEnemy = fezRangedEnemy;
+            this.rightFezMelee1 = rightFezMelee1;
+            this.rightFezMelee2 = rightFezMelee2;
+            this.rightFezMelee3 = rightFezMelee3;
+            this.leftFezMelee1 = leftFezMelee1;
+            this.leftFezMelee2 = leftFezMelee2;
+            this.leftFezMelee3 = leftFezMelee3;
+
+            this.cowboyRangedEnemy = cowboyRangedEnemy;
+            this.rightCowboyMelee1 = rightCowboyMelee1;
+            this.rightCowboyMelee2 = rightCowboyMelee2;
+            this.rightCowboyMelee3 = rightCowboyMelee3;
+            this.leftCowboyMelee1 = leftCowboyMelee1;
+            this.leftCowboyMelee2 = leftCowboyMelee2;
+            this.leftCowboyMelee3 = leftCowboyMelee3;
+
+            this.beretRangedEnemy = beretRangedEnemy;
+            this.rightBeretMelee1 = rightBeretMelee1;
+            this.rightBeretMelee2 = rightBeretMelee2;
+            this.rightBeretMelee3 = rightBeretMelee3;
+            this.leftBeretMelee1 = leftBeretMelee1;
+            this.leftBeretMelee2 = leftBeretMelee2;
+            this.leftBeretMelee3 = leftBeretMelee3;
 
             rightJumpSprite = rightStandingSprite;
             leftJumpSprite = leftStandingSprite;
@@ -155,6 +307,8 @@ namespace Purpose
             this.healthUpTip = healthUpTip;
             this.dashTip = dashTip;
             this.dashUpTip = dashUpTip;
+
+            this.unlockablesUI = unlockablesUI;
         }
     }
 }
