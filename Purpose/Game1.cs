@@ -97,6 +97,7 @@ namespace Purpose
         private GameObject upgradesButton;
         private GameObject returnToMenuButton;
         private GameObject returnToMainButton;
+        private GameObject unlockablesReturnToPauseButton;
 
         private GameObject groundPoundTip;
         private GameObject damageUpTip;
@@ -289,6 +290,7 @@ namespace Purpose
             upgradesButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 512, 349, 160));
             returnToMenuButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 343, 349, 160));
             returnToMainButton = new GameObject(textureManager.ButtonFrame, new Rectangle(35, 35, 243, 108));
+            unlockablesReturnToPauseButton = new GameObject(textureManager.ButtonFrame, new Rectangle(35, 35, 349, 160));
 
             groundPoundTip = new GameObject(textureManager.GroundPoundTip, new Rectangle(0, 0, 250, 250));
             damageUpTip = new GameObject(textureManager.DamageUpTip, new Rectangle(0, 0, 250, 250));
@@ -325,15 +327,15 @@ namespace Purpose
                 textureManager, soundManager);
             //wave = new Wave(gameManager, game1 = new Game1());
 
-            gameManager.GameState = GameState.UnlockablesMenu;
+            gameManager.GameState = GameState.Menu;
 
             //Loops through all the unlockables and checks which is equipped
-            for(int i = 0; i < unlockables.Items.Count; i++)
+            for(int i = 0; i < unlockables.ItemsList.Count; i++)
             {
-                if (unlockables.Items[i].Equipped == true)
+                if (unlockables.ItemsList[i].Equipped == true)
                 {
                     //Sets the tempTexture as the current texture
-                    tempTexture = unlockables.Items[i].Texture;
+                    tempTexture = unlockables.ItemsList[i].Texture;
                 }
                 else
                 {
@@ -766,6 +768,15 @@ namespace Purpose
                 case GameState.UnlockablesMenu:
                     spriteBatch.Draw(textureManager.UnlockablesUI, new Rectangle(0,0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
 
+                    if (unlockablesReturnToPauseButton.Intersects(ms.Position))
+                    {
+                        spriteBatch.Draw(unlockablesReturnToPauseButton.Texture, unlockablesReturnToPauseButton.Position, Color.Black);
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(unlockablesReturnToPauseButton.Texture, unlockablesReturnToPauseButton.Position, Color.White);
+                    }
+
                     if (sombreroButton.Intersects(ms.Position))
                     {
                         spriteBatch.Draw(sombreroButton.Texture, sombreroButton.Position, Color.Black);
@@ -1178,6 +1189,39 @@ namespace Purpose
                     {
                         gameManager.Player.DashDistance = gameManager.Player.UgManager.DashDistanceUpgrade(gameManager.Player.DashDistance);
                     }
+                    break;
+                #endregion
+
+                #region Unlockables Menu State
+                case GameState.UnlockablesMenu:
+
+                    if (unlockablesReturnToPauseButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
+                    {
+                        gameManager.GameState = GameState.Pause;
+                    }
+
+                    //Deals with the Fez hat
+                    if (fezButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
+                    {
+                        //Checks to see if the Fez is not unlocked
+                        if (unlockables.ItemsDictionary["Fez"].Unlocked == false)
+                        {
+                            //If not unlocked will buy the Fez
+                            unlockables.Buy(unlockables.ItemsDictionary["Fez"]);
+                        }
+                        //If it is unlocked will check to see if it is not equipped
+                        else if (unlockables.ItemsDictionary["Fez"].Equipped == false)
+                        {
+                            //If not it will equip the item
+                            unlockables.Equip(unlockables.ItemsDictionary["Fez"]);
+                        }
+                        else
+                        {
+                            //If it's unlocked and equipped, it will unequip it
+                            unlockables.Unequip(unlockables.ItemsDictionary["Fez"]);
+                        }
+                    }
+
                     break;
                 #endregion
 
