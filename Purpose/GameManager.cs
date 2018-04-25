@@ -219,18 +219,19 @@ namespace Purpose
             }
 
             // Wall collisions
-            foreach (Platform w in leftWalls)
-            {
-                if (player.Position.Intersects(w.Position))
-                {
-                    player.X = w.Position.X + w.Position.Width;
-                }
-            }
             foreach (Platform w in rightWalls)
             {
                 if (player.Position.Intersects(w.Position))
                 {
                     player.X = w.Position.X - player.Position.Width;
+                }
+            }
+
+            foreach (Platform w in leftWalls)
+            {
+                if (player.Position.Intersects(w.Position))
+                {
+                    player.X = w.Position.X + w.Position.Width;
                 }
             }
 #endregion
