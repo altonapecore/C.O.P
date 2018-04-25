@@ -98,6 +98,8 @@ namespace Purpose
         private GameObject returnToMenuButton;
         private GameObject returnToMainButton;
         private GameObject unlockablesReturnToPauseButton;
+        private GameObject startUnlockablesButton;
+        private GameObject pauseUnlockablesButton;
 
         private GameObject groundPoundTip;
         private GameObject damageUpTip;
@@ -242,7 +244,6 @@ namespace Purpose
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // Load in textures
-            comicSans24 = Content.Load<SpriteFont>("ComicSans24");
             agency30 = Content.Load<SpriteFont>("Agency30");
             agency20 = Content.Load<SpriteFont>("Agency20");
 
@@ -274,18 +275,26 @@ namespace Purpose
                 Content.Load<Texture2D>("Unlockables/UshankaSprites/LeftMeleePineappleUshanka1"), Content.Load<Texture2D>("Unlockables/UshankaSprites/LeftMeleePineappleUshanka2"), Content.Load<Texture2D>("Unlockables/UshankaSprites/LeftMeleePineappleUshanka3"),
                 Content.Load<Texture2D>("Unlockables/FezSprites/RangedPineappleFez"), Content.Load<Texture2D>("Unlockables/FezSprites/RightMeleePineappleFez1"),
                 Content.Load<Texture2D>("Unlockables/FezSprites/RightMeleePineappleFez2"), Content.Load<Texture2D>("Unlockables/FezSprites/RightMeleePineappleFez3"),
-                Content.Load<Texture2D>("Unlockables/FezSprites/LeftMeleePineappleFez1"), Content.Load<Texture2D>("Unlockables/FezSprites/LeftMeleePineappleFez2"), Content.Load<Texture2D>("Unlockables/FezSprites/LeftMeleePineappleFez3"));
+                Content.Load<Texture2D>("Unlockables/FezSprites/LeftMeleePineappleFez1"), Content.Load<Texture2D>("Unlockables/FezSprites/LeftMeleePineappleFez2"), Content.Load<Texture2D>("Unlockables/FezSprites/LeftMeleePineappleFez3"),
+                Content.Load<Texture2D>("Unlockables/CowboySprites/RangedPineappleCowboy"), Content.Load<Texture2D>("Unlockables/CowboySprites/RightMeleePineappleCowboy1"),
+                Content.Load<Texture2D>("Unlockables/CowboySprites/RightMeleePineappleCowboy2"), Content.Load<Texture2D>("Unlockables/CowboySprites/RightMeleePineappleCowboy3"),
+                Content.Load<Texture2D>("Unlockables/CowboySprites/LeftMeleePineappleCowboy1"), Content.Load<Texture2D>("Unlockables/CowboySprites/LeftMeleePineappleCowboy2"), Content.Load<Texture2D>("Unlockables/CowboySprites/LeftMeleePineappleCowboy3"),
+                Content.Load<Texture2D>("Unlockables/BeretSprites/RangedPineappleBeret"), Content.Load<Texture2D>("Unlockables/BeretSprites/RightMeleePineappleBeret1"),
+                Content.Load<Texture2D>("Unlockables/BeretSprites/RightMeleePineappleBeret2"), Content.Load<Texture2D>("Unlockables/BeretSprites/RightMeleePineappleBeret3"),
+                Content.Load<Texture2D>("Unlockables/BeretSprites/LeftMeleePineappleBeret1"), Content.Load<Texture2D>("Unlockables/BeretSprites/LeftMeleePineappleBeret2"), Content.Load<Texture2D>("Unlockables/BeretSprites/LeftMeleePineappleBeret3"));
                 
 
             //Creating the unlockables
             unlockables = new Unlockables(textureManager);
 
-            editedGameButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 335, 349, 155));
-            presetGameButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 565, 349, 155));
+            editedGameButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 308, 349, 155));
+            presetGameButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 479, 349, 155));
+            startUnlockablesButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 649, 349, 155));
             toGameButton = new GameObject(textureManager.ButtonFrame, new Rectangle(965, 668, 349, 155));
             returnToNewWaveButton = new GameObject(textureManager.ButtonFrame, new Rectangle(10,340,242,109));
-            returnToGameButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 280, 349, 160));
-            exitGameButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 502, 349, 160));
+            returnToGameButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 272, 349, 160));
+            exitGameButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 457, 349, 160));
+            pauseUnlockablesButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 643, 349, 155));
             goOnButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 272, 349, 160));
             upgradesButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 512, 349, 160));
             returnToMenuButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 343, 349, 160));
@@ -507,6 +516,15 @@ namespace Purpose
                     {
                         spriteBatch.Draw(presetGameButton.Texture, presetGameButton.Position, Color.White);
                     }
+
+                    if (startUnlockablesButton.Intersects(ms.Position))
+                    {
+                        spriteBatch.Draw(startUnlockablesButton.Texture, startUnlockablesButton.Position, Color.Black);
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(startUnlockablesButton.Texture, startUnlockablesButton.Position, Color.White);
+                    }
                     break;
                 #endregion
 
@@ -668,6 +686,15 @@ namespace Purpose
                     {
                         spriteBatch.Draw(exitGameButton.Texture, exitGameButton.Position, Color.White);
                     }
+
+                    if (pauseUnlockablesButton.Intersects(ms.Position))
+                    {
+                        spriteBatch.Draw(pauseUnlockablesButton.Texture, pauseUnlockablesButton.Position, Color.Black);
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(pauseUnlockablesButton.Texture, pauseUnlockablesButton.Position, Color.White);
+                    }
                     break;
                 #endregion
 
@@ -767,6 +794,9 @@ namespace Purpose
                 #region Unlockables Menu
                 case GameState.UnlockablesMenu:
                     spriteBatch.Draw(textureManager.UnlockablesUI, new Rectangle(0,0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
+
+                    spriteBatch.DrawString(agency30, "SPEND 10 UPGRADE POINTS \nTO UNLOCK A NEW HAT!", new Vector2(1000, 45), Color.Black);
+                    spriteBatch.DrawString(agency30, "Unlock Points: " + unlockables.UnlockPoints, new Vector2(1000, 135), Color.Black);
 
                     if (unlockablesReturnToPauseButton.Intersects(ms.Position))
                     {
@@ -910,6 +940,11 @@ namespace Purpose
                     {
                         gameManager.GameState = GameState.Controls;
                         editedGame = false;
+                    }
+
+                    if (startUnlockablesButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
+                    {
+                        gameManager.GameState = GameState.UnlockablesMenu;
                     }
 
                     //Reset Game
@@ -1154,6 +1189,10 @@ namespace Purpose
                     {
                         Exit();
                     }
+                    else if (pauseUnlockablesButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
+                    {
+                        gameManager.GameState = GameState.UnlockablesMenu;
+                    }
 
                     break;
                 #endregion
@@ -1197,7 +1236,14 @@ namespace Purpose
 
                     if (unlockablesReturnToPauseButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
                     {
-                        gameManager.GameState = GameState.Pause;
+                        if (gameManager.PrevGameState == GameState.Menu)
+                        {
+                            gameManager.GameState = GameState.Menu;
+                        }
+                        else if (gameManager.PrevGameState == GameState.Pause)
+                        {
+                            gameManager.GameState = GameState.Pause;
+                        }
                     }
 
                     //Deals with the Fez hat

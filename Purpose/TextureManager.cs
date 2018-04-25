@@ -217,7 +217,9 @@ namespace Purpose
             Texture2D staminabar, Texture2D healthbar, Texture2D groundPoundTip, Texture2D damageUpTip, Texture2D staminaUpTip, Texture2D healthUpTip, Texture2D dashTip, Texture2D dashUpTip, Texture2D unlockablesUI,
             Texture2D sombreroRangedEnemy, Texture2D rightSombreroMelee1, Texture2D rightSombreroMelee2, Texture2D rightSombreroMelee3, Texture2D leftSombreroMelee1, Texture2D leftSombreroMelee2, Texture2D leftSombreroMelee3,
             Texture2D ushankaRangedEnemy, Texture2D rightUshankaMelee1, Texture2D rightUshankaMelee2, Texture2D rightUshankaMelee3, Texture2D leftUshankaMelee1, Texture2D leftUshankaMelee2, Texture2D leftUshankaMelee3,
-            Texture2D fezRangedEnemy, Texture2D rightFezMelee1, Texture2D rightFezMelee2, Texture2D rightFezMelee3, Texture2D leftFezMelee1, Texture2D leftFezMelee2, Texture2D leftFezMelee3)
+            Texture2D fezRangedEnemy, Texture2D rightFezMelee1, Texture2D rightFezMelee2, Texture2D rightFezMelee3, Texture2D leftFezMelee1, Texture2D leftFezMelee2, Texture2D leftFezMelee3,
+            Texture2D cowboyRangedEnemy, Texture2D rightCowboyMelee1, Texture2D rightCowboyMelee2, Texture2D rightCowboyMelee3, Texture2D leftCowboyMelee1, Texture2D leftCowboyMelee2, Texture2D leftCowboyMelee3,
+            Texture2D beretRangedEnemy, Texture2D rightBeretMelee1, Texture2D rightBeretMelee2, Texture2D rightBeretMelee3, Texture2D leftBeretMelee1, Texture2D leftBeretMelee2, Texture2D leftBeretMelee3)
         {
             this.rightStandingSprite = rightStandingSprite;
             this.leftStandingSprite = leftStandingSprite;
@@ -244,6 +246,7 @@ namespace Purpose
             this.leftSombreroMelee1 = leftSombreroMelee1;
             this.leftSombreroMelee2 = leftSombreroMelee2;
             this.leftSombreroMelee3 = leftSombreroMelee3;
+
             this.ushankaRangedEnemy = ushankaRangedEnemy;
             this.rightUshankaMelee1 = rightUshankaMelee1;
             this.rightUshankaMelee2 = rightUshankaMelee2;
@@ -251,6 +254,7 @@ namespace Purpose
             this.leftUshankaMelee1 = leftUshankaMelee1;
             this.leftUshankaMelee2 = leftUshankaMelee2;
             this.leftUshankaMelee3 = leftUshankaMelee3;
+
             this.fezRangedEnemy = fezRangedEnemy;
             this.rightFezMelee1 = rightFezMelee1;
             this.rightFezMelee2 = rightFezMelee2;
@@ -258,6 +262,22 @@ namespace Purpose
             this.leftFezMelee1 = leftFezMelee1;
             this.leftFezMelee2 = leftFezMelee2;
             this.leftFezMelee3 = leftFezMelee3;
+
+            this.cowboyRangedEnemy = cowboyRangedEnemy;
+            this.rightCowboyMelee1 = rightCowboyMelee1;
+            this.rightCowboyMelee2 = rightCowboyMelee2;
+            this.rightCowboyMelee3 = rightCowboyMelee3;
+            this.leftCowboyMelee1 = leftCowboyMelee1;
+            this.leftCowboyMelee2 = leftCowboyMelee2;
+            this.leftCowboyMelee3 = leftCowboyMelee3;
+
+            this.beretRangedEnemy = beretRangedEnemy;
+            this.rightBeretMelee1 = rightBeretMelee1;
+            this.rightBeretMelee2 = rightBeretMelee2;
+            this.rightBeretMelee3 = rightBeretMelee3;
+            this.leftBeretMelee1 = leftBeretMelee1;
+            this.leftBeretMelee2 = leftBeretMelee2;
+            this.leftBeretMelee3 = leftBeretMelee3;
 
             rightJumpSprite = rightStandingSprite;
             leftJumpSprite = leftStandingSprite;
