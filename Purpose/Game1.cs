@@ -347,7 +347,7 @@ namespace Purpose
                 if (unlockables.ItemsList[i].Equipped == true)
                 {
                     //Sets the tempTexture as the current texture
-                    textureManager.RangedEnemyTexture = unlockables.ItemsList[i].Texture;
+                    gameManager.EnemyManager.RangedTexture = unlockables.ItemsList[i].Texture;
                 }
                 else
                 {
