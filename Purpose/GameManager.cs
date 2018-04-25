@@ -463,7 +463,7 @@ namespace Purpose
             enemyManager.FillRangedList(rng, editedWaves[0].NumberOfRanged, editedWaves[0].Difficulty, tempTexture, 
                 gameTime, PlatformVersion.Easy);
             platformManager.ClearPlatformLists();
-            platformManager.MakePlatforms(PlatformVersion.Life, graphicsDevice, textureManager);
+            platformManager.MakePlatforms(PlatformVersion.Easy, graphicsDevice, textureManager);
             player.UgManager.ResetUpgrades();
 
         }
@@ -501,7 +501,7 @@ namespace Purpose
             enemyManager.FillEnemyList(rng, presetWaves[0].NumberOfMelee, presetWaves[0].Difficulty, gameTime, PlatformVersion.Easy);
             enemyManager.FillRangedList(rng, presetWaves[0].NumberOfRanged, presetWaves[0].Difficulty, tempTexture, gameTime, PlatformVersion.Easy);
             platformManager.ClearPlatformLists();
-            platformManager.MakePlatforms(PlatformVersion.Life, graphicsDevice, textureManager);
+            platformManager.MakePlatforms(PlatformVersion.Easy, graphicsDevice, textureManager);
             player.UgManager.ResetUpgrades();
         }
 
