@@ -329,13 +329,16 @@ namespace Purpose
 
             gameManager.GameState = GameState.Menu;
 
+            unlockables.ItemsDictionary["Fez"].Unlocked = true;
+            unlockables.Equip(unlockables.ItemsDictionary["Fez"]);
+            
             //Loops through all the unlockables and checks which is equipped
             for(int i = 0; i < unlockables.ItemsList.Count; i++)
             {
                 if (unlockables.ItemsList[i].Equipped == true)
                 {
                     //Sets the tempTexture as the current texture
-                    tempTexture = unlockables.ItemsList[i].Texture;
+                    textureManager.RangedEnemyTexture = unlockables.ItemsList[i].Texture;
                 }
                 else
                 {

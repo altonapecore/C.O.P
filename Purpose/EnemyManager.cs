@@ -15,11 +15,25 @@ namespace Purpose
         private List<Enemy> enemies;
         private GraphicsDevice graphicsDevice;
         private TextureManager textureManager;
+        private Texture2D rangedTexture;
+        private Texture2D meleeTexture;
 
         // Properties
         public List<Enemy> Enemies
         {
             get { return enemies; }
+        }
+
+        public Texture2D RangedTexture
+        {
+            get { return rangedTexture; }
+            set { rangedTexture = value; }
+        }
+
+        public Texture2D MeleeTexture
+        {
+            get { return meleeTexture; }
+            set { meleeTexture = value; }
         }
 
         // Constructor

@@ -128,7 +128,11 @@ namespace Purpose
         public Texture2D LeftEnemyWalk1 { get { return leftEnemyWalk1; } }
         public Texture2D LeftEnemyWalk2 { get { return leftEnemyWalk2; } }
         public Texture2D LeftEnemyWalk3 { get { return leftEnemyWalk3; } }
-        public Texture2D RangedEnemyTexture { get { return rangedEnemyTexture; } }
+        public Texture2D RangedEnemyTexture
+        {
+            get { return rangedEnemyTexture; }
+            set { rangedEnemyTexture = value; }
+        }
         #endregion
 
         #region Sombrero Properties
