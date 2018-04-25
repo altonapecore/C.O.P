@@ -15,8 +15,13 @@ namespace Purpose
         private List<Enemy> enemies;
         private GraphicsDevice graphicsDevice;
         private TextureManager textureManager;
+        private Texture2D rightEnemyWalk1;
+        private Texture2D rightEnemyWalk2;
+        private Texture2D rightEnemyWalk3;
+        private Texture2D leftEnemyWalk1;
+        private Texture2D leftEnemyWalk2;
+        private Texture2D leftEnemyWalk3;
         private Texture2D rangedTexture;
-        private Texture2D meleeTexture;
 
         // Properties
         public List<Enemy> Enemies
@@ -24,17 +29,13 @@ namespace Purpose
             get { return enemies; }
         }
 
-        public Texture2D RangedTexture
-        {
-            get { return rangedTexture; }
-            set { rangedTexture = value; }
-        }
-
-        public Texture2D MeleeTexture
-        {
-            get { return meleeTexture; }
-            set { meleeTexture = value; }
-        }
+        public Texture2D RightEnemyWalk1 { get { return rightEnemyWalk1;} set { rightEnemyWalk1 = value; } }
+        public Texture2D RightEnemyWalk2 { get { return rightEnemyWalk2;}set { rightEnemyWalk2 = value; } }
+        public Texture2D RightEnemyWalk3 { get { return rightEnemyWalk3;}set { rightEnemyWalk3 = value; } }
+        public Texture2D LeftEnemyWalk1 { get { return leftEnemyWalk1; } set { leftEnemyWalk1 = value; } }
+        public Texture2D LeftEnemyWalk2 { get { return leftEnemyWalk2; }set { leftEnemyWalk2 = value; } }
+        public Texture2D LeftEnemyWalk3 { get { return leftEnemyWalk3; } set { leftEnemyWalk3 = value; } }
+        public Texture2D RangedTexture { get { return rangedTexture; } set { rangedTexture = value; } } 
 
         // Constructor
         public EnemyManager(GraphicsDevice graphicsDevice, TextureManager textureManager)
@@ -42,7 +43,12 @@ namespace Purpose
             this.graphicsDevice = graphicsDevice;
             enemies = new List<Enemy>();
             this.textureManager = textureManager;
-            meleeTexture = textureManager.RightEnemyWalk1;
+            rightEnemyWalk1 = textureManager.RightEnemyWalk1;
+            rightEnemyWalk2 = textureManager.RightEnemyWalk2;
+            rightEnemyWalk3 = textureManager.RightEnemyWalk3;
+            leftEnemyWalk1 = textureManager.LeftEnemyWalk1;
+            leftEnemyWalk2 = textureManager.LeftEnemyWalk2;
+            leftEnemyWalk3 = textureManager.LeftEnemyWalk3;
             rangedTexture = textureManager.RangedEnemyTexture;
         }
         #endregion
@@ -784,27 +790,27 @@ namespace Purpose
                     && enemies[i].Y >= player.Y && enemies[i].Y - 200 <= player.Y)
                 {
                     enemies[i].IsFacingLeft = false;
-                    if (enemies[i].Texture == textureManager.LeftEnemyWalk1 || enemies[i].Texture == textureManager.LeftEnemyWalk2
-                        || enemies[i].Texture == textureManager.LeftEnemyWalk3)
+                    if (enemies[i].Texture == leftEnemyWalk1 || enemies[i].Texture == leftEnemyWalk2
+                        || enemies[i].Texture == leftEnemyWalk3)
                     {
-                        enemies[i].Texture = textureManager.RightEnemyWalk1;
+                        enemies[i].Texture = rightEnemyWalk1;
                         enemies[i].FrameCounter = 0;
                     }
                     enemies[i].FrameCounter++;
                     enemies[i].X += 5;
                     if (enemies[i].FrameCounter >= 5)
                     {
-                        if (enemies[i].Texture == textureManager.RightEnemyWalk1)
+                        if (enemies[i].Texture == rightEnemyWalk1)
                         {
-                            enemies[i].Texture = textureManager.RightEnemyWalk2;
+                            enemies[i].Texture = rightEnemyWalk2;
                         }
-                        else if (enemies[i].Texture == textureManager.RightEnemyWalk2)
+                        else if (enemies[i].Texture == rightEnemyWalk2)
                         {
-                            enemies[i].Texture = textureManager.RightEnemyWalk3;
+                            enemies[i].Texture = rightEnemyWalk3;
                         }
-                        else if (enemies[i].Texture == textureManager.RightEnemyWalk3)
+                        else if (enemies[i].Texture == rightEnemyWalk3)
                         {
-                            enemies[i].Texture = textureManager.RightEnemyWalk1;
+                            enemies[i].Texture = rightEnemyWalk1;
                         }
                         enemies[i].FrameCounter = 0;
                     }
@@ -815,27 +821,27 @@ namespace Purpose
                     && enemies[i].Y >= player.Y && enemies[i].Y - 200 <= player.Y)
                 {
                     enemies[i].IsFacingLeft = true;
-                    if (enemies[i].Texture == textureManager.RightEnemyWalk1 || enemies[i].Texture == textureManager.RightEnemyWalk2
-                        || enemies[i].Texture == textureManager.RightEnemyWalk3)
+                    if (enemies[i].Texture == rightEnemyWalk1 || enemies[i].Texture == rightEnemyWalk2
+                        || enemies[i].Texture == rightEnemyWalk3)
                     {
-                        enemies[i].Texture = textureManager.LeftEnemyWalk1;
+                        enemies[i].Texture = leftEnemyWalk1;
                         enemies[i].FrameCounter = 0;
                     }
                     enemies[i].FrameCounter++;
                     enemies[i].X -= 5;
                     if (enemies[i].FrameCounter >= 5)
                     {
-                        if (enemies[i].Texture == textureManager.LeftEnemyWalk1)
+                        if (enemies[i].Texture == leftEnemyWalk1)
                         {
-                            enemies[i].Texture = textureManager.LeftEnemyWalk2;
+                            enemies[i].Texture = leftEnemyWalk2;
                         }
-                        else if (enemies[i].Texture == textureManager.LeftEnemyWalk2)
+                        else if (enemies[i].Texture == leftEnemyWalk2)
                         {
-                            enemies[i].Texture = textureManager.LeftEnemyWalk3;
+                            enemies[i].Texture = leftEnemyWalk3;
                         }
-                        else if (enemies[i].Texture == textureManager.LeftEnemyWalk3)
+                        else if (enemies[i].Texture == leftEnemyWalk3)
                         {
-                            enemies[i].Texture = textureManager.LeftEnemyWalk1;
+                            enemies[i].Texture = leftEnemyWalk1;
                         }
                         enemies[i].FrameCounter = 0;
                     }
