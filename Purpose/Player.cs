@@ -31,7 +31,7 @@ namespace Purpose
         private int dashStaminaCost;
         private int groundPoundDamage;
         private bool combatStatus;
-
+        private Random rng; 
         //properties
         public int Kills
         {
@@ -135,6 +135,8 @@ namespace Purpose
             dashStaminaCost = 20;
             groundPoundDamage = 20;
             combatStatus = false;
+
+            rng = new Random();
         }
 
         //methods
@@ -148,13 +150,18 @@ namespace Purpose
             this.gameTime += (int)gameTime.ElapsedGameTime.TotalMilliseconds;
             if (this.gameTime >= 25)
             {
-                 //soundManager.Punch.Play();
-
                 if (position.Intersects(enemy.Position))
                 {
                     this.gameTime = 0;
                     combatStatus = true;
-                    soundManager.Grunt.Play();
+                    if (rng.Next(0, 2) == 0)
+                    {
+                        soundManager.Grunt.Play();
+                    }
+                    else
+                    {
+                        soundManager.Punch.Play();
+                    }
                     return damage;
                 }
                 return 0;

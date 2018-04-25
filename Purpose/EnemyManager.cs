@@ -21,7 +21,6 @@ namespace Purpose
         private Texture2D leftEnemyWalk1;
         private Texture2D leftEnemyWalk2;
         private Texture2D leftEnemyWalk3;
-        private Texture2D rangedTexture;
 
         // Properties
         public List<Enemy> Enemies
@@ -35,7 +34,6 @@ namespace Purpose
         public Texture2D LeftEnemyWalk1 { get { return leftEnemyWalk1; } set { leftEnemyWalk1 = value; } }
         public Texture2D LeftEnemyWalk2 { get { return leftEnemyWalk2; }set { leftEnemyWalk2 = value; } }
         public Texture2D LeftEnemyWalk3 { get { return leftEnemyWalk3; } set { leftEnemyWalk3 = value; } }
-        public Texture2D RangedTexture { get { return rangedTexture; } set { rangedTexture = value; } } 
 
         // Constructor
         public EnemyManager(GraphicsDevice graphicsDevice, TextureManager textureManager)
@@ -49,7 +47,6 @@ namespace Purpose
             leftEnemyWalk1 = textureManager.LeftEnemyWalk1;
             leftEnemyWalk2 = textureManager.LeftEnemyWalk2;
             leftEnemyWalk3 = textureManager.LeftEnemyWalk3;
-            rangedTexture = textureManager.RangedEnemyTexture;
         }
         #endregion
 
