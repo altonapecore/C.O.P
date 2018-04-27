@@ -339,22 +339,6 @@ namespace Purpose
 
             gameManager.GameState = GameState.Menu;
 
-            //Loops through all the unlockables and checks which is equipped
-            for(int i = 0; i < unlockables.ItemsList.Count; i++)
-            {
-                if (unlockables.ItemsList[i].Equipped == true)
-                {
-                    //Sets the tempTexture as the current texture
-                    gameManager.EnemyManager.RangedTexture = unlockables.ItemsList[i].RangeTexture;
-                    gameManager.EnemyManager.RightEnemyWalk1 = unlockables.ItemsList[i].RightEnemyWalk1;
-                    gameManager.EnemyManager.RightEnemyWalk2 = unlockables.ItemsList[i].RightEnemyWalk2;
-                    gameManager.EnemyManager.RightEnemyWalk3 = unlockables.ItemsList[i].RightEnemyWalk3;
-                    gameManager.EnemyManager.LeftEnemyWalk1 = unlockables.ItemsList[i].LeftEnemyWalk1;
-                    gameManager.EnemyManager.LeftEnemyWalk2 = unlockables.ItemsList[i].LeftEnemyWalk2;
-                    gameManager.EnemyManager.LeftEnemyWalk3 = unlockables.ItemsList[i].LeftEnemyWalk3;
-                }
-            }
-
             //Initializing Reader
             reader = new Reader(gameManager);
             //Runs the Reader method to vcreate enemies needed
@@ -817,8 +801,22 @@ namespace Purpose
                     }
                     else
                     {
-                        
-                        spriteBatch.Draw(sombreroButton.Texture, sombreroButton.Position, Color.White);
+                        //checks if sombrero is equipped
+                        if(unlockables.Sombrero.Equipped == true)
+                        {
+                            //If it is draws button as green
+                            spriteBatch.Draw(sombreroButton.Texture, sombreroButton.Position, Color.Green);
+                        }
+                        //checks if the item is unlocked
+                        else if (unlockables.Sombrero.Unlocked == true)
+                        {
+                            //If it is, makes button red to indicate its unlocked and can be equipped
+                            spriteBatch.Draw(sombreroButton.Texture, sombreroButton.Position, Color.Red);
+                        }
+                        else
+                        {
+                            spriteBatch.Draw(sombreroButton.Texture, sombreroButton.Position, Color.White);
+                        }
                     }
 
                     if (ushankaButton.Intersects(ms.Position))
@@ -827,7 +825,22 @@ namespace Purpose
                     }
                     else
                     {
-                        spriteBatch.Draw(ushankaButton.Texture, ushankaButton.Position, Color.White);
+                        //checks if ushanka is equipped
+                        if (unlockables.Ushanka.Equipped == true)
+                        {
+                            //If it is, draws button as green
+                            spriteBatch.Draw(ushankaButton.Texture, ushankaButton.Position, Color.Green);
+                        }
+                        //checks if the item is unlocked
+                        else if (unlockables.Ushanka.Unlocked == true)
+                        {
+                            //If it is, makes button red to indicate its unlocked and can be equipped
+                            spriteBatch.Draw(ushankaButton.Texture, ushankaButton.Position, Color.Red);
+                        }
+                        else
+                        {
+                            spriteBatch.Draw(ushankaButton.Texture, ushankaButton.Position, Color.White);
+                        }
                     }
 
                     if (fezButton.Intersects(ms.Position))
@@ -836,9 +849,17 @@ namespace Purpose
                     }
                     else
                     {
-                        if(unlockables.ItemsDictionary["Fez"].Equipped == true)
+                        //checks if fez is equipped
+                        if(unlockables.Fez.Equipped == true)
                         {
+                            //If it is, draws button as green
                             spriteBatch.Draw(fezButton.Texture, fezButton.Position, Color.Green);
+                        }
+                        //checks if the item is unlocked
+                        else if (unlockables.Fez.Unlocked == true)
+                        {
+                            //If it is, makes button red to indicate its unlocked and can be equipped
+                            spriteBatch.Draw(fezButton.Texture, fezButton.Position, Color.Red);
                         }
                         else
                         {
@@ -847,12 +868,28 @@ namespace Purpose
                     }
 
                     if (cowboyButton.Intersects(ms.Position))
-                    {
-                        spriteBatch.Draw(cowboyButton.Texture, cowboyButton.Position, Color.Black);
+                    {                        
+                            spriteBatch.Draw(cowboyButton.Texture, cowboyButton.Position, Color.Black);                        
                     }
                     else
                     {
-                        spriteBatch.Draw(cowboyButton.Texture, cowboyButton.Position, Color.White);
+                        //checks if the cowboy hat is equipped
+                        if (unlockables.Cowboy.Equipped == true)
+                        {
+                            //If it is, draws button as green
+                            spriteBatch.Draw(cowboyButton.Texture, cowboyButton.Position, Color.Green);
+                        }
+                        //checks if the item is unlocked
+                        else if (unlockables.Cowboy.Unlocked == true)
+                        {
+                            //If it is, makes button red to indicate its unlocked and can be equipped
+                            spriteBatch.Draw(cowboyButton.Texture, cowboyButton.Position, Color.Red);
+                        }
+                        else
+                        {                            
+                            spriteBatch.Draw(cowboyButton.Texture, cowboyButton.Position, Color.White);
+                        }
+                    
                     }
 
                     if (beretButton.Intersects(ms.Position))
@@ -860,8 +897,23 @@ namespace Purpose
                         spriteBatch.Draw(beretButton.Texture, beretButton.Position, Color.Black);
                     }
                     else
-                    {
-                        spriteBatch.Draw(beretButton.Texture, beretButton.Position, Color.White);
+                    {   
+                        //checks if the beret is equipped
+                        if(unlockables.Beret.Equipped == true)
+                        {
+                            //If it is, draw the button as green
+                            spriteBatch.Draw(beretButton.Texture, beretButton.Position, Color.Green);
+                        }
+                        //checks if the item is unlocked
+                        else if(unlockables.Beret.Unlocked == true)
+                        {
+                            //If it is, makes button red to indicate its unlocked and can be equipped
+                            spriteBatch.Draw(beretButton.Texture, beretButton.Position, Color.Red);
+                        }
+                        else
+                        {
+                            spriteBatch.Draw(beretButton.Texture, beretButton.Position, Color.White);
+                        }
                     }
 
                     if (defaultButton.Intersects(ms.Position))
@@ -870,7 +922,18 @@ namespace Purpose
                     }
                     else
                     {
-                        spriteBatch.Draw(defaultButton.Texture, defaultButton.Position, Color.White);
+                        //Checks that all other unlockables are not equipped
+                        if (unlockables.Beret.Equipped == false && unlockables.Cowboy.Equipped == false && unlockables.Ushanka.Equipped == false 
+                            && unlockables.Sombrero.Equipped == false && unlockables.Fez.Equipped == false)
+                        {
+                            //If they are all default button is turned green
+                            spriteBatch.Draw(defaultButton.Texture, defaultButton.Position, Color.Green);
+                        }
+                        else
+                        {
+                            //Otherwise shows red to indicate its usable
+                            spriteBatch.Draw(defaultButton.Texture, defaultButton.Position, Color.Red);
+                        }
                     }
 
                     break;
@@ -1279,24 +1342,151 @@ namespace Purpose
                     if (fezButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
                     {
                         //Checks to see if the Fez is not unlocked
-                        if (unlockables.ItemsDictionary["Fez"].Unlocked == false)
+                        if (unlockables.Fez.Unlocked == false)
                         {
                             //If not unlocked will buy the Fez
-                            unlockables.Buy(unlockables.ItemsDictionary["Fez"]);
+                            unlockables.Buy(unlockables.Fez);
                         }
+
                         //If it is unlocked will check to see if it is not equipped
-                        else if (unlockables.ItemsDictionary["Fez"].Equipped == false)
+                        if (unlockables.Fez.Equipped == false && unlockables.Fez.Unlocked == true)
                         {
                             //If not it will equip the item
-                            unlockables.Equip(unlockables.ItemsDictionary["Fez"]);
-                        }
-                        else
+                            unlockables.Equip(unlockables.Fez);
+                        }                       
+                        else if(unlockables.Fez.Equipped == true)
                         {
                             //If it's unlocked and equipped, it will unequip it
-                            unlockables.Unequip(unlockables.ItemsDictionary["Fez"]);
+                            unlockables.Unequip(unlockables.Fez);
                         }
                     }
 
+                    //Deals with the Cowboy hat
+                    if (cowboyButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
+                    {
+                        //Checks to see if the cowboy hat is not unlocked
+                        if (unlockables.Cowboy.Unlocked == false)
+                        {
+                            //If not unlocked will buy the Cowboy hat
+                            unlockables.Buy(unlockables.Cowboy);
+                        }
+
+                        //If it is unlocked will check to see if it is not equipped
+                        if (unlockables.Cowboy.Equipped == false && unlockables.Cowboy.Unlocked == true)
+                        {
+                            //If not it will equip the item
+                            unlockables.Equip(unlockables.Cowboy);
+                        }
+                        else if (unlockables.Cowboy.Equipped == true)
+                        {
+                            //If it's unlocked and equipped, it will unequip it
+                            unlockables.Unequip(unlockables.Cowboy);
+                        }
+                    }
+
+                    //Deals with the ushanka hat
+                    if (ushankaButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
+                    {
+                        //Checks to see if the ushanka is not unlocked
+                        if (unlockables.Ushanka.Unlocked == false)
+                        {
+                            //If not unlocked will buy the ushanka
+                            unlockables.Buy(unlockables.Ushanka);
+                        }
+
+                        //If it is unlocked will check to see if it is not equipped
+                        if (unlockables.Ushanka.Equipped == false && unlockables.Ushanka.Unlocked == true)
+                        {
+                            //If not it will equip the item
+                            unlockables.Equip(unlockables.Ushanka);
+                        }
+                        else if (unlockables.Ushanka.Equipped == true)
+                        {
+                            //If it's unlocked and equipped, it will unequip it
+                            unlockables.Unequip(unlockables.Ushanka);
+                        }
+                    }
+
+                    //Deals with the Beret
+                    if (beretButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
+                    {
+                        //Checks to see if the beret is not unlocked
+                        if (unlockables.Beret.Unlocked == false)
+                        {
+                            //If not unlocked will buy the beret
+                            unlockables.Buy(unlockables.Beret);
+                        }
+
+                        //If it is unlocked will check to see if it is not equipped
+                        if (unlockables.Beret.Equipped == false && unlockables.Beret.Unlocked == true)
+                        {
+                            //If not it will equip the item
+                            unlockables.Equip(unlockables.Beret);
+                        }
+                        else if (unlockables.Beret.Equipped == true)
+                        {
+                            //If it's unlocked and equipped, it will unequip it
+                            unlockables.Unequip(unlockables.Beret);
+                        }
+                    }
+
+                    //Deals with the sombrero hat
+                    if (sombreroButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
+                    {
+                        //Checks to see if the sombrero is not unlocked
+                        if (unlockables.Sombrero.Unlocked == false)
+                        {
+                            //If not unlocked will buy the sombrero
+                            unlockables.Buy(unlockables.Sombrero);
+                        }
+
+                        //If it is unlocked will check to see if it is not equipped
+                        if (unlockables.Sombrero.Equipped == false && unlockables.Sombrero.Unlocked == true)
+                        {
+                            //If not it will equip the item
+                            unlockables.Equip(unlockables.Sombrero);
+                        }
+                        else if (unlockables.Sombrero.Equipped == true)
+                        {
+                            //If it's unlocked and equipped, it will unequip it
+                            unlockables.Unequip(unlockables.Sombrero);
+                        }
+                    }
+
+                    //Deals with the default option
+                    if (defaultButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
+                    {
+                        //Makes the skin now Default
+                        unlockables.MakeDefault();
+                    }
+
+                    //Loops through all the unlockables and checks which is equipped
+                    for (int i = 0; i < unlockables.ItemsList.Count; i++)
+                    {
+                        if (unlockables.ItemsList[i].Equipped == true)
+                        {
+                            //Sets the new equipped texture as the current texture
+                            gameManager.EnemyManager.RangedTexture = unlockables.ItemsList[i].RangeTexture;
+                            gameManager.EnemyManager.RightEnemyWalk1 = unlockables.ItemsList[i].RightEnemyWalk1;
+                            gameManager.EnemyManager.RightEnemyWalk2 = unlockables.ItemsList[i].RightEnemyWalk2;
+                            gameManager.EnemyManager.RightEnemyWalk3 = unlockables.ItemsList[i].RightEnemyWalk3;
+                            gameManager.EnemyManager.LeftEnemyWalk1 = unlockables.ItemsList[i].LeftEnemyWalk1;
+                            gameManager.EnemyManager.LeftEnemyWalk2 = unlockables.ItemsList[i].LeftEnemyWalk2;
+                            gameManager.EnemyManager.LeftEnemyWalk3 = unlockables.ItemsList[i].LeftEnemyWalk3;
+                        }
+                        else
+                        {
+                            //If there are no equipped textures from the unlockables
+                            //Set the texture as the default
+                            gameManager.EnemyManager.RangedTexture = textureManager.RangedEnemyTexture;
+                            gameManager.EnemyManager.RightEnemyWalk1 = textureManager.RightEnemyWalk1;
+                            gameManager.EnemyManager.RightEnemyWalk2 = textureManager.RightEnemyWalk2;
+                            gameManager.EnemyManager.RightEnemyWalk3 = textureManager.RightEnemyWalk3;
+                            gameManager.EnemyManager.LeftEnemyWalk1 = textureManager.LeftEnemyWalk1;
+                            gameManager.EnemyManager.LeftEnemyWalk2 = textureManager.LeftEnemyWalk2;
+                            gameManager.EnemyManager.LeftEnemyWalk3 = textureManager.LeftEnemyWalk1;
+                        }
+                    }
                     break;
                 #endregion
 
