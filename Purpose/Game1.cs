@@ -1045,6 +1045,7 @@ namespace Purpose
                         {
                             gameManager.WaveNumber = WaveNumber.Four;
                             gameManager.GameState = GameState.NextWave;
+                            gameManager.PlatformVersion = PlatformVersion.Medium;
                             unlockables.UnlockPoints++;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Four)
@@ -1057,7 +1058,7 @@ namespace Purpose
                         {
                             gameManager.WaveNumber = WaveNumber.Six;
                             gameManager.GameState = GameState.NextWave;
-                            gameManager.PlatformVersion = PlatformVersion.Medium;
+                            gameManager.PlatformVersion = PlatformVersion.Hard;
                             unlockables.UnlockPoints++;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Six)
@@ -1071,27 +1072,28 @@ namespace Purpose
                         {
                             gameManager.WaveNumber = WaveNumber.Eight;
                             gameManager.GameState = GameState.NextWave;
+                            gameManager.PlatformVersion = PlatformVersion.Medium;
                             unlockables.UnlockPoints++;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Eight)
                         {
                             gameManager.WaveNumber = WaveNumber.Nine;
                             gameManager.GameState = GameState.NextWave;
-                            gameManager.PlatformVersion = PlatformVersion.Medium;
+                            gameManager.PlatformVersion = PlatformVersion.Hard;
                             unlockables.UnlockPoints++;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Nine)
                         {
                             gameManager.WaveNumber = WaveNumber.Ten;
                             gameManager.GameState = GameState.NextWave;
-                            gameManager.PlatformVersion = PlatformVersion.Easy;
+                            gameManager.PlatformVersion = PlatformVersion.Medium;
                             unlockables.UnlockPoints++;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Ten)
                         {
                             gameManager.WaveNumber = WaveNumber.Eleven;
                             gameManager.GameState = GameState.NextWave;
-                            gameManager.PlatformVersion = PlatformVersion.Medium;
+                            gameManager.PlatformVersion = PlatformVersion.Hard;
                             unlockables.UnlockPoints++;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Eleven)
@@ -1105,21 +1107,21 @@ namespace Purpose
                         {
                             gameManager.WaveNumber = WaveNumber.Thirteen;
                             gameManager.GameState = GameState.NextWave;
-                            gameManager.PlatformVersion = PlatformVersion.Medium;
+                            gameManager.PlatformVersion = PlatformVersion.Hard;
                             unlockables.UnlockPoints++;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Thirteen)
                         {
                             gameManager.WaveNumber = WaveNumber.Fourteen;
                             gameManager.GameState = GameState.NextWave;
-                            gameManager.PlatformVersion = PlatformVersion.Easy;
+                            gameManager.PlatformVersion = PlatformVersion.Medium;
                             unlockables.UnlockPoints++;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Fourteen)
                         {
                             gameManager.WaveNumber = WaveNumber.Fifteen;
                             gameManager.GameState = GameState.NextWave;
-                            gameManager.PlatformVersion = PlatformVersion.Medium;
+                            gameManager.PlatformVersion = PlatformVersion.Hard;
                             unlockables.UnlockPoints++;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Fifteen)
