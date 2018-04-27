@@ -18,7 +18,8 @@ namespace Purpose
         private int cost; //Accounts for the cost of the unlockable
         private Texture2D texture; //Holds the texture for the item
         private TextureManager textureManager;
-        private List<Unlockables> items; //Holds all unlockables
+        private Dictionary<string, Unlockables> itemsDictionary; //Holds all unlockables makes easier to search by name
+        private List<Unlockables> itemsList;
 
         //Items to be unlocked
         private Unlockables fez;
@@ -42,10 +43,16 @@ namespace Purpose
             set { equipped = value; }
         }
 
-        public List<Unlockables> Items
+        public Dictionary<string, Unlockables> ItemsDictionary
         {
-            get { return items; }
-            set { items = value; }
+            get { return itemsDictionary; }
+            set { itemsDictionary = value; }
+        }
+
+        public List<Unlockables> ItemsList
+        {
+            get { return itemsList; }
+            set { itemsList = value; }
         }
         
         public Texture2D Texture
@@ -67,10 +74,12 @@ namespace Purpose
         {
             unlockPoints = 0;
             this.textureManager = textureManager;
-            items = new List<Unlockables>();
+            itemsDictionary = new Dictionary<string, Unlockables>();
+            itemsList = new List<Unlockables>();
 
             fez = new Unlockables(5, textureManager.FezRangedEnemy);
-            items.Add(fez);
+            itemsDictionary.Add("Fez", fez);
+            itemsList.Add(fez);
         }
 
         //Parametrized Constructor
@@ -107,9 +116,9 @@ namespace Purpose
             {
                 //Loops through all the items
                 //Sets all unlockables equip status as false
-                for(int i = 0; i < items.Count; i++)
+                for(int i = 0; i < itemsList.Count; i++)
                 {
-                    items[i].Equipped = false;
+                    itemsList[i].Equipped = false;
                 }
 
                 item.Equipped = true; //Sets the item wanted to be equipped as true 
@@ -117,7 +126,7 @@ namespace Purpose
         }
 
         //MEthod used to unequip items
-        public void UnEquip(Unlockables item)
+        public void Unequip(Unlockables item)
         {
             //Checks to see if its unlocked
             if(item.Unlocked == true)

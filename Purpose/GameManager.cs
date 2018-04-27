@@ -28,6 +28,7 @@ namespace Purpose
         private PlatformVersion platformVersion;
         private EnemyManager enemyManager;
         private SoundManager soundManager;
+        private GameState prevGameState;
 
         //private List<Wave> waves;
         private List<Wave> editedWaves;
@@ -58,7 +59,11 @@ namespace Purpose
         public GameState GameState
         {
             get { return gameState; }
-            set { gameState = value; }
+            set
+            {
+                prevGameState = gameState;
+                gameState = value;
+            }
         }
 
         public Texture2D Background
@@ -92,7 +97,6 @@ namespace Purpose
         }
 
         public WaveNumber WaveNumber { get { return waveNumber; } set { waveNumber = value; } }
-        #endregion
 
         public PlatformVersion PlatformVersion
         {
@@ -104,6 +108,12 @@ namespace Purpose
         {
             get { return enemyManager; }
         }
+
+        public GameState PrevGameState
+        {
+            get { return prevGameState; }
+        }
+        #endregion
 
         //constructor
         public GameManager(Player player, List<Platform> platforms, List<Platform> leftWalls, List<Platform> rightWalls, GraphicsDevice graphicsDevice,
@@ -126,6 +136,7 @@ namespace Purpose
 
             //a boolean representing if the player is on the platform
             jumping = false;
+            prevGameState = GameState.Menu;
         }
 
         //methods
@@ -208,18 +219,19 @@ namespace Purpose
             }
 
             // Wall collisions
-            foreach (Platform w in leftWalls)
-            {
-                if (player.Position.Intersects(w.Position))
-                {
-                    player.X = w.Position.X + w.Position.Width;
-                }
-            }
             foreach (Platform w in rightWalls)
             {
                 if (player.Position.Intersects(w.Position))
                 {
                     player.X = w.Position.X - player.Position.Width;
+                }
+            }
+
+            foreach (Platform w in leftWalls)
+            {
+                if (player.Position.Intersects(w.Position))
+                {
+                    player.X = w.Position.X + w.Position.Width;
                 }
             }
 #endregion
