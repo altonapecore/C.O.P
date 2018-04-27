@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using MonoGame.Extended;
 using MonoGame.Extended.ViewportAdapters;
+using Microsoft.Xna.Framework.Media;
 
 namespace Purpose
 {
@@ -131,7 +132,6 @@ namespace Purpose
         private Rectangle staminaBar;
         private Rectangle staminaBack;
         private Rectangle healthBack;
-        private SpriteFont comicSans24;
         private SpriteFont agency30;
         private SpriteFont agency20;
         private Random rng;
@@ -252,7 +252,7 @@ namespace Purpose
             tempTexture = Content.Load<Texture2D>("pineapple2");
 
             //Loading in the sound effects
-            soundManager = new SoundManager(Content.Load<SoundEffect>("Sound/Grunts"), Content.Load<SoundEffect>("Sound/PingPongPaddle"), Content.Load<SoundEffect>("Sound/PlayerScream"));
+            soundManager = new SoundManager(Content.Load<SoundEffect>("Sound/Grunts"), Content.Load<SoundEffect>("Sound/Punch"), Content.Load<SoundEffect>("Sound/PlayerScream"), Content.Load<Song>("Sound/Song"));
 
             textureManager = new TextureManager(Content.Load<Texture2D>("Player/LeftStandingSprite"), Content.Load<Texture2D>("Player/RightStandingSprite"),
                 Content.Load<Texture2D>("Player/LeftMiddleRunningSprite"), Content.Load<Texture2D>("Player/RightMiddleRunningSprite"),
@@ -332,7 +332,7 @@ namespace Purpose
 
             // Makes player, gameManager object
             background = textureManager.MetalBack;
-            player = new Player("Dude", new Rectangle(50, platformManager.BottomPlatforms[1].Y - 352, 139, 352), textureManager, gameTime, soundManager);
+            player = new Player("Dude", new Rectangle(50, GraphicsDevice.Viewport.Height - 452, 139, 352), textureManager, gameTime, soundManager);
             gameManager = new GameManager(player, platformManager.TotalPlatforms, platformManager.LeftWalls, platformManager.RightWalls, GraphicsDevice, 
                 textureManager, soundManager);
             //wave = new Wave(gameManager, game1 = new Game1());
@@ -364,6 +364,8 @@ namespace Purpose
             presetWaves = new PresetWaves(gameManager);
             //Creates all the waves
             presetWaves.CreateWaves();
+
+            MediaPlayer.Play(soundManager.Song);
         }
         
         /// <summary>
