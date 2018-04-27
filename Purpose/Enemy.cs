@@ -233,13 +233,13 @@ namespace Purpose
                 if (ranged && !hasBullet && isFacingLeft)
                 {
                     hasBullet = true;
-                    bullet = new Rectangle(position.X, position.Y + 55, 33, 33);
+                    bullet = new Rectangle(position.X, position.Y + 85, 33, 33);
                     rangedAttackTimer = 0;
                 }
                 else if (ranged && !hasBullet && isFacingLeft == false)
                 {
                     hasBullet = true;
-                    bullet = new Rectangle(position.X + 147, position.Y + 55, 33, 33);
+                    bullet = new Rectangle(position.X + 147, position.Y + 85, 33, 33);
                     rangedAttackTimer = 0;
                 }
             }
