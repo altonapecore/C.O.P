@@ -89,6 +89,47 @@ namespace Purpose
                         totalPlatforms.Add(new Platform(new Rectangle(i, graphicsDevice.Viewport.Height - 500, 100, 50), textureManager.NotBasePlatform));
                     }
 
+                    // Walls
+                    for (int i = -1500; i <= graphicsDevice.Viewport.Height; i += 100)
+                    {
+                        leftWalls.Add(new Platform(new Rectangle(-3000, i, 100, 100), textureManager.BasePlatform));
+                    }
+                    for (int i = -1500; i <= graphicsDevice.Viewport.Height; i += 100)
+                    {
+                        rightWalls.Add(new Platform(new Rectangle(3000, i, 100, 100), textureManager.BasePlatform));
+                    }
+                    break;
+
+                case PlatformVersion.Medium:
+                    // Base platforms
+                    for (int i = 0; i > -3000; i -= 100)
+                    {
+                        totalPlatforms.Add(new Platform(new Rectangle(i, graphicsDevice.Viewport.Height - 100, 100, 100), textureManager.BasePlatform));
+                    }
+                    for (int i = 0; i < 3000; i += 100)
+                    {
+                        totalPlatforms.Add(new Platform(new Rectangle(i, graphicsDevice.Viewport.Height - 100, 100, 100), textureManager.BasePlatform));
+                    }
+                    // First level platforms
+                    for (int i = -1250; i > -3000; i -= 100)
+                    {
+                        totalPlatforms.Add(new Platform(new Rectangle(i, graphicsDevice.Viewport.Height - 300, 100, 50), textureManager.NotBasePlatform));
+                    }
+                    for (int i = 1250; i < 3000; i += 100)
+                    {
+                        totalPlatforms.Add(new Platform(new Rectangle(i, graphicsDevice.Viewport.Height - 300, 100, 50), textureManager.NotBasePlatform));
+                    }
+
+                    // Second level platforms
+                    for (int i = -175; i > -1100; i -= 100)
+                    {
+                        totalPlatforms.Add(new Platform(new Rectangle(i, graphicsDevice.Viewport.Height - 500, 100, 50), textureManager.NotBasePlatform));
+                    }
+                    for (int i = 175; i < 1100; i += 100)
+                    {
+                        totalPlatforms.Add(new Platform(new Rectangle(i, graphicsDevice.Viewport.Height - 500, 100, 50), textureManager.NotBasePlatform));
+                    }
+
                     // Third level platforms
                     for (int i = -500; i > -2500; i -= 100)
                     {
@@ -129,7 +170,7 @@ namespace Purpose
                     }
                     break;
 
-                case PlatformVersion.Medium:
+                case PlatformVersion.Hard:
                     // Base platforms
                     for (int i = 0; i > -2000; i -= 100)
                     {
@@ -222,7 +263,7 @@ namespace Purpose
                     }
                     break;
 
-                case PlatformVersion.Hard:
+                case PlatformVersion.Mean:
                     // Base platforms
                     for (int i = 0; i > -3000; i -= 100)
                     {
@@ -381,48 +422,7 @@ namespace Purpose
                         rightWalls.Add(new Platform(new Rectangle(3000, i, 100, 100), textureManager.BasePlatform));
                     }
                     break;
-
-                case PlatformVersion.Mean:
-                    // Base platforms
-                    for (int i = 0; i > -3000; i -= 100)
-                    {
-                        totalPlatforms.Add(new Platform(new Rectangle(i, graphicsDevice.Viewport.Height - 100, 100, 100), textureManager.BasePlatform));
-                    }
-                    for (int i = 0; i < 3000; i += 100)
-                    {
-                        totalPlatforms.Add(new Platform(new Rectangle(i, graphicsDevice.Viewport.Height - 100, 100, 100), textureManager.BasePlatform));
-                    }
-                    // First level platforms
-                    for (int i = -1250; i > -3000; i -= 100)
-                    {
-                        totalPlatforms.Add(new Platform(new Rectangle(i, graphicsDevice.Viewport.Height - 300, 100, 50), textureManager.NotBasePlatform));
-                    }
-                    for (int i = 1250; i < 3000; i += 100)
-                    {
-                        totalPlatforms.Add(new Platform(new Rectangle(i, graphicsDevice.Viewport.Height - 300, 100, 50), textureManager.NotBasePlatform));
-                    }
-
-                    // Second level platforms
-                    for (int i = -175; i > -1100; i -= 100)
-                    {
-                        totalPlatforms.Add(new Platform(new Rectangle(i, graphicsDevice.Viewport.Height - 500, 100, 50), textureManager.NotBasePlatform));
-                    }
-                    for (int i = 175; i < 1100; i += 100)
-                    {
-                        totalPlatforms.Add(new Platform(new Rectangle(i, graphicsDevice.Viewport.Height - 500, 100, 50), textureManager.NotBasePlatform));
-                    }
-
-                    // Walls
-                    for (int i = -1500; i <= graphicsDevice.Viewport.Height; i += 100)
-                    {
-                        leftWalls.Add(new Platform(new Rectangle(-3000, i, 100, 100), textureManager.BasePlatform));
-                    }
-                    for (int i = -1500; i <= graphicsDevice.Viewport.Height; i += 100)
-                    {
-                        rightWalls.Add(new Platform(new Rectangle(3000, i, 100, 100), textureManager.BasePlatform));
-                    }
-                    break;
-
+                
                 case PlatformVersion.Life:
                     // Base platforms
                     for (int i = 0; i > -1500; i -= 100)
@@ -466,13 +466,13 @@ namespace Purpose
                     // Fourth level platforms
                     for (int i = 600; i < 1100; i += 100)
                     {
-                        totalPlatforms.Add(new Platform(new Rectangle(i, graphicsDevice.Viewport.Height - 800, 100, 50), textureManager.NotBasePlatform));
+                        totalPlatforms.Add(new Platform(new Rectangle(i, graphicsDevice.Viewport.Height - 1100, 100, 50), textureManager.NotBasePlatform));
                     }
 
                     // Fifth level platforms
                     for (int i = 600; i < 1100; i += 100)
                     {
-                        totalPlatforms.Add(new Platform(new Rectangle(i, graphicsDevice.Viewport.Height - 300, 100, 50), textureManager.NotBasePlatform));
+                        totalPlatforms.Add(new Platform(new Rectangle(i, graphicsDevice.Viewport.Height - 600, 100, 50), textureManager.NotBasePlatform));
                     }
 
                     // Misc platforms
@@ -553,7 +553,6 @@ namespace Purpose
                         leftWalls.Add(new Platform(new Rectangle(-1200, i, 100, 100), textureManager.BasePlatform));
                     }
                     break;
-
             }
         }
         #endregion

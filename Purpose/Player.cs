@@ -150,7 +150,7 @@ namespace Purpose
             this.gameTime += (int)gameTime.ElapsedGameTime.TotalMilliseconds;
             if (this.gameTime >= 25)
             {
-                if (position.Intersects(enemy.Position))
+                if (new Rectangle(X, Y + 150, position.Width, 75).Intersects(enemy.Position))
                 {
                     this.gameTime = 0;
                     combatStatus = true;
