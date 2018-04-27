@@ -142,6 +142,7 @@ namespace Purpose
 
         //Field for the Unlockables
         private Unlockables unlockables;
+        private UnlockablesReadWrite savedUnlockables;
 
 
         private bool editedGame;
@@ -352,6 +353,23 @@ namespace Purpose
             MediaPlayer.Play(soundManager.Song);
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Volume = 25;
+
+            savedUnlockables = new UnlockablesReadWrite();
+            List<bool[]> unlockedEquipped = savedUnlockables.Load();
+
+            for (int i = 0; i < unlockables.ItemsList.Count; i++)
+            {
+                if (unlockedEquipped[i][0])
+                {
+                    unlockables.ItemsList[i].Unlocked = true;
+                }
+                
+                if (unlockedEquipped[i][1])
+                {
+                    unlockables.ItemsList[i].Equipped = true;
+                }
+            }
+            unlockables.UnlockPoints = savedUnlockables.UnlockPoints;
         }
         
         /// <summary>
@@ -1333,10 +1351,12 @@ namespace Purpose
                         if (gameManager.PrevGameState == GameState.Menu)
                         {
                             gameManager.GameState = GameState.Menu;
+                            savedUnlockables.Save(unlockables.UnlockPoints, unlockables.ItemsList);
                         }
                         else if (gameManager.PrevGameState == GameState.Pause)
                         {
                             gameManager.GameState = GameState.Pause;
+                            savedUnlockables.Save(unlockables.UnlockPoints, unlockables.ItemsList);
                         }
                     }
 
