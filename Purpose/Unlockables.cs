@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
+using System.IO;
 
 namespace Purpose
 {
@@ -33,6 +34,9 @@ namespace Purpose
         private Unlockables beret;
         private Unlockables cowboy;
         private Unlockables sombrero;
+
+        //stream Writer to save Unlockable info
+        private StreamWriter output;
 
         //Properties
         public int UnlockPoints
@@ -127,29 +131,31 @@ namespace Purpose
             itemsDictionary = new Dictionary<string, Unlockables>();
             itemsList = new List<Unlockables>();
 
+            output = new StreamWriter("unlockablesave.txt");
+
             //Gives the fez unlockable all its textures and cost
             //And adds it to the dictionary and list
-            fez = new Unlockables(0, textureManager.FezRangedEnemy, textureManager.RightFezMelee1, textureManager.RightFezMelee2, textureManager.RightFezMelee3,
+            fez = new Unlockables(10, textureManager.FezRangedEnemy, textureManager.RightFezMelee1, textureManager.RightFezMelee2, textureManager.RightFezMelee3,
                 textureManager.LeftFezMelee1, textureManager.LeftFezMelee2, textureManager.LeftFezMelee3);
             itemsDictionary.Add("Fez", fez);
             itemsList.Add(fez);
 
-            ushanka = new Unlockables(0, textureManager.UshankaRangedEnemy, textureManager.RightUshankaMelee1, textureManager.RightUshankaMelee2, textureManager.RightUshankaMelee3,
+            ushanka = new Unlockables(10, textureManager.UshankaRangedEnemy, textureManager.RightUshankaMelee1, textureManager.RightUshankaMelee2, textureManager.RightUshankaMelee3,
                  textureManager.LeftUshankaMelee1, textureManager.LeftUshankaMelee2, textureManager.LeftUshankaMelee3);
             itemsDictionary.Add("Ushanka", ushanka);
             itemsList.Add(ushanka);
 
-            beret = new Unlockables(0, textureManager.BeretRangedEnemy, textureManager.RightBeretMelee1, textureManager.RightBeretMelee2, textureManager.RightBeretMelee3,
+            beret = new Unlockables(10, textureManager.BeretRangedEnemy, textureManager.RightBeretMelee1, textureManager.RightBeretMelee2, textureManager.RightBeretMelee3,
                  textureManager.LeftBeretMelee1, textureManager.LeftBeretMelee2, textureManager.LeftBeretMelee3);
             itemsDictionary.Add("Beret", beret);
             itemsList.Add(beret);
 
-            cowboy = new Unlockables(0, textureManager.CowboyRangedEnemy, textureManager.RightCowboyMelee1, textureManager.RightCowboyMelee2, textureManager.RightCowboyMelee3,
+            cowboy = new Unlockables(10, textureManager.CowboyRangedEnemy, textureManager.RightCowboyMelee1, textureManager.RightCowboyMelee2, textureManager.RightCowboyMelee3,
             textureManager.LeftCowboyMelee1, textureManager.LeftCowboyMelee2, textureManager.LeftCowboyMelee3);
             itemsDictionary.Add("Cowboy", cowboy);
             itemsList.Add(cowboy);
 
-            sombrero = new Unlockables(0, textureManager.SombreroRangedEnemy, textureManager.RightSombreroMelee1, textureManager.RightSombreroMelee2, textureManager.RightSombreroMelee3,
+            sombrero = new Unlockables(10, textureManager.SombreroRangedEnemy, textureManager.RightSombreroMelee1, textureManager.RightSombreroMelee2, textureManager.RightSombreroMelee3,
             textureManager.LeftSombreroMelee1, textureManager.LeftSombreroMelee2, textureManager.LeftSombreroMelee3);
             itemsDictionary.Add("Sombrero", sombrero);
             itemsList.Add(sombrero);
@@ -223,5 +229,65 @@ namespace Purpose
                 ItemsList[i].Equipped = false;
             }
         }
-     }
+
+        //Method to save all the unlockable info onto a text file
+        public void Save()
+        {
+            //Order goes
+            //User's Unlock Points
+            //Items
+            //Name, Unlocked, Equipped
+            //True - 1 //// False - 0
+
+            //saves points
+            output.WriteLine(UnlockPoints);
+
+            //Saves items and writes them 
+            output.Write("Fez," + SaveUnlock(Fez) + "," + SaveEquip(Fez));
+            output.Write("Cowboy," + SaveUnlock(Fez) + "," + SaveEquip(Fez));
+            output.Write("Ushanka," + SaveUnlock(Fez) + "," + SaveEquip(Fez));
+            output.Write("Beret," + SaveUnlock(Fez) + "," + SaveEquip(Fez));
+            output.Write("Sombrero," + SaveUnlock(Fez) + "," + SaveEquip(Fez));
+            
+            //Makes sure output is not null
+            if(output != null)
+            {
+                //closes the writer
+                output.Close();
+            }
+
+        }
+
+
+        //Helper methods for the save
+        private int SaveUnlock(Unlockables item)
+        {
+            //checks if item is unlocked
+            if(item.Unlocked == true)
+            {
+                //If it is returns 1
+                return 1;
+            }
+            else
+            {
+                //If it isn't returns 0
+                return 0;
+            }
+        }
+
+        private int SaveEquip(Unlockables item)
+        {
+            //checks if item is Equipped
+            if (item.Equipped == true)
+            {
+                //If it is returns 1
+                return 1;
+            }
+            else
+            {
+                //If it isn't returns 0
+                return 0;
+            }
+        }
+    }
 }
