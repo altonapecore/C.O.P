@@ -364,6 +364,8 @@ namespace Purpose
             presetWaves.CreateWaves();
 
             MediaPlayer.Play(soundManager.Song);
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Volume = 25;
         }
         
         /// <summary>
