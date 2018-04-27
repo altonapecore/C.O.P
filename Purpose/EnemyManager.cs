@@ -745,7 +745,7 @@ namespace Purpose
         /// <summary>
         /// Allows the enemy to move
         /// </summary>
-        public void EnemyMove(GameTime gameTime, List<Platform> platforms, Player player)
+        public void EnemyMove(GameTime gameTime, List<Platform> platforms, Player player, List<Platform> leftWalls, List<Platform> rightWalls)
         {
             // On platform and gravity stuff
 
@@ -770,6 +770,23 @@ namespace Purpose
                 {
                     e.Y += 5;
                 }
+
+                // Wall collisions
+                foreach (Platform w in leftWalls)
+                {
+                    if (e.Position.Intersects(w.Position))
+                    {
+                        e.X = w.Position.X + w.Position.Width;
+                    }
+                }
+
+                foreach (Platform w in rightWalls)
+                {
+                    if (e.Position.Intersects(w.Position))
+                    {
+                        e.X = w.Position.X - e.Position.Width;
+                    }
+                }
             }
 
             for (int i = 0; i < enemies.Count; i++)
@@ -786,7 +803,7 @@ namespace Purpose
                 }
 
                 // If left of player, move right and update frame and texture
-                if (enemies[i].X > player.X - 1250 && enemies[i].X < player.X - 15 && enemies[i].Ranged == false 
+                if (enemies[i].X > player.X - 650 && enemies[i].X < player.X - 15 && enemies[i].Ranged == false 
                     && enemies[i].Y >= player.Y && enemies[i].Y - 200 <= player.Y)
                 {
                     enemies[i].IsFacingLeft = false;
@@ -817,7 +834,7 @@ namespace Purpose
                 }
 
                 // If right of player, move left and update frame and texture
-                else if (enemies[i].X < player.X + 1250 && enemies[i].X > player.X + 15 && enemies[i].Ranged == false 
+                else if (enemies[i].X < player.X + 650 && enemies[i].X > player.X + 15 && enemies[i].Ranged == false 
                     && enemies[i].Y >= player.Y && enemies[i].Y - 200 <= player.Y)
                 {
                     enemies[i].IsFacingLeft = true;
@@ -867,7 +884,7 @@ namespace Purpose
                 }
 
                 // If right of player, move left and update frame and texture
-                else if (enemies[i].X < player.X + 1250 && enemies[i].X > player.X + 15 && enemies[i].Ranged
+                else if (enemies[i].X < player.X + 1250 && enemies[i].X > player.X + 555 && enemies[i].Ranged
                     && enemies[i].Y >= player.Y && enemies[i].Y - 200 <= player.Y)
                 {
                     enemies[i].IsFacingLeft = true;

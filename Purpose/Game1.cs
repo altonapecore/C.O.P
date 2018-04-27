@@ -1002,7 +1002,7 @@ namespace Purpose
                     ms = Mouse.GetState();
                     gameManager.PlayerMove(kbState, previouskbState, ms, previousMs, camera, gameTime);
 
-                    gameManager.EnemyManager.EnemyMove(gameTime, gameManager.Platforms, gameManager.Player);
+                    gameManager.EnemyManager.EnemyMove(gameTime, gameManager.Platforms, gameManager.Player, gameManager.LeftWalls, gameManager.RightWalls);
                     if (kbState.IsKeyDown(Keys.P))
                     {
                         gameManager.GameState = GameState.Pause;
@@ -1127,7 +1127,7 @@ namespace Purpose
                     ms = Mouse.GetState();
                     gameManager.PlayerMove(kbState, previouskbState, ms, previousMs, camera, gameTime);
 
-                    gameManager.EnemyManager.EnemyMove(gameTime, gameManager.Platforms, gameManager.Player);
+                    gameManager.EnemyManager.EnemyMove(gameTime, gameManager.Platforms, gameManager.Player, gameManager.LeftWalls, gameManager.RightWalls);
                     if (kbState.IsKeyDown(Keys.P))
                     {
                         gameManager.GameState = GameState.Pause;
@@ -1320,7 +1320,7 @@ namespace Purpose
 
                 #region Win State
                 case GameState.YouWin:
-                    camera.Zoom = 0.5f;
+                    camera.Zoom = 1.0f;
                     camera.Position = new Vector2(0, 0);
                     gameManager.WaveNumber = WaveNumber.One;
 
