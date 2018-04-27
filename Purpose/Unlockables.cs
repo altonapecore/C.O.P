@@ -16,13 +16,23 @@ namespace Purpose
         private bool unlocked; //Tells whther or not the unlockable has been unlocked
         private bool equipped; //Tells whether it is unlocked or not
         private int cost; //Accounts for the cost of the unlockable
-        private Texture2D texture; //Holds the texture for the item
+        private Texture2D rangeTexture; //Holds the texture for the item
+        private Texture2D rightEnemyWalk1;
+        private Texture2D rightEnemyWalk2;
+        private Texture2D rightEnemyWalk3;
+        private Texture2D leftEnemyWalk1;
+        private Texture2D leftEnemyWalk2;
+        private Texture2D leftEnemyWalk3;
         private TextureManager textureManager;
         private Dictionary<string, Unlockables> itemsDictionary; //Holds all unlockables makes easier to search by name
         private List<Unlockables> itemsList;
 
         //Items to be unlocked
         private Unlockables fez;
+        private Unlockables ushanka;
+        private Unlockables beret;
+        private Unlockables cowboy;
+        private Unlockables sombrero;
 
         //Properties
         public int UnlockPoints
@@ -55,16 +65,56 @@ namespace Purpose
             set { itemsList = value; }
         }
         
-        public Texture2D Texture
+        public Texture2D RangeTexture
         {
-            get { return texture; }
-            set { texture = value; }
+            get { return rangeTexture; }
+            set { rangeTexture = value; }
         }
+
+        public Texture2D RightEnemyWalk1
+        {
+            get { return rightEnemyWalk1; }
+            set { rightEnemyWalk1 = value; }
+        }
+
+        public Texture2D RightEnemyWalk2
+        {
+            get { return rightEnemyWalk2; }
+            set { rightEnemyWalk2 = value; }
+        }
+
+        public Texture2D RightEnemyWalk3
+        {
+            get { return rightEnemyWalk3; }
+            set { rightEnemyWalk3 = value; }
+        }
+
+        public Texture2D LeftEnemyWalk1
+        {
+            get { return leftEnemyWalk1; }
+            set { leftEnemyWalk1 = value; }
+        }
+
+        public Texture2D LeftEnemyWalk2
+        {
+            get { return leftEnemyWalk2; }
+            set { leftEnemyWalk2 = value; }
+        }
+
+        public Texture2D LeftEnemyWalk3
+        {
+            get { return leftEnemyWalk3; }
+            set { leftEnemyWalk3 = value; }
+        }
+
+
         public TextureManager TextureManager { get { return textureManager; } }
         public Unlockables Fez { get { return fez; } }
+        public Unlockables Ushanka { get { return ushanka; } }
+        public Unlockables Beret { get { return beret; } }
+        public Unlockables Cowboy { get { return cowboy; } }
+        public Unlockables Sombrero { get { return sombrero; } }
         public int Cost { get { return cost; } }
-
-
         
         //Constructor
         //Starts the points at 0
@@ -77,19 +127,49 @@ namespace Purpose
             itemsDictionary = new Dictionary<string, Unlockables>();
             itemsList = new List<Unlockables>();
 
-            fez = new Unlockables(5, textureManager.FezRangedEnemy);
+            //Gives the fez unlockable all its textures and cost
+            //And adds it to the dictionary and list
+            fez = new Unlockables(2, textureManager.FezRangedEnemy, textureManager.RightFezMelee1, textureManager.RightFezMelee2, textureManager.RightFezMelee3,
+                textureManager.LeftFezMelee1, textureManager.LeftFezMelee2, textureManager.LeftFezMelee3);
             itemsDictionary.Add("Fez", fez);
             itemsList.Add(fez);
+
+            ushanka = new Unlockables(2, textureManager.UshankaRangedEnemy, textureManager.RightUshankaMelee1, textureManager.RightUshankaMelee2, textureManager.RightUshankaMelee3,
+                 textureManager.LeftUshankaMelee1, textureManager.LeftUshankaMelee2, textureManager.LeftUshankaMelee3);
+            itemsDictionary.Add("Ushanka", ushanka);
+            itemsList.Add(ushanka);
+
+            beret = new Unlockables(2, textureManager.BeretRangedEnemy, textureManager.RightBeretMelee1, textureManager.RightBeretMelee2, textureManager.RightBeretMelee3,
+                 textureManager.LeftBeretMelee1, textureManager.LeftBeretMelee2, textureManager.LeftBeretMelee3);
+            itemsDictionary.Add("Beret", beret);
+            itemsList.Add(beret);
+
+            cowboy = new Unlockables(2, textureManager.CowboyRangedEnemy, textureManager.RightCowboyMelee1, textureManager.RightCowboyMelee2, textureManager.RightCowboyMelee3,
+            textureManager.LeftCowboyMelee1, textureManager.LeftCowboyMelee2, textureManager.LeftCowboyMelee3);
+            itemsDictionary.Add("Cowboy", cowboy);
+            itemsList.Add(cowboy);
+
+            sombrero = new Unlockables(2, textureManager.SombreroRangedEnemy, textureManager.RightSombreroMelee1, textureManager.RightSombreroMelee2, textureManager.RightSombreroMelee3,
+            textureManager.LeftSombreroMelee1, textureManager.LeftSombreroMelee2, textureManager.LeftSombreroMelee3);
+            itemsDictionary.Add("Sombrero", sombrero);
+            itemsList.Add(sombrero);
         }
 
         //Parametrized Constructor
         //Used for each indiviual item 
-        public Unlockables(int cost, Texture2D texture)
+        public Unlockables(int cost, Texture2D rangeTexture, Texture2D rightEnemyWalk1, Texture2D rightEnemyWalk2, Texture2D rightEnemyWalk3, Texture2D leftEnemyWalk1,
+            Texture2D leftEnemyWalk2, Texture2D leftEnemyWalk3)
         {
             this.cost = cost;
             equipped = false;
             unlocked = false;
-            this.texture = texture;
+            this.rangeTexture = rangeTexture;
+            this.rightEnemyWalk1 = rightEnemyWalk1;
+            this.rightEnemyWalk2 = rightEnemyWalk2;
+            this.rightEnemyWalk3 = rightEnemyWalk3;
+            this.leftEnemyWalk1 = leftEnemyWalk1;
+            this.leftEnemyWalk2 = leftEnemyWalk2;
+            this.leftEnemyWalk3 = leftEnemyWalk3;
         }
 
         //Mehtod to buy an item
