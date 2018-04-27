@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using MonoGame.Extended;
 using MonoGame.Extended.ViewportAdapters;
+using Microsoft.Xna.Framework.Media;
 
 namespace Purpose
 {
@@ -131,7 +132,6 @@ namespace Purpose
         private Rectangle staminaBar;
         private Rectangle staminaBack;
         private Rectangle healthBack;
-        private SpriteFont comicSans24;
         private SpriteFont agency30;
         private SpriteFont agency20;
         private Random rng;
@@ -249,9 +249,10 @@ namespace Purpose
 
             //Loads in the current texture which can be changed with unlockables
             currentTexture = Content.Load<Texture2D>("pineapple2");
+            tempTexture = Content.Load<Texture2D>("pineapple2");
 
             //Loading in the sound effects
-            soundManager = new SoundManager(Content.Load<SoundEffect>("Sound/Grunts"), Content.Load<SoundEffect>("Sound/PingPongPaddle"), Content.Load<SoundEffect>("Sound/PlayerScream"));
+            soundManager = new SoundManager(Content.Load<SoundEffect>("Sound/Grunts"), Content.Load<SoundEffect>("Sound/Punch"), Content.Load<SoundEffect>("Sound/PlayerScream"), Content.Load<Song>("Sound/Song"));
 
             textureManager = new TextureManager(Content.Load<Texture2D>("Player/LeftStandingSprite"), Content.Load<Texture2D>("Player/RightStandingSprite"),
                 Content.Load<Texture2D>("Player/LeftMiddleRunningSprite"), Content.Load<Texture2D>("Player/RightMiddleRunningSprite"),
@@ -344,12 +345,13 @@ namespace Purpose
                 if (unlockables.ItemsList[i].Equipped == true)
                 {
                     //Sets the tempTexture as the current texture
-                    tempTexture = unlockables.ItemsList[i].Texture;
-                }
-                else
-                {
-                    //If there are no equipped skins goes with the default
-                    tempTexture = currentTexture;
+                    gameManager.EnemyManager.RangedTexture = unlockables.ItemsList[i].RangeTexture;
+                    gameManager.EnemyManager.RightEnemyWalk1 = unlockables.ItemsList[i].RightEnemyWalk1;
+                    gameManager.EnemyManager.RightEnemyWalk2 = unlockables.ItemsList[i].RightEnemyWalk2;
+                    gameManager.EnemyManager.RightEnemyWalk3 = unlockables.ItemsList[i].RightEnemyWalk3;
+                    gameManager.EnemyManager.LeftEnemyWalk1 = unlockables.ItemsList[i].LeftEnemyWalk1;
+                    gameManager.EnemyManager.LeftEnemyWalk2 = unlockables.ItemsList[i].LeftEnemyWalk2;
+                    gameManager.EnemyManager.LeftEnemyWalk3 = unlockables.ItemsList[i].LeftEnemyWalk3;
                 }
             }
 
@@ -362,6 +364,8 @@ namespace Purpose
             presetWaves = new PresetWaves(gameManager);
             //Creates all the waves
             presetWaves.CreateWaves();
+
+            MediaPlayer.Play(soundManager.Song);
         }
         
         /// <summary>
@@ -813,6 +817,7 @@ namespace Purpose
                     }
                     else
                     {
+                        
                         spriteBatch.Draw(sombreroButton.Texture, sombreroButton.Position, Color.White);
                     }
 
@@ -831,7 +836,14 @@ namespace Purpose
                     }
                     else
                     {
-                        spriteBatch.Draw(fezButton.Texture, fezButton.Position, Color.White);
+                        if(unlockables.ItemsDictionary["Fez"].Equipped == true)
+                        {
+                            spriteBatch.Draw(fezButton.Texture, fezButton.Position, Color.Green);
+                        }
+                        else
+                        {
+                            spriteBatch.Draw(fezButton.Texture, fezButton.Position, Color.White);
+                        }
                     }
 
                     if (cowboyButton.Intersects(ms.Position))
@@ -950,11 +962,11 @@ namespace Purpose
                     //Reset Game
                     if (editedGame)
                     {
-                        gameManager.ResetOnPlayerDeathEdited(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture, platformManager);
+                        gameManager.ResetOnPlayerDeathEdited(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, platformManager);
                     }
                     else
                     {
-                        gameManager.ResetOnPlayerDeathPreset(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture, platformManager);
+                        gameManager.ResetOnPlayerDeathPreset(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, platformManager);
                     }
                     break;
                 #endregion
@@ -1021,84 +1033,99 @@ namespace Purpose
                         {
                             gameManager.WaveNumber = WaveNumber.Two;
                             gameManager.GameState = GameState.NextWave;
+                            unlockables.UnlockPoints++;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Two)
                         {
                             gameManager.WaveNumber = WaveNumber.Three;
                             gameManager.GameState = GameState.NextWave;
+                            unlockables.UnlockPoints++;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Three)
                         {
                             gameManager.WaveNumber = WaveNumber.Four;
                             gameManager.GameState = GameState.NextWave;
+                            unlockables.UnlockPoints++;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Four)
                         {
                             gameManager.WaveNumber = WaveNumber.Five;
                             gameManager.GameState = GameState.NextWave;
+                            unlockables.UnlockPoints++;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Five)
                         {
                             gameManager.WaveNumber = WaveNumber.Six;
                             gameManager.GameState = GameState.NextWave;
                             gameManager.PlatformVersion = PlatformVersion.Medium;
+                            unlockables.UnlockPoints++;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Six)
                         {
                             gameManager.WaveNumber = WaveNumber.Seven;
                             gameManager.GameState = GameState.NextWave;
                             gameManager.PlatformVersion = PlatformVersion.Easy;
+                            unlockables.UnlockPoints++;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Seven)
                         {
                             gameManager.WaveNumber = WaveNumber.Eight;
                             gameManager.GameState = GameState.NextWave;
+                            unlockables.UnlockPoints++;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Eight)
                         {
                             gameManager.WaveNumber = WaveNumber.Nine;
                             gameManager.GameState = GameState.NextWave;
                             gameManager.PlatformVersion = PlatformVersion.Medium;
+                            unlockables.UnlockPoints++;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Nine)
                         {
                             gameManager.WaveNumber = WaveNumber.Ten;
                             gameManager.GameState = GameState.NextWave;
                             gameManager.PlatformVersion = PlatformVersion.Easy;
+                            unlockables.UnlockPoints++;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Ten)
                         {
                             gameManager.WaveNumber = WaveNumber.Eleven;
                             gameManager.GameState = GameState.NextWave;
                             gameManager.PlatformVersion = PlatformVersion.Medium;
+                            unlockables.UnlockPoints++;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Eleven)
                         {
                             gameManager.WaveNumber = WaveNumber.Twelve;
                             gameManager.GameState = GameState.NextWave;
                             gameManager.PlatformVersion = PlatformVersion.Easy;
+                            unlockables.UnlockPoints++;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Twelve)
                         {
                             gameManager.WaveNumber = WaveNumber.Thirteen;
                             gameManager.GameState = GameState.NextWave;
                             gameManager.PlatformVersion = PlatformVersion.Medium;
+                            unlockables.UnlockPoints++;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Thirteen)
                         {
                             gameManager.WaveNumber = WaveNumber.Fourteen;
                             gameManager.GameState = GameState.NextWave;
                             gameManager.PlatformVersion = PlatformVersion.Easy;
+                            unlockables.UnlockPoints++;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Fourteen)
                         {
                             gameManager.WaveNumber = WaveNumber.Fifteen;
                             gameManager.GameState = GameState.NextWave;
                             gameManager.PlatformVersion = PlatformVersion.Medium;
+                            unlockables.UnlockPoints++;
                         }
                         else if (gameManager.WaveNumber == WaveNumber.Fifteen)
                         {
                             gameManager.GameState = GameState.YouWin;
+                            unlockables.UnlockPoints++;
                             break;
                         }
                     }
@@ -1279,11 +1306,11 @@ namespace Purpose
                     //Reset Game
                     if (editedGame)
                     {
-                        gameManager.ResetForNextWaveEdited(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture, waveNumber, platformManager);
+                        gameManager.ResetForNextWaveEdited(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, waveNumber, platformManager);
                     }
                     else
                     {
-                        gameManager.ResetForNextWavePreset(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, tempTexture, waveNumber, platformManager);
+                        gameManager.ResetForNextWavePreset(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, waveNumber, platformManager);
                     }
 
                     if (goOnButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released && editedGame)
