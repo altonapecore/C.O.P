@@ -113,6 +113,16 @@ namespace Purpose
         {
             get { return prevGameState; }
         }
+
+        public List<Platform> LeftWalls
+        {
+            get { return leftWalls; }
+        }
+
+        public List<Platform> RightWalls
+        {
+            get { return rightWalls; }
+        }
         #endregion
 
         //constructor
