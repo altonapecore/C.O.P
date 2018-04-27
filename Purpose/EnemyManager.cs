@@ -21,6 +21,7 @@ namespace Purpose
         private Texture2D leftEnemyWalk1;
         private Texture2D leftEnemyWalk2;
         private Texture2D leftEnemyWalk3;
+        private Texture2D rangedTexture;
 
         // Properties
         public List<Enemy> Enemies
@@ -29,11 +30,12 @@ namespace Purpose
         }
 
         public Texture2D RightEnemyWalk1 { get { return rightEnemyWalk1;} set { rightEnemyWalk1 = value; } }
-        public Texture2D RightEnemyWalk2 { get { return rightEnemyWalk2;}set { rightEnemyWalk2 = value; } }
-        public Texture2D RightEnemyWalk3 { get { return rightEnemyWalk3;}set { rightEnemyWalk3 = value; } }
+        public Texture2D RightEnemyWalk2 { get { return rightEnemyWalk2;} set { rightEnemyWalk2 = value; } }
+        public Texture2D RightEnemyWalk3 { get { return rightEnemyWalk3;} set { rightEnemyWalk3 = value; } }
         public Texture2D LeftEnemyWalk1 { get { return leftEnemyWalk1; } set { leftEnemyWalk1 = value; } }
-        public Texture2D LeftEnemyWalk2 { get { return leftEnemyWalk2; }set { leftEnemyWalk2 = value; } }
+        public Texture2D LeftEnemyWalk2 { get { return leftEnemyWalk2; } set { leftEnemyWalk2 = value; } }
         public Texture2D LeftEnemyWalk3 { get { return leftEnemyWalk3; } set { leftEnemyWalk3 = value; } }
+        public Texture2D RangedTexture { get { return rangedTexture; } set { rangedTexture = value; } } 
 
         // Constructor
         public EnemyManager(GraphicsDevice graphicsDevice, TextureManager textureManager)
@@ -41,6 +43,7 @@ namespace Purpose
             this.graphicsDevice = graphicsDevice;
             enemies = new List<Enemy>();
             this.textureManager = textureManager;
+            rangedTexture = textureManager.RangedEnemyTexture;
             rightEnemyWalk1 = textureManager.RightEnemyWalk1;
             rightEnemyWalk2 = textureManager.RightEnemyWalk2;
             rightEnemyWalk3 = textureManager.RightEnemyWalk3;

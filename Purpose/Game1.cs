@@ -817,6 +817,7 @@ namespace Purpose
                     }
                     else
                     {
+                        
                         spriteBatch.Draw(sombreroButton.Texture, sombreroButton.Position, Color.White);
                     }
 
@@ -835,7 +836,14 @@ namespace Purpose
                     }
                     else
                     {
-                        spriteBatch.Draw(fezButton.Texture, fezButton.Position, Color.White);
+                        if(unlockables.ItemsDictionary["Fez"].Equipped == true)
+                        {
+                            spriteBatch.Draw(fezButton.Texture, fezButton.Position, Color.Green);
+                        }
+                        else
+                        {
+                            spriteBatch.Draw(fezButton.Texture, fezButton.Position, Color.White);
+                        }
                     }
 
                     if (cowboyButton.Intersects(ms.Position))

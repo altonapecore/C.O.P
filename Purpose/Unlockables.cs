@@ -29,6 +29,10 @@ namespace Purpose
 
         //Items to be unlocked
         private Unlockables fez;
+        private Unlockables ushanka;
+        private Unlockables beret;
+        private Unlockables cowboy;
+        private Unlockables sombrero;
 
         //Properties
         public int UnlockPoints
@@ -106,6 +110,10 @@ namespace Purpose
 
         public TextureManager TextureManager { get { return textureManager; } }
         public Unlockables Fez { get { return fez; } }
+        public Unlockables Ushanka { get { return ushanka; } }
+        public Unlockables Beret { get { return beret; } }
+        public Unlockables Cowboy { get { return cowboy; } }
+        public Unlockables Sombrero { get { return sombrero; } }
         public int Cost { get { return cost; } }
         
         //Constructor
@@ -121,10 +129,30 @@ namespace Purpose
 
             //Gives the fez unlockable all its textures and cost
             //And adds it to the dictionary and list
-            fez = new Unlockables(10, textureManager.FezRangedEnemy, textureManager.RightFezMelee1, textureManager.RightFezMelee2, textureManager.RightFezMelee3,
+            fez = new Unlockables(2, textureManager.FezRangedEnemy, textureManager.RightFezMelee1, textureManager.RightFezMelee2, textureManager.RightFezMelee3,
                 textureManager.LeftFezMelee1, textureManager.LeftFezMelee2, textureManager.LeftFezMelee3);
             itemsDictionary.Add("Fez", fez);
             itemsList.Add(fez);
+
+            ushanka = new Unlockables(2, textureManager.UshankaRangedEnemy, textureManager.RightUshankaMelee1, textureManager.RightUshankaMelee2, textureManager.RightUshankaMelee3,
+                 textureManager.LeftUshankaMelee1, textureManager.LeftUshankaMelee2, textureManager.LeftUshankaMelee3);
+            itemsDictionary.Add("Ushanka", ushanka);
+            itemsList.Add(ushanka);
+
+            beret = new Unlockables(2, textureManager.BeretRangedEnemy, textureManager.RightBeretMelee1, textureManager.RightBeretMelee2, textureManager.RightBeretMelee3,
+                 textureManager.LeftBeretMelee1, textureManager.LeftBeretMelee2, textureManager.LeftBeretMelee3);
+            itemsDictionary.Add("Beret", beret);
+            itemsList.Add(beret);
+
+            cowboy = new Unlockables(2, textureManager.CowboyRangedEnemy, textureManager.RightCowboyMelee1, textureManager.RightCowboyMelee2, textureManager.RightCowboyMelee3,
+            textureManager.LeftCowboyMelee1, textureManager.LeftCowboyMelee2, textureManager.LeftCowboyMelee3);
+            itemsDictionary.Add("Cowboy", cowboy);
+            itemsList.Add(cowboy);
+
+            sombrero = new Unlockables(2, textureManager.SombreroRangedEnemy, textureManager.RightSombreroMelee1, textureManager.RightSombreroMelee2, textureManager.RightSombreroMelee3,
+            textureManager.LeftSombreroMelee1, textureManager.LeftSombreroMelee2, textureManager.LeftSombreroMelee3);
+            itemsDictionary.Add("Sombrero", sombrero);
+            itemsList.Add(sombrero);
         }
 
         //Parametrized Constructor
