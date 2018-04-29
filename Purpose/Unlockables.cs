@@ -135,27 +135,27 @@ namespace Purpose
 
             //Gives the fez unlockable all its textures and cost
             //And adds it to the dictionary and list
-            fez = new Unlockables(10, textureManager.FezRangedEnemy, textureManager.RightFezMelee1, textureManager.RightFezMelee2, textureManager.RightFezMelee3,
+            fez = new Unlockables(5, textureManager.FezRangedEnemy, textureManager.RightFezMelee1, textureManager.RightFezMelee2, textureManager.RightFezMelee3,
                 textureManager.LeftFezMelee1, textureManager.LeftFezMelee2, textureManager.LeftFezMelee3);
             itemsDictionary.Add("Fez", fez);
             itemsList.Add(fez);
 
-            ushanka = new Unlockables(10, textureManager.UshankaRangedEnemy, textureManager.RightUshankaMelee1, textureManager.RightUshankaMelee2, textureManager.RightUshankaMelee3,
+            ushanka = new Unlockables(5, textureManager.UshankaRangedEnemy, textureManager.RightUshankaMelee1, textureManager.RightUshankaMelee2, textureManager.RightUshankaMelee3,
                  textureManager.LeftUshankaMelee1, textureManager.LeftUshankaMelee2, textureManager.LeftUshankaMelee3);
             itemsDictionary.Add("Ushanka", ushanka);
             itemsList.Add(ushanka);
 
-            beret = new Unlockables(10, textureManager.BeretRangedEnemy, textureManager.RightBeretMelee1, textureManager.RightBeretMelee2, textureManager.RightBeretMelee3,
+            beret = new Unlockables(5, textureManager.BeretRangedEnemy, textureManager.RightBeretMelee1, textureManager.RightBeretMelee2, textureManager.RightBeretMelee3,
                  textureManager.LeftBeretMelee1, textureManager.LeftBeretMelee2, textureManager.LeftBeretMelee3);
             itemsDictionary.Add("Beret", beret);
             itemsList.Add(beret);
 
-            cowboy = new Unlockables(10, textureManager.CowboyRangedEnemy, textureManager.RightCowboyMelee1, textureManager.RightCowboyMelee2, textureManager.RightCowboyMelee3,
+            cowboy = new Unlockables(5, textureManager.CowboyRangedEnemy, textureManager.RightCowboyMelee1, textureManager.RightCowboyMelee2, textureManager.RightCowboyMelee3,
             textureManager.LeftCowboyMelee1, textureManager.LeftCowboyMelee2, textureManager.LeftCowboyMelee3);
             itemsDictionary.Add("Cowboy", cowboy);
             itemsList.Add(cowboy);
 
-            sombrero = new Unlockables(10, textureManager.SombreroRangedEnemy, textureManager.RightSombreroMelee1, textureManager.RightSombreroMelee2, textureManager.RightSombreroMelee3,
+            sombrero = new Unlockables(5, textureManager.SombreroRangedEnemy, textureManager.RightSombreroMelee1, textureManager.RightSombreroMelee2, textureManager.RightSombreroMelee3,
             textureManager.LeftSombreroMelee1, textureManager.LeftSombreroMelee2, textureManager.LeftSombreroMelee3);
             itemsDictionary.Add("Sombrero", sombrero);
             itemsList.Add(sombrero);
@@ -188,6 +188,7 @@ namespace Purpose
                 item.Unlocked = true; //Sets the item as unlocked.
                 UnlockPoints -= item.Cost; //Takes the cost and subtracts from users current unlock points 
             }
+
         }
 
         //Method to equip unlocked items
@@ -226,34 +227,6 @@ namespace Purpose
             }
         }
 
-        //Method to save all the unlockable info onto a text file
-        public void Save()
-        {
-            //Order goes
-            //User's Unlock Points
-            //Items
-            //Name, Unlocked, Equipped
-            //True - 1 //// False - 0
-
-            //saves points
-            output.WriteLine(UnlockPoints);
-
-            //Saves items and writes them 
-            output.Write("Fez," + SaveUnlock(Fez) + "," + SaveEquip(Fez));
-            output.Write("Cowboy," + SaveUnlock(Fez) + "," + SaveEquip(Fez));
-            output.Write("Ushanka," + SaveUnlock(Fez) + "," + SaveEquip(Fez));
-            output.Write("Beret," + SaveUnlock(Fez) + "," + SaveEquip(Fez));
-            output.Write("Sombrero," + SaveUnlock(Fez) + "," + SaveEquip(Fez));
-            
-            //Makes sure output is not null
-            if(output != null)
-            {
-                //closes the writer
-                output.Close();
-            }
-
-        }
-
 
         //Helper methods for the save
         private int SaveUnlock(Unlockables item)
@@ -283,38 +256,6 @@ namespace Purpose
             {
                 //If it isn't returns 0
                 return 0;
-            }
-        }
-
-        public void UnlockableUpdate(EnemyManager enemyManager)
-        {
-            //Loops through all the unlockables and checks which is equipped
-            for (int i = 0; i < itemsList.Count; i++)
-            {
-                if (itemsList[i].Equipped == true)
-                {
-                    //Sets the new equipped texture as the current texture
-                    enemyManager.RangedTexture = itemsList[i].RangeTexture;
-                    enemyManager.RightEnemyWalk1 = itemsList[i].RightEnemyWalk1;
-                    enemyManager.RightEnemyWalk2 = itemsList[i].RightEnemyWalk2;
-                    enemyManager.RightEnemyWalk3 = itemsList[i].RightEnemyWalk3;
-                    enemyManager.LeftEnemyWalk1 = itemsList[i].LeftEnemyWalk1;
-                    enemyManager.LeftEnemyWalk2 = itemsList[i].LeftEnemyWalk2;
-                    enemyManager.LeftEnemyWalk3 = itemsList[i].LeftEnemyWalk3;
-                    break;
-                }
-                else
-                {
-                    //If there are no equipped textures from the unlockables
-                    //Set the texture as the default
-                    enemyManager.RangedTexture = textureManager.RangedEnemyTexture;
-                    enemyManager.RightEnemyWalk1 = textureManager.RightEnemyWalk1;
-                    enemyManager.RightEnemyWalk2 = textureManager.RightEnemyWalk2;
-                    enemyManager.RightEnemyWalk3 = textureManager.RightEnemyWalk3;
-                    enemyManager.LeftEnemyWalk1 = textureManager.LeftEnemyWalk1;
-                    enemyManager.LeftEnemyWalk2 = textureManager.LeftEnemyWalk2;
-                    enemyManager.LeftEnemyWalk3 = textureManager.LeftEnemyWalk1;
-                }
             }
         }
     }

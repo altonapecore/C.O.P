@@ -805,7 +805,7 @@ namespace Purpose
                 case GameState.UnlockablesMenu:
                     spriteBatch.Draw(textureManager.UnlockablesUI, new Rectangle(0,0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
 
-                    spriteBatch.DrawString(agency30, "SPEND 10 UPGRADE POINTS \nTO UNLOCK A NEW HAT!", new Vector2(1000, 45), Color.Black);
+                    spriteBatch.DrawString(agency30, "SPEND 5 UPGRADE POINTS \nTO UNLOCK A NEW HAT!", new Vector2(1000, 45), Color.Black);
                     spriteBatch.DrawString(agency30, "Unlock Points: " + unlockables.UnlockPoints, new Vector2(1000, 135), Color.Black);
 
                     if (unlockablesReturnToPauseButton.Intersects(ms.Position))
