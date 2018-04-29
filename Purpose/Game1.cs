@@ -357,14 +357,17 @@ namespace Purpose
 
             for (int i = 0; i < unlockables.ItemsList.Count; i++)
             {
-                if (unlockedEquipped[i][0])
+                if (unlockedEquipped != null)
                 {
-                    unlockables.ItemsList[i].Unlocked = true;
-                }
-                
-                if (unlockedEquipped[i][1])
-                {
-                    unlockables.ItemsList[i].Equipped = true;
+                    if (unlockedEquipped[i][0])
+                    {
+                        unlockables.ItemsList[i].Unlocked = true;
+                    }
+
+                    if (unlockedEquipped[i][1])
+                    {
+                        unlockables.ItemsList[i].Equipped = true;
+                    }
                 }
             }
             unlockables.UnlockPoints = savedUnlockables.UnlockPoints;
