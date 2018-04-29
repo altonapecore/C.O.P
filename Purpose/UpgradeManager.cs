@@ -119,7 +119,11 @@ namespace Purpose
                 else if (healthTier > 6 && upgradePoints > healthUpCost - 1)
                 {
                     player.HealthMax += 6;
-                    player.HealthRegen += 2;
+
+                    if(healthTier < 10)
+                    {
+                        player.HealthRegen += 2;
+                    }
                     upgradePoints -= healthUpCost;
                 }
                 else if (healthTier >= 3 && upgradePoints > healthUpCost - 1)
