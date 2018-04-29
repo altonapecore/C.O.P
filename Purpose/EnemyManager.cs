@@ -68,13 +68,13 @@ namespace Purpose
             {
                 case PlatformVersion.Easy:
                     // Base level
-                    for (int i = 0; i < rng.Next(0, numberOfEnemies + 1) + 1; i++)
+                    for (int i = 0; i < numberOfEnemies; i++)
                     {
                         Enemy enemy = new Enemy(new Rectangle(rng.Next(-3000, -1000), graphicsDevice.Viewport.Height - 350, 122, 255),
                                 RightEnemyWalk1, difficulty, false, gameTime);
                         enemies.Add(enemy);
                     }
-                    for (int i = 0; i < rng.Next(0, numberOfEnemies + 1) + 1; i++)
+                    for (int i = 0; i < numberOfEnemies; i++)
                     {
                         Enemy enemy = new Enemy(new Rectangle(rng.Next(1000, 3000), graphicsDevice.Viewport.Height - 350, 122, 255),
                                 RightEnemyWalk1, difficulty, false, gameTime);
@@ -84,13 +84,25 @@ namespace Purpose
                     // First level
                     for (int i = 0; i < rng.Next(0, numberOfEnemies + 1) + 1; i++)
                     {
-                        Enemy enemy = new Enemy(new Rectangle(rng.Next(-3000, -1250), graphicsDevice.Viewport.Height - 550, 122, 255),
+                        Enemy enemy = new Enemy(new Rectangle(rng.Next(-3000, -2250), graphicsDevice.Viewport.Height - 550, 122, 255),
                                 RightEnemyWalk1, difficulty, false, gameTime);
                         enemies.Add(enemy);
                     }
                     for (int i = 0; i < rng.Next(0, numberOfEnemies + 1) + 1; i++)
                     {
-                        Enemy enemy = new Enemy(new Rectangle(rng.Next(1250, 3000), graphicsDevice.Viewport.Height - 550, 122, 255),
+                        Enemy enemy = new Enemy(new Rectangle(rng.Next(-2250, -1250), graphicsDevice.Viewport.Height - 550, 122, 255),
+                                RightEnemyWalk1, difficulty, false, gameTime);
+                        enemies.Add(enemy);
+                    }
+                    for (int i = 0; i < rng.Next(0, numberOfEnemies + 1) + 1; i++)
+                    {
+                        Enemy enemy = new Enemy(new Rectangle(rng.Next(1250, 2250), graphicsDevice.Viewport.Height - 550, 122, 255),
+                                RightEnemyWalk1, difficulty, false, gameTime);
+                        enemies.Add(enemy);
+                    }
+                    for (int i = 0; i < rng.Next(0, numberOfEnemies + 1) + 1; i++)
+                    {
+                        Enemy enemy = new Enemy(new Rectangle(rng.Next(2250, 3000), graphicsDevice.Viewport.Height - 550, 122, 255),
                                 RightEnemyWalk1, difficulty, false, gameTime);
                         enemies.Add(enemy);
                     }
@@ -114,13 +126,13 @@ namespace Purpose
                     // Base level
                     for (int i = 0; i < rng.Next(2, numberOfEnemies + 1) + 1; i++)
                     {
-                        Enemy enemy = new Enemy(new Rectangle(rng.Next(-3000, -1000), graphicsDevice.Viewport.Height - 350, 122, 225),
+                        Enemy enemy = new Enemy(new Rectangle(rng.Next(-3000, -1000), graphicsDevice.Viewport.Height - 350, 122, 255),
                                 RightEnemyWalk1, difficulty, false, gameTime);
                         enemies.Add(enemy);
                     }
                     for (int i = 0; i < rng.Next(2, numberOfEnemies + 1) + 1; i++)
                     {
-                        Enemy enemy = new Enemy(new Rectangle(rng.Next(1000,3000), graphicsDevice.Viewport.Height - 350, 122, 225),
+                        Enemy enemy = new Enemy(new Rectangle(rng.Next(1000,3000), graphicsDevice.Viewport.Height - 350, 122, 255),
                                 RightEnemyWalk1, difficulty, false, gameTime);
                         enemies.Add(enemy);
                     }
@@ -128,13 +140,13 @@ namespace Purpose
                     // First level
                     for (int i = 0; i < rng.Next(2, numberOfEnemies + 1) + 1; i++)
                     {
-                        Enemy enemy = new Enemy(new Rectangle(rng.Next(-3000, -1250), graphicsDevice.Viewport.Height - 550, 122, 225),
+                        Enemy enemy = new Enemy(new Rectangle(rng.Next(-3000, -1250), graphicsDevice.Viewport.Height - 550, 122, 255),
                                 RightEnemyWalk1, difficulty, false, gameTime);
                         enemies.Add(enemy);
                     }
                     for (int i = 0; i < rng.Next(2, numberOfEnemies + 1) + 1; i++)
                     {
-                        Enemy enemy = new Enemy(new Rectangle(rng.Next(1250, 3000), graphicsDevice.Viewport.Height - 550, 122, 225),
+                        Enemy enemy = new Enemy(new Rectangle(rng.Next(1250, 3000), graphicsDevice.Viewport.Height - 550, 122, 255),
                                 RightEnemyWalk1, difficulty, false, gameTime);
                         enemies.Add(enemy);
                     }
@@ -142,13 +154,13 @@ namespace Purpose
                     // Second level
                     for (int i = 0; i < rng.Next(2, numberOfEnemies + 1) + 1; i++)
                     {
-                        Enemy enemy = new Enemy(new Rectangle(rng.Next(-1100, -175), graphicsDevice.Viewport.Height - 750, 122, 225),
+                        Enemy enemy = new Enemy(new Rectangle(rng.Next(-1100, -175), graphicsDevice.Viewport.Height - 750, 122, 255),
                                 RightEnemyWalk1, difficulty, false, gameTime);
                         enemies.Add(enemy);
                     }
                     for (int i = 0; i < rng.Next(2, numberOfEnemies + 1) + 1; i++)
                     {
-                        Enemy enemy = new Enemy(new Rectangle(rng.Next(175, 1100), graphicsDevice.Viewport.Height - 750, 122, 225),
+                        Enemy enemy = new Enemy(new Rectangle(rng.Next(175, 1100), graphicsDevice.Viewport.Height - 750, 122, 255),
                                 RightEnemyWalk1, difficulty, false, gameTime);
                         enemies.Add(enemy);
                     }
@@ -156,13 +168,13 @@ namespace Purpose
                     // third level
                     for (int i = 0; i < rng.Next(2, numberOfEnemies + 1) + 1; i++)
                     {
-                        Enemy enemy = new Enemy(new Rectangle(rng.Next(-2500, -500), graphicsDevice.Viewport.Height - 1150, 122, 225),
+                        Enemy enemy = new Enemy(new Rectangle(rng.Next(-2500, -500), graphicsDevice.Viewport.Height - 1150, 122, 255),
                                 RightEnemyWalk1, difficulty, false, gameTime);
                         enemies.Add(enemy);
                     }
                     for (int i = 0; i < rng.Next(2, numberOfEnemies + 1) + 1; i++)
                     {
-                        Enemy enemy = new Enemy(new Rectangle(rng.Next(500, 2500), graphicsDevice.Viewport.Height - 1150, 122, 225),
+                        Enemy enemy = new Enemy(new Rectangle(rng.Next(500, 2500), graphicsDevice.Viewport.Height - 1150, 122, 255),
                                 RightEnemyWalk1, difficulty, false, gameTime);
                         enemies.Add(enemy);
                     }
@@ -172,13 +184,13 @@ namespace Purpose
                     // bottom level
                     for (int i = 0; i < rng.Next(1, numberOfEnemies + 1) + 1; i++)
                     {
-                        Enemy enemy = new Enemy(new Rectangle(rng.Next(-1800, -500), graphicsDevice.Viewport.Height - 350, 122, 225),
+                        Enemy enemy = new Enemy(new Rectangle(rng.Next(-1800, -500), graphicsDevice.Viewport.Height - 350, 122, 255),
                                 RightEnemyWalk1, difficulty, false, gameTime);
                         enemies.Add(enemy);
                     }
                     for (int i = 0; i < rng.Next(1, numberOfEnemies + 1) + 1; i++)
                     {
-                        Enemy enemy = new Enemy(new Rectangle(rng.Next(800, 1800), graphicsDevice.Viewport.Height - 350, 122, 225),
+                        Enemy enemy = new Enemy(new Rectangle(rng.Next(800, 1800), graphicsDevice.Viewport.Height - 350, 122, 255),
                                 RightEnemyWalk1, difficulty, false, gameTime);
                         enemies.Add(enemy);
                     }
@@ -186,13 +198,13 @@ namespace Purpose
                     // First level
                     for (int i = 0; i < rng.Next(1, numberOfEnemies + 1) + 1; i++)
                     {
-                        Enemy enemy = new Enemy(new Rectangle(rng.Next(-1800, -100), graphicsDevice.Viewport.Height - 750, 122, 225),
+                        Enemy enemy = new Enemy(new Rectangle(rng.Next(-1800, -100), graphicsDevice.Viewport.Height - 750, 122, 255),
                                 RightEnemyWalk1, difficulty, false, gameTime);
                         enemies.Add(enemy);
                     }
                     for (int i = 0; i < rng.Next(1, numberOfEnemies + 1) + 1; i++)
                     {
-                        Enemy enemy = new Enemy(new Rectangle(rng.Next(0, 900), graphicsDevice.Viewport.Height - 750, 122, 225),
+                        Enemy enemy = new Enemy(new Rectangle(rng.Next(0, 900), graphicsDevice.Viewport.Height - 750, 122, 255),
                                 RightEnemyWalk1, difficulty, false, gameTime);
                         enemies.Add(enemy);
                     }
@@ -200,13 +212,13 @@ namespace Purpose
                     // Second level
                     for (int i = 0; i < rng.Next(1, numberOfEnemies + 1) + 1; i++)
                     {
-                        Enemy enemy = new Enemy(new Rectangle(rng.Next(-900, 900), graphicsDevice.Viewport.Height - 1150, 122, 225),
+                        Enemy enemy = new Enemy(new Rectangle(rng.Next(-900, 900), graphicsDevice.Viewport.Height - 1150, 122, 255),
                                 RightEnemyWalk1, difficulty, false, gameTime);
                         enemies.Add(enemy);
                     }
                     for (int i = 0; i < rng.Next(1, numberOfEnemies + 1) + 1; i++)
                     {
-                        Enemy enemy = new Enemy(new Rectangle(rng.Next(1000, 1800), graphicsDevice.Viewport.Height - 1150, 122, 225),
+                        Enemy enemy = new Enemy(new Rectangle(rng.Next(1000, 1800), graphicsDevice.Viewport.Height - 1150, 122, 255),
                                 RightEnemyWalk1, difficulty, false, gameTime);
                         enemies.Add(enemy);
                     }
@@ -214,13 +226,13 @@ namespace Purpose
                     // Third level
                     for (int i = 0; i < rng.Next(1, numberOfEnemies + 1) + 1; i++)
                     {
-                        Enemy enemy = new Enemy(new Rectangle(rng.Next(-1800, -100), graphicsDevice.Viewport.Height - 1550, 122, 225),
+                        Enemy enemy = new Enemy(new Rectangle(rng.Next(-1800, -100), graphicsDevice.Viewport.Height - 1550, 122, 255),
                                 RightEnemyWalk1, difficulty, false, gameTime);
                         enemies.Add(enemy);
                     }
                     for (int i = 0; i < rng.Next(1, numberOfEnemies + 1) + 1; i++)
                     {
-                        Enemy enemy = new Enemy(new Rectangle(rng.Next(0, 900), graphicsDevice.Viewport.Height - 1550, 122, 225),
+                        Enemy enemy = new Enemy(new Rectangle(rng.Next(0, 900), graphicsDevice.Viewport.Height - 1550, 122, 255),
                                 RightEnemyWalk1, difficulty, false, gameTime);
                         enemies.Add(enemy);
                     }
@@ -228,13 +240,13 @@ namespace Purpose
                     // Fourth level
                     for (int i = 0; i < rng.Next(1, numberOfEnemies + 1) + 1; i++)
                     {
-                        Enemy enemy = new Enemy(new Rectangle(rng.Next(-900, 900), graphicsDevice.Viewport.Height - 1950, 122, 225),
+                        Enemy enemy = new Enemy(new Rectangle(rng.Next(-900, 900), graphicsDevice.Viewport.Height - 1950, 122, 255),
                                 RightEnemyWalk1, difficulty, false, gameTime);
                         enemies.Add(enemy);
                     }
                     for (int i = 0; i < rng.Next(1, numberOfEnemies + 1) + 1 * 2; i++)
                     {
-                        Enemy enemy = new Enemy(new Rectangle(rng.Next(1000, 1800), graphicsDevice.Viewport.Height - 1950, 122, 225),
+                        Enemy enemy = new Enemy(new Rectangle(rng.Next(1000, 1800), graphicsDevice.Viewport.Height - 1950, 122, 255),
                                 RightEnemyWalk1, difficulty, false, gameTime);
                         enemies.Add(enemy);
                     }
@@ -242,7 +254,7 @@ namespace Purpose
                     // Fifth level
                     for (int i = 0; i < rng.Next(1, numberOfEnemies + 1) + 1 * 2; i++)
                     {
-                        Enemy enemy = new Enemy(new Rectangle(rng.Next(-1800, -100), graphicsDevice.Viewport.Height - 2350, 122, 225),
+                        Enemy enemy = new Enemy(new Rectangle(rng.Next(-1800, -100), graphicsDevice.Viewport.Height - 2350, 122, 255),
                                 RightEnemyWalk1, difficulty, false, gameTime);
                         enemies.Add(enemy);
                     }
@@ -324,13 +336,19 @@ namespace Purpose
                     // Base level
                     for (int i = 0; i < rng.Next(0, numberOfEnemies + 1) + 1; i++)
                     {
-                        Enemy enemy = new Enemy(new Rectangle(rng.Next(-3000, -1000), graphicsDevice.Viewport.Height - 350, 122, 255),
+                        Enemy enemy = new Enemy(new Rectangle(rng.Next(-1400, -1000), graphicsDevice.Viewport.Height - 350, 122, 225),
                                 RightEnemyWalk1, difficulty, false, gameTime);
                         enemies.Add(enemy);
                     }
                     for (int i = 0; i < rng.Next(0, numberOfEnemies + 1) + 1; i++)
                     {
-                        Enemy enemy = new Enemy(new Rectangle(rng.Next(1000, 3000), graphicsDevice.Viewport.Height - 350, 122, 255),
+                        Enemy enemy = new Enemy(new Rectangle(rng.Next(-1000, 0), graphicsDevice.Viewport.Height - 350, 122, 255),
+                                RightEnemyWalk1, difficulty, false, gameTime);
+                        enemies.Add(enemy);
+                    }
+                    for (int i = 0; i < rng.Next(0, numberOfEnemies + 1) + 1; i++)
+                    {
+                        Enemy enemy = new Enemy(new Rectangle(rng.Next(-2400, -1400), graphicsDevice.Viewport.Height - 1550, 122, 255),
                                 RightEnemyWalk1, difficulty, false, gameTime);
                         enemies.Add(enemy);
                     }
@@ -338,13 +356,7 @@ namespace Purpose
                     // First level
                     for (int i = 0; i < rng.Next(0, numberOfEnemies + 1) + 1; i++)
                     {
-                        Enemy enemy = new Enemy(new Rectangle(rng.Next(-3000, -1250), graphicsDevice.Viewport.Height - 550, 122, 255),
-                                RightEnemyWalk1, difficulty, false, gameTime);
-                        enemies.Add(enemy);
-                    }
-                    for (int i = 0; i < rng.Next(0, numberOfEnemies + 1) + 1; i++)
-                    {
-                        Enemy enemy = new Enemy(new Rectangle(rng.Next(1250, 3000), graphicsDevice.Viewport.Height - 550, 122, 255),
+                        Enemy enemy = new Enemy(new Rectangle(rng.Next(-975, -100), graphicsDevice.Viewport.Height - 750, 122, 255),
                                 RightEnemyWalk1, difficulty, false, gameTime);
                         enemies.Add(enemy);
                     }
@@ -352,13 +364,7 @@ namespace Purpose
                     // Second level
                     for (int i = 0; i < rng.Next(0, numberOfEnemies + 1) + 1; i++)
                     {
-                        Enemy enemy = new Enemy(new Rectangle(rng.Next(-1100, -175), graphicsDevice.Viewport.Height - 750, 122, 255),
-                                RightEnemyWalk1, difficulty, false, gameTime);
-                        enemies.Add(enemy);
-                    }
-                    for (int i = 0; i < rng.Next(0, numberOfEnemies + 1) + 1; i++)
-                    {
-                        Enemy enemy = new Enemy(new Rectangle(rng.Next(175, 1100), graphicsDevice.Viewport.Height - 750, 122, 255),
+                        Enemy enemy = new Enemy(new Rectangle(rng.Next(-475, 300), graphicsDevice.Viewport.Height - 1750, 122, 255),
                                 RightEnemyWalk1, difficulty, false, gameTime);
                         enemies.Add(enemy);
                     }
@@ -366,13 +372,29 @@ namespace Purpose
                     // third level
                     for (int i = 0; i < rng.Next(0, numberOfEnemies + 1) + 1; i++)
                     {
-                        Enemy enemy = new Enemy(new Rectangle(rng.Next(-2500, -500), graphicsDevice.Viewport.Height - 1150, 122, 255),
+                        Enemy enemy = new Enemy(new Rectangle(rng.Next(-1000, 0), graphicsDevice.Viewport.Height - 2350, 122, 255),
                                 RightEnemyWalk1, difficulty, false, gameTime);
                         enemies.Add(enemy);
                     }
                     for (int i = 0; i < rng.Next(0, numberOfEnemies + 1) + 1; i++)
                     {
-                        Enemy enemy = new Enemy(new Rectangle(rng.Next(500, 2500), graphicsDevice.Viewport.Height - 1150, 122, 255),
+                        Enemy enemy = new Enemy(new Rectangle(rng.Next(0, 1000), graphicsDevice.Viewport.Height - 2350, 122, 255),
+                                RightEnemyWalk1, difficulty, false, gameTime);
+                        enemies.Add(enemy);
+                    }
+
+                    // Fourth level
+                    for (int i = 0; i < rng.Next(0, numberOfEnemies + 1) + 1; i++)
+                    {
+                        Enemy enemy = new Enemy(new Rectangle(rng.Next(650, 1000), graphicsDevice.Viewport.Height - 1350, 122, 255),
+                                RightEnemyWalk1, difficulty, false, gameTime);
+                        enemies.Add(enemy);
+                    }
+
+                    // Fifth level
+                    for (int i = 0; i < rng.Next(0, numberOfEnemies + 1) + 1; i++)
+                    {
+                        Enemy enemy = new Enemy(new Rectangle(rng.Next(700, 1000), graphicsDevice.Viewport.Height - 900, 122, 255),
                                 RightEnemyWalk1, difficulty, false, gameTime);
                         enemies.Add(enemy);
                     }
@@ -399,15 +421,27 @@ namespace Purpose
                 {
                     case PlatformVersion.Easy:
                         // Base level
-                        for (int i = 0; i < rng.Next(0, numberOfRanged + 1) + 1; i++)
+                        for (int i = 0; i < numberOfRanged; i++)
                         {
-                            Enemy enemy = new Enemy(new Rectangle(rng.Next(-3000, -1000), graphicsDevice.Viewport.Height - 350, 122, 255),
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(-3000, -2000), graphicsDevice.Viewport.Height - 350, 122, 255),
                                     RangedTexture, difficulty, true, gameTime);
                             enemies.Add(enemy);
                         }
-                        for (int i = 0; i < rng.Next(0, numberOfRanged + 1) + 1; i++)
+                        for (int i = 0; i < numberOfRanged; i++)
                         {
-                            Enemy enemy = new Enemy(new Rectangle(rng.Next(1000, 3000), graphicsDevice.Viewport.Height - 350, 122, 255),
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(-2000, -1000), graphicsDevice.Viewport.Height - 350, 122, 255),
+                                    RangedTexture, difficulty, true, gameTime);
+                            enemies.Add(enemy);
+                        }
+                        for (int i = 0; i < numberOfRanged; i++)
+                        {
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(1000, 2000), graphicsDevice.Viewport.Height - 350, 122, 255),
+                                    RangedTexture, difficulty, true, gameTime);
+                            enemies.Add(enemy);
+                        }
+                        for (int i = 0; i < numberOfRanged; i++)
+                        {
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(2000, 3000), graphicsDevice.Viewport.Height - 350, 122, 255),
                                     RangedTexture, difficulty, true, gameTime);
                             enemies.Add(enemy);
                         }
@@ -415,13 +449,25 @@ namespace Purpose
                         // First level
                         for (int i = 0; i < rng.Next(0, numberOfRanged + 1) + 1; i++)
                         {
-                            Enemy enemy = new Enemy(new Rectangle(rng.Next(-3000, -1250), graphicsDevice.Viewport.Height - 550, 122, 255),
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(-3000, -2250), graphicsDevice.Viewport.Height - 550, 122, 255),
                                     RangedTexture, difficulty, true, gameTime);
                             enemies.Add(enemy);
                         }
                         for (int i = 0; i < rng.Next(0, numberOfRanged + 1) + 1; i++)
                         {
-                            Enemy enemy = new Enemy(new Rectangle(rng.Next(1250, 3000), graphicsDevice.Viewport.Height - 550, 122, 255),
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(-2250, -1250), graphicsDevice.Viewport.Height - 550, 122, 255),
+                                    RangedTexture, difficulty, true, gameTime);
+                            enemies.Add(enemy);
+                        }
+                        for (int i = 0; i < rng.Next(0, numberOfRanged + 1) + 1; i++)
+                        {
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(1250, 2250), graphicsDevice.Viewport.Height - 550, 122, 255),
+                                    RangedTexture, difficulty, true, gameTime);
+                            enemies.Add(enemy);
+                        }
+                        for (int i = 0; i < rng.Next(0, numberOfRanged + 1) + 1; i++)
+                        {
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(2250, 3000), graphicsDevice.Viewport.Height - 550, 122, 255),
                                     RangedTexture, difficulty, true, gameTime);
                             enemies.Add(enemy);
                         }
@@ -655,13 +701,19 @@ namespace Purpose
                         // Base level
                         for (int i = 0; i < rng.Next(0, numberOfRanged + 1) + 1; i++)
                         {
-                            Enemy enemy = new Enemy(new Rectangle(rng.Next(-3000, -1000), graphicsDevice.Viewport.Height - 350, 122, 225),
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(-1400, -1000), graphicsDevice.Viewport.Height - 350, 122, 225),
                                     RangedTexture, difficulty, true, gameTime);
                             enemies.Add(enemy);
                         }
                         for (int i = 0; i < rng.Next(0, numberOfRanged + 1) + 1; i++)
                         {
-                            Enemy enemy = new Enemy(new Rectangle(rng.Next(1000, 3000), graphicsDevice.Viewport.Height - 350, 122, 255),
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(-1000, 0), graphicsDevice.Viewport.Height - 350, 122, 255),
+                                    RangedTexture, difficulty, true, gameTime);
+                            enemies.Add(enemy);
+                        }
+                        for (int i = 0; i < rng.Next(0, numberOfRanged + 1) + 1; i++)
+                        {
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(-2400, -1400), graphicsDevice.Viewport.Height - 1550, 122, 255),
                                     RangedTexture, difficulty, true, gameTime);
                             enemies.Add(enemy);
                         }
@@ -669,13 +721,7 @@ namespace Purpose
                         // First level
                         for (int i = 0; i < rng.Next(0, numberOfRanged + 1) + 1; i++)
                         {
-                            Enemy enemy = new Enemy(new Rectangle(rng.Next(-3000, -1250), graphicsDevice.Viewport.Height - 550, 122, 255),
-                                    RangedTexture, difficulty, true, gameTime);
-                            enemies.Add(enemy);
-                        }
-                        for (int i = 0; i < rng.Next(0, numberOfRanged + 1) + 1; i++)
-                        {
-                            Enemy enemy = new Enemy(new Rectangle(rng.Next(1250, 3000), graphicsDevice.Viewport.Height - 550, 122, 255),
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(-975, -100), graphicsDevice.Viewport.Height - 750, 122, 255),
                                     RangedTexture, difficulty, true, gameTime);
                             enemies.Add(enemy);
                         }
@@ -683,13 +729,7 @@ namespace Purpose
                         // Second level
                         for (int i = 0; i < rng.Next(0, numberOfRanged + 1) + 1; i++)
                         {
-                            Enemy enemy = new Enemy(new Rectangle(rng.Next(-1100, -175), graphicsDevice.Viewport.Height - 750, 122, 255),
-                                    RangedTexture, difficulty, true, gameTime);
-                            enemies.Add(enemy);
-                        }
-                        for (int i = 0; i < rng.Next(0, numberOfRanged + 1) + 1; i++)
-                        {
-                            Enemy enemy = new Enemy(new Rectangle(rng.Next(175, 1100), graphicsDevice.Viewport.Height - 750, 122, 255),
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(-475, 300), graphicsDevice.Viewport.Height - 1750, 122, 255),
                                     RangedTexture, difficulty, true, gameTime);
                             enemies.Add(enemy);
                         }
@@ -697,13 +737,29 @@ namespace Purpose
                         // third level
                         for (int i = 0; i < rng.Next(0, numberOfRanged + 1) + 1; i++)
                         {
-                            Enemy enemy = new Enemy(new Rectangle(rng.Next(-2500, -500), graphicsDevice.Viewport.Height - 1150, 122, 255),
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(-1000, 0), graphicsDevice.Viewport.Height - 2350, 122, 255),
                                     RangedTexture, difficulty, true, gameTime);
                             enemies.Add(enemy);
                         }
                         for (int i = 0; i < rng.Next(0, numberOfRanged + 1) + 1; i++)
                         {
-                            Enemy enemy = new Enemy(new Rectangle(rng.Next(500, 2500), graphicsDevice.Viewport.Height - 1150, 122, 255),
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(0, 1000), graphicsDevice.Viewport.Height - 2350, 122, 255),
+                                    RangedTexture, difficulty, true, gameTime);
+                            enemies.Add(enemy);
+                        }
+
+                        // Fourth level
+                        for (int i = 0; i < rng.Next(0, numberOfRanged + 1) + 1; i++)
+                        {
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(650, 1000), graphicsDevice.Viewport.Height - 1350, 122, 255),
+                                    RangedTexture, difficulty, true, gameTime);
+                            enemies.Add(enemy);
+                        }
+
+                        // Fifth level
+                        for (int i = 0; i < rng.Next(0, numberOfRanged + 1) + 1; i++)
+                        {
+                            Enemy enemy = new Enemy(new Rectangle(rng.Next(700, 1000), graphicsDevice.Viewport.Height - 900, 122, 255),
                                     RangedTexture, difficulty, true, gameTime);
                             enemies.Add(enemy);
                         }

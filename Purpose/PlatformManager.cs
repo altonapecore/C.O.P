@@ -437,6 +437,7 @@ namespace Purpose
                     {
                         totalPlatforms.Add(new Platform(new Rectangle(i, graphicsDevice.Viewport.Height - 1300, 100, 100), textureManager.BasePlatform));
                     }
+
                     // First level platforms
                     for (int i = 0; i > -1000; i -= 100)
                     {
