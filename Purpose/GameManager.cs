@@ -421,24 +421,14 @@ namespace Purpose
                     }
                 }
             }
-            if (kbState.IsKeyDown(Keys.E) && previouskbState.IsKeyUp(Keys.E) && player.UgManager.GroundPoundActive && ms.LeftButton == ButtonState.Released
-                && !isCrouching)
+            if (kbState.IsKeyDown(Keys.E) && previouskbState.IsKeyUp(Keys.E) && ms.LeftButton == ButtonState.Released)
             {
-                if (frameCounter == 3)
-                {
-                    player.GroundPound(enemyManager.Enemies);
-                    frameCounter = 0;
-                }
-                else if (frameCounter != 3)
-                {
-                    frameCounter++;
-                }
+                player.GroundPound(enemyManager.Enemies);
             }
             #endregion
 
             foreach(Enemy e in enemyManager.Enemies)
             {
-                //e.GameTime = (int)gameTime.TotalGameTime.TotalSeconds;
                 // Call attack methods based on type of enemy and position
                 int damage = 0;
                 if (e.Ranged && e.IsFacingLeft)

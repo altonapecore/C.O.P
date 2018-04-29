@@ -131,9 +131,9 @@ namespace Purpose
             staminaRegen = 1;
             this.gameTime = gameTime.TotalGameTime.Milliseconds;
             horizontalVelocity = 8;
-            groundPoundStaminaCost = 40;
+            groundPoundStaminaCost = 80;
             dashStaminaCost = 20;
-            groundPoundDamage = 20;
+            groundPoundDamage = 80;
             combatStatus = false;
 
             rng = new Random();
@@ -198,14 +198,14 @@ namespace Purpose
         public void GroundPound(List<Enemy> enemies)
         {
             Rectangle groundPoundArea = new Rectangle(position.X-200, (position.Y + position.Height-20), 500, 20);
-            if (ugManager.GroundPoundActive && stamina >= 40)
+            if (ugManager.GroundPoundActive && stamina >= groundPoundStaminaCost)
             {
                 for (int i = 0; i < enemies.Count; i++)
                 {
                     if (Math.Abs(enemies[i].X - X) < 500 && Math.Abs(enemies[i].Y - Y) < 200)
                     {
                         enemies[i].TakeDamage(groundPoundDamage);
-                        enemies[i].Y -= 50;
+                        enemies[i].Y -= 40;
                     }
 
                     if (enemies[i].IsDead)

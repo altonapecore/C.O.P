@@ -16,8 +16,6 @@ namespace Purpose
 
         private GameManager gameManager;
 
-        private Unlockables unlockables;
-
         //Constructor for the Reader
         public Reader(GameManager gameManager)
         {

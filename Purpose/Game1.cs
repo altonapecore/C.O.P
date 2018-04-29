@@ -352,10 +352,6 @@ namespace Purpose
             //Creates all the waves
             presetWaves.CreateWaves();
 
-            MediaPlayer.Play(soundManager.Song);
-            MediaPlayer.IsRepeating = true;
-            MediaPlayer.Volume = 0.2f;
-
             savedUnlockables = new UnlockablesReadWrite();
             List<bool[]> unlockedEquipped = savedUnlockables.Load();
 
@@ -1036,6 +1032,10 @@ namespace Purpose
             {
                 #region Menu State
                 case GameState.Menu:
+                    MediaPlayer.Play(soundManager.Song);
+                    MediaPlayer.IsRepeating = true;
+                    MediaPlayer.Volume = 0.2f;
+
                     if (editedGameButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
                     {
                         gameManager.GameState = GameState.Controls;
@@ -1545,6 +1545,7 @@ namespace Purpose
                     if (returnToMenuButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
                     {
                         gameManager.GameState = GameState.Menu;
+                        MediaPlayer.Stop();
                     }
                     break;
                 #endregion
@@ -1559,6 +1560,7 @@ namespace Purpose
                     if (returnToMenuButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
                     {
                         gameManager.GameState = GameState.Menu;
+                        MediaPlayer.Stop();
                     }
                     break;
 #endregion
