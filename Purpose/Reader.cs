@@ -14,10 +14,9 @@ namespace Purpose
         private StreamReader input;
         private string line;
 
-        //Field for the wave and manager to create it
-        //private Wave wave;
         private GameManager gameManager;
-        //private Game1 game1;
+
+        private Unlockables unlockables;
 
         //Constructor for the Reader
         public Reader(GameManager gameManager)
@@ -62,6 +61,5 @@ namespace Purpose
                 input.Close();
             }
         }
-
     }
 }

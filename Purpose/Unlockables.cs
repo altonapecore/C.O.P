@@ -192,6 +192,7 @@ namespace Purpose
                     UnlockPoints -= item.Cost; //Takes the cost and subtracts from users current unlock points 
                 }
             }
+
         }
 
         //Method to equip unlocked items
@@ -230,64 +231,5 @@ namespace Purpose
             }
         }
 
-        //Method to save all the unlockable info onto a text file
-        public void Save()
-        {
-            //Order goes
-            //User's Unlock Points
-            //Items
-            //Name, Unlocked, Equipped
-            //True - 1 //// False - 0
-
-            //saves points
-            output.WriteLine(UnlockPoints);
-
-            //Saves items and writes them 
-            output.Write("Fez," + SaveUnlock(Fez) + "," + SaveEquip(Fez));
-            output.Write("Cowboy," + SaveUnlock(Fez) + "," + SaveEquip(Fez));
-            output.Write("Ushanka," + SaveUnlock(Fez) + "," + SaveEquip(Fez));
-            output.Write("Beret," + SaveUnlock(Fez) + "," + SaveEquip(Fez));
-            output.Write("Sombrero," + SaveUnlock(Fez) + "," + SaveEquip(Fez));
-            
-            //Makes sure output is not null
-            if(output != null)
-            {
-                //closes the writer
-                output.Close();
-            }
-
-        }
-
-
-        //Helper methods for the save
-        private int SaveUnlock(Unlockables item)
-        {
-            //checks if item is unlocked
-            if(item.Unlocked == true)
-            {
-                //If it is returns 1
-                return 1;
-            }
-            else
-            {
-                //If it isn't returns 0
-                return 0;
-            }
-        }
-
-        private int SaveEquip(Unlockables item)
-        {
-            //checks if item is Equipped
-            if (item.Equipped == true)
-            {
-                //If it is returns 1
-                return 1;
-            }
-            else
-            {
-                //If it isn't returns 0
-                return 0;
-            }
-        }
-    }
+     }
 }
