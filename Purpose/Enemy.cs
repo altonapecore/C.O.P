@@ -140,13 +140,13 @@ namespace Purpose
                 color = Color.Firebrick;
                 if (ranged)
                 {
-                    damage = 7;
-                    health = 35;
+                    damage = 9;
+                    health = 50;
                 }
                 else
                 {
-                    damage = 5;
-                    health = 55;
+                    damage = 6;
+                    health = 75;
                 }
             }
             else if (difficulty == 3)
@@ -154,13 +154,13 @@ namespace Purpose
                 color = Color.CornflowerBlue;
                 if (ranged)
                 {
-                    damage = 9;
-                    health = 40;
+                    damage = 16;
+                    health = 75;
                 }
                 else
                 {
-                    damage = 7;
-                    health = 60;
+                    damage = 13;
+                    health = 100;
                 }
             }
             else if(difficulty == 4)
@@ -168,13 +168,13 @@ namespace Purpose
                 color = Color.DarkTurquoise;
                 if(ranged)
                 {
-                    damage = 11;
-                    health = 45;
+                    damage = 22;
+                    health = 85;
                 }
                 else
                 {
-                    damage = 9;
-                    health = 65;
+                    damage = 18;
+                    health = 120;
                 }
             }
             else if(difficulty == 5)
@@ -182,13 +182,13 @@ namespace Purpose
                 color = Color.Yellow;
                 if(ranged)
                 {
-                    damage = 13;
-                    health = 50;
+                    damage = 30;
+                    health = 100;
                 }
                 else
                 {
-                    damage = 11;
-                    health = 70;
+                    damage = 25;
+                    health = 150;
                 }                  
             }
             else
@@ -214,7 +214,7 @@ namespace Purpose
             {
                
                 // Melee attack stuff
-                if (!ranged && position.Intersects(player.Position))
+                if (!ranged && new Rectangle(X, Y - 50, position.Width, position.Height - 100).Intersects(player.Position))
                 {
                     meleeAttackTimer = 0;
                     return damage;
