@@ -226,37 +226,5 @@ namespace Purpose
                 ItemsList[i].Equipped = false;
             }
         }
-
-
-        //Helper methods for the save
-        private int SaveUnlock(Unlockables item)
-        {
-            //checks if item is unlocked
-            if(item.Unlocked == true)
-            {
-                //If it is returns 1
-                return 1;
-            }
-            else
-            {
-                //If it isn't returns 0
-                return 0;
-            }
-        }
-
-        private int SaveEquip(Unlockables item)
-        {
-            //checks if item is Equipped
-            if (item.Equipped == true)
-            {
-                //If it is returns 1
-                return 1;
-            }
-            else
-            {
-                //If it isn't returns 0
-                return 0;
-            }
-        }
     }
 }
