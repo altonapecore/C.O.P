@@ -1495,6 +1495,7 @@ namespace Purpose
                             gameManager.EnemyManager.LeftEnemyWalk1 = unlockables.ItemsList[i].LeftEnemyWalk1;
                             gameManager.EnemyManager.LeftEnemyWalk2 = unlockables.ItemsList[i].LeftEnemyWalk2;
                             gameManager.EnemyManager.LeftEnemyWalk3 = unlockables.ItemsList[i].LeftEnemyWalk3;
+                            break;
                         }
                         else
                         {
@@ -1516,6 +1517,8 @@ namespace Purpose
                 case GameState.NextWave:
                     camera.Zoom = 1.0f;
                     camera.Position = new Vector2(0, 0);
+
+                    savedUnlockables.Save(unlockables.UnlockPoints, unlockables.ItemsList);
 
                     //Reset Game
                     if (editedGame)
