@@ -75,18 +75,6 @@
 /processorParam:TextureFormat=Compressed
 /build:Agency30.spritefont
 
-#begin NextWaveMenu.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:NextWaveMenu.png
-
 #begin UpgradeUI.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -1035,4 +1023,16 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Unlockables.png
+
+#begin NextWaveMenu.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:NextWaveMenu.png
 
