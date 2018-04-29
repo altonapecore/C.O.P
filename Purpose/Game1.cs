@@ -357,7 +357,7 @@ namespace Purpose
 
             for (int i = 0; i < unlockables.ItemsList.Count; i++)
             {
-                if (unlockedEquipped != null)
+                if (unlockedEquipped.Count > 0)
                 {
                     if (unlockedEquipped[i][0])
                     {
