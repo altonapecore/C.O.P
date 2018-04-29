@@ -101,6 +101,7 @@ namespace Purpose
         private GameObject unlockablesReturnToPauseButton;
         private GameObject startUnlockablesButton;
         private GameObject pauseUnlockablesButton;
+        private GameObject nextWaveUnlockablesButton;
 
         private GameObject groundPoundTip;
         private GameObject damageUpTip;
@@ -142,6 +143,7 @@ namespace Purpose
 
         //Field for the Unlockables
         private Unlockables unlockables;
+        private UnlockablesReadWrite savedUnlockables;
 
 
         private bool editedGame;
@@ -297,10 +299,11 @@ namespace Purpose
             exitGameButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 457, 349, 160));
             pauseUnlockablesButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 643, 349, 155));
             goOnButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 272, 349, 160));
-            upgradesButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 512, 349, 160));
+            upgradesButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 457, 349, 160));
+            nextWaveUnlockablesButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 643, 349, 155));
             returnToMenuButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 343, 349, 160));
             returnToMainButton = new GameObject(textureManager.ButtonFrame, new Rectangle(35, 35, 243, 108));
-            unlockablesReturnToPauseButton = new GameObject(textureManager.ButtonFrame, new Rectangle(35, 35, 349, 160));
+            unlockablesReturnToPauseButton = new GameObject(textureManager.ButtonFrame, new Rectangle(35, 34, 242, 109));
 
             groundPoundTip = new GameObject(textureManager.GroundPoundTip, new Rectangle(0, 0, 250, 250));
             damageUpTip = new GameObject(textureManager.DamageUpTip, new Rectangle(0, 0, 250, 250));
@@ -350,6 +353,25 @@ namespace Purpose
             presetWaves.CreateWaves();
 
             MediaPlayer.Play(soundManager.Song);
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Volume = 0.2f;
+
+            savedUnlockables = new UnlockablesReadWrite();
+            List<bool[]> unlockedEquipped = savedUnlockables.Load();
+
+            for (int i = 0; i < unlockables.ItemsList.Count; i++)
+            {
+                if (unlockedEquipped[i][0])
+                {
+                    unlockables.ItemsList[i].Unlocked = true;
+                }
+                
+                if (unlockedEquipped[i][1])
+                {
+                    unlockables.ItemsList[i].Equipped = true;
+                }
+            }
+            unlockables.UnlockPoints = savedUnlockables.UnlockPoints;
         }
         
         /// <summary>
@@ -783,7 +805,7 @@ namespace Purpose
                 case GameState.UnlockablesMenu:
                     spriteBatch.Draw(textureManager.UnlockablesUI, new Rectangle(0,0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
 
-                    spriteBatch.DrawString(agency30, "SPEND 10 UPGRADE POINTS \nTO UNLOCK A NEW HAT!", new Vector2(1000, 45), Color.Black);
+                    spriteBatch.DrawString(agency30, "SPEND 5 UPGRADE POINTS \nTO UNLOCK A NEW HAT!", new Vector2(1000, 45), Color.Black);
                     spriteBatch.DrawString(agency30, "Unlock Points: " + unlockables.UnlockPoints, new Vector2(1000, 135), Color.Black);
 
                     if (unlockablesReturnToPauseButton.Intersects(ms.Position))
@@ -961,6 +983,15 @@ namespace Purpose
                     {
                         spriteBatch.Draw(upgradesButton.Texture, upgradesButton.Position, Color.White);
                     }
+
+                    if (nextWaveUnlockablesButton.Intersects(ms.Position))
+                    {
+                        spriteBatch.Draw(nextWaveUnlockablesButton.Texture, nextWaveUnlockablesButton.Position, Color.Black);
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(nextWaveUnlockablesButton.Texture, nextWaveUnlockablesButton.Position, Color.White);
+                    }
                     break;
                 #endregion
 
@@ -1031,6 +1062,9 @@ namespace Purpose
                     {
                         gameManager.ResetOnPlayerDeathPreset(camera, rng, worldLeftEndWidth, worldRightEndWidth, gameTime, platformManager);
                     }
+
+                    unlockables.UnlockableUpdate(gameManager.EnemyManager);
+
                     break;
                 #endregion
 
@@ -1328,14 +1362,8 @@ namespace Purpose
 
                     if (unlockablesReturnToPauseButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
                     {
-                        if (gameManager.PrevGameState == GameState.Menu)
-                        {
-                            gameManager.GameState = GameState.Menu;
-                        }
-                        else if (gameManager.PrevGameState == GameState.Pause)
-                        {
-                            gameManager.GameState = GameState.Pause;
-                        }
+                        gameManager.GameState = gameManager.PrevGameState;
+                        savedUnlockables.Save(unlockables.UnlockPoints, unlockables.ItemsList);
                     }
 
                     //Deals with the Fez hat
@@ -1460,33 +1488,7 @@ namespace Purpose
                         unlockables.MakeDefault();
                     }
 
-                    //Loops through all the unlockables and checks which is equipped
-                    for (int i = 0; i < unlockables.ItemsList.Count; i++)
-                    {
-                        if (unlockables.ItemsList[i].Equipped == true)
-                        {
-                            //Sets the new equipped texture as the current texture
-                            gameManager.EnemyManager.RangedTexture = unlockables.ItemsList[i].RangeTexture;
-                            gameManager.EnemyManager.RightEnemyWalk1 = unlockables.ItemsList[i].RightEnemyWalk1;
-                            gameManager.EnemyManager.RightEnemyWalk2 = unlockables.ItemsList[i].RightEnemyWalk2;
-                            gameManager.EnemyManager.RightEnemyWalk3 = unlockables.ItemsList[i].RightEnemyWalk3;
-                            gameManager.EnemyManager.LeftEnemyWalk1 = unlockables.ItemsList[i].LeftEnemyWalk1;
-                            gameManager.EnemyManager.LeftEnemyWalk2 = unlockables.ItemsList[i].LeftEnemyWalk2;
-                            gameManager.EnemyManager.LeftEnemyWalk3 = unlockables.ItemsList[i].LeftEnemyWalk3;
-                        }
-                        else
-                        {
-                            //If there are no equipped textures from the unlockables
-                            //Set the texture as the default
-                            gameManager.EnemyManager.RangedTexture = textureManager.RangedEnemyTexture;
-                            gameManager.EnemyManager.RightEnemyWalk1 = textureManager.RightEnemyWalk1;
-                            gameManager.EnemyManager.RightEnemyWalk2 = textureManager.RightEnemyWalk2;
-                            gameManager.EnemyManager.RightEnemyWalk3 = textureManager.RightEnemyWalk3;
-                            gameManager.EnemyManager.LeftEnemyWalk1 = textureManager.LeftEnemyWalk1;
-                            gameManager.EnemyManager.LeftEnemyWalk2 = textureManager.LeftEnemyWalk2;
-                            gameManager.EnemyManager.LeftEnemyWalk3 = textureManager.LeftEnemyWalk1;
-                        }
-                    }
+                    unlockables.UnlockableUpdate(gameManager.EnemyManager);
                     break;
                 #endregion
 
@@ -1494,6 +1496,8 @@ namespace Purpose
                 case GameState.NextWave:
                     camera.Zoom = 1.0f;
                     camera.Position = new Vector2(0, 0);
+
+                    savedUnlockables.Save(unlockables.UnlockPoints, unlockables.ItemsList);
 
                     //Reset Game
                     if (editedGame)
@@ -1508,14 +1512,22 @@ namespace Purpose
                     if (goOnButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released && editedGame)
                     {
                         gameManager.GameState = GameState.EditorGame;
+                        MediaPlayer.Stop();
+                        MediaPlayer.Play(soundManager.Song);
                     }
                     else if (goOnButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released && !editedGame)
                     {
                         gameManager.GameState = GameState.PresetGame;
+                        MediaPlayer.Stop();
+                        MediaPlayer.Play(soundManager.Song);
                     }
                     else if (upgradesButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
                     {
                         gameManager.GameState = GameState.UpgradeMenu;
+                    }
+                    else if (nextWaveUnlockablesButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
+                    {
+                        gameManager.GameState = GameState.UnlockablesMenu;
                     }
                     break;
                 #endregion
