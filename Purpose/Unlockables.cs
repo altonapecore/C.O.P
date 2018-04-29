@@ -226,5 +226,36 @@ namespace Purpose
                 ItemsList[i].Equipped = false;
             }
         }
-    }
+        public void UnlockableUpdate(EnemyManager enemyManager)
+        {
+            //Loops through all the unlockables and checks which is equipped
+            for (int i = 0; i < itemsList.Count; i++)
+            {
+                if (itemsList[i].Equipped == true)
+                {
+                    //Sets the new equipped texture as the current texture
+                    enemyManager.RangedTexture = itemsList[i].RangeTexture;
+                    enemyManager.RightEnemyWalk1 = itemsList[i].RightEnemyWalk1;
+                    enemyManager.RightEnemyWalk2 = itemsList[i].RightEnemyWalk2;
+                    enemyManager.RightEnemyWalk3 = itemsList[i].RightEnemyWalk3;
+                    enemyManager.LeftEnemyWalk1 = itemsList[i].LeftEnemyWalk1;
+                    enemyManager.LeftEnemyWalk2 = itemsList[i].LeftEnemyWalk2;
+                    enemyManager.LeftEnemyWalk3 = itemsList[i].LeftEnemyWalk3;
+                    break;
+                }
+                else
+                {
+                    //If there are no equipped textures from the unlockables
+                    //Set the texture as the default
+                    enemyManager.RangedTexture = textureManager.RangedEnemyTexture;
+                    enemyManager.RightEnemyWalk1 = textureManager.RightEnemyWalk1;
+                    enemyManager.RightEnemyWalk2 = textureManager.RightEnemyWalk2;
+                    enemyManager.RightEnemyWalk3 = textureManager.RightEnemyWalk3;
+                    enemyManager.LeftEnemyWalk1 = textureManager.LeftEnemyWalk1;
+                    enemyManager.LeftEnemyWalk2 = textureManager.LeftEnemyWalk2;
+                    enemyManager.LeftEnemyWalk3 = textureManager.LeftEnemyWalk1;
+                }
+            }
+        }
+     }
 }
