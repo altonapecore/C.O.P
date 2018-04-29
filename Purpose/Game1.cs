@@ -1482,34 +1482,6 @@ namespace Purpose
                         unlockables.MakeDefault();
                     }
 
-                    //Loops through all the unlockables and checks which is equipped
-                    for (int i = 0; i < unlockables.ItemsList.Count; i++)
-                    {
-                        if (unlockables.ItemsList[i].Equipped == true)
-                        {
-                            //Sets the new equipped texture as the current texture
-                            gameManager.EnemyManager.RangedTexture = unlockables.ItemsList[i].RangeTexture;
-                            gameManager.EnemyManager.RightEnemyWalk1 = unlockables.ItemsList[i].RightEnemyWalk1;
-                            gameManager.EnemyManager.RightEnemyWalk2 = unlockables.ItemsList[i].RightEnemyWalk2;
-                            gameManager.EnemyManager.RightEnemyWalk3 = unlockables.ItemsList[i].RightEnemyWalk3;
-                            gameManager.EnemyManager.LeftEnemyWalk1 = unlockables.ItemsList[i].LeftEnemyWalk1;
-                            gameManager.EnemyManager.LeftEnemyWalk2 = unlockables.ItemsList[i].LeftEnemyWalk2;
-                            gameManager.EnemyManager.LeftEnemyWalk3 = unlockables.ItemsList[i].LeftEnemyWalk3;
-                            break;
-                        }
-                        else
-                        {
-                            //If there are no equipped textures from the unlockables
-                            //Set the texture as the default
-                            gameManager.EnemyManager.RangedTexture = textureManager.RangedEnemyTexture;
-                            gameManager.EnemyManager.RightEnemyWalk1 = textureManager.RightEnemyWalk1;
-                            gameManager.EnemyManager.RightEnemyWalk2 = textureManager.RightEnemyWalk2;
-                            gameManager.EnemyManager.RightEnemyWalk3 = textureManager.RightEnemyWalk3;
-                            gameManager.EnemyManager.LeftEnemyWalk1 = textureManager.LeftEnemyWalk1;
-                            gameManager.EnemyManager.LeftEnemyWalk2 = textureManager.LeftEnemyWalk2;
-                            gameManager.EnemyManager.LeftEnemyWalk3 = textureManager.LeftEnemyWalk1;
-                        }
-                    }
                     break;
                 #endregion
 
