@@ -142,6 +142,7 @@ namespace Purpose
 
         //Field for the Unlockables
         private Unlockables unlockables;
+        private UnlockablesReadWrite savedUnlockables;
 
 
         private bool editedGame;
@@ -300,7 +301,7 @@ namespace Purpose
             upgradesButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 512, 349, 160));
             returnToMenuButton = new GameObject(textureManager.ButtonFrame, new Rectangle(500, 343, 349, 160));
             returnToMainButton = new GameObject(textureManager.ButtonFrame, new Rectangle(35, 35, 243, 108));
-            unlockablesReturnToPauseButton = new GameObject(textureManager.ButtonFrame, new Rectangle(35, 35, 349, 160));
+            unlockablesReturnToPauseButton = new GameObject(textureManager.ButtonFrame, new Rectangle(35, 34, 242, 109));
 
             groundPoundTip = new GameObject(textureManager.GroundPoundTip, new Rectangle(0, 0, 250, 250));
             damageUpTip = new GameObject(textureManager.DamageUpTip, new Rectangle(0, 0, 250, 250));
@@ -350,6 +351,25 @@ namespace Purpose
             presetWaves.CreateWaves();
 
             MediaPlayer.Play(soundManager.Song);
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Volume = 25;
+
+            savedUnlockables = new UnlockablesReadWrite();
+            List<bool[]> unlockedEquipped = savedUnlockables.Load();
+
+            for (int i = 0; i < unlockables.ItemsList.Count; i++)
+            {
+                if (unlockedEquipped[i][0])
+                {
+                    unlockables.ItemsList[i].Unlocked = true;
+                }
+                
+                if (unlockedEquipped[i][1])
+                {
+                    unlockables.ItemsList[i].Equipped = true;
+                }
+            }
+            unlockables.UnlockPoints = savedUnlockables.UnlockPoints;
         }
         
         /// <summary>
@@ -1331,10 +1351,12 @@ namespace Purpose
                         if (gameManager.PrevGameState == GameState.Menu)
                         {
                             gameManager.GameState = GameState.Menu;
+                            savedUnlockables.Save(unlockables.UnlockPoints, unlockables.ItemsList);
                         }
                         else if (gameManager.PrevGameState == GameState.Pause)
                         {
                             gameManager.GameState = GameState.Pause;
+                            savedUnlockables.Save(unlockables.UnlockPoints, unlockables.ItemsList);
                         }
                     }
 
@@ -1473,6 +1495,7 @@ namespace Purpose
                             gameManager.EnemyManager.LeftEnemyWalk1 = unlockables.ItemsList[i].LeftEnemyWalk1;
                             gameManager.EnemyManager.LeftEnemyWalk2 = unlockables.ItemsList[i].LeftEnemyWalk2;
                             gameManager.EnemyManager.LeftEnemyWalk3 = unlockables.ItemsList[i].LeftEnemyWalk3;
+                            break;
                         }
                         else
                         {
@@ -1494,6 +1517,8 @@ namespace Purpose
                 case GameState.NextWave:
                     camera.Zoom = 1.0f;
                     camera.Position = new Vector2(0, 0);
+
+                    savedUnlockables.Save(unlockables.UnlockPoints, unlockables.ItemsList);
 
                     //Reset Game
                     if (editedGame)

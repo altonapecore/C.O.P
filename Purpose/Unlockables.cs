@@ -181,16 +181,12 @@ namespace Purpose
         //Mehtod to buy an item
         public void Buy(Unlockables item)
         {
-            //Checks if the item isn't already unlocked
-            if (item.Unlocked == false)
+            //Checks if the user has enough unlock points
+            //to buy the item
+            if (unlockPoints >= item.Cost) 
             {
-                //Checks if the user has enough unlock points
-                //to buy the item
-                if (unlockPoints >= item.Cost) 
-                {
-                    item.Unlocked = true; //Sets the item as unlocked.
-                    UnlockPoints -= item.Cost; //Takes the cost and subtracts from users current unlock points 
-                }
+                item.Unlocked = true; //Sets the item as unlocked.
+                UnlockPoints -= item.Cost; //Takes the cost and subtracts from users current unlock points 
             }
 
         }
