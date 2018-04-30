@@ -1037,7 +1037,7 @@ namespace Purpose
                 case GameState.Menu:
                     MediaPlayer.Play(soundManager.Song);
                     MediaPlayer.IsRepeating = true;
-                    MediaPlayer.Volume = 0.2f;
+                    MediaPlayer.Volume = 0.4f;
 
                     if (editedGameButton.Intersects(ms.Position) && ms.LeftButton == ButtonState.Pressed && previousMs.LeftButton == ButtonState.Released)
                     {
